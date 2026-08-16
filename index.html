@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phillipe Queiroz — Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #008080;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  /* ===== DESKTOP ICONS ===== */
+  .desktop-icons {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 1;
+  }
+
+  .desktop-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 2px;
+    cursor: pointer;
+    color: white;
+    font-size: 12px;
+    text-shadow: 1px 1px 0 #000;
+    width: 140px;
+  }
+
+  .desktop-icon:hover {
+    background: rgba(0,0,128,0.3);
+  }
+
+  .desktop-icon.active {
+    background: rgba(0,0,128,0.5);
+    outline: 1px dotted white;
+    outline-offset: -2px;
+  }
+
+  .desktop-icon img {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+  }
+
+  /* ===== WINDOWS ===== */
+  .window {
+    position: absolute;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #dfdfdf #000 #000 #dfdfdf;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+    min-width: 400px;
+    min-height: 250px;
+    display: none;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+  .window.active {
+    display: flex;
+    z-index: 100;
+  }
+
+  .window-titlebar {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: white;
+    padding: 2px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: move;
+    height: 24px;
+  }
+
+  .window-titlebar.inactive {
+    background: linear-gradient(90deg, #808080, #a0a0a0);
+  }
+
+  .window-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+  }
+
+  .window-title img {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+  }
+
+  .window-buttons {
+    display: flex;
+    gap: 2px;
+  }
+
+  .win-btn {
+    width: 18px;
+    height: 18px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .win-btn:active {
+    border-color: #000 #fff #fff #000;
+  }
+
+  .window-content {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    background: #c0c0c0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #000;
+  }
+
+  .window-content::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  .window-content::-webkit-scrollbar-track {
+    background: #dfdfdf;
+    border-left: 1px solid #808080;
+  }
+
+  .window-content::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+  }
+
+  /* ===== ABOUT ME WINDOW ===== */
+  .about-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .about-photo {
+    width: 120px;
+    height: 120px;
+    background: #808080;
+    border: 2px solid;
+    border-color: #808080 #fff #fff #808080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+    color: #404040;
+  }
+
+  .about-text h2 {
+    font-size: 22px;
+    font-family: 'VT323', monospace;
+    color: #000080;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+
+  .about-text .subtitle {
+    font-size: 12px;
+    color: #404040;
+    margin-bottom: 12px;
+  }
+
+  .about-text p {
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  .about-text .clients {
+    font-size: 12px;
+    color: #404040;
+    font-style: italic;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #808080;
+  }
+
+  /* ===== EXPERIENCE ===== */
+  .exp-item {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #808080;
+  }
+
+  .exp-item:last-child {
+    border-bottom: none;
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .exp-role {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .exp-company {
+    font-size: 12px;
+    color: #404040;
+  }
+
+  .exp-date {
+    font-size: 11px;
+    color: #606060;
+    white-space: nowrap;
+    background: #dfdfdf;
+    padding: 1px 6px;
+    border: 1px solid #808080;
+  }
+
+  .exp-duties {
+    margin: 6px 0 0 16px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #303030;
+  }
+
+  .exp-duties li {
+    margin-bottom: 2px;
+  }
+
+  /* ===== SKILLS ===== */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: #dfdfdf;
+    border: 1px solid;
+    border-color: #fff #808080 #808080 #fff;
+    font-size: 12px;
+  }
+
+  .skill-item::before {
+    content: "☑";
+    color: #000080;
+    font-size: 14px;
+  }
+
+  /* ===== CONTACT ===== */
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: #dfdfdf;
+    border: 1px solid;
+    border-color: #fff #808080 #808080 #fff;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    color: #000;
+  }
+
+  .contact-row:hover {
+    background: #d0d0d0;
+  }
+
+  .contact-row:active {
+    border-color: #808080 #fff #fff #808080;
+  }
+
+  .contact-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  /* ===== TASKBAR ===== */
+  .taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: #c0c0c0;
+    border-top: 2px solid #dfdfdf;
+    display: flex;
+    align-items: center;
+    padding: 2px 4px;
+    gap: 4px;
+    z-index: 1000;
+  }
+
+  .start-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    height: 26px;
+  }
+
+  .start-btn:active, .start-btn.open {
+    border-color: #000 #fff #fff #000;
+  }
+
+  .start-btn img {
+    width: 18px;
+    height: 18px;
+    image-rendering: pixelated;
+  }
+
+  .taskbar-divider {
+    width: 2px;
+    height: 24px;
+    background: #808080;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #808080;
+    margin: 0 4px;
+  }
+
+  .taskbar-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+    font-size: 12px;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    height: 26px;
+    flex: 1;
+  }
+
+  .taskbar-item.active {
+    border-color: #808080 #dfdfdf #dfdfdf #808080;
+    background: #d4d0c8;
+  }
+
+  .taskbar-item img {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+  }
+
+  .clock {
+    margin-left: auto;
+    padding: 2px 8px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #808080 #fff #fff #808080;
+    font-size: 12px;
+    font-family: 'VT323', monospace;
+    font-size: 14px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* ===== START MENU ===== */
+  .start-menu {
+    position: fixed;
+    bottom: 34px;
+    left: 4px;
+    width: 200px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+    display: none;
+    flex-direction: column;
+    z-index: 1001;
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  }
+
+  .start-menu.open {
+    display: flex;
+  }
+
+  .start-menu-header {
+    background: linear-gradient(180deg, #000080, #1084d0);
+    color: white;
+    padding: 4px 8px;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: 'VT323', monospace;
+    letter-spacing: 2px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .start-menu-items {
+    margin-left: 24px;
+    display: flex;
+    flex-direction: column;
+    padding: 2px 0;
+  }
+
+  .start-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    color: #000;
+    text-decoration: none;
+  }
+
+  .start-menu-item:hover {
+    background: #000080;
+    color: white;
+  }
+
+  .start-menu-item img {
+    width: 20px;
+    height: 20px;
+    image-rendering: pixelated;
+  }
+
+  .start-menu-divider {
+    height: 1px;
+    background: #808080;
+    border-top: 1px solid #fff;
+    margin: 4px 8px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .window {
+      min-width: 90vw;
+      max-width: 95vw;
+      left: 2.5vw !important;
+      top: 40px !important;
+    }
+    .desktop-icons {
+      display: none;
+    }
+    .about-layout {
+      flex-direction: column;
+    }
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== DESKTOP ICONS ===== -->
+<div class="desktop-icons">
+  <div class="desktop-icon" onclick="openWindow('about')" id="icon-about">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect fill='%23000080' x='4' y='6' width='24' height='18' rx='1'/%3E%3Crect fill='%23c0c0c0' x='6' y='8' width='20' height='14'/%3E%3Crect fill='%23000080' x='8' y='10' width='16' height='2'/%3E%3Crect fill='%23000080' x='8' y='14' width='12' height='1'/%3E%3Crect fill='%23000080' x='8' y='16' width='14' height='1'/%3E%3Crect fill='%23000080' x='8' y='18' width='10' height='1'/%3E%3C/svg%3E" alt="">
+    <span>About Me</span>
+  </div>
+  <div class="desktop-icon" onclick="openWindow('experience')" id="icon-experience">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect fill='%238B4513' x='6' y='8' width='20' height='16' rx='1'/%3E%3Crect fill='%23D2691E' x='8' y='10' width='16' height='12'/%3E%3Crect fill='%238B4513' x='12' y='6' width='8' height='4'/%3E%3Crect fill='%23fff' x='10' y='13' width='12' height='1'/%3E%3Crect fill='%23fff' x='10' y='15' width='10' height='1'/%3E%3Crect fill='%23fff' x='10' y='17' width='12' height='1'/%3E%3C/svg%3E" alt="">
+    <span>Experience</span>
+  </div>
+  <div class="desktop-icon" onclick="openWindow('skills')" id="icon-skills">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect fill='%23CC0000' x='8' y='6' width='16' height='20' rx='1'/%3E%3Crect fill='%23FF0000' x='10' y='8' width='12' height='16'/%3E%3Crect fill='%238B0000' x='12' y='4' width='8' height='4'/%3E%3Crect fill='%23fff' x='12' y='12' width='8' height='2'/%3E%3Crect fill='%23fff' x='12' y='16' width='6' height='2'/%3E%3Crect fill='%23fff' x='12' y='20' width='8' height='2'/%3E%3C/svg%3E" alt="">
+    <span>Skills</span>
+  </div>
+  <div class="desktop-icon" onclick="openWindow('contact')" id="icon-contact">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect fill='%23c0c0c0' x='4' y='8' width='24' height='16' rx='1'/%3E%3Crect fill='%23fff' x='6' y='10' width='20' height='12'/%3E%3Cpath fill='none' stroke='%23000080' stroke-width='2' d='M6 10 L16 18 L26 10'/%3E%3C/svg%3E" alt="">
+    <span>Contact</span>
+  </div>
+  <div class="desktop-icon" onclick="openWindow('resume')" id="icon-resume">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect fill='%23fff' x='8' y='4' width='16' height='24' rx='1'/%3E%3Crect fill='%23c0c0c0' x='10' y='6' width='12' height='20'/%3E%3Crect fill='%23000' x='12' y='9' width='8' height='1'/%3E%3Crect fill='%23000' x='12' y='12' width='8' height='1'/%3E%3Crect fill='%23000' x='12' y='15' width='6' height='1'/%3E%3Crect fill='%23000' x='12' y='18' width='8' height='1'/%3E%3Crect fill='%23000' x='12' y='21' width='5' height='1'/%3E%3C/svg%3E" alt="">
+    <span>Resume.pdf</span>
+  </div>
+</div>
+
+<!-- ===== ABOUT ME WINDOW ===== -->
+<div class="window active" id="win-about" style="left: 180px; top: 40px; width: 520px; height: 340px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-about')">
+    <div class="window-title">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23000080' x='2' y='3' width='12' height='9' rx='1'/%3E%3Crect fill='%23c0c0c0' x='3' y='4' width='10' height='7'/%3E%3C/svg%3E" alt="">
+      About Me
+    </div>
+    <div class="window-buttons">
+      <div class="win-btn" onclick="minimizeWindow('about')">_</div>
+      <div class="win-btn" onclick="closeWindow('about')">×</div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="about-layout">
+      <div class="about-photo">[Sua Foto]</div>
+      <div class="about-text">
+        <h2>Phillipe Queiroz</h2>
+        <p class="subtitle">a.k.a. 0xPhillipe · Rio de Janeiro, Brazil</p>
+        <p>
+          Hey, I'm Phillipe — a community builder, manager, and English–Portuguese translator. 
+          I help projects build, manage, and grow their communities across Discord and Telegram, 
+          from full server setup to daily moderation, user support, and bilingual localization.
+        </p>
+        <p>
+          With experience spanning from hands-on moderation to leadership roles, I oversee teams, 
+          handle escalations, and support large online communities while ensuring platform safety 
+          and high-quality bilingual communication.
+        </p>
+        <p class="clients">
+          I've worked with Binance, Coinracer, BeeOS, CoralApp, Lion's Share Group, TAP-Protocol, and VS1Fiance.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EXPERIENCE WINDOW ===== -->
+<div class="window" id="win-experience" style="left: 200px; top: 60px; width: 580px; height: 460px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
+    <div class="window-title">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3Crect fill='%23D2691E' x='4' y='5' width='8' height='6'/%3E%3C/svg%3E" alt="">
+      Experience
+    </div>
+    <div class="window-buttons">
+      <div class="win-btn" onclick="minimizeWindow('experience')">_</div>
+      <div class="win-btn" onclick="closeWindow('experience')">×</div>
+    </div>
+  </div>
+  <div class="window-content">
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <p class="exp-role">Community Builder</p>
+          <p class="exp-company">VS1Fiance</p>
+        </div>
+        <span class="exp-date">Oct 2025 — Present</span>
+      </div>
+      <ul class="exp-duties">
+        <li>Built and launched a dedicated online community from the ground up</li>
+        <li>Established structure, guidelines, and initial moderation processes</li>
+        <li>Created community rules to ensure a safe and organized environment</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <p class="exp-role">Affiliate Community Manager</p>
+          <p class="exp-company">Lion's Share Group</p>
+        </div>
+        <span class="exp-date">Mar 2025 — Jun 2025</span>
+      </div>
+      <ul class="exp-duties">
+        <li>Managed and supported client-affiliated communities</li>
+        <li>Addressed inquiries and provided guidance to community members</li>
+        <li>Maintained effective communication between users and the company</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <p class="exp-role">Customer Service</p>
+          <p class="exp-company">TAP-Protocol</p>
+        </div>
+        <span class="exp-date">May 2024 — Feb 2025</span>
+      </div>
+      <ul class="exp-duties">
+        <li>Real-time chat moderation and in-app content review</li>
+        <li>Ensured compliance with community guidelines and safety policies</li>
+        <li>Supported a global user base in fast-paced, high-traffic community channels</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <p class="exp-role">Community Builder, Customer Supporter & Community Manager</p>
+          <p class="exp-company">BeeOS</p>
+        </div>
+        <span class="exp-date">Mar 2022 — Present</span>
+      </div>
+      <ul class="exp-duties">
+        <li>Joined at an early stage and built the community from the ground up</li>
+        <li>Progressed through leadership roles as the company grew</li>
+        <li>Handled user inquiries and resolved issues in high-traffic channels</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <p class="exp-role">Customer Support</p>
+          <p class="exp-company">CoralApp</p>
+        </div>
+        <span class="exp-date">Mar 2023 — Jun 2023</span>
+      </div>
+      <ul class="exp-duties">
+        <li>Real-time chat moderation and in-app content review</li>
+        <li>Ensured compliance with community guidelines and safety policies</li>
+        <li>Maintained platform standards across all user interactions</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <p class="exp-role">Head Moderator</p>
+          <p class="exp-company">Coinracer</p>
+        </div>
+        <span class="exp-date">Nov 2021 — Feb 2024</span>
+      </div>
+      <ul class="exp-duties">
+        <li>Coordinated and supervised moderation teams</li>
+        <li>Handled escalations and maintained compliance with community guidelines</li>
+        <li>Trained and mentored moderators, improving response quality</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <p class="exp-role">Binance Angel</p>
+          <p class="exp-company">Binance Holdings Ltd.</p>
+        </div>
+        <span class="exp-date">Feb 2021 — Mar 2022</span>
+      </div>
+      <ul class="exp-duties">
+        <li>Volunteer contributor supporting the Binance ecosystem</li>
+        <li>Assisted users, moderated community channels</li>
+        <li>Educated users about Binance products and best practices</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SKILLS WINDOW ===== -->
+<div class="window" id="win-skills" style="left: 220px; top: 80px; width: 400px; height: 320px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-skills')">
+    <div class="window-title">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23CC0000' x='4' y='3' width='8' height='10' rx='1'/%3E%3Crect fill='%23FF0000' x='5' y='4' width='6' height='8'/%3E%3C/svg%3E" alt="">
+      Skills
+    </div>
+    <div class="window-buttons">
+      <div class="win-btn" onclick="minimizeWindow('skills')">_</div>
+      <div class="win-btn" onclick="closeWindow('skills')">×</div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="skills-grid">
+      <div class="skill-item">Community Management</div>
+      <div class="skill-item">Community Support</div>
+      <div class="skill-item">Process Organization</div>
+      <div class="skill-item">Client Communication</div>
+      <div class="skill-item">Quality Control</div>
+      <div class="skill-item">Written Communication</div>
+      <div class="skill-item">Conflict Handling</div>
+      <div class="skill-item">Team Leadership</div>
+      <div class="skill-item">Reporting & Documentation</div>
+      <div class="skill-item">Translation & Localization (EN–PT)</div>
+      <div class="skill-item">Discord & Telegram Moderation</div>
+      <div class="skill-item">User Onboarding</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONTACT WINDOW ===== -->
+<div class="window" id="win-contact" style="left: 240px; top: 100px; width: 380px; height: 280px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-contact')">
+    <div class="window-title">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23c0c0c0' x='2' y='4' width='12' height='8' rx='1'/%3E%3Crect fill='%23fff' x='3' y='5' width='10' height='6'/%3E%3C/svg%3E" alt="">
+      Contact
+    </div>
+    <div class="window-buttons">
+      <div class="win-btn" onclick="minimizeWindow('contact')">_</div>
+      <div class="win-btn" onclick="closeWindow('contact')">×</div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="contact-list">
+      <a class="contact-row" href="mailto:phillipegugol@gmail.com">
+        <div class="contact-icon">✉</div>
+        <span>phillipegugol@gmail.com</span>
+      </a>
+      <a class="contact-row" href="https://twitter.com/0xPhillipe" target="_blank">
+        <div class="contact-icon">🐦</div>
+        <span>Twitter — @0xPhillipe</span>
+      </a>
+      <a class="contact-row" href="#" onclick="alert('Discord: @0xPhillipe'); return false;">
+        <div class="contact-icon">💬</div>
+        <span>Discord — @0xPhillipe</span>
+      </a>
+      <a class="contact-row" href="#" onclick="alert('Telegram: @0xPhillipe'); return false;">
+        <div class="contact-icon">✈</div>
+        <span>Telegram — @0xPhillipe</span>
+      </a>
+      <div class="contact-row">
+        <div class="contact-icon">📍</div>
+        <span>Rio de Janeiro, Brazil</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESUME WINDOW ===== -->
+<div class="window" id="win-resume" style="left: 260px; top: 120px; width: 400px; height: 200px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-resume')">
+    <div class="window-title">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23fff' x='4' y='2' width='8' height='12' rx='1'/%3E%3C/svg%3E" alt="">
+      Resume.pdf
+    </div>
+    <div class="window-buttons">
+      <div class="win-btn" onclick="minimizeWindow('resume')">_</div>
+      <div class="win-btn" onclick="closeWindow('resume')">×</div>
+    </div>
+  </div>
+  <div class="window-content" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+    <div style="font-size:48px;">📄</div>
+    <p style="font-size:14px;text-align:center;">Resume.pdf</p>
+    <p style="font-size:12px;color:#606060;text-align:center;">Upload your resume PDF to the same folder<br>and link it here, or keep this as a placeholder.</p>
+  </div>
+</div>
+
+<!-- ===== TASKBAR ===== -->
+<div class="taskbar">
+  <div class="start-btn" id="start-btn" onclick="toggleStartMenu()">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Crect fill='%23808080' x='1' y='1' width='16' height='16'/%3E%3Crect fill='%23FF0000' x='2' y='2' width='7' height='7'/%3E%3Crect fill='%2300FF00' x='10' y='2' width='7' height='7'/%3E%3Crect fill='%230000FF' x='2' y='10' width='7' height='7'/%3E%3Crect fill='%23FFFF00' x='10' y='10' width='7' height='7'/%3E%3C/svg%3E" alt="">
+    Start
+  </div>
+  <div class="taskbar-divider"></div>
+  <div class="taskbar-item active" id="task-about" onclick="openWindow('about')">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23000080' x='2' y='3' width='12' height='9' rx='1'/%3E%3C/svg%3E" alt="">
+    About Me
+  </div>
+  <div class="clock" id="clock">00:00</div>
+</div>
+
+<!-- ===== START MENU ===== -->
+<div class="start-menu" id="start-menu">
+  <div class="start-menu-header">Phillipe98</div>
+  <div class="start-menu-items">
+    <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect fill='%23000080' x='3' y='4' width='14' height='11' rx='1'/%3E%3C/svg%3E" alt="">
+      About Me
+    </div>
+    <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect fill='%238B4513' x='4' y='5' width='12' height='10' rx='1'/%3E%3C/svg%3E" alt="">
+      Experience
+    </div>
+    <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect fill='%23CC0000' x='5' y='4' width='10' height='12' rx='1'/%3E%3C/svg%3E" alt="">
+      Skills
+    </div>
+    <div class="start-menu-item" onclick="openWindow('contact'); toggleStartMenu();">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect fill='%23c0c0c0' x='3' y='5' width='14' height='10' rx='1'/%3E%3C/svg%3E" alt="">
+      Contact
+    </div>
+    <div class="start-menu-divider"></div>
+    <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Crect fill='%23fff' x='5' y='3' width='10' height='14' rx='1'/%3E%3C/svg%3E" alt="">
+      Resume.pdf
+    </div>
+    <div class="start-menu-divider"></div>
+    <div class="start-menu-item" onclick="alert('Shut Down');">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle fill='%23FF0000' cx='10' cy='10' r='7'/%3E%3Crect fill='%23fff' x='9' y='5' width='2' height='7'/%3E%3C/svg%3E" alt="">
+      Shut Down...
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== CLOCK =====
+  function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    document.getElementById('clock').textContent = h + ':' + m;
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // ===== WINDOW MANAGEMENT =====
+  let zIndexCounter = 100;
+  const openWindows = new Set(['about']);
+
+  function openWindow(name) {
+    const win = document.getElementById('win-' + name);
+    const icon = document.getElementById('icon-' + name);
+    const task = document.getElementById('task-' + name);
+
+    win.style.display = 'flex';
+    win.style.zIndex = ++zIndexCounter;
+    openWindows.add(name);
+
+    // Update desktop icon
+    document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('active'));
+    if (icon) icon.classList.add('active');
+
+    // Update taskbar
+    document.querySelectorAll('.taskbar-item').forEach(t => t.classList.remove('active'));
+    if (task) {
+      task.classList.add('active');
+    } else {
+      // Create taskbar item if not exists
+      const newTask = document.createElement('div');
+      newTask.className = 'taskbar-item active';
+      newTask.id = 'task-' + name;
+      newTask.onclick = function() { openWindow(name); };
+      newTask.innerHTML = win.querySelector('.window-title').innerHTML;
+      document.querySelector('.taskbar').insertBefore(newTask, document.getElementById('clock'));
+    }
+  }
+
+  function closeWindow(name) {
+    const win = document.getElementById('win-' + name);
+    const icon = document.getElementById('icon-' + name);
+    const task = document.getElementById('task-' + name);
+
+    win.style.display = 'none';
+    openWindows.delete(name);
+
+    if (icon) icon.classList.remove('active');
+    if (task) task.remove();
+
+    // Activate another window if any
+    if (openWindows.size > 0) {
+      const next = Array.from(openWindows).pop();
+      openWindow(next);
+    }
+  }
+
+  function minimizeWindow(name) {
+    const win = document.getElementById('win-' + name);
+    const task = document.getElementById('task-' + name);
+    win.style.display = 'none';
+    if (task) task.classList.remove('active');
+  }
+
+  // ===== START MENU =====
+  function toggleStartMenu() {
+    const menu = document.getElementById('start-menu');
+    const btn = document.getElementById('start-btn');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+
+  // Close start menu when clicking outside
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('start-menu');
+    const btn = document.getElementById('start-btn');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('open');
+      btn.classList.remove('open');
+    }
+  });
+
+  // ===== DRAG WINDOWS =====
+  let draggedWindow = null;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+
+  function startDrag(e, winId) {
+    const win = document.getElementById(winId);
+    win.style.zIndex = ++zIndexCounter;
+    draggedWindow = win;
+    dragOffsetX = e.clientX - win.offsetLeft;
+    dragOffsetY = e.clientY - win.offsetTop;
+    e.preventDefault();
+  }
+
+  document.addEventListener('mousemove', function(e) {
+    if (draggedWindow) {
+      let newX = e.clientX - dragOffsetX;
+      let newY = e.clientY - dragOffsetY;
+      newX = Math.max(0, Math.min(newX, window.innerWidth - draggedWindow.offsetWidth));
+      newY = Math.max(0, Math.min(newY, window.innerHeight - draggedWindow.offsetHeight - 34));
+      draggedWindow.style.left = newX + 'px';
+      draggedWindow.style.top = newY + 'px';
+    }
+  });
+
+  document.addEventListener('mouseup', function() {
+    draggedWindow = null;
+  });
+
+  // ===== DOUBLE CLICK TO OPEN =====
+  document.querySelectorAll('.desktop-icon').forEach(icon => {
+    icon.addEventListener('dblclick', function() {
+      const name = this.id.replace('icon-', '');
+      openWindow(name);
+    });
+  });
+
+  // ===== BRING TO FRONT ON CLICK =====
+  document.querySelectorAll('.window').forEach(win => {
+    win.addEventListener('mousedown', function() {
+      this.style.zIndex = ++zIndexCounter;
+    });
+  });
+</script>
+
+</body>
+</html>
