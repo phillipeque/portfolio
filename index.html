@@ -284,66 +284,11 @@
 
 
   /* ========================================================= */
-  /* ===== TELA DE BOOT DO WINDOWS XP (ORIGINAL) ===== */
-  /* ========================================================= */
-  #xp-boot-screen {
-    position: fixed; inset: 0; z-index: 999999;
-    display: flex; flex-direction: column;
-    background: #000000;
-    font-family: Tahoma, sans-serif;
-  }
-  .boot-wrapper {
-    flex: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding-bottom: 40px;
-  }
-  .boot-logo-wrapper {
-    display: flex; justify-content: center; align-items: center;
-    margin-bottom: 25px;
-  }
-  .boot-logo {
-    max-width: 180px; height: auto; display: block;
-  }
-  .boot-text {
-    color: #ffffff; font-size: 16px; margin-bottom: 8px;
-    letter-spacing: 0.5px; text-shadow: 0 0 4px rgba(255,255,255,0.3);
-    display: none; /* Oculto pois a imagem original não tem texto acima da barra */
-  }
-  .boot-bar-track {
-    width: 220px; height: 16px;
-    background: #000;
-    border: 2px solid #b0b0b0;
-    border-radius: 4px;
-    overflow: hidden; position: relative;
-    box-shadow: inset 0 0 3px #000;
-  }
-  .boot-bar-fill {
-    height: 100%; width: 100%;
-    /* Bloquinhos azuis com espaçamento */
-    background-image: repeating-linear-gradient(90deg, #4b8df8 0px, #4b8df8 8px, transparent 8px, transparent 16px);
-    animation: bootSlide 1.6s linear 3 forwards; /* Exatamente 3 voltas */
-  }
-  @keyframes bootSlide {
-    0% { background-position: 100% 0%; }
-    100% { background-position: 0% 0%; }
-  }
-  .boot-copyright {
-    position: absolute; bottom: 30px; left: 40px;
-    color: #9a9a9a; font-size: 11px;
-  }
-  .boot-microsoft-logo {
-    position: absolute; bottom: 30px; right: 40px;
-    color: #ffffff; font-size: 16px; font-style: italic; font-weight: bold;
-    font-family: 'Segoe UI', Arial, sans-serif; letter-spacing: 0.5px;
-  }
-
-  /* ========================================================= */
   /* ===== TELA DE LOGIN DO WINDOWS XP ===== */
   /* ========================================================= */
   #xp-login-screen {
     position: fixed; inset: 0; z-index: 99999;
-    display: none;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%);
     font-family: Tahoma, "Segoe UI", sans-serif;
     transition: opacity 0.6s ease, transform 0.6s ease;
@@ -413,7 +358,7 @@
   .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
 
   /* ========================================================= */
-  /* ===== RIGHT CLICK CONTEXT MENU ===== */
+  /* ===== RIGHT CLICK CONTEXT MENU (ATUALIZADO) ===== */
   /* ========================================================= */
   #context-menu {
     position: fixed; display: none; background: #ece9d8;
@@ -421,6 +366,7 @@
     border-radius: 3px; z-index: 99999; padding: 2px; width: 180px;
     font-family: Tahoma, sans-serif; font-size: 12px; color: #000;
   }
+  /* Adicionado color: #000; para corrigir a cor da fonte */
   .context-item { padding: 4px 12px; cursor: default; position: relative; color: #000; }
   .context-item:hover { background: #0058e6; color: white; }
   .context-divider { height: 1px; background: #a0a0a0; margin: 2px 4px; }
@@ -437,28 +383,12 @@
 </head>
 <body>
 
-<!-- ===== TELA DE BOOT DO WINDOWS XP (ESTILO ORIGINAL) ===== -->
-<div id="xp-boot-screen">
-  <div class="boot-wrapper">
-    <div class="boot-logo-wrapper">
-      <!-- LOGO DA TELA DE BOOT (COM FONTE BRANCA) -->
-      <img src="icons/xp-logo-boot.png" alt="Windows XP Boot Logo" class="boot-logo">
-    </div>
-    <div class="boot-bar-track">
-      <div class="boot-bar-fill"></div>
-    </div>
-  </div>
-  <div class="boot-copyright">Copyright © Microsoft Corporation</div>
-  <div class="boot-microsoft-logo">Microsoft</div>
-</div>
-
 <!-- ===== TELA DE LOGIN DO WINDOWS XP ===== -->
 <div id="xp-login-screen">
   <div class="login-header-bar"></div>
   <div class="login-body">
     <div class="login-left">
       <div class="xp-logo-wrapper">
-        <!-- LOGO DA TELA DE LOGIN (COM CORES NORMAIS) -->
         <img src="icons/xp-logo.png" alt="Windows XP Logo" class="xp-logo-img">
       </div>
       <div class="login-instruction">To begin, click your user name</div>
@@ -487,7 +417,7 @@
   </div>
 </div>
 
-<!-- ===== RIGHT CLICK CONTEXT MENU ===== -->
+<!-- ===== RIGHT CLICK CONTEXT MENU (BOTÃO VIEW REMOVIDO) ===== -->
 <div id="context-menu" class="context-menu">
     <div class="context-item context-submenu-parent">
         Sort by
@@ -985,7 +915,7 @@
         My Network Places
       </div>
       <div class="start-menu-item" onclick="alert('Control Panel');">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23808080' cx='12' cy='12' r='8'/%3E%3C/svg%3E" alt="">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%23808080' cx='12' cy='12' r='8'/%3E%3C/svg%3E" alt="">
         Control Panel
       </div>
       <div class="start-menu-divider"></div>
@@ -1018,19 +948,6 @@
 <div id="selection-box"></div>
 
 <script>
-  // ===== LÓGICA DE TRANSIÇÃO BOOT -> LOGIN (3 VOLTAS DA BARRA) =====
-  setTimeout(() => {
-    const boot = document.getElementById('xp-boot-screen');
-    const login = document.getElementById('xp-login-screen');
-    boot.style.display = 'none';
-    // Faz a tela de login surgir com um fade-in suave
-    login.style.opacity = '0';
-    login.style.display = 'flex';
-    void login.offsetWidth; // Força o reflow
-    login.style.transition = 'opacity 0.6s ease';
-    login.style.opacity = '1';
-  }, 5000); // 3 voltas * 1.6s = 4.8s, arredondado para 5s
-
   // ===== FUNÇÕES DE CONTEXT MENU =====
   document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
@@ -1065,6 +982,7 @@
     });
   }
 
+  // Função de ordenação corrigida para preencher na VERTICAL (Canto Superior Esquerdo)
   function sortIcons(order) {
     const container = document.querySelector('.desktop-icons');
     const icons = Array.from(container.querySelectorAll('.desktop-icon'));
@@ -1080,10 +998,10 @@
     icons.forEach(icon => container.appendChild(icon));
 
     // Organiza na VERTICAL (coluna por coluna)
-    const maxRows = 5; 
+    const maxRows = 5; // Número máximo de ícones por coluna
     icons.forEach((icon, index) => {
-        const row = index % maxRows;       
-        const col = Math.floor(index / maxRows); 
+        const row = index % maxRows;       // Pula para a próxima linha
+        const col = Math.floor(index / maxRows); // Só vai pra próxima coluna quando a linha atual estiver cheia
         icon.style.left = (col * GRID_W + GRID_MARGIN_X) + 'px';
         icon.style.top = (row * GRID_H + GRID_MARGIN_Y) + 'px';
     });
