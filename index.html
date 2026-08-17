@@ -284,11 +284,55 @@
 
 
   /* ========================================================= */
+  /* ===== TELA DE BOOT DO WINDOWS XP (NOVO) ===== */
+  /* ========================================================= */
+  #xp-boot-screen {
+    position: fixed; inset: 0; z-index: 999999;
+    display: flex; flex-direction: column;
+    background: #000000;
+    font-family: Tahoma, sans-serif;
+  }
+  .boot-logo {
+    flex: 1; display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 40px;
+  }
+  .boot-logo img {
+    max-width: 200px; height: auto; display: block;
+  }
+  .boot-bottom {
+    padding-bottom: 60px;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  }
+  .boot-text {
+    color: #ffffff; font-size: 14px; margin-bottom: 5px; letter-spacing: 0.5px;
+  }
+  .boot-progress-track {
+    width: 350px; height: 16px;
+    background: #a1a1a1; border: 2px solid #fff;
+    border-radius: 2px; overflow: hidden; position: relative;
+  }
+  .boot-progress-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #58a4f6, #8ec4ff);
+    border-radius: 2px;
+    animation: bootProgress 4.5s linear forwards;
+  }
+  @keyframes bootProgress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+  .boot-copyright {
+    position: absolute; bottom: 12px; right: 15px;
+    color: #8b8b8b; font-size: 11px;
+  }
+
+  /* ========================================================= */
   /* ===== TELA DE LOGIN DO WINDOWS XP ===== */
   /* ========================================================= */
   #xp-login-screen {
     position: fixed; inset: 0; z-index: 99999;
-    display: flex; flex-direction: column;
+    display: none; /* Inicialmente oculta, aparecerá depois do Boot */
+    flex-direction: column;
     background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%);
     font-family: Tahoma, "Segoe UI", sans-serif;
     transition: opacity 0.6s ease, transform 0.6s ease;
@@ -358,7 +402,7 @@
   .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
 
   /* ========================================================= */
-  /* ===== RIGHT CLICK CONTEXT MENU (ATUALIZADO) ===== */
+  /* ===== RIGHT CLICK CONTEXT MENU ===== */
   /* ========================================================= */
   #context-menu {
     position: fixed; display: none; background: #ece9d8;
@@ -366,7 +410,6 @@
     border-radius: 3px; z-index: 99999; padding: 2px; width: 180px;
     font-family: Tahoma, sans-serif; font-size: 12px; color: #000;
   }
-  /* Adicionado color: #000; para corrigir a cor da fonte */
   .context-item { padding: 4px 12px; cursor: default; position: relative; color: #000; }
   .context-item:hover { background: #0058e6; color: white; }
   .context-divider { height: 1px; background: #a0a0a0; margin: 2px 4px; }
@@ -382,6 +425,20 @@
 </style>
 </head>
 <body>
+
+<!-- ===== TELA DE BOOT DO WINDOWS XP ===== -->
+<div id="xp-boot-screen">
+  <div class="boot-logo">
+    <img src="icons/xp-logo.png" alt="Windows XP Logo">
+  </div>
+  <div class="boot-bottom">
+    <div class="boot-text">Starting Windows...</div>
+    <div class="boot-progress-track">
+      <div class="boot-progress-fill"></div>
+    </div>
+  </div>
+  <div class="boot-copyright">Microsoft Corporation</div>
+</div>
 
 <!-- ===== TELA DE LOGIN DO WINDOWS XP ===== -->
 <div id="xp-login-screen">
@@ -417,7 +474,7 @@
   </div>
 </div>
 
-<!-- ===== RIGHT CLICK CONTEXT MENU (BOTÃO VIEW REMOVIDO) ===== -->
+<!-- ===== RIGHT CLICK CONTEXT MENU ===== -->
 <div id="context-menu" class="context-menu">
     <div class="context-item context-submenu-parent">
         Sort by
@@ -915,7 +972,7 @@
         My Network Places
       </div>
       <div class="start-menu-item" onclick="alert('Control Panel');">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%23808080' cx='12' cy='12' r='8'/%3E%3C/svg%3E" alt="">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23808080' cx='12' cy='12' r='8'/%3E%3C/svg%3E" alt="">
         Control Panel
       </div>
       <div class="start-menu-divider"></div>
@@ -948,6 +1005,12 @@
 <div id="selection-box"></div>
 
 <script>
+  // ===== LÓGICA DE TRANSIÇÃO BOOT -> LOGIN =====
+  setTimeout(() => {
+    document.getElementById('xp-boot-screen').style.display = 'none';
+    document.getElementById('xp-login-screen').style.display = 'flex';
+  }, 5000); // 5 segundos para a barra de progresso terminar
+
   // ===== FUNÇÕES DE CONTEXT MENU =====
   document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
@@ -982,7 +1045,6 @@
     });
   }
 
-  // Função de ordenação corrigida para preencher na VERTICAL (Canto Superior Esquerdo)
   function sortIcons(order) {
     const container = document.querySelector('.desktop-icons');
     const icons = Array.from(container.querySelectorAll('.desktop-icon'));
@@ -998,10 +1060,10 @@
     icons.forEach(icon => container.appendChild(icon));
 
     // Organiza na VERTICAL (coluna por coluna)
-    const maxRows = 5; // Número máximo de ícones por coluna
+    const maxRows = 5; 
     icons.forEach((icon, index) => {
-        const row = index % maxRows;       // Pula para a próxima linha
-        const col = Math.floor(index / maxRows); // Só vai pra próxima coluna quando a linha atual estiver cheia
+        const row = index % maxRows;       
+        const col = Math.floor(index / maxRows); 
         icon.style.left = (col * GRID_W + GRID_MARGIN_X) + 'px';
         icon.style.top = (row * GRID_H + GRID_MARGIN_Y) + 'px';
     });
