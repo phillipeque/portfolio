@@ -6,7 +6,7 @@
 <title>Phillipe Queiroz — Portfolio</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: Tahoma, "Segoe UI", sans-serif;
     background-image: url('wallpaper.png');
@@ -67,7 +67,6 @@
   .window-title img { width: 16px; height: 16px; image-rendering: pixelated; }
   .window-buttons { display: flex; gap: 2px; }
   
-  /* ===== BOTÕES ESTILO WINDOWS XP ===== */
   .win-btn {
     width: 22px; height: 22px;
     border: 1px solid #fff;
@@ -130,7 +129,6 @@
   .exp-duties { margin: 6px 0 0 16px; font-size: 12px; line-height: 1.6; color: #303030; }
   .exp-duties li { margin-bottom: 2px; }
 
-  /* ===== SKILLS – LAYOUT ===== */
   .skills-top-row {
     display: flex; align-items: center; justify-content: space-evenly;
     height: 160px; background: transparent; margin-bottom: 0; padding: 10px 15px; flex-shrink: 0;
@@ -143,7 +141,6 @@
     max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; margin-left: -15px;
   }
   
-  /* ===== LISTA DE SKILLS ===== */
   .skill-list { 
     display: flex; flex-direction: column; 
     padding: 0; flex: 1; 
@@ -297,10 +294,6 @@
   .vol-toggle.muted { opacity: 0.5; }
   .vol-toggle img { width: 20px; height: 20px; object-fit: contain; }
 
-
-  /* ========================================================= */
-  /* ===== TELA DE LOGIN DO WINDOWS XP ===== */
-  /* ========================================================= */
   #xp-login-screen {
     position: fixed; inset: 0; z-index: 99999;
     display: flex; flex-direction: column;
@@ -372,33 +365,33 @@
   .power-icon-wrapper svg { width: 18px; height: 18px; }
   .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
 
-  /* ========================================================= */
-  /* ===== RIGHT CLICK CONTEXT MENU (ATUALIZADO) ===== */
-  /* ========================================================= */
+  /* ===== CONTEXT MENU ESTILO WINDOWS XP COMPLETO ===== */
   #context-menu {
     position: fixed; display: none; background: #ece9d8;
     border: 1px solid #0054e3; box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-    border-radius: 3px; z-index: 99999; padding: 2px; width: 180px;
+    border-radius: 3px; z-index: 99999; padding: 2px; width: 200px;
     font-family: Tahoma, sans-serif; font-size: 12px; color: #000;
   }
-  /* Adicionado color: #000; para corrigir a cor da fonte */
   .context-item { padding: 4px 12px; cursor: default; position: relative; color: #000; }
   .context-item:hover { background: #0058e6; color: white; }
+  .context-item.disabled { color: #9e9a90; cursor: default; }
+  .context-item.disabled:hover { background: transparent; color: #9e9a90; }
   .context-divider { height: 1px; background: #a0a0a0; margin: 2px 4px; }
   .context-submenu-parent:after { content: "▶"; position: absolute; right: 6px; font-size: 8px; color: #000; top: 6px; }
   .context-submenu-parent:hover:after { color: white; }
   .context-submenu {
     display: none; position: absolute; left: 100%; top: -2px;
     background: #ece9d8; border: 1px solid #0054e3; box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-    border-radius: 3px; width: 150px; z-index: 99999;
+    border-radius: 3px; width: 160px; z-index: 99999; padding: 2px;
   }
   .context-submenu-parent:hover .context-submenu { display: block; }
   .context-submenu .context-item { font-size: 12px; color: #000; }
+  .context-submenu .context-item:hover { background: #0058e6; color: white; }
 </style>
 </head>
 <body>
 
-<!-- ===== TELA DE LOGIN DO WINDOWS XP ===== -->
+<!-- ===== TELA DE LOGIN ===== -->
 <div id="xp-login-screen">
   <div class="login-header-bar"></div>
   <div class="login-body">
@@ -432,22 +425,55 @@
   </div>
 </div>
 
-<!-- ===== RIGHT CLICK CONTEXT MENU (BOTÃO VIEW REMOVIDO) ===== -->
+<!-- ===== CONTEXT MENU COMPLETO ===== -->
 <div id="context-menu" class="context-menu">
-    <div class="context-item context-submenu-parent">
-        Sort by
-        <div class="context-submenu">
-            <div class="context-item" onclick="sortIcons('az')">Name A-Z</div>
-            <div class="context-item" onclick="sortIcons('za')">Name Z-A</div>
-        </div>
+  <!-- View -->
+  <div class="context-item context-submenu-parent">
+    View
+    <div class="context-submenu">
+      <div class="context-item" onclick="alert('Large Icons')">Large Icons</div>
+      <div class="context-item" onclick="alert('Medium Icons')">Medium Icons</div>
+      <div class="context-item" onclick="alert('Small Icons')">Small Icons</div>
+      <div class="context-item" onclick="alert('List')">List</div>
+      <div class="context-item" onclick="alert('Details')">Details</div>
+      <div class="context-divider"></div>
+      <div class="context-item" onclick="alert('Arrange Icons by')">Arrange Icons by</div>
+      <div class="context-item" onclick="alert('Refresh')">Refresh</div>
     </div>
-    <div class="context-divider"></div>
-    <div class="context-item" onclick="refreshDesktop()">Refresh</div>
+  </div>
+  <!-- Sort by (já existente) -->
+  <div class="context-item context-submenu-parent">
+    Sort by
+    <div class="context-submenu">
+      <div class="context-item" onclick="sortIcons('az')">Name A-Z</div>
+      <div class="context-item" onclick="sortIcons('za')">Name Z-A</div>
+    </div>
+  </div>
+  <div class="context-divider"></div>
+  <!-- Refresh -->
+  <div class="context-item" onclick="refreshDesktop()">Refresh</div>
+  <div class="context-divider"></div>
+  <!-- Paste (sem ação) -->
+  <div class="context-item disabled">Paste</div>
+  <div class="context-divider"></div>
+  <!-- New -->
+  <div class="context-item context-submenu-parent">
+    New
+    <div class="context-submenu">
+      <div class="context-item" onclick="alert('New Folder')">Folder</div>
+      <div class="context-item" onclick="alert('New Shortcut')">Shortcut</div>
+      <div class="context-item" onclick="alert('New Text Document')">Text Document</div>
+      <div class="context-item" onclick="alert('New Bitmap Image')">Bitmap Image</div>
+    </div>
+  </div>
+  <div class="context-divider"></div>
+  <!-- Properties -->
+  <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS ===== -->
+<!-- ===== DESKTOP ICONS (com Snake.exe) ===== -->
 <div class="desktop-icons">
-  <div class="desktop-icon" data-name="about" id="icon-about" style="left:16px;top:16px;">
+  <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt="" style="width:48px;height:48px;">
     <span>About Me</span>
   </div>
@@ -466,6 +492,11 @@
   <div class="desktop-icon" data-name="resume" id="icon-resume" style="left:16px;top:352px;">
     <img src="icons/icon-resume.png" alt="" style="width:48px;height:48px;">
     <span>Resume.pdf</span>
+  </div>
+  <!-- NOVO ÍCONE SNAKE.EXE -->
+  <div class="desktop-icon" data-name="snake" id="icon-snake" style="left:16px;top:440px;">
+    <img src="icons/icon-snake.png" alt="" style="width:48px;height:48px;">
+    <span>Snake.exe</span>
   </div>
 </div>
 
@@ -963,10 +994,10 @@
 <div id="selection-box"></div>
 
 <script>
-  // ===== FUNÇÕES DE CONTEXT MENU =====
+  // ============================================================
+  //  1. FUNÇÕES DE CONTEXT MENU
+  // ============================================================
   document.addEventListener('contextmenu', function(e) {
-    // O menu "Sort by / Refresh" só faz sentido na área de trabalho.
-    // Dentro de janelas, taskbar ou start menu, deixa o menu padrão do navegador.
     if (e.target.closest('.window') || e.target.closest('.taskbar') || e.target.closest('.start-menu')) {
       return;
     }
@@ -1002,7 +1033,6 @@
     });
   }
 
-  // Função de ordenação corrigida para preencher na VERTICAL (Canto Superior Esquerdo)
   function sortIcons(order) {
     const container = document.querySelector('.desktop-icons');
     const icons = Array.from(container.querySelectorAll('.desktop-icon'));
@@ -1017,11 +1047,10 @@
     container.innerHTML = '';
     icons.forEach(icon => container.appendChild(icon));
 
-    // Organiza na VERTICAL (coluna por coluna)
-    const maxRows = 5; // Número máximo de ícones por coluna
+    const maxRows = 6; // Aumentei para 6 para comportar o Snake
     icons.forEach((icon, index) => {
-        const row = index % maxRows;       // Pula para a próxima linha
-        const col = Math.floor(index / maxRows); // Só vai pra próxima coluna quando a linha atual estiver cheia
+        const row = index % maxRows;
+        const col = Math.floor(index / maxRows);
         icon.style.left = (col * GRID_W + GRID_MARGIN_X) + 'px';
         icon.style.top = (row * GRID_H + GRID_MARGIN_Y) + 'px';
     });
@@ -1030,7 +1059,9 @@
     saveIconPositions();
   }
 
-  // ===== FUNÇÕES DE LOGIN / LOGOFF =====
+  // ============================================================
+  //  2. LOGIN / LOGOFF
+  // ============================================================
   function loginToDesktop() {
     const screen = document.getElementById('xp-login-screen');
     screen.classList.add('hidden');
@@ -1046,13 +1077,17 @@
     screen.classList.remove('hidden'); 
   }
 
-  // ===== GRID CONFIG =====
+  // ============================================================
+  //  3. GRID CONFIG
+  // ============================================================
   const GRID_W = 88;
   const GRID_H = 88;
   const GRID_MARGIN_X = 16;
   const GRID_MARGIN_Y = 16;
 
-  // ===== CLOCK =====
+  // ============================================================
+  //  4. CLOCK
+  // ============================================================
   function updateClock() {
     const now = new Date();
     const h = String(now.getHours()).padStart(2, '0');
@@ -1062,13 +1097,17 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  // ===== STATE =====
+  // ============================================================
+  //  5. STATE
+  // ============================================================
   let zIndexCounter = 100;
   const openWindows = new Set(['about']);
   const minimizedWindows = new Set();
   const windowPositions = {};
 
-  // ===== GRID HELPERS =====
+  // ============================================================
+  //  6. GRID HELPERS
+  // ============================================================
   function snapToGrid(x, y) {
     const col = Math.round((x - GRID_MARGIN_X) / GRID_W);
     const row = Math.round((y - GRID_MARGIN_Y) / GRID_H);
@@ -1146,7 +1185,9 @@
     };
   }
 
-  // ===== ICON POSITIONS =====
+  // ============================================================
+  //  7. ICON POSITIONS (localStorage)
+  // ============================================================
   const ICON_STORAGE_KEY = 'xp-desktop-icon-positions';
   function loadIconPositions() {
     try {
@@ -1168,7 +1209,9 @@
     localStorage.setItem(ICON_STORAGE_KEY, JSON.stringify(positions));
   }
 
-  // ===== DRAG DESKTOP ICONS =====
+  // ============================================================
+  //  8. DRAG DESKTOP ICONS
+  // ============================================================
   (function initIconDrag() {
     let draggedIcon = null;
     let iconDragOffsetX = 0, iconDragOffsetY = 0;
@@ -1247,7 +1290,9 @@
     });
   })();
 
-  // ===== HELPERS =====
+  // ============================================================
+  //  9. HELPERS
+  // ============================================================
   function getTaskbarItem(name) { return document.getElementById('task-' + name); }
 
   function createTaskbarItem(name) {
@@ -1282,8 +1327,6 @@
     updateTitlebarStates(name);
   }
 
-  // Aplica/remove a classe .inactive nas titlebars de todas as janelas,
-  // deixando ativa (azul forte) só a que está realmente em foco.
   function updateTitlebarStates(activeName) {
     document.querySelectorAll('.window').forEach(win => {
       const winName = win.id.replace('win-', '');
@@ -1294,7 +1337,9 @@
     });
   }
 
-  // ===== OPEN WINDOW =====
+  // ============================================================
+  //  10. OPEN / CLOSE / MINIMIZE / RESTORE
+  // ============================================================
   function openWindow(name) {
     const win = document.getElementById('win-' + name);
     let task = getTaskbarItem(name);
@@ -1321,9 +1366,10 @@
         initSkillsChart();
       }, 100);
     }
+
+    // Não resumir Snake automaticamente
   }
 
-  // ===== CLOSE WINDOW =====
   function closeWindow(name) {
     const win = document.getElementById('win-' + name);
     const icon = document.getElementById('icon-' + name);
@@ -1334,8 +1380,10 @@
     if (icon) icon.classList.remove('active');
     if (task) task.remove();
 
-    // Acha a janela visível com maior z-index (a que realmente estava
-    // por cima), em vez de assumir a última inserida no Set.
+    if (name === 'snake' && window.__snake) {
+      window.__snake.stop();
+    }
+
     let topName = null, topZ = -Infinity;
     openWindows.forEach(n => {
       const w = document.getElementById('win-' + n);
@@ -1350,11 +1398,6 @@
     }
   }
 
-  // ===== CLONE SEGURO PARA ANIMAÇÕES (minimizar/restaurar) =====
-  // Evita 2 problemas do cloneNode(true) puro:
-  // 1) IDs duplicados no DOM (o clone teria o mesmo id da janela original).
-  // 2) <canvas> clonado fica em branco (cloneNode não copia pixels desenhados),
-  //    então o gráfico da aba Skills sumia durante a animação.
   function makeAnimationClone(win) {
     const originalCanvases = win.querySelectorAll('canvas');
     const clone = win.cloneNode(true);
@@ -1374,17 +1417,13 @@
         snapshot.style.height = cloneCanvas.offsetHeight + 'px';
         snapshot.className = cloneCanvas.className;
         cloneCanvas.replaceWith(snapshot);
-      } catch (e) {
-        // toDataURL pode falhar em casos raros (canvas "tainted"); nesse
-        // caso simplesmente deixamos o canvas em branco no clone, sem quebrar nada.
-      }
+      } catch (e) {}
     });
 
     clone.classList.add('minimize-clone');
     return clone;
   }
 
-  // ===== ANIMATED RESTORE =====
   function animateRestore(name) {
     const win = document.getElementById('win-' + name);
     const task = getTaskbarItem(name);
@@ -1458,13 +1497,13 @@
           animateSkillBars();
           initSkillsChart();
         }
+        // Não resumir Snake ao restaurar
       }
     }
 
     requestAnimationFrame(animate);
   }
 
-  // ===== MINIMIZE =====
   function minimizeWindow(name) {
     const win = document.getElementById('win-' + name);
     const task = getTaskbarItem(name);
@@ -1509,6 +1548,15 @@
         win.style.display = 'none';
         minimizedWindows.add(name);
         task.classList.remove('active');
+        
+        if (name === 'snake' && window.__snake) {
+          window.__snake.pause();
+        }
+
+        if (name === 'about') {
+          document.getElementById('icon-about').classList.remove('active');
+        }
+
         const visibleWindows = Array.from(openWindows).filter(n => {
           const w = document.getElementById('win-' + n);
           return w.style.display !== 'none';
@@ -1525,7 +1573,6 @@
     requestAnimationFrame(animate);
   }
 
-  // ===== TOGGLE WINDOW =====
   function toggleWindow(name) {
     const win = document.getElementById('win-' + name);
 
@@ -1539,6 +1586,12 @@
       return;
     }
 
+    // Caso especial para About Me: sempre minimiza com 1 clique
+    if (name === 'about') {
+      minimizeWindow(name);
+      return;
+    }
+
     if (isWindowActive(name)) {
       minimizeWindow(name);
     } else {
@@ -1546,7 +1599,9 @@
     }
   }
 
-  // ===== START MENU =====
+  // ============================================================
+  //  11. START MENU
+  // ============================================================
   function toggleStartMenu() {
     const menu = document.getElementById('start-menu');
     const btn = document.getElementById('start-btn');
@@ -1562,7 +1617,6 @@
     }
   });
 
-  // ===== ALL PROGRAMS TOGGLE =====
   function toggleAllPrograms() {
     const sub = document.getElementById('all-programs-submenu');
     if (sub.style.display === 'none' || sub.style.display === '') {
@@ -1572,7 +1626,9 @@
     }
   }
 
-  // ===== DRAG WINDOWS =====
+  // ============================================================
+  //  12. DRAG WINDOWS
+  // ============================================================
   let draggedWindow = null;
   let dragOffsetX = 0, dragOffsetY = 0;
   function startDrag(e, winId) {
@@ -1595,7 +1651,6 @@
   });
   document.addEventListener('mouseup', function() { draggedWindow = null; });
 
-  // ===== DRAG WINDOWS (TOUCH) =====
   document.querySelectorAll('.window-titlebar').forEach(bar => {
     bar.addEventListener('touchstart', function(e) {
       const win = this.closest('.window');
@@ -1620,10 +1675,9 @@
   }, { passive: true });
   document.addEventListener('touchend', function() { draggedWindow = null; });
 
-  // ===== MANTÉM JANELAS E ÍCONES DENTRO DA TELA AO REDIMENSIONAR =====
-  // Sem isso, uma janela arrastada pra perto da borda podia ficar presa
-  // fora da área visível (parcial ou totalmente) ao redimensionar o
-  // navegador ou girar o celular, sem jeito de arrastá-la de volta.
+  // ============================================================
+  //  13. CLAMP WINDOWS E ÍCONES NA VIEWPORT
+  // ============================================================
   function clampWindowsToViewport() {
     document.querySelectorAll('.window').forEach(win => {
       if (win.style.display === 'none') return;
@@ -1656,7 +1710,9 @@
   window.addEventListener('resize', handleViewportChange);
   window.addEventListener('orientationchange', handleViewportChange);
 
-  // ===== DOUBLE CLICK TO OPEN =====
+  // ============================================================
+  //  14. DOUBLE CLICK TO OPEN
+  // ============================================================
   document.querySelectorAll('.desktop-icon').forEach(icon => {
     icon.addEventListener('dblclick', function() {
       const name = this.dataset.name;
@@ -1664,7 +1720,9 @@
     });
   });
 
-  // ===== BRING TO FRONT =====
+  // ============================================================
+  //  15. BRING TO FRONT
+  // ============================================================
   document.querySelectorAll('.window').forEach(win => {
     win.addEventListener('mousedown', function() {
       this.style.zIndex = ++zIndexCounter;
@@ -1673,7 +1731,9 @@
     });
   });
 
-  // ===== SELECTION BOX =====
+  // ============================================================
+  //  16. SELECTION BOX
+  // ============================================================
   document.addEventListener('DOMContentLoaded', function() {
     loadIconPositions();
     const selectionBox = document.getElementById('selection-box');
@@ -1740,7 +1800,9 @@
     });
   });
 
-  // ===== SKILLS – ANIMAÇÃO DAS BARRAS (TABELA) =====
+  // ============================================================
+  //  17. SKILLS – ANIMAÇÃO DAS BARRAS
+  // ============================================================
   const skillsData = [
     { name: "Discord Management", percent: 95 },
     { name: "Telegram Management", percent: 85 },
@@ -1793,15 +1855,15 @@
     });
   }
 
-  // ===== SKILLS – GRÁFICO RADAR =====
+  // ============================================================
+  //  18. SKILLS – GRÁFICO RADAR
+  // ============================================================
   let radarChartInstance = null;
   function initSkillsChart() {
     const ctx = document.getElementById('skillsRadarChart');
     if (!ctx) return;
 
     if (typeof Chart === 'undefined') {
-      // Chart.js não carregou (CDN fora do ar, bloqueado por adblock, etc).
-      // O resto da janela Skills (barras, avatar) continua funcionando normalmente.
       console.warn('Chart.js indisponível — gráfico radar de skills desativado.');
       return;
     }
@@ -1811,7 +1873,7 @@
     }
 
     const radarLabels = [
-      "Conflict Resolution",   /* Topo */
+      "Conflict Resolution",
       "Discord Management",
       "Telegram Management",
       "Social Media Management",
@@ -1876,7 +1938,9 @@
     }
   });
 
-  // ===== SNAKE.EXE =====
+  // ============================================================
+  //  19. SNAKE.EXE (COM PAUSA)
+  // ============================================================
   (function initSnake() {
     const canvas = document.getElementById('snake-canvas');
     if (!canvas) return;
@@ -1891,6 +1955,7 @@
     const BEST_KEY = 'xp-desktop-snake-best';
 
     let snake, dir, nextDir, food, score, best, running, loopId, speed;
+    let isPaused = false;
 
     function loadBest() {
       try { return parseInt(localStorage.getItem(BEST_KEY)) || 0; } catch (e) { return 0; }
@@ -1919,6 +1984,7 @@
       bestEl.textContent = best;
       overlay.style.display = 'none';
       running = true;
+      isPaused = false;
       clearInterval(loopId);
       loopId = setInterval(tick, speed);
       draw();
@@ -1926,15 +1992,19 @@
 
     function endGame() {
       running = false;
+      isPaused = false;
       clearInterval(loopId);
+      loopId = null;
       playDieSound();
       if (score > best) { best = score; saveBest(best); bestEl.textContent = best; }
       overlayTitle.textContent = 'GAME OVER';
       overlayScore.textContent = 'Score: ' + score + '   |   Best: ' + best;
       overlay.style.display = 'flex';
+      overlay.querySelector('div:last-child').textContent = 'Click or press an arrow key to play';
     }
 
     function tick() {
+      if (!running || isPaused) return;
       dir = nextDir;
       const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
@@ -1972,6 +2042,7 @@
     }
 
     function draw() {
+      if (!running && loopId === null && !overlay.style.display) return;
       for (let y = 0; y < ROWS; y++) {
         for (let x = 0; x < COLS; x++) {
           ctx.fillStyle = (x + y) % 2 === 0 ? '#0d2a12' : '#0a2410';
@@ -2016,7 +2087,7 @@
     }
 
     function setDir(nx, ny) {
-      if (!running) return;
+      if (!running || isPaused) return;
       if (dir.x === -nx && dir.y === -ny) return;
       nextDir = { x: nx, y: ny };
     }
@@ -2030,6 +2101,14 @@
       if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','w','a','s','d','W','A','S','D'].includes(k)) {
         e.preventDefault();
       }
+      
+      if (isPaused) {
+        if (k.startsWith('Arrow') || ['w','a','s','d','W','A','S','D',' '].includes(k)) {
+          resumeGame();
+        }
+        return;
+      }
+      
       if (!running) {
         if (k.startsWith('Arrow') || ['w','a','s','d','W','A','S','D',' '].includes(k)) resetGame();
         return;
@@ -2040,8 +2119,58 @@
       else if (k === 'ArrowRight' || k === 'd' || k === 'D') setDir(1, 0);
     }
 
+    function pauseGame() {
+      if (running && !isPaused) {
+        isPaused = true;
+        if (loopId) {
+          clearInterval(loopId);
+          loopId = null;
+        }
+        overlayTitle.textContent = 'PAUSED';
+        overlayScore.textContent = 'Score: ' + score + '   |   Best: ' + best;
+        overlay.style.display = 'flex';
+        overlay.querySelector('div:last-child').textContent = 'Click or press an arrow key to resume';
+      }
+    }
+
+    function resumeGame() {
+      if (running && isPaused) {
+        isPaused = false;
+        if (!loopId) {
+          loopId = setInterval(tick, speed);
+        }
+        overlay.style.display = 'none';
+        overlay.querySelector('div:last-child').textContent = 'Click or press an arrow key to play';
+      }
+    }
+
+    function stopGame() {
+      running = false;
+      isPaused = false;
+      if (loopId) {
+        clearInterval(loopId);
+        loopId = null;
+      }
+    }
+
+    function isRunning() { return running; }
+
+    window.__snake = {
+      pause: pauseGame,
+      resume: resumeGame,
+      stop: stopGame,
+      isRunning: isRunning,
+      isPaused: function() { return isPaused; }
+    };
+
     document.addEventListener('keydown', handleKey);
-    overlay.addEventListener('click', resetGame);
+    overlay.addEventListener('click', function(e) {
+      if (isPaused) {
+        resumeGame();
+        return;
+      }
+      resetGame();
+    });
 
     let touchStartX = 0, touchStartY = 0;
     canvas.addEventListener('touchstart', function(e) {
@@ -2049,6 +2178,10 @@
       touchStartX = t.clientX; touchStartY = t.clientY;
     }, { passive: true });
     canvas.addEventListener('touchend', function(e) {
+      if (isPaused) {
+        resumeGame();
+        return;
+      }
       if (!running) { resetGame(); return; }
       const t = e.changedTouches[0];
       const dx = t.clientX - touchStartX, dy = t.clientY - touchStartY;
@@ -2057,15 +2190,29 @@
       else setDir(0, dy > 0 ? 1 : -1);
     }, { passive: true });
 
-    resetGame();
-    running = false;
-    overlayTitle.textContent = 'SNAKE.EXE';
-    overlayScore.textContent = 'Best: ' + best;
+    // Inicia pausado
+    snake = [{ x: 8, y: 9 }, { x: 7, y: 9 }, { x: 6, y: 9 }];
+    dir = { x: 1, y: 0 };
+    nextDir = { x: 1, y: 0 };
+    score = 0;
+    speed = 130;
+    best = loadBest();
+    food = randomFood();
+    scoreEl.textContent = '0';
+    bestEl.textContent = best;
+    running = true;
+    isPaused = true;
+    loopId = null;
+    overlayTitle.textContent = 'PAUSED';
+    overlayScore.textContent = 'Score: 0   |   Best: ' + best;
     overlay.style.display = 'flex';
-    clearInterval(loopId);
+    overlay.querySelector('div:last-child').textContent = 'Click or press an arrow key to play';
+    draw();
   })();
 
-  // ===== DESKTOP PET =====
+  // ============================================================
+  //  20. DESKTOP PET
+  // ============================================================
   (function initDesktopPet() {
     const pet = document.getElementById('desktop-pet');
     if (!pet) return;
@@ -2101,7 +2248,9 @@
     });
   })();
 
-  // ===== GLOBAL AUDIO SYSTEM =====
+  // ============================================================
+  //  21. AUDIO SYSTEM
+  // ============================================================
   let audioCtx = null;
   let masterGain = null;
   let isMuted = false;
@@ -2163,6 +2312,22 @@
       if (overlay) overlay.style.display = 'none';
     }
   }
+
+  // ============================================================
+  //  INICIALIZAÇÃO
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', function() {
+    // About Me ativo
+    const aboutWin = document.getElementById('win-about');
+    if (aboutWin) {
+      aboutWin.style.zIndex = ++zIndexCounter;
+      const icon = document.getElementById('icon-about');
+      if (icon) icon.classList.add('active');
+      const task = document.getElementById('task-about');
+      if (task) task.classList.add('active');
+      updateTitlebarStates('about');
+    }
+  });
 </script>
 </body>
 </html>
