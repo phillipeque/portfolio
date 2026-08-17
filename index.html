@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Phillipe Queiroz — Portfolio</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
@@ -264,16 +264,26 @@
   .shutdown-btn img { width: 20px; height: 20px; }
   .shutdown-btn:hover { background: linear-gradient(180deg, #6fa2f5 0%, #3f78e8 100%); }
   @media (max-width: 768px) {
-    .window { min-width: 90vw; max-width: 95vw; left: 2.5vw !important; top: 40px !important; }
+    .window {
+      min-width: 92vw; max-width: 95vw;
+      left: 2.5vw !important; top: 36px !important;
+      max-height: calc(100dvh - 80px);
+    }
+    .window .window-content { max-height: calc(100dvh - 80px - 30px); }
     .desktop-icons { display: none; }
     .about-layout { flex-direction: column; }
+    .about-photo { width: 90px; height: 90px; margin: 0 auto; }
     .skill-name { white-space: normal; }
     .start-menu { width: 95vw; left: 2.5vw; }
-    .start-menu-body { height: 360px; }
+    .start-menu-body { height: min(360px, calc(100dvh - 200px)); }
     .avatar-area { width: 80px; height: 100px; }
     .avatar-area img { transform: scale(0.8); margin-left: -5px; }
     .chart-area { width: 200px; }
+    #desktop-pet { transform: scale(0.85); right: 6px; }
+    .win-btn { width: 26px; height: 26px; }
   }
+  * { touch-action: manipulation; }
+  html, body { height: 100dvh; }
   #selection-box { position: fixed; border: 1px dotted #316AC5; background: rgba(49, 106, 197, 0.15); pointer-events: none; z-index: 5; display: none; }
   .vol-toggle svg { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3)); }
   .clock-tray { display: flex; align-items: center; gap: 6px; margin-left: auto; padding: 0 4px 0 8px; background: linear-gradient(180deg, #1546a8 0%, #1c53c4 100%); border-left: 1px solid #3a7eef; box-shadow: inset 1px 0 2px rgba(0,0,0,0.25); height: 30px; }
@@ -1523,6 +1533,31 @@
     }
   });
   document.addEventListener('mouseup', function() { draggedWindow = null; });
+
+  // ===== DRAG WINDOWS (TOUCH) =====
+  document.querySelectorAll('.window-titlebar').forEach(bar => {
+    bar.addEventListener('touchstart', function(e) {
+      const win = this.closest('.window');
+      win.style.zIndex = ++zIndexCounter;
+      const name = win.id.replace('win-', '');
+      setActiveStates(name);
+      draggedWindow = win;
+      const t = e.touches[0];
+      dragOffsetX = t.clientX - win.offsetLeft;
+      dragOffsetY = t.clientY - win.offsetTop;
+    }, { passive: true });
+  });
+  document.addEventListener('touchmove', function(e) {
+    if (!draggedWindow) return;
+    const t = e.touches[0];
+    let newX = t.clientX - dragOffsetX;
+    let newY = t.clientY - dragOffsetY;
+    newX = Math.max(0, Math.min(newX, window.innerWidth - draggedWindow.offsetWidth));
+    newY = Math.max(0, Math.min(newY, window.innerHeight - draggedWindow.offsetHeight - 34));
+    draggedWindow.style.left = newX + 'px';
+    draggedWindow.style.top = newY + 'px';
+  }, { passive: true });
+  document.addEventListener('touchend', function() { draggedWindow = null; });
 
   // ===== DOUBLE CLICK TO OPEN =====
   document.querySelectorAll('.desktop-icon').forEach(icon => {
