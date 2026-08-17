@@ -284,7 +284,7 @@
 
 
   /* ========================================================= */
-  /* ===== TELA DE LOGIN DO WINDOWS XP (COM IMAGEM) ===== */
+  /* ===== TELA DE LOGIN DO WINDOWS XP ===== */
   /* ========================================================= */
   #xp-login-screen {
     position: fixed; inset: 0; z-index: 99999;
@@ -303,7 +303,6 @@
     flex: 1; display: flex; align-items: center; justify-content: center; padding: 0 40px;
   }
   
-  /* Lado Esquerdo: Logo via Imagem */
   .login-left { display: flex; flex-direction: column; align-items: center; margin-right: 80px; }
   .xp-logo-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
   .xp-logo-img { max-width: 260px; height: auto; display: block; }
@@ -314,13 +313,11 @@
     text-align: center;
   }
 
-  /* Divisória Central */
   .login-divider {
     width: 1px; height: 55%; background: rgba(255,255,255,0.25);
     box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
   }
 
-  /* Lado Direito: Botão Usuário */
   .login-right { display: flex; align-items: center; margin-left: 80px; }
   .user-button {
     background: linear-gradient(135deg, rgba(0, 80, 200, 0.4), rgba(0, 150, 255, 0.2));
@@ -343,7 +340,6 @@
     text-shadow: 0 1px 4px rgba(0,0,0,0.7); letter-spacing: 0.5px;
   }
 
-  /* Rodapé */
   .login-footer {
     position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
     background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.1);
@@ -360,6 +356,31 @@
   }
   .power-icon-wrapper svg { width: 18px; height: 18px; }
   .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
+
+  /* ========================================================= */
+  /* ===== RIGHT CLICK CONTEXT MENU ===== */
+  /* ========================================================= */
+  #context-menu {
+    position: fixed; display: none; background: #ece9d8;
+    border: 1px solid #0054e3; box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    border-radius: 3px; z-index: 99999; padding: 2px; width: 180px;
+    font-family: Tahoma, sans-serif; font-size: 12px; color: #000;
+  }
+  .context-item { padding: 4px 12px; cursor: default; position: relative; }
+  .context-item:hover { background: #0058e6; color: white; }
+  .context-divider { height: 1px; background: #a0a0a0; margin: 2px 4px; }
+  .context-submenu-parent:after {
+    content: "▶"; position: absolute; right: 6px; font-size: 8px;
+    color: #000; top: 6px;
+  }
+  .context-submenu-parent:hover:after { color: white; }
+  .context-submenu {
+    display: none; position: absolute; left: 100%; top: -2px;
+    background: #ece9d8; border: 1px solid #0054e3; box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    border-radius: 3px; width: 150px; z-index: 99999;
+  }
+  .context-submenu-parent:hover .context-submenu { display: block; }
+  .context-submenu .context-item { font-size: 12px; }
 </style>
 </head>
 <body>
@@ -370,7 +391,6 @@
   <div class="login-body">
     <div class="login-left">
       <div class="xp-logo-wrapper">
-        <!-- IMAGEM ORIGINAL DO WINDOWS XP - COLOQUE O ARQUIVO NA PASTA /icons -->
         <img src="icons/xp-logo.png" alt="Windows XP Logo" class="xp-logo-img">
       </div>
       <div class="login-instruction">To begin, click your user name</div>
@@ -379,9 +399,10 @@
     <div class="login-right">
       <div class="user-button" onclick="loginToDesktop()">
         <div class="user-avatar">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5dfc8'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%237a7a7a'/%3E%3Ccircle cx='50' cy='86' r='28' fill='%235a5a5a'/%3E%3C/svg%3E" alt="Administrator Avatar">
+          <!-- Substituído pelo avatar_1.jpg e nome alterado para Phillipe -->
+          <img src="avatar_1.jpg" alt="Phillipe Avatar">
         </div>
-        <div class="user-name">Administrator</div>
+        <div class="user-name">Phillipe</div>
       </div>
     </div>
   </div>
@@ -397,6 +418,20 @@
       Just go to Control Panel and click User Accounts.
     </div>
   </div>
+</div>
+
+<!-- ===== RIGHT CLICK CONTEXT MENU ===== -->
+<div id="context-menu" class="context-menu">
+    <div class="context-item" onclick="alert('View options'); hideContextMenu();">View</div>
+    <div class="context-item context-submenu-parent">
+        Sort by
+        <div class="context-submenu">
+            <div class="context-item" onclick="sortIcons('az')">Name A-Z</div>
+            <div class="context-item" onclick="sortIcons('za')">Name Z-A</div>
+        </div>
+    </div>
+    <div class="context-divider"></div>
+    <div class="context-item" onclick="refreshDesktop()">Refresh</div>
 </div>
 
 <!-- ===== DESKTOP ICONS ===== -->
@@ -813,8 +848,8 @@
 <!-- ===== START MENU ===== -->
 <div class="start-menu" id="start-menu">
   <div class="start-menu-header">
-    <div class="start-menu-avatar"><img src="avatar_2.jpg" alt="Phillipe Queiroz"></div>
-    <div class="start-menu-username">Phillipe Queiroz</div>
+    <div class="start-menu-avatar"><img src="avatar_1.jpg" alt="Phillipe"></div>
+    <div class="start-menu-username">Phillipe</div>
   </div>
   <div class="start-menu-body">
     <div class="start-menu-left">
@@ -903,7 +938,6 @@
     </div>
   </div>
   <div class="start-menu-footer">
-    <!-- BOTÃO LOG OFF ATUALIZADO COM showLoginScreen() -->
     <div class="shutdown-btn" onclick="toggleStartMenu(); showLoginScreen();">
       <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle fill='%23e8a83c' cx='10' cy='10' r='9'/%3E%3Cpath fill='none' stroke='white' stroke-width='1.6' d='M10 5 v6 M6.5 6.5 A6 6 0 1 0 13.5 6.5' stroke-linecap='round'/%3E%3C/svg%3E" alt="">
       Log Off
@@ -918,6 +952,68 @@
 <div id="selection-box"></div>
 
 <script>
+  // ===== FUNÇÕES DE CONTEXT MENU =====
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    const menu = document.getElementById('context-menu');
+    menu.style.display = 'block';
+    menu.style.left = e.clientX + 'px';
+    menu.style.top = e.clientY + 'px';
+  });
+
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('context-menu');
+    if (menu.style.display === 'block' && !menu.contains(e.target)) {
+      menu.style.display = 'none';
+    }
+  });
+
+  function hideContextMenu() {
+    document.getElementById('context-menu').style.display = 'none';
+  }
+
+  function refreshDesktop() {
+    hideContextMenu();
+    const icons = document.querySelectorAll('.desktop-icon');
+    icons.forEach((icon, index) => {
+      setTimeout(() => {
+        icon.style.transition = 'opacity 0.05s';
+        icon.style.opacity = '0';
+      }, index * 40);
+      setTimeout(() => {
+        icon.style.opacity = '1';
+      }, index * 40 + 200);
+    });
+  }
+
+  function sortIcons(order) {
+    const container = document.querySelector('.desktop-icons');
+    const icons = Array.from(container.querySelectorAll('.desktop-icon'));
+    
+    icons.sort((a, b) => {
+      const textA = a.querySelector('span').innerText.toLowerCase();
+      const textB = b.querySelector('span').innerText.toLowerCase();
+      if (order === 'az') return textA.localeCompare(textB);
+      else return textB.localeCompare(textA);
+    });
+
+    // Limpa e reinsere os ícones na nova ordem
+    container.innerHTML = '';
+    icons.forEach(icon => container.appendChild(icon));
+
+    // Reorganiza no grid (5 colunas por linha)
+    const maxCols = 5;
+    icons.forEach((icon, index) => {
+      const col = index % maxCols;
+      const row = Math.floor(index / maxCols);
+      icon.style.left = (col * GRID_W + GRID_MARGIN_X) + 'px';
+      icon.style.top = (row * GRID_H + GRID_MARGIN_Y) + 'px';
+    });
+
+    hideContextMenu();
+    saveIconPositions();
+  }
+
   // ===== FUNÇÕES DE LOGIN / LOGOFF =====
   function loginToDesktop() {
     const screen = document.getElementById('xp-login-screen');
@@ -929,10 +1025,9 @@
 
   function showLoginScreen() {
     const screen = document.getElementById('xp-login-screen');
-    screen.style.display = 'flex'; // Torna o elemento visível novamente
-    // Força um reflow para a animação de transição funcionar
+    screen.style.display = 'flex'; 
     void screen.offsetWidth; 
-    screen.classList.remove('hidden'); // Remove o fade out
+    screen.classList.remove('hidden'); 
   }
 
   // ===== GRID CONFIG =====
