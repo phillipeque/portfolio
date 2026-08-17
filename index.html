@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>Phillipe Queiroz — Portfolio</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
   body {
@@ -657,7 +657,7 @@
         <div class="contact-icon"><img src="icons/contact-email.png" alt="Email" style="width:20px;height:20px;vertical-align:middle;"></div>
         <span>phillipegugol@gmail.com</span>
       </a>
-      <a class="contact-row" href="https://twitter.com/0xPhillipe" target="_blank">
+      <a class="contact-row" href="https://twitter.com/0xPhillipe" target="_blank" rel="noopener noreferrer">
         <div class="contact-icon"><img src="icons/contact-twitter.png" alt="Twitter" style="width:20px;height:20px;vertical-align:middle;"></div>
         <span>Twitter — @0xPhillipe</span>
       </a>
@@ -965,6 +965,11 @@
 <script>
   // ===== FUNÇÕES DE CONTEXT MENU =====
   document.addEventListener('contextmenu', function(e) {
+    // O menu "Sort by / Refresh" só faz sentido na área de trabalho.
+    // Dentro de janelas, taskbar ou start menu, deixa o menu padrão do navegador.
+    if (e.target.closest('.window') || e.target.closest('.taskbar') || e.target.closest('.start-menu')) {
+      return;
+    }
     e.preventDefault();
     const menu = document.getElementById('context-menu');
     menu.style.display = 'block';
@@ -1274,6 +1279,19 @@
     document.querySelectorAll('.taskbar-item').forEach(t => t.classList.remove('active'));
     const task = getTaskbarItem(name);
     if (task) task.classList.add('active');
+    updateTitlebarStates(name);
+  }
+
+  // Aplica/remove a classe .inactive nas titlebars de todas as janelas,
+  // deixando ativa (azul forte) só a que está realmente em foco.
+  function updateTitlebarStates(activeName) {
+    document.querySelectorAll('.window').forEach(win => {
+      const winName = win.id.replace('win-', '');
+      const bar = win.querySelector('.window-titlebar');
+      if (!bar) return;
+      if (winName === activeName) bar.classList.remove('inactive');
+      else bar.classList.add('inactive');
+    });
   }
 
   // ===== OPEN WINDOW =====
@@ -1316,14 +1334,54 @@
     if (icon) icon.classList.remove('active');
     if (task) task.remove();
 
-    if (openWindows.size > 0) {
-      const next = Array.from(openWindows).pop();
-      const nextWin = document.getElementById('win-' + next);
-      if (nextWin.style.display !== 'none') {
-        setActiveStates(next);
-        nextWin.style.zIndex = ++zIndexCounter;
+    // Acha a janela visível com maior z-index (a que realmente estava
+    // por cima), em vez de assumir a última inserida no Set.
+    let topName = null, topZ = -Infinity;
+    openWindows.forEach(n => {
+      const w = document.getElementById('win-' + n);
+      if (w && w.style.display !== 'none') {
+        const z = parseInt(w.style.zIndex) || 0;
+        if (z > topZ) { topZ = z; topName = n; }
       }
+    });
+    if (topName) {
+      setActiveStates(topName);
+      document.getElementById('win-' + topName).style.zIndex = ++zIndexCounter;
     }
+  }
+
+  // ===== CLONE SEGURO PARA ANIMAÇÕES (minimizar/restaurar) =====
+  // Evita 2 problemas do cloneNode(true) puro:
+  // 1) IDs duplicados no DOM (o clone teria o mesmo id da janela original).
+  // 2) <canvas> clonado fica em branco (cloneNode não copia pixels desenhados),
+  //    então o gráfico da aba Skills sumia durante a animação.
+  function makeAnimationClone(win) {
+    const originalCanvases = win.querySelectorAll('canvas');
+    const clone = win.cloneNode(true);
+
+    clone.removeAttribute('id');
+    clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+
+    const cloneCanvases = clone.querySelectorAll('canvas');
+    originalCanvases.forEach((origCanvas, i) => {
+      const cloneCanvas = cloneCanvases[i];
+      if (!cloneCanvas) return;
+      try {
+        const snapshot = document.createElement('img');
+        snapshot.src = origCanvas.toDataURL();
+        snapshot.style.cssText = cloneCanvas.style.cssText;
+        snapshot.style.width = cloneCanvas.offsetWidth + 'px';
+        snapshot.style.height = cloneCanvas.offsetHeight + 'px';
+        snapshot.className = cloneCanvas.className;
+        cloneCanvas.replaceWith(snapshot);
+      } catch (e) {
+        // toDataURL pode falhar em casos raros (canvas "tainted"); nesse
+        // caso simplesmente deixamos o canvas em branco no clone, sem quebrar nada.
+      }
+    });
+
+    clone.classList.add('minimize-clone');
+    return clone;
   }
 
   // ===== ANIMATED RESTORE =====
@@ -1358,8 +1416,7 @@
 
     void win.offsetWidth;
 
-    const clone = win.cloneNode(true);
-    clone.classList.add('minimize-clone');
+    const clone = makeAnimationClone(win);
     clone.style.left = taskRect.left + 'px';
     clone.style.top = taskRect.top + 'px';
     clone.style.width = taskRect.width + 'px';
@@ -1419,8 +1476,7 @@
     const winRect = win.getBoundingClientRect();
     const taskRect = task.getBoundingClientRect();
 
-    const clone = win.cloneNode(true);
-    clone.classList.add('minimize-clone');
+    const clone = makeAnimationClone(win);
     clone.style.left = winRect.left + 'px';
     clone.style.top = winRect.top + 'px';
     clone.style.width = winRect.width + 'px';
@@ -1564,6 +1620,42 @@
   }, { passive: true });
   document.addEventListener('touchend', function() { draggedWindow = null; });
 
+  // ===== MANTÉM JANELAS E ÍCONES DENTRO DA TELA AO REDIMENSIONAR =====
+  // Sem isso, uma janela arrastada pra perto da borda podia ficar presa
+  // fora da área visível (parcial ou totalmente) ao redimensionar o
+  // navegador ou girar o celular, sem jeito de arrastá-la de volta.
+  function clampWindowsToViewport() {
+    document.querySelectorAll('.window').forEach(win => {
+      if (win.style.display === 'none') return;
+      const left = parseFloat(win.style.left);
+      const top = parseFloat(win.style.top);
+      if (isNaN(left) || isNaN(top)) return;
+      const maxLeft = Math.max(0, window.innerWidth - win.offsetWidth);
+      const maxTop = Math.max(0, window.innerHeight - win.offsetHeight - 34);
+      win.style.left = Math.max(0, Math.min(left, maxLeft)) + 'px';
+      win.style.top = Math.max(0, Math.min(top, maxTop)) + 'px';
+    });
+  }
+
+  function clampIconsToViewport() {
+    document.querySelectorAll('.desktop-icon').forEach(icon => {
+      const left = parseFloat(icon.style.left);
+      const top = parseFloat(icon.style.top);
+      if (isNaN(left) || isNaN(top)) return;
+      const maxLeft = Math.max(8, window.innerWidth - icon.offsetWidth - 8);
+      const maxTop = Math.max(8, window.innerHeight - icon.offsetHeight - 38);
+      icon.style.left = Math.max(8, Math.min(left, maxLeft)) + 'px';
+      icon.style.top = Math.max(8, Math.min(top, maxTop)) + 'px';
+    });
+  }
+
+  function handleViewportChange() {
+    clampWindowsToViewport();
+    clampIconsToViewport();
+  }
+  window.addEventListener('resize', handleViewportChange);
+  window.addEventListener('orientationchange', handleViewportChange);
+
   // ===== DOUBLE CLICK TO OPEN =====
   document.querySelectorAll('.desktop-icon').forEach(icon => {
     icon.addEventListener('dblclick', function() {
@@ -1596,7 +1688,7 @@
              el.closest('.start-menu') ||
              el.closest('button') ||
              el.closest('a') ||
-             el.closest('.contact-item');
+             el.closest('.contact-row');
     }
 
     document.addEventListener('mousedown', function(e) {
@@ -1706,7 +1798,14 @@
   function initSkillsChart() {
     const ctx = document.getElementById('skillsRadarChart');
     if (!ctx) return;
-    
+
+    if (typeof Chart === 'undefined') {
+      // Chart.js não carregou (CDN fora do ar, bloqueado por adblock, etc).
+      // O resto da janela Skills (barras, avatar) continua funcionando normalmente.
+      console.warn('Chart.js indisponível — gráfico radar de skills desativado.');
+      return;
+    }
+
     if (radarChartInstance) {
       radarChartInstance.destroy();
     }
