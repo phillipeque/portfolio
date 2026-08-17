@@ -358,7 +358,7 @@
   .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
 
   /* ========================================================= */
-  /* ===== RIGHT CLICK CONTEXT MENU ===== */
+  /* ===== RIGHT CLICK CONTEXT MENU (ATUALIZADO) ===== */
   /* ========================================================= */
   #context-menu {
     position: fixed; display: none; background: #ece9d8;
@@ -366,13 +366,11 @@
     border-radius: 3px; z-index: 99999; padding: 2px; width: 180px;
     font-family: Tahoma, sans-serif; font-size: 12px; color: #000;
   }
-  .context-item { padding: 4px 12px; cursor: default; position: relative; }
+  /* Adicionado color: #000; para corrigir a cor da fonte */
+  .context-item { padding: 4px 12px; cursor: default; position: relative; color: #000; }
   .context-item:hover { background: #0058e6; color: white; }
   .context-divider { height: 1px; background: #a0a0a0; margin: 2px 4px; }
-  .context-submenu-parent:after {
-    content: "▶"; position: absolute; right: 6px; font-size: 8px;
-    color: #000; top: 6px;
-  }
+  .context-submenu-parent:after { content: "▶"; position: absolute; right: 6px; font-size: 8px; color: #000; top: 6px; }
   .context-submenu-parent:hover:after { color: white; }
   .context-submenu {
     display: none; position: absolute; left: 100%; top: -2px;
@@ -380,7 +378,7 @@
     border-radius: 3px; width: 150px; z-index: 99999;
   }
   .context-submenu-parent:hover .context-submenu { display: block; }
-  .context-submenu .context-item { font-size: 12px; }
+  .context-submenu .context-item { font-size: 12px; color: #000; }
 </style>
 </head>
 <body>
@@ -399,7 +397,6 @@
     <div class="login-right">
       <div class="user-button" onclick="loginToDesktop()">
         <div class="user-avatar">
-          <!-- Substituído pelo avatar_1.jpg e nome alterado para Phillipe -->
           <img src="avatar_1.jpg" alt="Phillipe Avatar">
         </div>
         <div class="user-name">Phillipe</div>
@@ -420,9 +417,8 @@
   </div>
 </div>
 
-<!-- ===== RIGHT CLICK CONTEXT MENU ===== -->
+<!-- ===== RIGHT CLICK CONTEXT MENU (BOTÃO VIEW REMOVIDO) ===== -->
 <div id="context-menu" class="context-menu">
-    <div class="context-item" onclick="alert('View options'); hideContextMenu();">View</div>
     <div class="context-item context-submenu-parent">
         Sort by
         <div class="context-submenu">
@@ -986,28 +982,28 @@
     });
   }
 
+  // Função de ordenação corrigida para preencher na VERTICAL (Canto Superior Esquerdo)
   function sortIcons(order) {
     const container = document.querySelector('.desktop-icons');
     const icons = Array.from(container.querySelectorAll('.desktop-icon'));
     
     icons.sort((a, b) => {
-      const textA = a.querySelector('span').innerText.toLowerCase();
-      const textB = b.querySelector('span').innerText.toLowerCase();
-      if (order === 'az') return textA.localeCompare(textB);
-      else return textB.localeCompare(textA);
+        const textA = a.querySelector('span').innerText.toLowerCase();
+        const textB = b.querySelector('span').innerText.toLowerCase();
+        if (order === 'az') return textA.localeCompare(textB);
+        else return textB.localeCompare(textA);
     });
 
-    // Limpa e reinsere os ícones na nova ordem
     container.innerHTML = '';
     icons.forEach(icon => container.appendChild(icon));
 
-    // Reorganiza no grid (5 colunas por linha)
-    const maxCols = 5;
+    // Organiza na VERTICAL (coluna por coluna)
+    const maxRows = 5; // Número máximo de ícones por coluna
     icons.forEach((icon, index) => {
-      const col = index % maxCols;
-      const row = Math.floor(index / maxCols);
-      icon.style.left = (col * GRID_W + GRID_MARGIN_X) + 'px';
-      icon.style.top = (row * GRID_H + GRID_MARGIN_Y) + 'px';
+        const row = index % maxRows;       // Pula para a próxima linha
+        const col = Math.floor(index / maxRows); // Só vai pra próxima coluna quando a linha atual estiver cheia
+        icon.style.left = (col * GRID_W + GRID_MARGIN_X) + 'px';
+        icon.style.top = (row * GRID_H + GRID_MARGIN_Y) + 'px';
     });
 
     hideContextMenu();
