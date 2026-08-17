@@ -143,17 +143,17 @@
     max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; margin-left: -15px;
   }
   
-  /* ===== LISTA DE SKILLS (OCUPANDO O ESPAÇO VERTICAL) ===== */
+  /* ===== LISTA DE SKILLS ===== */
   .skill-list { 
     display: flex; flex-direction: column; 
     padding: 0; flex: 1; 
-    justify-content: space-evenly; /* Distribui os itens uniformemente de cima a baixo */
+    justify-content: space-evenly;
   }
   .skill-row { display: flex; align-items: center; gap: 10px; }
   
   .skill-name {
     flex: 1;
-    text-align: left; /* Revertido para alinhamento à esquerda */
+    text-align: left;
     white-space: nowrap; 
     overflow: hidden; text-overflow: ellipsis;
     font-size: 12px; font-weight: bold; color: #1f3a6b;
@@ -281,9 +281,142 @@
   .vol-toggle:hover { background: rgba(255,255,255,0.15); }
   .vol-toggle.muted { opacity: 0.5; }
   .vol-toggle img { width: 20px; height: 20px; object-fit: contain; }
+
+
+  /* ========================================================= */
+  /* ===== TELA DE LOGIN DO WINDOWS XP (NOVO) ===== */
+  /* ========================================================= */
+  #xp-login-screen {
+    position: fixed; inset: 0; z-index: 99999;
+    display: flex; flex-direction: column;
+    background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%);
+    font-family: Tahoma, "Segoe UI", sans-serif;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  #xp-login-screen.hidden {
+    opacity: 0; transform: scale(1.05); pointer-events: none;
+  }
+  .login-header-bar {
+    background: #062348; height: 30px; border-bottom: 1px solid #1b4682;
+  }
+  .login-body {
+    flex: 1; display: flex; align-items: center; justify-content: center; padding: 0 40px;
+  }
+  
+  /* Lado Esquerdo: Logo */
+  .login-left { display: flex; flex-direction: column; align-items: center; margin-right: 80px; }
+  .xp-logo { display: flex; align-items: flex-start; gap: 6px; }
+  .xp-windows { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; transform: skewX(-12deg); }
+  .xp-window { width: 34px; height: 34px; border-radius: 6px; }
+  .w-red { background: linear-gradient(135deg, #f25022, #cc2f0c); }
+  .w-green { background: linear-gradient(135deg, #7fba00, #599800); }
+  .w-blue { background: linear-gradient(135deg, #00a4ef, #0078d4); }
+  .w-yellow { background: linear-gradient(135deg, #ffb900, #d69c00); }
+  .xp-text-logo { display: flex; flex-direction: column; line-height: 1; }
+  .xp-brand { font-size: 28px; font-weight: bold; color: white; text-shadow: 2px 2px 0 rgba(0,0,0,0.6); }
+  .xp-version { font-size: 34px; font-weight: bold; color: #c6e2ff; text-shadow: 2px 2px 0 rgba(0,0,0,0.6); }
+  .xp-subtext { font-size: 11px; color: #b3d6ff; text-align: left; padding-left: 32px; letter-spacing: 1px; margin-top: -2px; text-shadow: 1px 1px 0 rgba(0,0,0,0.4); }
+
+  .login-instruction { 
+    margin-top: 24px; font-size: 18px; color: #f2f8ff; 
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4); letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  /* Divisória Central */
+  .login-divider {
+    width: 1px; height: 55%; background: rgba(255,255,255,0.25);
+    box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
+  }
+
+  /* Lado Direito: Botão Usuário */
+  .login-right { display: flex; align-items: center; margin-left: 80px; }
+  .user-button {
+    background: linear-gradient(135deg, rgba(0, 80, 200, 0.4), rgba(0, 150, 255, 0.2));
+    border: 1px solid #a2c2f7;
+    border-radius: 12px; padding: 12px 30px 12px 12px;
+    display: flex; align-items: center; gap: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+    cursor: pointer; transition: background 0.2s ease;
+  }
+  .user-button:hover { background: linear-gradient(135deg, rgba(0, 80, 200, 0.6), rgba(0, 150, 255, 0.3)); border-color: #c6dbff; }
+  .user-avatar {
+    width: 78px; height: 78px; background: #f2efe5;
+    border: 3px solid #e89a3c; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    box-shadow: inset 0 0 0 1px #ad7a2a;
+  }
+  .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .user-name { 
+    font-size: 26px; font-family: Tahoma, sans-serif; color: white; 
+    text-shadow: 0 1px 4px rgba(0,0,0,0.7); letter-spacing: 0.5px;
+  }
+
+  /* Rodapé */
+  .login-footer {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
+    background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
+  }
+  .turn-off-btn {
+    display: flex; align-items: center; gap: 12px; cursor: pointer; color: #f2f8ff;
+    font-size: 13px; text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+  }
+  .turn-off-btn:hover { text-decoration: underline; }
+  .power-icon-wrapper {
+    background: #e87a2e; border-radius: 4px; padding: 2px; display: flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
+  }
+  .power-icon-wrapper svg { width: 18px; height: 18px; }
+  .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
+  /* ========================================================= */
 </style>
 </head>
 <body>
+
+<!-- ===== TELA DE LOGIN DO WINDOWS XP ===== -->
+<div id="xp-login-screen">
+  <div class="login-header-bar"></div>
+  <div class="login-body">
+    <div class="login-left">
+      <div class="xp-logo">
+        <div class="xp-windows">
+          <div class="xp-window w-red"></div>
+          <div class="xp-window w-green"></div>
+          <div class="xp-window w-blue"></div>
+          <div class="xp-window w-yellow"></div>
+        </div>
+        <div class="xp-text-logo">
+          <div><span class="xp-brand">Windows</span><span class="xp-version"> XP</span></div>
+          <div class="xp-subtext">Professional</div>
+        </div>
+      </div>
+      <div class="login-instruction">To begin, click your user name</div>
+    </div>
+    <div class="login-divider"></div>
+    <div class="login-right">
+      <div class="user-button" onclick="loginToDesktop()">
+        <div class="user-avatar">
+          <!-- Avatar 100% integrado via SVG base64 para não precisar de imagens externas -->
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e5dfc8'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%237a7a7a'/%3E%3Ccircle cx='50' cy='86' r='28' fill='%235a5a5a'/%3E%3C/svg%3E" alt="Administrator Avatar">
+        </div>
+        <div class="user-name">Administrator</div>
+      </div>
+    </div>
+  </div>
+  <div class="login-footer">
+    <div class="turn-off-btn" onclick="alert('Computer is shutting down...')">
+      <div class="power-icon-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
+      </div>
+      <span>Turn off computer</span>
+    </div>
+    <div class="footer-text">
+      After you log on, you can add or change accounts.<br>
+      Just go to Control Panel and click User Accounts.
+    </div>
+  </div>
+</div>
 
 <!-- ===== DESKTOP ICONS ===== -->
 <div class="desktop-icons">
@@ -803,6 +936,15 @@
 <div id="selection-box"></div>
 
 <script>
+  // ===== FUNÇÃO DE LOGIN =====
+  function loginToDesktop() {
+    const screen = document.getElementById('xp-login-screen');
+    screen.classList.add('hidden'); // Ativa a animação de fade out/scale
+    setTimeout(() => {
+      screen.style.display = 'none'; // Remove o elemento do DOM depois da animação
+    }, 600);
+  }
+
   // ===== GRID CONFIG =====
   const GRID_W = 88;
   const GRID_H = 88;
