@@ -284,7 +284,7 @@
 
 
   /* ========================================================= */
-  /* ===== TELA DE BOOT DO WINDOWS XP (NOVO) ===== */
+  /* ===== TELA DE BOOT DO WINDOWS XP (ESTILO ORIGINAL) ===== */
   /* ========================================================= */
   #xp-boot-screen {
     position: fixed; inset: 0; z-index: 999999;
@@ -292,38 +292,54 @@
     background: #000000;
     font-family: Tahoma, sans-serif;
   }
-  .boot-logo {
-    flex: 1; display: flex; align-items: flex-end; justify-content: center;
+  .boot-wrapper {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     padding-bottom: 40px;
   }
-  .boot-logo img {
-    max-width: 200px; height: auto; display: block;
+  .boot-logo-wrapper {
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 18px;
+    /* Efeito de brilho pulsante no logo */
+    animation: logoGlow 2.5s ease-in-out infinite;
   }
-  .boot-bottom {
-    padding-bottom: 60px;
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  .boot-logo {
+    max-width: 180px; height: auto; display: block;
+  }
+  @keyframes logoGlow {
+    0% { filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
+    50% { filter: drop-shadow(0 0 22px rgba(255,255,255,0.9)); }
+    100% { filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
   }
   .boot-text {
-    color: #ffffff; font-size: 14px; margin-bottom: 5px; letter-spacing: 0.5px;
+    color: #ffffff; font-size: 16px; margin-bottom: 8px;
+    letter-spacing: 0.5px; text-shadow: 0 0 4px rgba(255,255,255,0.3);
   }
-  .boot-progress-track {
-    width: 350px; height: 16px;
-    background: #a1a1a1; border: 2px solid #fff;
-    border-radius: 2px; overflow: hidden; position: relative;
+  .boot-bar-track {
+    width: 300px; height: 16px;
+    background: #6a6a6a; border: 2px solid #bdbdbd;
+    border-radius: 8px; overflow: hidden; position: relative;
   }
-  .boot-progress-fill {
-    height: 100%; width: 0%;
-    background: linear-gradient(90deg, #58a4f6, #8ec4ff);
-    border-radius: 2px;
-    animation: bootProgress 4.5s linear forwards;
+  .boot-bar-fill {
+    height: 100%; width: 100%;
+    /* Barra azul dividida em blocos cinzas */
+    background-image: repeating-linear-gradient(
+      90deg,
+      #3b82f6 0px,
+      #3b82f6 36px,
+      #e5e7eb 36px,
+      #e5e7eb 42px
+    );
+    background-size: 200% 100%;
+    animation: loadingSlide 1.2s linear infinite;
   }
-  @keyframes bootProgress {
-    0% { width: 0%; }
-    100% { width: 100%; }
+  @keyframes loadingSlide {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 0%; }
   }
   .boot-copyright {
-    position: absolute; bottom: 12px; right: 15px;
-    color: #8b8b8b; font-size: 11px;
+    position: absolute; bottom: 25px; right: 25px;
+    color: #8b8b8b; font-size: 12px;
   }
 
   /* ========================================================= */
@@ -331,7 +347,7 @@
   /* ========================================================= */
   #xp-login-screen {
     position: fixed; inset: 0; z-index: 99999;
-    display: none; /* Inicialmente oculta, aparecerá depois do Boot */
+    display: none; /* Inicialmente oculta */
     flex-direction: column;
     background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%);
     font-family: Tahoma, "Segoe UI", sans-serif;
@@ -426,15 +442,15 @@
 </head>
 <body>
 
-<!-- ===== TELA DE BOOT DO WINDOWS XP ===== -->
+<!-- ===== TELA DE BOOT DO WINDOWS XP (ESTILO ORIGINAL) ===== -->
 <div id="xp-boot-screen">
-  <div class="boot-logo">
-    <img src="icons/xp-logo.png" alt="Windows XP Logo">
-  </div>
-  <div class="boot-bottom">
+  <div class="boot-wrapper">
+    <div class="boot-logo-wrapper">
+      <img src="icons/xp-logo.png" alt="Windows XP Logo" class="boot-logo">
+    </div>
     <div class="boot-text">Starting Windows...</div>
-    <div class="boot-progress-track">
-      <div class="boot-progress-fill"></div>
+    <div class="boot-bar-track">
+      <div class="boot-bar-fill"></div>
     </div>
   </div>
   <div class="boot-copyright">Microsoft Corporation</div>
@@ -1009,7 +1025,7 @@
   setTimeout(() => {
     document.getElementById('xp-boot-screen').style.display = 'none';
     document.getElementById('xp-login-screen').style.display = 'flex';
-  }, 5000); // 5 segundos para a barra de progresso terminar
+  }, 5000); // 5 segundos para a barra de progresso rodar
 
   // ===== FUNÇÕES DE CONTEXT MENU =====
   document.addEventListener('contextmenu', function(e) {
