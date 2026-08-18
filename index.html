@@ -137,15 +137,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 140px;  /* Aumentei para acomodar o GIF maior */
+    width: 140px;
     height: 100%;
     justify-content: center;
     position: relative; z-index: 1;
-    margin-right: 20px; /* Move um pouco mais para a esquerda */
+    margin-right: 20px;
   }
   .avatar-area img {
     max-width: 100%;
-    max-height: 100px; /* Aumentado em ~25% (era 80px) */
+    max-height: 100px;
     object-fit: contain;
     border-radius: 6px;
   }
@@ -223,19 +223,7 @@
   .taskbar-item img { width: 16px; height: 16px; image-rendering: pixelated; flex-shrink: 0; }
   .clock { padding: 3px 10px 3px 4px; font-size: 11px; font-family: Tahoma, sans-serif; color: white; min-width: 56px; text-align: center; text-shadow: 0 1px 1px rgba(0,0,0,0.3); height: 30px; display: flex; align-items: center; justify-content: center; }
 
-  #desktop-pet { position: fixed; right: 14px; bottom: 38px; z-index: 900; cursor: pointer; display: flex; flex-direction: column; align-items: flex-end; animation: petBob 2.6s ease-in-out infinite; }
-  #desktop-pet:hover #pet-dog-svg { transform: scale(1.08) rotate(-2deg); }
-  #desktop-pet.pet-clicked #pet-dog-svg { animation: petJump 0.45s ease; }
-  #pet-dog-svg { display: block; filter: drop-shadow(2px 6px 4px rgba(0,0,0,0.35)); transition: transform 0.18s ease; }
-  #pet-tail { transform-origin: 82px 78px; animation: petWag 0.9s ease-in-out infinite; }
-  @keyframes petBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-  @keyframes petWag { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-14deg); } }
-  @keyframes petJump { 0% { transform: translateY(0); } 35% { transform: translateY(-14px) rotate(-6deg); } 60% { transform: translateY(2px) rotate(3deg); } 100% { transform: translateY(0); } }
-  #pet-bubble { display: none; position: relative; margin-bottom: 10px; max-width: 220px; min-width: 140px; background: #ffffff; color: #202020; border: 1.5px solid #7a5c00; border-radius: 14px; padding: 10px 14px; font-size: 12.5px; line-height: 1.45; font-family: Tahoma, "Segoe UI", sans-serif; box-shadow: 0 3px 10px rgba(0,0,0,0.3); }
-  #desktop-pet.pet-open #pet-bubble { display: block; animation: petBubbleIn 0.18s ease; }
-  #pet-bubble-tail { position: absolute; bottom: -9px; right: 20px; width: 16px; height: 16px; background: #fff; border-right: 1.5px solid #7a5c00; border-bottom: 1.5px solid #7a5c00; transform: rotate(45deg); border-radius: 0 0 3px 0; }
-  @keyframes petBubbleIn { from { opacity: 0; transform: translateY(6px) scale(0.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
-  @media (max-width: 640px) { #desktop-pet { right: 8px; bottom: 36px; } #pet-dog-svg { width: 64px; height: 64px; } #pet-bubble { max-width: 170px; font-size: 11.5px; } }
+  /* ===== REMOVIDO O DESKTOP PET ===== */
 
   .start-menu { position: fixed; bottom: 30px; left: 0; width: 400px; background: #fff; border: 2px solid #0831d9; border-bottom: none; border-radius: 9px 9px 0 0; display: none; flex-direction: column; z-index: 1001; box-shadow: 3px -3px 14px rgba(0,0,0,0.4); overflow: hidden; }
   .start-menu.open { display: flex; }
@@ -287,7 +275,6 @@
     .avatar-area { width: 80px; height: 100px; }
     .avatar-area img { transform: scale(0.8); margin-left: -5px; }
     .chart-area { width: 200px; }
-    #desktop-pet { transform: scale(0.85); right: 6px; }
     .win-btn { width: 26px; height: 26px; }
   }
   * { touch-action: manipulation; }
@@ -392,6 +379,11 @@
   .context-submenu-parent:hover .context-submenu { display: block; }
   .context-submenu .context-item { font-size: 12px; color: #000; }
   .context-submenu .context-item:hover { background: #0058e6; color: white; }
+  .context-submenu .context-item.disabled { 
+    color: #9e9a90; 
+    pointer-events: none; 
+  }
+  .context-submenu .context-item.disabled:hover { background: transparent; color: #9e9a90; }
 
   /* ===== ESTILOS DOS JOGOS ===== */
   .game-overlay {
@@ -488,6 +480,7 @@
     font-size: 12px;
     cursor: default;
     white-space: nowrap;
+    color: #000; /* Fonte preta */
   }
   #win-notepad .notepad-menubar .dropdown-item:hover {
     background: #0058e6;
@@ -584,7 +577,7 @@
   <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS – TODOS NA COLUNA ESQUERDA (POSIÇÕES FIXAS) ===== -->
+<!-- ===== DESKTOP ICONS (TODOS NA COLUNA ESQUERDA) ===== -->
 <div class="desktop-icons">
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
@@ -788,7 +781,7 @@
   </div>
 </div>
 
-<!-- ===== JANELA NOTEPAD (COM MENU COMPLETO) ===== -->
+<!-- ===== JANELA NOTEPAD ===== -->
 <div class="window" id="win-notepad" style="left: calc(50% - 250px); top: calc(50% - 200px); width: 500px; height: 400px; min-width: 300px; min-height: 250px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-notepad')">
     <div class="window-title">
@@ -850,65 +843,6 @@
     </div>
     <textarea id="notepad-text" placeholder="Type your text here..." spellcheck="true"></textarea>
   </div>
-</div>
-
-<!-- ===== DESKTOP PET ===== -->
-<div id="desktop-pet" title="Click me!">
-  <div id="pet-bubble"><span id="pet-bubble-text"></span><div id="pet-bubble-tail"></div></div>
-  <svg id="pet-dog-svg" viewBox="0 0 120 120" width="80" height="80">
-    <defs><radialGradient id="rBody" cx="40%" cy="30%" r="75%"><stop offset="0%" stop-color="#ffe84d"/><stop offset="45%" stop-color="#f5c400"/><stop offset="85%" stop-color="#d49e00"/><stop offset="100%" stop-color="#b07d00"/></radialGradient>
-    <radialGradient id="rHead" cx="42%" cy="28%" r="70%"><stop offset="0%" stop-color="#ffec5c"/><stop offset="50%" stop-color="#f2c200"/><stop offset="100%" stop-color="#c48a00"/></radialGradient>
-    <radialGradient id="rEar" cx="35%" cy="25%" r="80%"><stop offset="0%" stop-color="#ffe045"/><stop offset="60%" stop-color="#e6ac00"/><stop offset="100%" stop-color="#b87a00"/></radialGradient>
-    <radialGradient id="rMuzzle" cx="45%" cy="30%" r="65%"><stop offset="0%" stop-color="#fff0a3"/><stop offset="100%" stop-color="#f0c200"/></radialGradient>
-    <radialGradient id="rPaw" cx="40%" cy="30%" r="70%"><stop offset="0%" stop-color="#ffe84d"/><stop offset="60%" stop-color="#e6ac00"/><stop offset="100%" stop-color="#b87a00"/></radialGradient>
-    <linearGradient id="rCollar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="50%" stop-color="#cc0000"/><stop offset="100%" stop-color="#990000"/></linearGradient>
-    <radialGradient id="rEyeWhite" cx="35%" cy="35%" r="65%"><stop offset="0%" stop-color="#ffffff"/><stop offset="85%" stop-color="#e6e6e6"/><stop offset="100%" stop-color="#cccccc"/></radialGradient>
-    <radialGradient id="rShadow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(0,0,0,0.35)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/></radialGradient></defs>
-    <ellipse cx="60" cy="112" rx="34" ry="5" fill="url(#rShadow)"/>
-    <path id="pet-tail" d="M82 78 Q100 68 96 48 Q94 60 80 68 Z" fill="url(#rEar)" stroke="#b87a00" stroke-width="1"/>
-    <path d="M36 32 C24 28, 12 38, 14 54 C16 66, 26 68, 32 60 C38 52, 42 44, 36 32 Z" fill="url(#rEar)" stroke="#b87a00" stroke-width="1"/>
-    <path d="M34 36 C26 34, 18 42, 20 52 C22 58, 26 60, 30 54" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M84 32 C96 28, 108 38, 106 54 C104 66, 94 68, 88 60 C82 52, 78 44, 84 32 Z" fill="url(#rEar)" stroke="#b87a00" stroke-width="1"/>
-    <path d="M86 36 C94 34, 102 42, 100 52 C98 58, 94 60, 90 54" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M38 62 C28 62, 22 72, 22 88 C22 104, 34 110, 60 110 C86 110, 98 104, 98 88 C98 72, 92 62, 82 62 Z" fill="url(#rBody)" stroke="#b87a00" stroke-width="1.2"/>
-    <ellipse cx="52" cy="74" rx="14" ry="10" fill="rgba(255,255,255,0.22)" transform="rotate(-12 52 74)"/>
-    <ellipse cx="60" cy="82" rx="16" ry="14" fill="rgba(255,240,160,0.55)"/>
-    <path d="M42 60 Q60 68 78 60 L78 66 Q60 74 42 66 Z" fill="url(#rCollar)" stroke="#990000" stroke-width="0.8"/>
-    <circle cx="60" cy="70" r="4" fill="#ffd700" stroke="#b8860b" stroke-width="0.8"/>
-    <circle cx="60" cy="70" r="1.5" fill="#b8860b"/>
-    <ellipse cx="60" cy="38" rx="28" ry="26" fill="url(#rHead)" stroke="#b87a00" stroke-width="1.2"/>
-    <ellipse cx="50" cy="26" rx="12" ry="8" fill="rgba(255,255,255,0.28)" transform="rotate(-15 50 26)"/>
-    <ellipse cx="60" cy="52" rx="16" ry="12" fill="url(#rMuzzle)" stroke="#c48a00" stroke-width="1"/>
-    <ellipse cx="54" cy="46" rx="6" ry="4" fill="rgba(255,255,255,0.35)" transform="rotate(-10 54 46)"/>
-    <ellipse cx="60" cy="46" rx="7" ry="5" fill="#1a1a1a" stroke="#000" stroke-width="0.5"/>
-    <ellipse cx="58" cy="44" rx="2.5" ry="1.5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 58 44)"/>
-    <path d="M52 56 Q60 62 68 56" stroke="#5c3a00" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-    <path d="M60 58 Q60 63 56 64" stroke="#5c3a00" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-    <path d="M60 58 Q60 63 64 64" stroke="#5c3a00" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-    <ellipse cx="60" cy="62" rx="3.5" ry="2.5" fill="#ff8fa3" stroke="#c9576e" stroke-width="0.6"/>
-    <ellipse cx="46" cy="34" rx="9" ry="11" fill="url(#rEyeWhite)" stroke="#b87a00" stroke-width="1"/>
-    <ellipse cx="48" cy="34" rx="4.5" ry="5.5" fill="#1a1a1a"/>
-    <ellipse cx="49.5" cy="31.5" rx="1.8" ry="2.2" fill="#ffffff"/>
-    <ellipse cx="46.5" cy="36" rx="0.8" ry="1" fill="rgba(255,255,255,0.6)"/>
-    <ellipse cx="74" cy="34" rx="9" ry="11" fill="url(#rEyeWhite)" stroke="#b87a00" stroke-width="1"/>
-    <ellipse cx="72" cy="34" rx="4.5" ry="5.5" fill="#1a1a1a"/>
-    <ellipse cx="73.5" cy="31.5" rx="1.8" ry="2.2" fill="#ffffff"/>
-    <ellipse cx="70.5" cy="36" rx="0.8" ry="1" fill="rgba(255,255,255,0.6)"/>
-    <path d="M38 20 Q46 16 52 20" stroke="#c48a00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <path d="M68 20 Q74 16 82 20" stroke="#c48a00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <ellipse cx="42" cy="100" rx="11" ry="8" fill="url(#rPaw)" stroke="#b87a00" stroke-width="1"/>
-    <ellipse cx="38" cy="98" rx="3" ry="2" fill="rgba(255,255,255,0.25)"/>
-    <path d="M34 104 Q36 108 40 104" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
-    <path d="M38 105 Q40 109 44 105" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
-    <path d="M42 104 Q44 108 48 104" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
-    <ellipse cx="78" cy="100" rx="11" ry="8" fill="url(#rPaw)" stroke="#b87a00" stroke-width="1"/>
-    <ellipse cx="74" cy="98" rx="3" ry="2" fill="rgba(255,255,255,0.25)"/>
-    <path d="M72 104 Q74 108 78 104" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
-    <path d="M76 105 Q78 109 82 105" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
-    <path d="M80 104 Q82 108 86 104" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
-    <ellipse cx="30" cy="106" rx="7" ry="5" fill="url(#rPaw)" stroke="#b87a00" stroke-width="1"/>
-    <ellipse cx="90" cy="106" rx="7" ry="5" fill="url(#rPaw)" stroke="#b87a00" stroke-width="1"/>
-  </svg>
 </div>
 
 <!-- ===== TASKBAR ===== -->
@@ -1018,7 +952,6 @@ function sortIcons(order) {
   const icons = Array.from(container.querySelectorAll('.desktop-icon'));
   icons.sort((a,b) => order==='az' ? a.querySelector('span').innerText.localeCompare(b.querySelector('span').innerText) : b.querySelector('span').innerText.localeCompare(a.querySelector('span').innerText));
   container.innerHTML = ''; icons.forEach(icon => container.appendChild(icon));
-  // Força todos na coluna esquerda com posições fixas
   const positions = [16, 100, 184, 268, 352, 440, 524, 608];
   icons.forEach((icon, idx) => {
     icon.style.left = '16px';
@@ -1094,7 +1027,7 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
   return { col: Math.max(0,Math.min(tCol,bounds.maxCols)), row: Math.max(0,Math.min(tRow,bounds.maxRows)) };
 }
 
-// ===== DRAG DE ICONES (sem salvar posição) =====
+// ===== DRAG DE ICONES (SEM SALVAR POSIÇÃO) =====
 (function initIconDrag() {
   let dragged=null, offX=0, offY=0, startTime=0, startPos={x:0,y:0};
   let isDragging = false;
@@ -1159,7 +1092,6 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
       dragged.style.top = ft + 'px';
       setTimeout(() => {
         if (dragged) dragged.style.transition = '';
-        // NÃO SALVA POSIÇÃO
       }, 200);
     }
 
@@ -1216,7 +1148,13 @@ function openWindow(name) {
   win.style.display='flex'; win.style.zIndex=++zIndexCounter; openWindows.add(name);
   if(!task) task=createTaskbarItem(name);
   setActiveStates(name);
-  if(name==='skills') setTimeout(()=>{ animateSkillBars(); initSkillsChart(); }, 100);
+  // Skills: anima somente se ainda não foi animada na sessão
+  if(name==='skills') {
+    setTimeout(() => {
+      animateSkillBars();
+      initSkillsChart();
+    }, 100);
+  }
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
       const canvas = document.getElementById('flappy-canvas');
@@ -1499,7 +1437,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// ===== SKILLS =====
+// ===== SKILLS (COM PRESERVAÇÃO DE ESTADO) =====
+let skillsAnimated = false; // Controla se a animação já foi executada
+
 const skillsData = [
   { name: "Discord Management", percent: 100 },
   { name: "Telegram Management", percent: 95 },
@@ -1516,24 +1456,33 @@ function renderSkillBars() {
   c.innerHTML='';
   skillsData.forEach(s => {
     const row=document.createElement('div'); row.className='skill-row';
-    row.innerHTML=`<span class="skill-name">${s.name}</span><div class="skill-bar-track"><div class="skill-bar-fill" data-percent="${s.percent}"></div></div><span class="skill-percent">0%</span>`;
+    row.innerHTML=`<span class="skill-name">${s.name}</span><div class="skill-bar-track"><div class="skill-bar-fill" data-percent="${s.percent}" style="width:0%;"></div></div><span class="skill-percent">0%</span>`;
     c.appendChild(row);
   });
 }
 
 function animateSkillBars() {
-  document.querySelectorAll('.skill-bar-fill').forEach(fill => {
-    const target=parseInt(fill.dataset.percent);
-    const span=fill.closest('.skill-row').querySelector('.skill-percent');
-    fill.style.width='0%';
-    if(span) span.textContent='0%';
-    let cur=0;
-    const step=Math.max(1, Math.floor(target / 60));
-    const iv=setInterval(() => {
+  // Se já foi animado nesta sessão, não faz nada (mantém o estado)
+  if (skillsAnimated) return;
+  
+  const fills = document.querySelectorAll('.skill-bar-fill');
+  if (fills.length === 0) return;
+  
+  // Marcar como animado para não repetir
+  skillsAnimated = true;
+  
+  fills.forEach(fill => {
+    const target = parseInt(fill.dataset.percent);
+    const span = fill.closest('.skill-row').querySelector('.skill-percent');
+    fill.style.width = '0%';
+    if (span) span.textContent = '0%';
+    let cur = 0;
+    const step = Math.max(1, Math.floor(target / 60));
+    const iv = setInterval(() => {
       cur += step;
-      if(cur >= target) { cur = target; clearInterval(iv); }
+      if (cur >= target) { cur = target; clearInterval(iv); }
       fill.style.width = cur + '%';
-      if(span) span.textContent = cur + '%';
+      if (span) span.textContent = cur + '%';
     }, 40);
   });
 }
@@ -1623,7 +1572,7 @@ function notepadStatusBar() { alert('Status Bar toggled (simulated)'); }
 function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfolio'); }
 
 // ============================================================
-//  JOGO SNAKE (COMPLETO)
+//  JOGO SNAKE
 // ============================================================
 (function initSnake() {
   const canvas = document.getElementById('snake-canvas');
@@ -1832,7 +1781,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     else setDir(0, dy > 0 ? 1 : -1);
   }, { passive: true });
 
-  // Inicializa o jogo pausado
+  // Inicializa pausado
   snake = [{ x: 8, y: 9 }, { x: 7, y: 9 }, { x: 6, y: 9 }];
   dir = { x: 1, y: 0 };
   nextDir = { x: 1, y: 0 };
@@ -1853,7 +1802,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 })();
 
 // ============================================================
-//  JOGO MINESWEEPER (SEM PAUSA)
+//  JOGO MINESWEEPER
 // ============================================================
 (function initMinesweeper() {
   const win = document.getElementById('win-minesweeper');
@@ -2089,7 +2038,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 })();
 
 // ============================================================
-//  JOGO FLAPPY BIRD
+//  JOGO FLAPPY BIRD (COM SONS)
 // ============================================================
 (function initFlappy() {
   const win = document.getElementById('win-flappy');
@@ -2306,6 +2255,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     if (animId) cancelAnimationFrame(animId); animId = null;
   }
 
+  // Sons do Flappy
   function playFlapSound() {
     initAudio(); if (isMuted) return;
     const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -2393,6 +2343,11 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTitlebarStates('about');
   }
 });
+
+// Inicializa áudio no primeiro clique do usuário (para permitir sons)
+document.addEventListener('click', function() {
+  initAudio();
+}, { once: true });
 </script>
 </body>
 </html>
