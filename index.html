@@ -1107,6 +1107,7 @@ function openWindow(name) {
         canvas.height = rect.height || 400;
         if (window.__flappy.resize) window.__flappy.resize();
       }
+      if (window.__flappy.start) window.__flappy.start();
     }, 100);
   }
 }
@@ -1197,6 +1198,7 @@ function animateRestore(name) {
             canvas.height = rect.height || 400;
             if (window.__flappy.resize) window.__flappy.resize();
           }
+          if (window.__flappy.start) window.__flappy.start();
         }, 100);
       }
     }
@@ -1927,16 +1929,25 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   overlay.addEventListener('click', flap);
 
+  function startGame() {
+    // Evita reiniciar um jogo já em andamento ou já finalizado
+    // (nesses casos quem cuida disso é resumeGame()/flap()/resetGame())
+    if (gameRunning || gameOver) return;
+    gameRunning = true;
+    loop();
+  }
+  window.__flappy.start = startGame;
+
   setTimeout(() => {
     resizeCanvas();
     bestSpan.textContent = bestScore;
     bird.y = canvas.height / 2 || 200;
-    gameRunning = true;
     overlayTitle.textContent = '🕹️ FLAPPY BIRD';
     overlayScore.textContent = 'Best: ' + bestScore;
     overlay.style.display = 'flex';
     overlay.querySelector('.game-overlay-hint').textContent = 'Clique ou pressione espaço para jogar';
-    loop();
+    // Não inicia o loop aqui: o jogo só deve "cair" quando a janela
+    // estiver de fato aberta e visível (ver openWindow/animateRestore).
   }, 100);
 
   window.addEventListener('resize', () => { resizeCanvas(); });
