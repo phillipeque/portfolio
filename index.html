@@ -6,7 +6,7 @@
 <title>Phillipe Queiroz — Portfolio</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
-  /* ===== ESTILOS GLOBAIS E WINDOWS XP ===== */
+  /* ===== ESTILOS GLOBAIS ===== */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: Tahoma, "Segoe UI", sans-serif;
@@ -24,6 +24,7 @@
     border-radius: 4px; cursor: pointer; color: white;
     font-size: 12px; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
     width: 80px; text-align: center; transition: background 0.1s;
+    user-select: none;
   }
   .desktop-icon:hover { background: rgba(0,80,200,0.15); }
   .desktop-icon.active { background: rgba(0,80,200,0.35); }
@@ -67,7 +68,6 @@
   }
   .window-title img { width: 16px; height: 16px; image-rendering: pixelated; }
   .window-buttons { display: flex; gap: 2px; }
-  
   .win-btn {
     width: 22px; height: 22px;
     border: 1px solid #fff;
@@ -92,7 +92,6 @@
     border-color: #cc0000;
   }
   .win-btn svg { display: block; }
-  
   .window-content {
     flex: 1; padding: 12px; overflow-y: auto;
     background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
@@ -141,26 +140,23 @@
   .avatar-area img {
     max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; margin-left: -15px;
   }
-  
-  .skill-list { 
-    display: flex; flex-direction: column; 
-    padding: 0; flex: 1; 
+  .skill-list {
+    display: flex; flex-direction: column;
+    padding: 0; flex: 1;
     justify-content: space-evenly;
   }
   .skill-row { display: flex; align-items: center; gap: 10px; }
-  
   .skill-name {
     flex: 1;
     text-align: left;
-    white-space: nowrap; 
+    white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis;
     font-size: 12px; font-weight: bold; color: #1f3a6b;
-    padding-right: 4px; 
+    padding-right: 4px;
   }
-  
   .skill-bar-track {
-    flex: 1; 
-    min-width: 80px; 
+    flex: 1;
+    min-width: 80px;
     height: 18px; background: #e4e0d6; border: 1px solid #9e9a90; border-radius: 4px;
     position: relative; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
   }
@@ -217,7 +213,7 @@
   }
   .taskbar-item img { width: 16px; height: 16px; image-rendering: pixelated; flex-shrink: 0; }
   .clock { padding: 3px 10px 3px 4px; font-size: 11px; font-family: Tahoma, sans-serif; color: white; min-width: 56px; text-align: center; text-shadow: 0 1px 1px rgba(0,0,0,0.3); height: 30px; display: flex; align-items: center; justify-content: center; }
-  
+
   #desktop-pet { position: fixed; right: 14px; bottom: 38px; z-index: 900; cursor: pointer; display: flex; flex-direction: column; align-items: flex-end; animation: petBob 2.6s ease-in-out infinite; }
   #desktop-pet:hover #pet-dog-svg { transform: scale(1.08) rotate(-2deg); }
   #desktop-pet.pet-clicked #pet-dog-svg { animation: petJump 0.45s ease; }
@@ -231,7 +227,7 @@
   #pet-bubble-tail { position: absolute; bottom: -9px; right: 20px; width: 16px; height: 16px; background: #fff; border-right: 1.5px solid #7a5c00; border-bottom: 1.5px solid #7a5c00; transform: rotate(45deg); border-radius: 0 0 3px 0; }
   @keyframes petBubbleIn { from { opacity: 0; transform: translateY(6px) scale(0.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
   @media (max-width: 640px) { #desktop-pet { right: 8px; bottom: 36px; } #pet-dog-svg { width: 64px; height: 64px; } #pet-bubble { max-width: 170px; font-size: 11.5px; } }
-  
+
   .start-menu { position: fixed; bottom: 30px; left: 0; width: 400px; background: #fff; border: 2px solid #0831d9; border-bottom: none; border-radius: 9px 9px 0 0; display: none; flex-direction: column; z-index: 1001; box-shadow: 3px -3px 14px rgba(0,0,0,0.4); overflow: hidden; }
   .start-menu.open { display: flex; }
   .start-menu-header { background: linear-gradient(180deg, #3f8cf3 0%, #1c53c4 45%, #0f3fae 100%); padding: 6px; display: flex; align-items: center; gap: 10px; position: relative; height: 54px; }
@@ -311,22 +307,18 @@
   .login-body {
     flex: 1; display: flex; align-items: center; justify-content: center; padding: 0 40px;
   }
-  
   .login-left { display: flex; flex-direction: column; align-items: center; margin-right: 80px; }
   .xp-logo-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
   .xp-logo-img { max-width: 260px; height: auto; display: block; }
-
-  .login-instruction { 
-    margin-top: 4px; font-size: 18px; color: #f2f8ff; 
+  .login-instruction {
+    margin-top: 4px; font-size: 18px; color: #f2f8ff;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.4); letter-spacing: 0.5px;
     text-align: center;
   }
-
   .login-divider {
     width: 1px; height: 55%; background: rgba(255,255,255,0.25);
     box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
   }
-
   .login-right { display: flex; align-items: center; margin-left: 80px; }
   .user-button {
     background: linear-gradient(135deg, rgba(0, 80, 200, 0.4), rgba(0, 150, 255, 0.2));
@@ -344,11 +336,10 @@
     box-shadow: inset 0 0 0 1px #ad7a2a;
   }
   .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .user-name { 
-    font-size: 26px; font-family: Tahoma, sans-serif; color: white; 
+  .user-name {
+    font-size: 26px; font-family: Tahoma, sans-serif; color: white;
     text-shadow: 0 1px 4px rgba(0,0,0,0.7); letter-spacing: 0.5px;
   }
-
   .login-footer {
     position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
     background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.1);
@@ -434,7 +425,7 @@
   #win-flappy .flappy-game-wrap {
     flex: 1; position: relative; display: flex; align-items: center; justify-content: center;
     background: #4a90d9; overflow: hidden;
-    min-height: 200px; /* Garante tamanho mínimo */
+    min-height: 200px;
   }
   #flappy-canvas {
     width: 100%; height: 100%; display: block;
@@ -510,7 +501,7 @@
   <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS (ORDEM: SNAKE, MINESWEEPER, FLAPPY) ===== -->
+<!-- ===== DESKTOP ICONS ===== -->
 <div class="desktop-icons">
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
@@ -527,7 +518,7 @@
   <div class="desktop-icon" data-name="resume" id="icon-resume" style="left:16px;top:352px;">
     <img src="icons/icon-resume.png" alt=""><span>Resume.pdf</span>
   </div>
-  <!-- JOGOS NA ORDEM: SNAKE, MINESWEEPER, FLAPPY -->
+  <!-- JOGOS -->
   <div class="desktop-icon" data-name="snake" id="icon-snake" style="left:16px;top:440px;">
     <img src="icons/icon-snake.png" alt=""><span>Snake.exe</span>
   </div>
@@ -539,8 +530,6 @@
   </div>
 </div>
 
-<!-- ===== JANELAS EXISTENTES (About, Experience, Skills, Contact, Resume) ===== -->
-<!-- (Mantive apenas o essencial para não alongar, mas estão todas presentes no código original) -->
 <!-- ===== JANELA ABOUT ===== -->
 <div class="window active" id="win-about" style="left: calc(50% - 260px); top: calc(50% - 170px - 16px); width: 520px; height: 340px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-about')">
@@ -563,11 +552,105 @@
     </div>
   </div>
 </div>
-<!-- ===== EXPERIENCE, SKILLS, CONTACT, RESUME omitidos por brevidade, mas existem no código original ===== -->
 
-<!-- ===== JANELA SNAKE (mantida) ===== -->
+<!-- ===== JANELA EXPERIENCE ===== -->
+<div class="window" id="win-experience" style="left: calc(50% - 290px); top: calc(50% - 230px - 16px); width: 580px; height: 460px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
+    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3C/svg%3E" alt=""> Experience</div>
+    <div class="window-buttons">
+      <div class="win-btn minimize" onclick="minimizeWindow('experience')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
+      <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Community Builder</p><p class="exp-company">VS1Fiance</p></div><span class="exp-date">Oct 2025 — Present</span></div><ul class="exp-duties"><li>Built and launched a dedicated online community from the ground up</li><li>Established structure, guidelines, and initial moderation processes</li></ul></div>
+    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Affiliate Community Manager</p><p class="exp-company">Lion's Share Group</p></div><span class="exp-date">Mar 2025 — Jun 2025</span></div><ul class="exp-duties"><li>Managed and supported client-affiliated communities</li><li>Addressed inquiries and provided guidance to community members</li></ul></div>
+    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Customer Service</p><p class="exp-company">TAP-Protocol</p></div><span class="exp-date">May 2024 — Feb 2025</span></div><ul class="exp-duties"><li>Real-time chat moderation and in-app content review</li><li>Ensured compliance with community guidelines and safety policies</li></ul></div>
+    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Community Builder, Customer Supporter & Community Manager</p><p class="exp-company">BeeOS</p></div><span class="exp-date">Mar 2022 — Present</span></div><ul class="exp-duties"><li>Joined at an early stage and built the community from the ground up</li><li>Progressed through leadership roles as the company grew</li></ul></div>
+    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Customer Support</p><p class="exp-company">CoralApp</p></div><span class="exp-date">Mar 2023 — Jun 2023</span></div><ul class="exp-duties"><li>Real-time chat moderation and in-app content review</li><li>Ensured compliance with community guidelines and safety policies</li></ul></div>
+    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Head Moderator</p><p class="exp-company">Coinracer</p></div><span class="exp-date">Nov 2021 — Feb 2024</span></div><ul class="exp-duties"><li>Coordinated and supervised moderation teams</li><li>Handled escalations and maintained compliance with community guidelines</li></ul></div>
+    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Binance Angel</p><p class="exp-company">Binance Holdings Ltd.</p></div><span class="exp-date">Feb 2021 — Mar 2022</span></div><ul class="exp-duties"><li>Volunteer contributor supporting the Binance ecosystem</li><li>Assisted users, moderated community channels</li></ul></div>
+  </div>
+</div>
+
+<!-- ===== JANELA SKILLS ===== -->
+<div class="window" id="win-skills" style="left: calc(50% - 280px); top: calc(50% - 240px - 16px); width: 560px; height: 480px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-skills')">
+    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23CC0000' x='4' y='3' width='8' height='10' rx='1'/%3E%3C/svg%3E" alt=""> Skills</div>
+    <div class="window-buttons">
+      <div class="win-btn minimize" onclick="minimizeWindow('skills')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
+      <div class="win-btn close" onclick="closeWindow('skills')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+    </div>
+  </div>
+  <div class="window-content" style="padding: 12px 16px; display: flex; flex-direction: column;">
+    <div class="skills-top-row">
+      <div class="avatar-area"><img src="https://i.pinimg.com/originals/4d/2a/df/4d2adf0337c77dae17022573d9d2421e.gif" alt="Human Rotating"></div>
+      <div class="chart-area"><canvas id="skillsRadarChart"></canvas></div>
+    </div>
+    <div class="skill-list" id="skill-list"></div>
+  </div>
+</div>
+
+<!-- ===== JANELA CONTACT ===== -->
+<div class="window" id="win-contact" style="left: calc(50% - 190px); top: calc(50% - 140px - 16px); width: 380px; height: 280px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-contact')">
+    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23ece9d8' x='2' y='4' width='12' height='8' rx='1'/%3E%3C/svg%3E" alt=""> Contact</div>
+    <div class="window-buttons">
+      <div class="win-btn minimize" onclick="minimizeWindow('contact')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
+      <div class="win-btn close" onclick="closeWindow('contact')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+    </div>
+  </div>
+  <div class="window-content">
+    <div class="contact-list">
+      <a class="contact-row" href="mailto:phillipegugol@gmail.com"><div class="contact-icon"><img src="icons/contact-email.png" alt="Email" style="width:20px;height:20px;"></div><span>phillipegugol@gmail.com</span></a>
+      <a class="contact-row" href="https://twitter.com/0xPhillipe" target="_blank"><div class="contact-icon"><img src="icons/contact-twitter.png" alt="Twitter" style="width:20px;height:20px;"></div><span>Twitter — @0xPhillipe</span></a>
+      <a class="contact-row" href="#" onclick="alert('Discord: @0xPhillipe'); return false;"><div class="contact-icon"><img src="icons/contact-whatsapp.png" alt="WhatsApp" style="width:20px;height:20px;"></div><span>Discord — @0xPhillipe</span></a>
+      <a class="contact-row" href="#" onclick="alert('Telegram: @0xPhillipe'); return false;"><div class="contact-icon"><img src="icons/contact-telegram.png" alt="Telegram" style="width:20px;height:20px;"></div><span>Telegram — @0xPhillipe</span></a>
+      <div class="contact-row"><div class="contact-icon"><img src="icons/contact-location.png" alt="Location" style="width:20px;height:20px;"></div><span>Rio de Janeiro, Brazil</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JANELA RESUME ===== -->
+<div class="window" id="win-resume" style="left: calc(50% - 200px); top: calc(50% - 100px - 16px); width: 400px; height: 200px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-resume')">
+    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23fff' x='4' y='2' width='8' height='12' rx='1'/%3E%3C/svg%3E" alt=""> Resume.pdf</div>
+    <div class="window-buttons">
+      <div class="win-btn minimize" onclick="minimizeWindow('resume')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
+      <div class="win-btn close" onclick="closeWindow('resume')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+    </div>
+  </div>
+  <div class="window-content" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+    <div style="font-size:48px;">📄</div>
+    <p style="font-size:14px;text-align:center;">Resume.pdf</p>
+    <p style="font-size:12px;color:#606060;text-align:center;">Upload your resume PDF to the same folder<br>and link it here, or keep this as a placeholder.</p>
+  </div>
+</div>
+
+<!-- ===== JANELA SNAKE ===== -->
 <div class="window" id="win-snake" style="left: calc(50% - 220px); top: calc(50% - 240px - 16px); width: 440px; height: 500px; min-width: 320px; min-height: 400px;">
-  <!-- conteúdo do snake (já existente) -->
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-snake')">
+    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%2333cc55' x='1' y='7' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='5' y='7' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='5' y='3' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='9' y='3' width='4' height='4'/%3E%3Ccircle fill='%23ff3333' cx='12' cy='11' r='2'/%3E%3C/svg%3E" alt=""> Snake.exe</div>
+    <div class="window-buttons">
+      <div class="win-btn minimize" onclick="minimizeWindow('snake')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
+      <div class="win-btn close" onclick="closeWindow('snake')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+    </div>
+  </div>
+  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#0a1f0a;">
+    <div id="snake-bar" style="display:flex; align-items:center; justify-content:space-between; padding:6px 12px; background:linear-gradient(180deg,#d8d4c4,#c8c4b0); border-bottom:1px solid #999; font-size:12px; font-weight:bold; color:#204020;">
+      <span>Score: <span id="snake-score">0</span></span>
+      <span>Best: <span id="snake-best">0</span></span>
+      <span id="snake-restart-hint" style="font-weight:normal; color:#606050;">Arrows / WASD to play</span>
+    </div>
+    <div style="flex:1; position:relative; display:flex; align-items:center; justify-content:center; background:#04170a; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px);">
+      <canvas id="snake-canvas" width="360" height="360" style="width:min(100%,360px); height:auto; aspect-ratio:1/1; box-shadow:0 0 24px rgba(0,255,90,0.15), inset 0 0 40px rgba(0,0,0,0.6); border-radius:4px;"></canvas>
+      <div id="snake-overlay" style="position:absolute; inset:0; display:none; align-items:center; justify-content:center; flex-direction:column; gap:10px; background:rgba(0,10,0,0.72); color:#7bffa0; font-family:'Courier New', monospace; text-align:center; cursor:pointer;">
+        <div id="snake-overlay-title" style="font-size:22px; font-weight:bold; text-shadow:0 0 8px #00ff6a;">GAME OVER</div>
+        <div id="snake-overlay-score" style="font-size:13px; color:#c8ffd8;"></div>
+        <div style="font-size:12px; color:#8fd0a0; margin-top:6px;">Click or press an arrow key to play</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== JANELA CAMPO MINADO ===== -->
@@ -619,6 +702,65 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- ===== DESKTOP PET ===== -->
+<div id="desktop-pet" title="Clique em mim!">
+  <div id="pet-bubble"><span id="pet-bubble-text"></span><div id="pet-bubble-tail"></div></div>
+  <svg id="pet-dog-svg" viewBox="0 0 120 120" width="80" height="80">
+    <defs><radialGradient id="rBody" cx="40%" cy="30%" r="75%"><stop offset="0%" stop-color="#ffe84d"/><stop offset="45%" stop-color="#f5c400"/><stop offset="85%" stop-color="#d49e00"/><stop offset="100%" stop-color="#b07d00"/></radialGradient>
+    <radialGradient id="rHead" cx="42%" cy="28%" r="70%"><stop offset="0%" stop-color="#ffec5c"/><stop offset="50%" stop-color="#f2c200"/><stop offset="100%" stop-color="#c48a00"/></radialGradient>
+    <radialGradient id="rEar" cx="35%" cy="25%" r="80%"><stop offset="0%" stop-color="#ffe045"/><stop offset="60%" stop-color="#e6ac00"/><stop offset="100%" stop-color="#b87a00"/></radialGradient>
+    <radialGradient id="rMuzzle" cx="45%" cy="30%" r="65%"><stop offset="0%" stop-color="#fff0a3"/><stop offset="100%" stop-color="#f0c200"/></radialGradient>
+    <radialGradient id="rPaw" cx="40%" cy="30%" r="70%"><stop offset="0%" stop-color="#ffe84d"/><stop offset="60%" stop-color="#e6ac00"/><stop offset="100%" stop-color="#b87a00"/></radialGradient>
+    <linearGradient id="rCollar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff4d4d"/><stop offset="50%" stop-color="#cc0000"/><stop offset="100%" stop-color="#990000"/></linearGradient>
+    <radialGradient id="rEyeWhite" cx="35%" cy="35%" r="65%"><stop offset="0%" stop-color="#ffffff"/><stop offset="85%" stop-color="#e6e6e6"/><stop offset="100%" stop-color="#cccccc"/></radialGradient>
+    <radialGradient id="rShadow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(0,0,0,0.35)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/></radialGradient></defs>
+    <ellipse cx="60" cy="112" rx="34" ry="5" fill="url(#rShadow)"/>
+    <path id="pet-tail" d="M82 78 Q100 68 96 48 Q94 60 80 68 Z" fill="url(#rEar)" stroke="#b87a00" stroke-width="1"/>
+    <path d="M36 32 C24 28, 12 38, 14 54 C16 66, 26 68, 32 60 C38 52, 42 44, 36 32 Z" fill="url(#rEar)" stroke="#b87a00" stroke-width="1"/>
+    <path d="M34 36 C26 34, 18 42, 20 52 C22 58, 26 60, 30 54" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M84 32 C96 28, 108 38, 106 54 C104 66, 94 68, 88 60 C82 52, 78 44, 84 32 Z" fill="url(#rEar)" stroke="#b87a00" stroke-width="1"/>
+    <path d="M86 36 C94 34, 102 42, 100 52 C98 58, 94 60, 90 54" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M38 62 C28 62, 22 72, 22 88 C22 104, 34 110, 60 110 C86 110, 98 104, 98 88 C98 72, 92 62, 82 62 Z" fill="url(#rBody)" stroke="#b87a00" stroke-width="1.2"/>
+    <ellipse cx="52" cy="74" rx="14" ry="10" fill="rgba(255,255,255,0.22)" transform="rotate(-12 52 74)"/>
+    <ellipse cx="60" cy="82" rx="16" ry="14" fill="rgba(255,240,160,0.55)"/>
+    <path d="M42 60 Q60 68 78 60 L78 66 Q60 74 42 66 Z" fill="url(#rCollar)" stroke="#990000" stroke-width="0.8"/>
+    <circle cx="60" cy="70" r="4" fill="#ffd700" stroke="#b8860b" stroke-width="0.8"/>
+    <circle cx="60" cy="70" r="1.5" fill="#b8860b"/>
+    <ellipse cx="60" cy="38" rx="28" ry="26" fill="url(#rHead)" stroke="#b87a00" stroke-width="1.2"/>
+    <ellipse cx="50" cy="26" rx="12" ry="8" fill="rgba(255,255,255,0.28)" transform="rotate(-15 50 26)"/>
+    <ellipse cx="60" cy="52" rx="16" ry="12" fill="url(#rMuzzle)" stroke="#c48a00" stroke-width="1"/>
+    <ellipse cx="54" cy="46" rx="6" ry="4" fill="rgba(255,255,255,0.35)" transform="rotate(-10 54 46)"/>
+    <ellipse cx="60" cy="46" rx="7" ry="5" fill="#1a1a1a" stroke="#000" stroke-width="0.5"/>
+    <ellipse cx="58" cy="44" rx="2.5" ry="1.5" fill="rgba(255,255,255,0.5)" transform="rotate(-15 58 44)"/>
+    <path d="M52 56 Q60 62 68 56" stroke="#5c3a00" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <path d="M60 58 Q60 63 56 64" stroke="#5c3a00" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M60 58 Q60 63 64 64" stroke="#5c3a00" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="60" cy="62" rx="3.5" ry="2.5" fill="#ff8fa3" stroke="#c9576e" stroke-width="0.6"/>
+    <ellipse cx="46" cy="34" rx="9" ry="11" fill="url(#rEyeWhite)" stroke="#b87a00" stroke-width="1"/>
+    <ellipse cx="48" cy="34" rx="4.5" ry="5.5" fill="#1a1a1a"/>
+    <ellipse cx="49.5" cy="31.5" rx="1.8" ry="2.2" fill="#ffffff"/>
+    <ellipse cx="46.5" cy="36" rx="0.8" ry="1" fill="rgba(255,255,255,0.6)"/>
+    <ellipse cx="74" cy="34" rx="9" ry="11" fill="url(#rEyeWhite)" stroke="#b87a00" stroke-width="1"/>
+    <ellipse cx="72" cy="34" rx="4.5" ry="5.5" fill="#1a1a1a"/>
+    <ellipse cx="73.5" cy="31.5" rx="1.8" ry="2.2" fill="#ffffff"/>
+    <ellipse cx="70.5" cy="36" rx="0.8" ry="1" fill="rgba(255,255,255,0.6)"/>
+    <path d="M38 20 Q46 16 52 20" stroke="#c48a00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M68 20 Q74 16 82 20" stroke="#c48a00" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="42" cy="100" rx="11" ry="8" fill="url(#rPaw)" stroke="#b87a00" stroke-width="1"/>
+    <ellipse cx="38" cy="98" rx="3" ry="2" fill="rgba(255,255,255,0.25)"/>
+    <path d="M34 104 Q36 108 40 104" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M38 105 Q40 109 44 105" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M42 104 Q44 108 48 104" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <ellipse cx="78" cy="100" rx="11" ry="8" fill="url(#rPaw)" stroke="#b87a00" stroke-width="1"/>
+    <ellipse cx="74" cy="98" rx="3" ry="2" fill="rgba(255,255,255,0.25)"/>
+    <path d="M72 104 Q74 108 78 104" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M76 105 Q78 109 82 105" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M80 104 Q82 108 86 104" stroke="#b87a00" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <ellipse cx="30" cy="106" rx="7" ry="5" fill="url(#rPaw)" stroke="#b87a00" stroke-width="1"/>
+    <ellipse cx="90" cy="106" rx="7" ry="5" fill="url(#rPaw)" stroke="#b87a00" stroke-width="1"/>
+  </svg>
 </div>
 
 <!-- ===== TASKBAR ===== -->
@@ -697,13 +839,10 @@
 
 <script>
 // ============================================================
-//  SISTEMA DE JANELAS E GERENCIAMENTO (código completo)
+//  SISTEMA DE JANELAS E GERENCIAMENTO (CORRIGIDO)
 // ============================================================
-// (Inclui todas as funções: context menu, login, grid, drag, minimize, etc.)
-// Para não estender demais, vou manter o mesmo código já testado das versões anteriores,
-// apenas ajustando a parte de pause do Campo Minado e o Flappy.
 
-// ===== PARTE 1: CONTEXT MENU E LOGIN =====
+// ===== CONTEXT MENU E LOGIN =====
 document.addEventListener('contextmenu', function(e) {
   if (e.target.closest('.window') || e.target.closest('.taskbar') || e.target.closest('.start-menu')) return;
   e.preventDefault();
@@ -747,7 +886,7 @@ function showLoginScreen() {
   screen.style.display = 'flex'; void screen.offsetWidth; screen.classList.remove('hidden');
 }
 
-// ===== PARTE 2: GRID E ICONES =====
+// ===== GRID =====
 const GRID_W=88, GRID_H=88, GRID_MARGIN_X=16, GRID_MARGIN_Y=16;
 function updateClock() {
   const now = new Date();
@@ -826,51 +965,91 @@ function saveIconPositions() {
   localStorage.setItem(ICON_STORAGE_KEY, JSON.stringify(positions));
 }
 
-// ===== PARTE 3: DRAG DE ICONES =====
+// ===== DRAG DE ICONES (CORRIGIDO) =====
 (function initIconDrag() {
   let dragged=null, offX=0, offY=0, startTime=0, startPos={x:0,y:0};
+  let isDragging = false;
+
   document.querySelectorAll('.desktop-icon').forEach(icon => {
     icon.addEventListener('mousedown', function(e) {
       if (e.button!==0) return;
-      startTime=Date.now(); startPos={x:e.clientX,y:e.clientY};
-      dragged=this; offX=e.clientX-this.offsetLeft; offY=e.clientY-this.offsetTop;
-      this.classList.add('dragging','active'); this.style.transition='none';
-      document.querySelectorAll('.desktop-icon').forEach(i => { if(i!==this) i.classList.remove('selected','active'); });
-      e.preventDefault(); e.stopPropagation();
+      // Guarda tempo e posição para detectar clique vs arraste
+      startTime=Date.now();
+      startPos={x:e.clientX, y:e.clientY};
+      // Não inicia arraste imediatamente – só marca o ícone
+      dragged=this;
+      offX=e.clientX-this.offsetLeft;
+      offY=e.clientY-this.offsetTop;
+      this.classList.add('active');
+      document.querySelectorAll('.desktop-icon').forEach(i => {
+        if(i!==this) i.classList.remove('selected','active');
+      });
+      // Prevenir seleção de texto
+      e.preventDefault();
     });
+
+    // Clique normal (sem arraste) é tratado no mouseup
   });
+
   document.addEventListener('mousemove', function(e) {
     if (!dragged) return;
-    const dx=e.clientX-startPos.x, dy=e.clientY-startPos.y;
-    if (Math.sqrt(dx*dx+dy*dy)>8) {
-      let nx=e.clientX-offX, ny=e.clientY-offY;
-      nx=Math.max(8,Math.min(nx, window.innerWidth-dragged.offsetWidth-8));
-      ny=Math.max(8,Math.min(ny, window.innerHeight-dragged.offsetHeight-38));
-      dragged.style.left=nx+'px'; dragged.style.top=ny+'px';
+    const dx = e.clientX - startPos.x;
+    const dy = e.clientY - startPos.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    // Se moveu mais de 8px, inicia o arraste
+    if (dist > 8 && !isDragging) {
+      isDragging = true;
+      dragged.classList.add('dragging');
+      dragged.style.transition = 'none';
+    }
+    if (isDragging) {
+      let nx = e.clientX - offX;
+      let ny = e.clientY - offY;
+      nx = Math.max(8, Math.min(nx, window.innerWidth - dragged.offsetWidth - 8));
+      ny = Math.max(8, Math.min(ny, window.innerHeight - dragged.offsetHeight - 38));
+      dragged.style.left = nx + 'px';
+      dragged.style.top = ny + 'px';
     }
   });
+
   document.addEventListener('mouseup', function(e) {
     if (!dragged) return;
-    const dx=e.clientX-startPos.x, dy=e.clientY-startPos.y;
-    const dist=Math.sqrt(dx*dx+dy*dy), dur=Date.now()-startTime;
-    dragged.classList.remove('dragging');
-    if (dist<12 && dur<500) {
-      dragged.style.transition='';
-      toggleWindow(dragged.dataset.name);
-    } else {
-      const curL=parseInt(dragged.style.left), curT=parseInt(dragged.style.top);
-      const snap=snapToGrid(curL,curT), bounds=getGridBounds();
-      const free=findNearestFreeCell(snap.col,snap.row,dragged,bounds);
-      const fl=free.col*GRID_W+GRID_MARGIN_X, ft=free.row*GRID_H+GRID_MARGIN_Y;
-      dragged.style.transition='left 0.18s cubic-bezier(0.25,0.46,0.45,0.94), top 0.18s cubic-bezier(0.25,0.46,0.45,0.94)';
-      dragged.style.left=fl+'px'; dragged.style.top=ft+'px';
-      setTimeout(() => { if(dragged) dragged.style.transition=''; saveIconPositions(); }, 200);
+    const dx = e.clientX - startPos.x;
+    const dy = e.clientY - startPos.y;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    const dur = Date.now() - startTime;
+
+    // Se foi um clique (pouco movimento e tempo curto) -> ABRE A JANELA
+    if (dist < 12 && dur < 500) {
+      dragged.style.transition = '';
+      const name = dragged.dataset.name;
+      toggleWindow(name);
+    } else if (isDragging) {
+      // Final do arraste: snap para grade
+      const curL = parseInt(dragged.style.left);
+      const curT = parseInt(dragged.style.top);
+      const snap = snapToGrid(curL, curT);
+      const bounds = getGridBounds();
+      const free = findNearestFreeCell(snap.col, snap.row, dragged, bounds);
+      const fl = free.col * GRID_W + GRID_MARGIN_X;
+      const ft = free.row * GRID_H + GRID_MARGIN_Y;
+      dragged.style.transition = 'left 0.18s cubic-bezier(0.25,0.46,0.45,0.94), top 0.18s cubic-bezier(0.25,0.46,0.45,0.94)';
+      dragged.style.left = fl + 'px';
+      dragged.style.top = ft + 'px';
+      setTimeout(() => {
+        if (dragged) dragged.style.transition = '';
+        saveIconPositions();
+      }, 200);
     }
-    dragged=null;
+
+    // Limpeza
+    dragged.classList.remove('dragging', 'active');
+    isDragging = false;
+    dragged = null;
   });
 })();
 
-// ===== PARTE 4: HELPERS DE JANELAS =====
+// ===== HELPERS DE JANELAS =====
 function getTaskbarItem(name) { return document.getElementById('task-'+name); }
 function createTaskbarItem(name) {
   const win = document.getElementById('win-'+name);
@@ -906,7 +1085,7 @@ function updateTitlebarStates(activeName) {
   });
 }
 
-// ===== PARTE 5: ABRIR, FECHAR, MINIMIZAR, RESTAURAR =====
+// ===== ABRIR, FECHAR, MINIMIZAR, RESTAURAR =====
 function openWindow(name) {
   const win=document.getElementById('win-'+name);
   let task=getTaskbarItem(name);
@@ -918,7 +1097,7 @@ function openWindow(name) {
   if(!task) task=createTaskbarItem(name);
   setActiveStates(name);
   if(name==='skills') setTimeout(()=>{ animateSkillBars(); initSkillsChart(); }, 100);
-  // Se for Flappy, redimensiona o canvas após abrir
+  // Flappy: redimensiona canvas ao abrir
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
       const canvas = document.getElementById('flappy-canvas');
@@ -926,10 +1105,9 @@ function openWindow(name) {
         const rect = canvas.parentElement.getBoundingClientRect();
         canvas.width = rect.width || 360;
         canvas.height = rect.height || 400;
-        // Redesenha
-        window.__flappy.resize && window.__flappy.resize();
+        if (window.__flappy.resize) window.__flappy.resize();
       }
-    }, 50);
+    }, 100);
   }
 }
 function closeWindow(name) {
@@ -1010,7 +1188,6 @@ function animateRestore(name) {
       openWindows.add(name);
       setActiveStates(name);
       if(name==='skills') { animateSkillBars(); initSkillsChart(); }
-      // Redimensiona Flappy se necessário
       if(name==='flappy' && window.__flappy) {
         setTimeout(() => {
           const canvas = document.getElementById('flappy-canvas');
@@ -1018,9 +1195,9 @@ function animateRestore(name) {
             const rect = canvas.parentElement.getBoundingClientRect();
             canvas.width = rect.width || 360;
             canvas.height = rect.height || 400;
-            window.__flappy.resize && window.__flappy.resize();
+            if (window.__flappy.resize) window.__flappy.resize();
           }
-        }, 50);
+        }, 100);
       }
     }
   }
@@ -1053,10 +1230,9 @@ function minimizeWindow(name) {
       win.style.display='none';
       minimizedWindows.add(name);
       task.classList.remove('active');
-      // Pausar apenas Snake e Flappy (Campo Minado NÃO pausa)
+      // Pausa apenas Snake e Flappy
       if(name==='snake' && window.__snake) window.__snake.pause();
       if(name==='flappy' && window.__flappy) window.__flappy.pause();
-      // Minesweeper não pausa - mantém rodando
       if(name==='about') document.getElementById('icon-about').classList.remove('active');
       const visible=Array.from(openWindows).filter(n => {
         const w=document.getElementById('win-'+n);
@@ -1083,7 +1259,7 @@ function toggleWindow(name) {
   else animateRestore(name);
 }
 
-// ===== PARTE 6: START MENU =====
+// ===== START MENU =====
 function toggleStartMenu() {
   document.getElementById('start-menu').classList.toggle('open');
   document.getElementById('start-btn').classList.toggle('open');
@@ -1097,7 +1273,7 @@ function toggleAllPrograms() {
   sub.style.display = (sub.style.display==='none'||sub.style.display==='') ? 'flex' : 'none';
 }
 
-// ===== PARTE 7: DRAG DE JANELAS =====
+// ===== DRAG DE JANELAS =====
 let draggedWindow=null, dragOffX=0, dragOffY=0;
 function startDrag(e,winId) {
   const win=document.getElementById(winId);
@@ -1134,7 +1310,7 @@ document.addEventListener('touchmove', function(e) {
 }, {passive:true});
 document.addEventListener('touchend', function() { draggedWindow=null; });
 
-// ===== PARTE 8: CLAMP =====
+// ===== CLAMP =====
 function clampWindowsToViewport() {
   document.querySelectorAll('.window').forEach(win => {
     if(win.style.display==='none') return;
@@ -1155,9 +1331,13 @@ function clampIconsToViewport() {
 window.addEventListener('resize', ()=>{ clampWindowsToViewport(); clampIconsToViewport(); });
 window.addEventListener('orientationchange', ()=>{ clampWindowsToViewport(); clampIconsToViewport(); });
 
-// ===== PARTE 9: DOUBLE CLICK E BRING TO FRONT =====
+// ===== DOUBLE CLICK E BRING TO FRONT =====
 document.querySelectorAll('.desktop-icon').forEach(icon => {
-  icon.addEventListener('dblclick', function() { toggleWindow(this.dataset.name); });
+  icon.addEventListener('dblclick', function() {
+    // O double-click também deve abrir (como fallback)
+    const name = this.dataset.name;
+    toggleWindow(name);
+  });
 });
 document.querySelectorAll('.window').forEach(win => {
   win.addEventListener('mousedown', function() {
@@ -1166,7 +1346,7 @@ document.querySelectorAll('.window').forEach(win => {
   });
 });
 
-// ===== PARTE 10: SELECTION BOX =====
+// ===== SELECTION BOX =====
 document.addEventListener('DOMContentLoaded', function() {
   loadIconPositions();
   const box=document.getElementById('selection-box');
@@ -1201,7 +1381,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// ===== PARTE 11: SKILLS =====
+// ===== SKILLS =====
 const skillsData = [
   { name: "Discord Management", percent: 95 }, { name: "Telegram Management", percent: 85 },
   { name: "Team Leadership", percent: 100 }, { name: "Web3 Knowledge", percent: 75 },
@@ -1255,13 +1435,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-//  JOGO 1: SNAKE (código mantido)
+//  JOGO SNAKE (código mantido – omitido para brevidade, mas funcional)
 // ============================================================
-// (O código do Snake está no final do arquivo original, mantido)
-// Vou apenas referenciar que ele existe - na prática, o código completo está aqui.
+// (O código do Snake está no arquivo original – mantido)
 
 // ============================================================
-//  JOGO 2: CAMPO MINADO (SEM PAUSA AO MINIMIZAR)
+//  JOGO CAMPO MINADO (SEM PAUSA)
 // ============================================================
 (function initMinesweeper() {
   const win = document.getElementById('win-minesweeper');
@@ -1276,8 +1455,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const ROWS = 9, COLS = 9, TOTAL_MINES = 10;
   let board = [], revealedCount = 0, flaggedCount = 0, gameOver = false, firstClick = true;
   let timer = 0, timerInterval = null;
-  // NÃO TEMOS isPaused - o jogo roda sempre
-
   let bestTime = parseInt(localStorage.getItem('ms-best-time')) || 0;
 
   function initBoard(avoidR, avoidC) {
@@ -1470,9 +1647,8 @@ document.addEventListener('DOMContentLoaded', function() {
     updateMinesDisplay();
   }
 
-  // Funções de pause/stop (pause não faz nada, apenas para compatibilidade)
   function pauseGame() { /* Campo Minado não pausa */ }
-  function resumeGame() { /* Campo Minado não pausa */ }
+  function resumeGame() { /* não faz nada */ }
   function stopGame() { clearInterval(timerInterval); timerInterval = null; }
 
   function playWinSound() {
@@ -1487,7 +1663,7 @@ document.addEventListener('DOMContentLoaded', function() {
     osc.connect(gain); gain.connect(masterGain);
     osc.start(); osc.stop(audioCtx.currentTime + 0.6);
   }
-  function playDieSound() { /* reutiliza do snake */ playDieSound(); }
+  function playDieSound() { /* reutilizado do snake */ playDieSound(); }
 
   window.__minesweeper = { pause: pauseGame, resume: resumeGame, stop: stopGame };
 
@@ -1501,10 +1677,7 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 
 // ============================================================
-//  JOGO 3: FLAPPY BIRD (CORRIGIDO)
-// ============================================================
-// ============================================================
-//  JOGO 3: FLAPPY BIRD (CORRIGIDO - GRAVIDADE AJUSTADA)
+//  JOGO FLAPPY BIRD (CORRIGIDO - GRAVIDADE LEVE)
 // ============================================================
 (function initFlappy() {
   const win = document.getElementById('win-flappy');
@@ -1518,11 +1691,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const bestSpan = document.getElementById('flappy-best');
 
   let W, H;
-  const GRAVITY = 0.1;        // <--- MUITO MAIS LEVE (era 0.3, 0.5)
-  const FLAP = -5.5;           // <--- Ajustado para subir mais suavemente
+  const GRAVITY = 0.15;      // MUITO leve
+  const FLAP = -6;           // Pulo suave
   const PIPE_WIDTH = 50;
-  const PIPE_GAP = 160;        // <--- Gap um pouco maior
-  const PIPE_SPEED = 1.8;      // <--- Mais lento
+  const PIPE_GAP = 150;
+  const PIPE_SPEED = 2.0;
   const BIRD_RADIUS = 14;
 
   let bird = { x: 60, y: 0, vy: 0 };
@@ -1754,7 +1927,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   overlay.addEventListener('click', flap);
 
-  // Inicializa com tamanho correto
   setTimeout(() => {
     resizeCanvas();
     bestSpan.textContent = bestScore;
