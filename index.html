@@ -145,19 +145,6 @@
   .avatar-area img {
     max-width: 100%; max-height: 80px; object-fit: contain; border-radius: 6px;
   }
-  .avatar-area .level-text {
-    font-size: 14px;
-    font-weight: bold;
-    color: #1f3a6b;
-    margin-top: 4px;
-    text-align: center;
-    font-family: 'Courier New', monospace;
-    letter-spacing: 0.5px;
-    background: rgba(255,255,255,0.6);
-    padding: 2px 10px;
-    border-radius: 12px;
-    border: 1px solid #c0c0c0;
-  }
   .skill-list {
     display: flex; flex-direction: column;
     padding: 0; flex: 1;
@@ -450,6 +437,24 @@
     image-rendering: pixelated;
     background: #4a90d9;
   }
+
+  /* BLOCO DE NOTAS */
+  #win-notepad textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    background: #ffffff;
+    color: #000;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+  }
+  #win-notepad textarea:focus {
+    outline: none;
+  }
 </style>
 </head>
 <body>
@@ -506,20 +511,21 @@
   <div class="context-divider"></div>
   <div class="context-item disabled">Paste</div>
   <div class="context-divider"></div>
+  <!-- New – com Text Document no topo e clicável -->
   <div class="context-item context-submenu-parent">
     New
     <div class="context-submenu">
-      <div class="context-item" onclick="alert('New Folder')">Folder</div>
-      <div class="context-item" onclick="alert('New Shortcut')">Shortcut</div>
       <div class="context-item" onclick="alert('New Text Document')">Text Document</div>
-      <div class="context-item" onclick="alert('New Bitmap Image')">Bitmap Image</div>
+      <div class="context-item disabled">Folder</div>
+      <div class="context-item disabled">Shortcut</div>
+      <div class="context-item disabled">Bitmap Image</div>
     </div>
   </div>
   <div class="context-divider"></div>
   <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS ===== -->
+<!-- ===== DESKTOP ICONS – TODOS NA COLUNA ESQUERDA ===== -->
 <div class="desktop-icons">
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
@@ -536,7 +542,6 @@
   <div class="desktop-icon" data-name="resume" id="icon-resume" style="left:16px;top:352px;">
     <img src="icons/icon-resume.png" alt=""><span>Resume.pdf</span>
   </div>
-  <!-- JOGOS -->
   <div class="desktop-icon" data-name="snake" id="icon-snake" style="left:16px;top:440px;">
     <img src="icons/icon-snake.png" alt=""><span>Snake.exe</span>
   </div>
@@ -591,7 +596,7 @@
   </div>
 </div>
 
-<!-- ===== JANELA SKILLS (ATUALIZADA) ===== -->
+<!-- ===== JANELA SKILLS (SEM O TEXTO "LvL 100") ===== -->
 <div class="window" id="win-skills" style="left: calc(50% - 280px); top: calc(50% - 240px - 16px); width: 560px; height: 480px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-skills')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23CC0000' x='4' y='3' width='8' height='10' rx='1'/%3E%3C/svg%3E" alt=""> Skills</div>
@@ -604,7 +609,7 @@
     <div class="skills-top-row">
       <div class="avatar-area">
         <img src="https://i.pinimg.com/originals/4d/2a/df/4d2adf0337c77dae17022573d9d2421e.gif" alt="Human Rotating">
-        <div class="level-text">0xPhillipe [LvL 100]</div>
+        <!-- TEXTO REMOVIDO – deixamos apenas o GIF -->
       </div>
       <div class="chart-area"><canvas id="skillsRadarChart"></canvas></div>
     </div>
@@ -725,6 +730,23 @@
   </div>
 </div>
 
+<!-- ===== JANELA BLOCO DE NOTAS (NOVO) ===== -->
+<div class="window" id="win-notepad" style="left: calc(50% - 250px); top: calc(50% - 200px); width: 500px; height: 400px; min-width: 300px; min-height: 250px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-notepad')">
+    <div class="window-title">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23ece9d8' x='2' y='3' width='12' height='10' rx='1'/%3E%3Crect fill='%23ffffff' x='3' y='4' width='10' height='8'/%3E%3C/svg%3E" alt="">
+      Bloco de Notas
+    </div>
+    <div class="window-buttons">
+      <div class="win-btn minimize" onclick="minimizeWindow('notepad')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
+      <div class="win-btn close" onclick="closeWindow('notepad')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+    </div>
+  </div>
+  <div class="window-content" style="padding:0; overflow:hidden;">
+    <textarea id="notepad-text" placeholder="Digite seu texto aqui..." spellcheck="true"></textarea>
+  </div>
+</div>
+
 <!-- ===== DESKTOP PET ===== -->
 <div id="desktop-pet" title="Clique em mim!">
   <div id="pet-bubble"><span id="pet-bubble-text"></span><div id="pet-bubble-tail"></div></div>
@@ -803,7 +825,7 @@
   </div>
 </div>
 
-<!-- ===== START MENU ===== -->
+<!-- ===== START MENU (COM BLOCO DE NOTAS) ===== -->
 <div class="start-menu" id="start-menu">
   <div class="start-menu-header">
     <div class="start-menu-avatar"><img src="avatar_1.jpg" alt="Phillipe"></div>
@@ -822,6 +844,8 @@
         <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%2333cc55' x='2' y='11' width='6' height='6'/%3E%3C/svg%3E" alt=""><span class="label">Snake.exe</span></div>
         <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%23666' cx='12' cy='12' r='8'/%3E%3Ccircle fill='%23ff4d4d' cx='12' cy='12' r='5'/%3E%3C/svg%3E" alt=""><span class="label">Minesweeper</span></div>
         <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%23FFD700' cx='12' cy='12' r='8'/%3E%3Cpath fill='%23FF8C00' d='M16 6 L19 3 L18 9 Z'/%3E%3C/svg%3E" alt=""><span class="label">Flappy Bird</span></div>
+        <!-- NOVO: Bloco de Notas -->
+        <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23ece9d8' x='3' y='4' width='18' height='14' rx='1'/%3E%3Crect fill='%23ffffff' x='4' y='5' width='16' height='12'/%3E%3C/svg%3E" alt=""><span class="label">Bloco de Notas</span></div>
       </div>
       <div class="start-menu-allprograms" id="all-programs-btn" onclick="toggleAllPrograms()">
         <div class="start-menu-allprograms-left"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23ffb400' x='2' y='6' width='9' height='7' rx='1'/%3E%3Crect fill='%23ffd166' x='4' y='4' width='9' height='7' rx='1'/%3E%3Crect fill='%23ff8a00' x='13' y='8' width='9' height='7' rx='1'/%3E%3C/svg%3E" alt=""><span>All Programs</span></div>
@@ -836,6 +860,7 @@
         <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();">Snake</div>
         <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();">Minesweeper</div>
         <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();">Flappy Bird</div>
+        <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();">Bloco de Notas</div>
       </div>
     </div>
     <div class="start-menu-right">
@@ -889,9 +914,11 @@ function sortIcons(order) {
   const icons = Array.from(container.querySelectorAll('.desktop-icon'));
   icons.sort((a,b) => order==='az' ? a.querySelector('span').innerText.localeCompare(b.querySelector('span').innerText) : b.querySelector('span').innerText.localeCompare(a.querySelector('span').innerText));
   container.innerHTML = ''; icons.forEach(icon => container.appendChild(icon));
-  const maxRows = 6;
+  // Força todos na coluna esquerda (maxRows = número de ícones)
+  const maxRows = icons.length;
   icons.forEach((icon, idx) => {
-    const row = idx % maxRows, col = Math.floor(idx / maxRows);
+    const row = idx % maxRows;
+    const col = Math.floor(idx / maxRows);
     icon.style.left = (col * GRID_W + GRID_MARGIN_X) + 'px';
     icon.style.top = (row * GRID_H + GRID_MARGIN_Y) + 'px';
   });
@@ -986,7 +1013,7 @@ function saveIconPositions() {
   localStorage.setItem(ICON_STORAGE_KEY, JSON.stringify(positions));
 }
 
-// ===== DRAG DE ICONES (CORRIGIDO) =====
+// ===== DRAG DE ICONES =====
 (function initIconDrag() {
   let dragged=null, offX=0, offY=0, startTime=0, startPos={x:0,y:0};
   let isDragging = false;
@@ -1130,6 +1157,7 @@ function closeWindow(name) {
   if (name==='snake' && window.__snake) window.__snake.stop();
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
+  // Bloco de Notas não tem pause/stop específico
   let topName=null, topZ=-Infinity;
   openWindows.forEach(n => {
     const w=document.getElementById('win-'+n);
@@ -1393,7 +1421,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ===== SKILLS (ATUALIZADO) =====
-// Novas porcentagens
 const skillsData = [
   { name: "Discord Management", percent: 100 },
   { name: "Telegram Management", percent: 95 },
@@ -1422,7 +1449,6 @@ function animateSkillBars() {
     fill.style.width='0%';
     if(span) span.textContent='0%';
     let cur=0;
-    // Velocidade ajustada (dividindo por 60 e intervalo 40ms = ~2,4s)
     const step=Math.max(1, Math.floor(target / 60));
     const iv=setInterval(() => {
       cur += step;
@@ -1438,7 +1464,6 @@ function initSkillsChart() {
   const ctx=document.getElementById('skillsRadarChart');
   if(!ctx || typeof Chart==='undefined') return;
   if(radarChartInstance) radarChartInstance.destroy();
-  // Novos dados para o radar (ordem: Conflict, Discord, Telegram, Social, Team, Web3)
   radarChartInstance = new Chart(ctx, {
     type:'radar',
     data: {
@@ -1477,7 +1502,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-//  JOGO SNAKE (código mantido – omitido para brevidade, mas funcional)
+//  JOGO SNAKE (código mantido – omitido por brevidade, mas funcional)
 // ============================================================
 // (O código do Snake está no arquivo original – mantido)
 
