@@ -1518,11 +1518,11 @@ document.addEventListener('DOMContentLoaded', function() {
   const bestSpan = document.getElementById('flappy-best');
 
   let W, H;
-  const GRAVITY = 0.3;        // <--- REDUZIDO (era 0.5)
-  const FLAP = -7;            // <--- AJUSTADO (era -8)
+  const GRAVITY = 0.15;        // <--- MUITO MAIS LEVE (era 0.3, 0.5)
+  const FLAP = -5.5;           // <--- Ajustado para subir mais suavemente
   const PIPE_WIDTH = 50;
-  const PIPE_GAP = 150;
-  const PIPE_SPEED = 2.0;     // <--- REDUZIDO (era 2.5)
+  const PIPE_GAP = 160;        // <--- Gap um pouco maior
+  const PIPE_SPEED = 1.8;      // <--- Mais lento
   const BIRD_RADIUS = 14;
 
   let bird = { x: 60, y: 0, vy: 0 };
@@ -1541,19 +1541,17 @@ document.addEventListener('DOMContentLoaded', function() {
     canvas.width = rect.width;
     canvas.height = rect.height;
     W = canvas.width; H = canvas.height;
-    // Posiciona o pássaro no meio da tela
     if (!gameRunning && !gameOver) {
       bird.y = H / 2;
     }
     draw();
   }
 
-  // Expor resize para ser chamado externamente
   window.__flappyResize = resizeCanvas;
 
   function resetGame() {
     if (animId) cancelAnimationFrame(animId);
-    bird = { x: 60, y: H / 2, vy: 0 };  // <--- COMEÇA NO MEIO
+    bird = { x: 60, y: H / 2, vy: 0 };
     pipes = [];
     score = 0;
     gameOver = false;
