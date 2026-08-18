@@ -134,11 +134,29 @@
     height: 160px; background: transparent; margin-bottom: 0; padding: 10px 15px; flex-shrink: 0;
   }
   .avatar-area {
-    width: 120px; height: 100%; display: flex; justify-content: center; align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+    height: 100%;
+    justify-content: center;
     position: relative; z-index: 1;
   }
   .avatar-area img {
-    max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; margin-left: -15px;
+    max-width: 100%; max-height: 80px; object-fit: contain; border-radius: 6px;
+  }
+  .avatar-area .level-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: #1f3a6b;
+    margin-top: 4px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+    background: rgba(255,255,255,0.6);
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid #c0c0c0;
   }
   .skill-list {
     display: flex; flex-direction: column;
@@ -573,7 +591,7 @@
   </div>
 </div>
 
-<!-- ===== JANELA SKILLS ===== -->
+<!-- ===== JANELA SKILLS (ATUALIZADA) ===== -->
 <div class="window" id="win-skills" style="left: calc(50% - 280px); top: calc(50% - 240px - 16px); width: 560px; height: 480px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-skills')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23CC0000' x='4' y='3' width='8' height='10' rx='1'/%3E%3C/svg%3E" alt=""> Skills</div>
@@ -584,7 +602,10 @@
   </div>
   <div class="window-content" style="padding: 12px 16px; display: flex; flex-direction: column;">
     <div class="skills-top-row">
-      <div class="avatar-area"><img src="https://i.pinimg.com/originals/4d/2a/df/4d2adf0337c77dae17022573d9d2421e.gif" alt="Human Rotating"></div>
+      <div class="avatar-area">
+        <img src="https://i.pinimg.com/originals/4d/2a/df/4d2adf0337c77dae17022573d9d2421e.gif" alt="Human Rotating">
+        <div class="level-text">0xPhillipe [LvL 100]</div>
+      </div>
       <div class="chart-area"><canvas id="skillsRadarChart"></canvas></div>
     </div>
     <div class="skill-list" id="skill-list"></div>
@@ -973,10 +994,8 @@ function saveIconPositions() {
   document.querySelectorAll('.desktop-icon').forEach(icon => {
     icon.addEventListener('mousedown', function(e) {
       if (e.button!==0) return;
-      // Guarda tempo e posição para detectar clique vs arraste
       startTime=Date.now();
       startPos={x:e.clientX, y:e.clientY};
-      // Não inicia arraste imediatamente – só marca o ícone
       dragged=this;
       offX=e.clientX-this.offsetLeft;
       offY=e.clientY-this.offsetTop;
@@ -984,11 +1003,8 @@ function saveIconPositions() {
       document.querySelectorAll('.desktop-icon').forEach(i => {
         if(i!==this) i.classList.remove('selected','active');
       });
-      // Prevenir seleção de texto
       e.preventDefault();
     });
-
-    // Clique normal (sem arraste) é tratado no mouseup
   });
 
   document.addEventListener('mousemove', function(e) {
@@ -996,7 +1012,6 @@ function saveIconPositions() {
     const dx = e.clientX - startPos.x;
     const dy = e.clientY - startPos.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    // Se moveu mais de 8px, inicia o arraste
     if (dist > 8 && !isDragging) {
       isDragging = true;
       dragged.classList.add('dragging');
@@ -1019,13 +1034,11 @@ function saveIconPositions() {
     const dist = Math.sqrt(dx*dx + dy*dy);
     const dur = Date.now() - startTime;
 
-    // Se foi um clique (pouco movimento e tempo curto) -> ABRE A JANELA
     if (dist < 12 && dur < 500) {
       dragged.style.transition = '';
       const name = dragged.dataset.name;
       toggleWindow(name);
     } else if (isDragging) {
-      // Final do arraste: snap para grade
       const curL = parseInt(dragged.style.left);
       const curT = parseInt(dragged.style.top);
       const snap = snapToGrid(curL, curT);
@@ -1042,7 +1055,6 @@ function saveIconPositions() {
       }, 200);
     }
 
-    // Limpeza
     dragged.classList.remove('dragging', 'active');
     isDragging = false;
     dragged = null;
@@ -1097,7 +1109,6 @@ function openWindow(name) {
   if(!task) task=createTaskbarItem(name);
   setActiveStates(name);
   if(name==='skills') setTimeout(()=>{ animateSkillBars(); initSkillsChart(); }, 100);
-  // Flappy: redimensiona canvas ao abrir
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
       const canvas = document.getElementById('flappy-canvas');
@@ -1232,7 +1243,6 @@ function minimizeWindow(name) {
       win.style.display='none';
       minimizedWindows.add(name);
       task.classList.remove('active');
-      // Pausa apenas Snake e Flappy
       if(name==='snake' && window.__snake) window.__snake.pause();
       if(name==='flappy' && window.__flappy) window.__flappy.pause();
       if(name==='about') document.getElementById('icon-about').classList.remove('active');
@@ -1336,7 +1346,6 @@ window.addEventListener('orientationchange', ()=>{ clampWindowsToViewport(); cla
 // ===== DOUBLE CLICK E BRING TO FRONT =====
 document.querySelectorAll('.desktop-icon').forEach(icon => {
   icon.addEventListener('dblclick', function() {
-    // O double-click também deve abrir (como fallback)
     const name = this.dataset.name;
     toggleWindow(name);
   });
@@ -1383,13 +1392,19 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// ===== SKILLS =====
+// ===== SKILLS (ATUALIZADO) =====
+// Novas porcentagens
 const skillsData = [
-  { name: "Discord Management", percent: 95 }, { name: "Telegram Management", percent: 85 },
-  { name: "Team Leadership", percent: 100 }, { name: "Web3 Knowledge", percent: 75 },
-  { name: "Process Organization", percent: 85 }, { name: "Conflict Resolution", percent: 90 },
-  { name: "Social Media Management", percent: 60 }, { name: "Scam Prevention", percent: 100 }
+  { name: "Discord Management", percent: 100 },
+  { name: "Telegram Management", percent: 95 },
+  { name: "Team Leadership", percent: 100 },
+  { name: "Web3 Knowledge", percent: 90 },
+  { name: "Process Organization", percent: 100 },
+  { name: "Conflict Resolution", percent: 100 },
+  { name: "Social Media Management", percent: 75 },
+  { name: "Scam Prevention", percent: 100 }
 ];
+
 function renderSkillBars() {
   const c=document.getElementById('skill-list'); if(!c) return;
   c.innerHTML='';
@@ -1399,47 +1414,62 @@ function renderSkillBars() {
     c.appendChild(row);
   });
 }
+
 function animateSkillBars() {
   document.querySelectorAll('.skill-bar-fill').forEach(fill => {
-    const target = parseInt(fill.dataset.percent);
-    const span = fill.closest('.skill-row').querySelector('.skill-percent');
-    
-    fill.style.width = '0%';
-    if (span) span.textContent = '0%';
-
-    let current = 0;
-    // Aumentei o divisor de 30 para 60, então o step é menor
-    const step = Math.max(1, Math.floor(target / 60));
-    // Aumentei o intervalo de 20ms para 40ms
-    const interval = setInterval(() => {
-      current += step;
-      if (current >= target) {
-        current = target;
-        clearInterval(interval);
-      }
-      fill.style.width = current + '%';
-      if (span) span.textContent = current + '%';
-    }, 30); // <--- intervalo maior
+    const target=parseInt(fill.dataset.percent);
+    const span=fill.closest('.skill-row').querySelector('.skill-percent');
+    fill.style.width='0%';
+    if(span) span.textContent='0%';
+    let cur=0;
+    // Velocidade ajustada (dividindo por 60 e intervalo 40ms = ~2,4s)
+    const step=Math.max(1, Math.floor(target / 60));
+    const iv=setInterval(() => {
+      cur += step;
+      if(cur >= target) { cur = target; clearInterval(iv); }
+      fill.style.width = cur + '%';
+      if(span) span.textContent = cur + '%';
+    }, 40);
   });
 }
+
 let radarChartInstance=null;
 function initSkillsChart() {
   const ctx=document.getElementById('skillsRadarChart');
   if(!ctx || typeof Chart==='undefined') return;
   if(radarChartInstance) radarChartInstance.destroy();
+  // Novos dados para o radar (ordem: Conflict, Discord, Telegram, Social, Team, Web3)
   radarChartInstance = new Chart(ctx, {
     type:'radar',
-    data: { labels:["Conflict Resolution","Discord Management","Telegram Management","Social Media Management","Team Leadership","Web3 Knowledge"],
-            datasets:[{ label:'Proficiência', data:[90,95,85,60,100,75],
-                        backgroundColor:'rgba(54,162,235,0.2)', borderColor:'rgba(54,162,235,1)',
-                        pointBackgroundColor:'rgba(54,162,235,1)', borderWidth:2 }] },
-    options: { responsive:true, maintainAspectRatio:false,
-               animation: { duration:4000, easing:'easeOutQuart' },
-               scales: { r: { beginAtZero:true, max:100, ticks:{stepSize:20,display:false},
-                              grid:{color:'#c0c0c0'}, pointLabels:{font:{size:10,weight:'bold'},color:'#1f3a6b'} } },
-               plugins: { legend:{display:false} } }
+    data: {
+      labels: ["Conflict Resolution","Discord Management","Telegram Management","Social Media Management","Team Leadership","Web3 Knowledge"],
+      datasets: [{
+        label: 'Proficiência',
+        data: [100, 100, 95, 75, 100, 90],
+        backgroundColor: 'rgba(54,162,235,0.2)',
+        borderColor: 'rgba(54,162,235,1)',
+        pointBackgroundColor: 'rgba(54,162,235,1)',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 4000, easing: 'easeOutQuart' },
+      scales: {
+        r: {
+          beginAtZero: true,
+          max: 100,
+          ticks: { stepSize: 20, display: false },
+          grid: { color: '#c0c0c0' },
+          pointLabels: { font: { size: 10, weight: 'bold' }, color: '#1f3a6b' }
+        }
+      },
+      plugins: { legend: { display: false } }
+    }
   });
 }
+
 document.addEventListener('DOMContentLoaded', function() {
   renderSkillBars();
   const sw=document.getElementById('win-skills');
@@ -1703,8 +1733,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const bestSpan = document.getElementById('flappy-best');
 
   let W, H;
-  const GRAVITY = 0.10;      // MUITO leve
-  const FLAP = -4.5;           // Pulo suave
+  const GRAVITY = 0.10;
+  const FLAP = -4.5;
   const PIPE_WIDTH = 50;
   const PIPE_GAP = 150;
   const PIPE_SPEED = 1.0;
@@ -1940,8 +1970,6 @@ document.addEventListener('DOMContentLoaded', function() {
   overlay.addEventListener('click', flap);
 
   function startGame() {
-    // Evita reiniciar um jogo já em andamento ou já finalizado
-    // (nesses casos quem cuida disso é resumeGame()/flap()/resetGame())
     if (gameRunning || gameOver) return;
     gameRunning = true;
     loop();
@@ -1956,8 +1984,6 @@ document.addEventListener('DOMContentLoaded', function() {
     overlayScore.textContent = 'Best: ' + bestScore;
     overlay.style.display = 'flex';
     overlay.querySelector('.game-overlay-hint').textContent = 'Clique ou pressione espaço para jogar';
-    // Não inicia o loop aqui: o jogo só deve "cair" quando a janela
-    // estiver de fato aberta e visível (ver openWindow/animateRestore).
   }, 100);
 
   window.addEventListener('resize', () => { resizeCanvas(); });
@@ -1976,7 +2002,7 @@ function initAudio() {
   }
   if (audioCtx.state === 'suspended') audioCtx.resume();
 }
-function playEatSound() { /* snake */ initAudio(); if(!masterGain||isMuted) return; const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(523,audioCtx.currentTime); o.frequency.exponentialRampToValueAtTime(1046,audioCtx.currentTime+0.08); g.gain.setValueAtTime(0.15,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.15); o.connect(g); g.connect(masterGain); o.start(); o.stop(audioCtx.currentTime+0.15); }
+function playEatSound() { initAudio(); if(!masterGain||isMuted) return; const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(523,audioCtx.currentTime); o.frequency.exponentialRampToValueAtTime(1046,audioCtx.currentTime+0.08); g.gain.setValueAtTime(0.15,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.15); o.connect(g); g.connect(masterGain); o.start(); o.stop(audioCtx.currentTime+0.15); }
 function playDieSound() { initAudio(); if(!masterGain||isMuted) return; const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sawtooth'; o.frequency.setValueAtTime(300,audioCtx.currentTime); o.frequency.exponentialRampToValueAtTime(60,audioCtx.currentTime+0.4); g.gain.setValueAtTime(0.12,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.4); o.connect(g); g.connect(masterGain); o.start(); o.stop(audioCtx.currentTime+0.4); }
 function toggleMute() {
   isMuted = !isMuted;
