@@ -1401,15 +1401,25 @@ function renderSkillBars() {
 }
 function animateSkillBars() {
   document.querySelectorAll('.skill-bar-fill').forEach(fill => {
-    const target=parseInt(fill.dataset.percent);
-    const span=fill.closest('.skill-row').querySelector('.skill-percent');
-    fill.style.width='0%'; if(span) span.textContent='0%';
-    let cur=0;
-    const step=Math.max(1,Math.floor(target/30));
-    const iv=setInterval(() => {
-      cur+=step; if(cur>=target) { cur=target; clearInterval(iv); }
-      fill.style.width=cur+'%'; if(span) span.textContent=cur+'%';
-    },20);
+    const target = parseInt(fill.dataset.percent);
+    const span = fill.closest('.skill-row').querySelector('.skill-percent');
+    
+    fill.style.width = '0%';
+    if (span) span.textContent = '0%';
+
+    let current = 0;
+    // Aumentei o divisor de 30 para 60, então o step é menor
+    const step = Math.max(1, Math.floor(target / 60));
+    // Aumentei o intervalo de 20ms para 40ms
+    const interval = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(interval);
+      }
+      fill.style.width = current + '%';
+      if (span) span.textContent = current + '%';
+    }, 40); // <--- intervalo maior
   });
 }
 let radarChartInstance=null;
