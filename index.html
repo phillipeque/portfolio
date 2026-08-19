@@ -186,199 +186,42 @@
   }
   .contact-row:hover { background: #e0dfd8; }
   .contact-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-
-  /* ===== TASKBAR ===== */
   .taskbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 30px;
-    background: linear-gradient(180deg,
-      #3a7eef 0%,
-      #2b6fd6 2%,
-      #1e5ec7 6%,
-      #1a4fb0 10%,
-      #1a4a9e 92%,
-      #1a4a9e 100%
-    );
-    border-top: 1px solid #5a9eff;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    display: flex;
-    align-items: center;
-    padding: 0 0 0 3px;
-    gap: 3px;
-    z-index: 1000;
+    position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
+    background: linear-gradient(180deg, #245edb 0%, #1e4ec7 8%, #1b45b8 92%, #1941a5 100%);
+    border-top: 1px solid #3a7eef; display: flex; align-items: center; padding: 0 0 0 3px; gap: 3px; z-index: 1000; box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
   }
-
-  /* ===== BOTÃO INICIAR ===== */
   .start-btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 2px 14px 2px 6px;
+    display: flex; align-items: center; gap: 5px; padding: 2px 12px 2px 6px;
     background: linear-gradient(180deg, #6fd858 0%, #4ea233 12%, #2f8317 45%, #1e6b0d 85%, #4ea233 100%);
-    border: 1px solid #14550a;
-    border-radius: 0 12px 12px 0;
-    font-size: 15px;
-    font-weight: bold;
-    font-style: italic;
-    font-family: "Trebuchet MS", Tahoma, sans-serif;
-    letter-spacing: -0.3px;
-    color: white;
-    cursor: pointer;
-    height: 27px;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      inset 0 -4px 6px rgba(0, 0, 0, 0.2),
-      1px 1px 2px rgba(0, 0, 0, 0.4);
-    margin-right: 6px;
-    position: relative;
-    overflow: hidden;
+    border: 1px solid #14550a; border-radius: 0 9px 9px 0; font-size: 15px; font-weight: bold; font-style: italic;
+    font-family: "Trebuchet MS", Tahoma, sans-serif; letter-spacing: -0.3px; color: white; cursor: pointer;
+    height: 27px; text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -6px 8px -4px rgba(0,0,0,0.35), 1px 1px 2px rgba(0,0,0,0.4);
+    margin-right: 6px; position: relative; overflow: hidden;
   }
-  .start-btn::before {
-    content: "";
-    position: absolute;
-    left: -4px;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, #4ea233 0%, #2f8317 45%, #1e6b0d 85%, #4ea233 100%);
-    border-radius: 9px 0 0 9px;
-  }
-  .start-btn::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 1px;
-    height: 45%;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.05) 100%);
-    border-radius: 8px 8px 0 0;
-    pointer-events: none;
-  }
-  .start-btn:hover {
-    background: linear-gradient(180deg, #82e86a 0%, #5cb045 12%, #38951f 45%, #257c11 85%, #5cb045 100%);
-  }
-  .start-btn.open {
-    background: linear-gradient(180deg, #1e6b0d 0%, #2f8317 30%, #4ea233 100%);
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.45);
-  }
-  .start-btn span {
-    position: relative;
-    top: -1px;
-  }
-  .start-btn img {
-    width: 20px;
-    height: 20px;
-    image-rendering: pixelated;
-    position: relative;
-    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
-  }
-
-  /* ===== DIVISORES ===== */
-  .taskbar-divider {
-    width: 2px;
-    height: 24px;
-    background: linear-gradient(180deg, #1e4ec7 0%, #1941a5 100%);
-    border-left: 1px solid #3a7eef;
-    border-right: 1px solid #15367d;
-    margin: 0 4px;
-  }
-
-  /* ===== ITENS DA TASKBAR (programas abertos) ===== */
+  .start-btn::before { content: ""; position: absolute; left: -4px; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, #4ea233 0%, #2f8317 45%, #1e6b0d 85%, #4ea233 100%); border-radius: 9px 0 0 9px; }
+  .start-btn::after { content: ""; position: absolute; left: 0; right: 0; top: 1px; height: 45%; background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.05) 100%); border-radius: 8px 8px 0 0; pointer-events: none; }
+  .start-btn:hover { background: linear-gradient(180deg, #82e86a 0%, #5cb045 12%, #38951f 45%, #257c11 85%, #5cb045 100%); }
+  .start-btn.open { background: linear-gradient(180deg, #1e6b0d 0%, #2f8317 30%, #4ea233 100%); box-shadow: inset 0 2px 5px rgba(0,0,0,0.45); }
+  .start-btn span { position: relative; top: -1px; }
+  .start-btn img { width: 20px; height: 20px; image-rendering: pixelated; position: relative; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3)); }
+  .taskbar-divider { width: 2px; height: 24px; background: linear-gradient(180deg, #1e4ec7 0%, #1941a5 100%); border-left: 1px solid #3a7eef; border-right: 1px solid #15367d; margin: 0 4px; }
   .taskbar-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 8px;
+    display: flex; align-items: center; gap: 6px; padding: 2px 8px;
     background: linear-gradient(180deg, #3f8cf3 0%, #2569e0 6%, #1c53c4 94%, #1a4bb0 100%);
-    border: 1px solid #0f3a94;
-    border-radius: 3px;
-    font-size: 11px;
-    font-family: Tahoma, "Segoe UI", sans-serif;
-    color: white;
-    max-width: 160px;
-    min-width: 40px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-    height: 22px;
-    flex: 1;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
-    transition: background 0.08s ease;
-    position: relative;
+    border: 1px solid #0f3a94; border-radius: 3px; font-size: 11px; font-family: Tahoma, "Segoe UI", sans-serif;
+    color: white; max-width: 160px; min-width: 40px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    cursor: pointer; height: 22px; flex: 1; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.15);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.35); transition: background 0.08s ease; position: relative;
   }
-  .taskbar-item:hover {
-    background: linear-gradient(180deg, #5ba0f6 0%, #3878e8 6%, #2560d0 94%, #1a4bb0 100%);
-  }
+  .taskbar-item:hover { background: linear-gradient(180deg, #5ba0f6 0%, #3878e8 6%, #2560d0 94%, #1a4bb0 100%); }
   .taskbar-item.active {
     background: linear-gradient(180deg, #12408f 0%, #1c53c4 6%, #2a6ce8 94%, #3f8cf3 100%);
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.45);
-    border-color: #0a2c73;
-    font-weight: bold;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.45); border-color: #0a2c73; font-weight: bold;
   }
-  .taskbar-item img {
-    width: 16px;
-    height: 16px;
-    image-rendering: pixelated;
-    flex-shrink: 0;
-  }
-
-  /* ===== RELÓGIO ===== */
-  .clock-tray {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: auto;
-    padding: 0 6px 0 12px;
-    background: linear-gradient(180deg, #1546a8 0%, #1c53c4 100%);
-    border-left: 1px solid #3a7eef;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-    height: 30px;
-  }
-  .clock {
-    background: #0a2a5a;
-    padding: 0 8px;
-    border-radius: 2px;
-    color: #a0d0ff;
-    font-size: 11px;
-    font-family: Tahoma, sans-serif;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 56px;
-  }
-
-  /* ===== VOLUME ===== */
-  .vol-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-    position: relative;
-    border-radius: 2px;
-    transition: background 0.1s;
-  }
-  .vol-toggle:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-  .vol-toggle.muted {
-    opacity: 0.5;
-  }
-  .vol-toggle img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-  }
+  .taskbar-item img { width: 16px; height: 16px; image-rendering: pixelated; flex-shrink: 0; }
+  .clock { padding: 3px 10px 3px 4px; font-size: 11px; font-family: Tahoma, sans-serif; color: white; min-width: 56px; text-align: center; text-shadow: 0 1px 1px rgba(0,0,0,0.3); height: 30px; display: flex; align-items: center; justify-content: center; }
 
   /* ===== REMOVIDO O DESKTOP PET ===== */
 
