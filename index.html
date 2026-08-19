@@ -1155,6 +1155,7 @@ function openWindow(name) {
       initSkillsChart();
     }, 100);
   }
+  // Flappy: apenas redimensiona, NÃO inicia o jogo automaticamente
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
       const canvas = document.getElementById('flappy-canvas');
@@ -1164,7 +1165,7 @@ function openWindow(name) {
         canvas.height = rect.height || 400;
         if (window.__flappy.resize) window.__flappy.resize();
       }
-      if (window.__flappy.start) window.__flappy.start();
+      // NÃO chama start() aqui
     }, 100);
   }
 }
@@ -1255,7 +1256,7 @@ function animateRestore(name) {
             canvas.height = rect.height || 400;
             if (window.__flappy.resize) window.__flappy.resize();
           }
-          if (window.__flappy.start) window.__flappy.start();
+          // NÃO inicia automaticamente
         }, 100);
       }
     }
@@ -2038,7 +2039,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 })();
 
 // ============================================================
-//  JOGO FLAPPY BIRD (COM SONS)
+//  JOGO FLAPPY BIRD (CORRIGIDO)
 // ============================================================
 (function initFlappy() {
   const win = document.getElementById('win-flappy');
@@ -2080,7 +2081,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     }
     draw();
   }
-
   window.__flappyResize = resizeCanvas;
 
   function resetGame() {
@@ -2139,6 +2139,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     overlayTitle.textContent = '💀 GAME OVER';
     overlayScore.textContent = 'Score: ' + score + '  |  Best: ' + bestScore;
     overlay.style.display = 'flex';
+    overlay.querySelector('.game-overlay-hint').textContent = 'Click to restart';
   }
 
   function draw() {
@@ -2223,7 +2224,11 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   }
 
   function loop() {
-    if (!gameRunning && !gameOver) return;
+    if (!gameRunning && !gameOver) {
+      draw();
+      animId = requestAnimationFrame(loop);
+      return;
+    }
     if (!isPaused && !gameOver) {
       update();
       draw();
@@ -2235,7 +2240,10 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 
   function flap() {
     if (gameOver) { resetGame(); return; }
-    if (!gameRunning) return;
+    if (!gameRunning) {
+      resetGame(); // inicia o jogo
+      return;
+    }
     if (isPaused) { resumeGame(); return; }
     bird.vy = FLAP;
     playFlapSound();
@@ -2255,7 +2263,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     if (animId) cancelAnimationFrame(animId); animId = null;
   }
 
-  // Sons do Flappy
+  // Sons
   function playFlapSound() {
     initAudio(); if (isMuted) return;
     const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -2279,31 +2287,34 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 
   window.__flappy = { pause: pauseGame, resume: resumeGame, stop: stopGame, resize: resizeCanvas };
 
+  // Eventos
   canvas.addEventListener('click', flap);
   canvas.addEventListener('touchstart', function(e) { e.preventDefault(); flap(); }, {passive:false});
+  overlay.addEventListener('click', flap);
   document.addEventListener('keydown', function(e) {
     if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
       const w = document.getElementById('win-flappy');
       if (w && w.style.display !== 'none') { e.preventDefault(); flap(); }
     }
   });
-  overlay.addEventListener('click', flap);
 
-  function startGame() {
-    if (gameRunning || gameOver) return;
-    gameRunning = true;
-    loop();
-  }
-  window.__flappy.start = startGame;
-
+  // Inicialização: jogo parado com overlay
   setTimeout(() => {
     resizeCanvas();
     bestSpan.textContent = bestScore;
     bird.y = canvas.height / 2 || 200;
+    gameRunning = false;
+    gameOver = false;
+    isPaused = false;
+    pipes = [];
+    score = 0;
+    scoreSpan.textContent = '0';
     overlayTitle.textContent = '🕹️ FLAPPY BIRD';
     overlayScore.textContent = 'Best: ' + bestScore;
     overlay.style.display = 'flex';
     overlay.querySelector('.game-overlay-hint').textContent = 'Click or press space to play';
+    draw();
+    loop(); // loop apenas para desenho, sem atualizações (gameRunning=false)
   }, 100);
 
   window.addEventListener('resize', () => { resizeCanvas(); });
