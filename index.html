@@ -189,10 +189,12 @@
   /* ===== TASKBAR ===== */
 .taskbar {
     position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
-    background: linear-gradient(180deg, #245edb 0%, #1e4ec7 8%, #1b45b8 92%, #1941a5 100%);
-    border-top: 1px solid #3a7eef; display: flex; align-items: center; 
+    /* CORRIGIDO: Gradiente azul vibrante estilo Windows XP */
+    background: linear-gradient(180deg, #5a9cf8 0%, #2a6bdf 15%, #1e50c8 85%, #15368a 100%);
+    border-top: 1px solid #8fc0ff; /* Borda superior clara para o brilho */
+    display: flex; align-items: center; 
     padding: 0; 
-    gap: 4px; /* <--- AQUI: Distância de 4px (metade do original) */
+    gap: 4px; 
     z-index: 1000; box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
 }
 .start-btn {
