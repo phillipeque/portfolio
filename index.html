@@ -133,11 +133,12 @@
     display: flex; align-items: center; justify-content: space-evenly;
     height: 160px; background: transparent; margin-bottom: 0; padding: 10px 15px; flex-shrink: 0;
   }
+  /* ===== AJUSTE DO GIF (50% MAIOR) ===== */
   .avatar-area {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 140px;
+    width: 210px; /* Antes: 140px */
     height: 100%;
     justify-content: center;
     position: relative; z-index: 1;
@@ -145,7 +146,7 @@
   }
   .avatar-area img {
     max-width: 100%;
-    max-height: 100px;
+    max-height: 150px; /* Antes: 100px */
     object-fit: contain;
     border-radius: 6px;
   }
@@ -223,7 +224,7 @@
     color: white; max-width: 160px; min-width: 40px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     cursor: pointer; height: 22px; flex: 1; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.15);
     text-shadow: 0 1px 1px rgba(0,0,0,0.35); transition: background 0.08s ease; position: relative;
-    margin-left: 12px; /* Espaço entre o Start e o primeiro item */
+    margin-left: 12px;
   }
   .taskbar-item:hover { background: linear-gradient(180deg, #5ba0f6 0%, #3878e8 6%, #2560d0 94%, #1a4bb0 100%); }
   .taskbar-item.active {
@@ -239,9 +240,8 @@
   /* ===== BANDEJA DO SISTEMA (CLOCK-TRAY) ===== */
 .clock-tray {
     display: flex; align-items: center; gap: 6px; margin-left: auto; padding: 0 4px 0 8px;
-    /* CORREÇÃO: Azul bem claro e vibrante, contrastando com a taskbar escura */
     background: linear-gradient(180deg, #7cb5ff 0%, #4a9eff 15%, #2a6bdf 85%, #245edb 100%);
-    border-left: 1px solid #a0c8ff; /* Borda esquerda bem clarinha */
+    border-left: 1px solid #a0c8ff;
     box-shadow: inset 1px 0 2px rgba(0,0,0,0.25); height: 30px;
 }
   .vol-toggle { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; cursor: pointer; position: relative; border-radius: 2px; transition: background 0.1s; }
@@ -370,8 +370,9 @@
     .skill-name { white-space: normal; }
     .start-menu { width: 95vw; left: 2.5vw; }
     .start-menu-body { height: min(360px, calc(100vh - 200px)); height: min(360px, calc(100dvh - 200px)); }
-    .avatar-area { width: 80px; height: 100px; }
-    .avatar-area img { transform: scale(0.8); margin-left: -5px; }
+    /* ===== AJUSTE DO GIF NO MOBILE (50% MAIOR) ===== */
+    .avatar-area { width: 120px; height: 150px; }
+    .avatar-area img { transform: scale(1.2); margin-left: -5px; }
     .chart-area { width: 200px; }
     .win-btn { width: 26px; height: 26px; }
   }
