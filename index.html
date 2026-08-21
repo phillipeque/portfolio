@@ -1483,18 +1483,19 @@ function animateSkillBars() {
     fill.style.width = '0%';
     if (span) span.textContent = '0%';
 
-    // Atraso progressivo: primeira barra começa em 100ms, as próximas +60ms cada
-    const delay = 100 + index * 60;
+    // Meio termo: delay inicial 150ms, +80ms entre barras
+    const delay = 150 + index * 80;
 
     setTimeout(() => {
       let cur = 0;
-      const step = Math.max(1, Math.floor(target / 20)); // 20 passos (mais rápido)
+      // Divisor 30 = barra enche em ~1 segundo
+      const step = Math.max(1, Math.floor(target / 30));
       const iv = setInterval(() => {
         cur += step;
         if (cur >= target) { cur = target; clearInterval(iv); }
         fill.style.width = cur + '%';
         if (span) span.textContent = cur + '%';
-      }, 15); // intervalo de 15ms -> animação ~300ms
+      }, 35); // intervalo de 35ms
     }, delay);
   });
 }
