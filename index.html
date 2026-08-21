@@ -1141,7 +1141,7 @@ function closeWindow(name) {
   if (name==='snake' && window.__snake) window.__snake.stop();
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
-  // 👇 NOVO: Reseta animações de Skills ao fechar
+  // Reseta animações de Skills ao fechar
   if (name === 'skills') {
     skillsAnimated = false;
     skillsChartAnimated = false;
@@ -1510,13 +1510,14 @@ function initSkillsChart() {
   const shouldAnimate = !skillsChartAnimated;
   skillsChartAnimated = true;
   
+  // Cria o gráfico com dados zerados
   radarChartInstance = new Chart(ctx, {
     type: 'radar',
     data: {
       labels: ["Conflict Resolution", "Discord Management", "Telegram Management", "Social Media Management", "Team Leadership", "Web3 Knowledge"],
       datasets: [{
         label: 'Proficiency',
-        data: [100, 100, 95, 75, 100, 90],
+        data: [0, 0, 0, 0, 0, 0],
         backgroundColor: 'rgba(54,162,235,0.2)',
         borderColor: 'rgba(54,162,235,1)',
         pointBackgroundColor: 'rgba(54,162,235,1)',
@@ -1539,6 +1540,20 @@ function initSkillsChart() {
       plugins: { legend: { display: false } }
     }
   });
+
+  // Se deve animar, atualiza os dados reais após um pequeno delay
+  if (shouldAnimate) {
+    setTimeout(() => {
+      if (radarChartInstance) {
+        radarChartInstance.data.datasets[0].data = [100, 100, 95, 75, 100, 90];
+        radarChartInstance.update();
+      }
+    }, 50);
+  } else {
+    // Se não animar, define os dados reais imediatamente
+    radarChartInstance.data.datasets[0].data = [100, 100, 95, 75, 100, 90];
+    radarChartInstance.update();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
