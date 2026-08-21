@@ -189,24 +189,28 @@
   .taskbar {
     position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
     background: linear-gradient(180deg, #245edb 0%, #1e4ec7 8%, #1b45b8 92%, #1941a5 100%);
-    border-top: 1px solid #3a7eef; display: flex; align-items: center; padding: 0 0 0 3px; gap: 3px; z-index: 1000; box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
+    border-top: 1px solid #3a7eef; display: flex; align-items: center; 
+    /* ALTERAÇÃO: Removido padding e gap para encostar no canto */
+    padding: 0; gap: 0; z-index: 1000; box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
   }
   .start-btn {
-    display: flex; align-items: center; gap: 5px; padding: 2px 12px 2px 6px;
-    background: linear-gradient(180deg, #6fd858 0%, #4ea233 12%, #2f8317 45%, #1e6b0d 85%, #4ea233 100%);
-    border: 1px solid #14550a; border-radius: 0 9px 9px 0; font-size: 15px; font-weight: bold; font-style: italic;
-    font-family: "Trebuchet MS", Tahoma, sans-serif; letter-spacing: -0.3px; color: white; cursor: pointer;
-    height: 27px; text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -6px 8px -4px rgba(0,0,0,0.35), 1px 1px 2px rgba(0,0,0,0.4);
-    margin-right: 6px; position: relative; overflow: hidden;
+    /* ALTERAÇÃO: Estilos zerados para a imagem PNG aparecer sozinha */
+    display: flex; align-items: center; justify-content: flex-start;
+    background: none; border: none; box-shadow: none; border-radius: 0;
+    padding: 0; margin: 0; height: 30px; cursor: pointer;
+    position: relative; overflow: hidden;
   }
-  .start-btn::before { content: ""; position: absolute; left: -4px; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, #4ea233 0%, #2f8317 45%, #1e6b0d 85%, #4ea233 100%); border-radius: 9px 0 0 9px; }
-  .start-btn::after { content: ""; position: absolute; left: 0; right: 0; top: 1px; height: 45%; background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.05) 100%); border-radius: 8px 8px 0 0; pointer-events: none; }
-  .start-btn:hover { background: linear-gradient(180deg, #82e86a 0%, #5cb045 12%, #38951f 45%, #257c11 85%, #5cb045 100%); }
-  .start-btn.open { background: linear-gradient(180deg, #1e6b0d 0%, #2f8317 30%, #4ea233 100%); box-shadow: inset 0 2px 5px rgba(0,0,0,0.45); }
-  .start-btn span { position: relative; top: -1px; }
-  .start-btn img { width: 20px; height: 20px; image-rendering: pixelated; position: relative; filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3)); }
-  .taskbar-divider { width: 2px; height: 24px; background: linear-gradient(180deg, #1e4ec7 0%, #1941a5 100%); border-left: 1px solid #3a7eef; border-right: 1px solid #15367d; margin: 0 4px; }
+  /* ALTERAÇÃO: Removidos os pseudo-elementos que criavam o visual antigo */
+  .start-btn::before { display: none; }
+  .start-btn::after { display: none; }
+  .start-btn:hover { background: none; }
+  .start-btn.open { background: none; box-shadow: none; }
+  .start-btn span { display: none; } /* Esconde o texto "start" se existir */
+  .start-btn img { height: 30px; width: auto; display: block; filter: none; position: static; }
+
+  /* ALTERAÇÃO: Oculta a linha divisória */
+  .taskbar-divider { display: none; }
+
   .taskbar-item {
     display: flex; align-items: center; gap: 6px; padding: 2px 8px;
     background: linear-gradient(180deg, #3f8cf3 0%, #2569e0 6%, #1c53c4 94%, #1a4bb0 100%);
@@ -222,9 +226,92 @@
   }
   .taskbar-item img { width: 16px; height: 16px; image-rendering: pixelated; flex-shrink: 0; }
   .clock { padding: 3px 10px 3px 4px; font-size: 11px; font-family: Tahoma, sans-serif; color: white; min-width: 56px; text-align: center; text-shadow: 0 1px 1px rgba(0,0,0,0.3); height: 30px; display: flex; align-items: center; justify-content: center; }
+  .clock-tray { display: flex; align-items: center; gap: 6px; margin-left: auto; padding: 0 4px 0 8px; background: linear-gradient(180deg, #1546a8 0%, #1c53c4 100%); border-left: none; box-shadow: inset 1px 0 2px rgba(0,0,0,0.25); height: 30px; }
+  .vol-toggle { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; cursor: pointer; position: relative; border-radius: 2px; transition: background 0.1s; }
+  .vol-toggle:hover { background: rgba(255,255,255,0.15); }
+  .vol-toggle.muted { opacity: 0.5; }
+  .vol-toggle img { width: 20px; height: 20px; object-fit: contain; }
 
-  /* ===== REMOVIDO O DESKTOP PET ===== */
+  /* ===== CONTEXT MENU ===== */
+  #context-menu {
+    position: fixed; display: none; background: #ece9d8;
+    border: 1px solid #0054e3; box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    border-radius: 3px; z-index: 99999; padding: 2px; width: 200px;
+    font-family: Tahoma, sans-serif; font-size: 12px; color: #000;
+  }
+  .context-item { padding: 4px 12px; cursor: default; position: relative; color: #000; }
+  .context-item:hover { background: #0058e6; color: white; }
+  .context-item.disabled { color: #9e9a90; cursor: default; pointer-events: none; }
+  .context-item.disabled:hover { background: transparent; color: #9e9a90; }
+  .context-divider { height: 1px; background: #a0a0a0; margin: 2px 4px; }
+  .context-submenu-parent:after { content: "▶"; position: absolute; right: 6px; font-size: 8px; color: #000; top: 6px; }
+  .context-submenu-parent:hover:after { color: white; }
+  .context-submenu { display: none; position: absolute; left: 100%; top: -2px; background: #ece9d8; border: 1px solid #0054e3; box-shadow: 2px 2px 8px rgba(0,0,0,0.3); border-radius: 3px; width: 160px; z-index: 99999; padding: 2px; }
+  .context-submenu-parent:hover .context-submenu { display: block; }
+  .context-submenu .context-item { font-size: 12px; color: #000; }
+  .context-submenu .context-item:hover { background: #0058e6; color: white; }
+  .context-submenu .context-item.disabled { color: #9e9a90; pointer-events: none; }
+  .context-submenu .context-item.disabled:hover { background: transparent; color: #9e9a90; }
 
+  /* ===== ESTILOS DOS JOGOS ===== */
+  .game-overlay { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; background: rgba(0,0,0,0.75); color: #fff; font-family: 'Courier New', monospace; text-align: center; cursor: pointer; z-index: 20; }
+  .game-overlay.visible { display: flex; }
+  .game-overlay-title { font-size: 28px; font-weight: bold; text-shadow: 0 0 12px #00aaff; }
+  .game-overlay-score { font-size: 14px; color: #c8d8ff; margin-top: 4px; }
+  .game-overlay-hint { font-size: 13px; color: #8ab0d0; margin-top: 12px; }
+
+  /* CAMPO MINADO */
+  #win-minesweeper .ms-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 12px; background: #d4d0c8; border-bottom: 1px solid #a09c94; font-size: 14px; font-weight: bold; font-family: 'Courier New', monospace; }
+  .ms-header span { min-width: 40px; text-align: center; background: #1a1a1a; color: #ff0000; padding: 0 6px; border-radius: 2px; }
+  .ms-header .ms-reset { font-size: 20px; cursor: pointer; background: #ece9d8; border: 1px solid #808080; padding: 0 8px; border-radius: 2px; line-height: 1.2; user-select: none; }
+  .ms-header .ms-reset:hover { background: #f5f3ec; }
+  .ms-grid { display: grid; gap: 1px; background: #808080; padding: 2px; margin: 0 auto; width: fit-content; }
+  .ms-cell { width: 28px; height: 28px; background: #c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; cursor: pointer; user-select: none; }
+  .ms-cell.revealed { background: #d4d0c8; border: 1px solid #808080; }
+  .ms-cell.flagged { background: #c0c0c0; }
+  .ms-cell.mine-exploded { background: #ff0000; }
+  .ms-cell.mine-shown { background: #d4d0c8; border: 1px solid #808080; }
+
+  /* FLAPPY BIRD */
+  #win-flappy .flappy-game-wrap { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; background: #4a90d9; overflow: hidden; min-height: 200px; }
+  #flappy-canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; background: #4a90d9; }
+
+  /* BLOCO DE NOTAS */
+  #win-notepad .notepad-menubar { background: #ece9d8; border-bottom: 1px solid #a0a0a0; padding: 2px 4px; display: flex; gap: 2px; flex-shrink: 0; user-select: none; }
+  #win-notepad .notepad-menubar .menu-item { padding: 2px 6px; cursor: default; font-size: 12px; position: relative; border: 1px solid transparent; }
+  #win-notepad .notepad-menubar .menu-item:hover { background: #0058e6; color: white; border-color: #0045b5; }
+  #win-notepad .notepad-menubar .menu-item .dropdown { display: none; position: absolute; top: 100%; left: 0; background: #ece9d8; border: 1px solid #a0a0a0; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); min-width: 180px; padding: 2px 0; z-index: 999; }
+  #win-notepad .notepad-menubar .menu-item:hover .dropdown { display: block; }
+  #win-notepad .notepad-menubar .dropdown-item { padding: 2px 18px 2px 24px; font-size: 12px; cursor: default; white-space: nowrap; color: #000; }
+  #win-notepad .notepad-menubar .dropdown-item:hover { background: #0058e6; color: white; }
+  #win-notepad .notepad-menubar .dropdown-item.disabled { color: #9e9a90; pointer-events: none; }
+  #win-notepad textarea { width: 100%; height: 100%; border: none; padding: 4px; font-family: 'Courier New', monospace; font-size: 13px; background: #ffffff; color: #000; resize: none; outline: none; box-sizing: border-box; flex: 1; }
+  #win-notepad textarea:focus { outline: none; }
+
+  /* ===== TELA DE LOGIN ===== */
+  #xp-login-screen { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%); font-family: Tahoma, "Segoe UI", sans-serif; transition: opacity 0.6s ease, transform 0.6s ease; }
+  #xp-login-screen.hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
+  .login-header-bar { background: #062348; height: 30px; border-bottom: 1px solid #1b4682; }
+  .login-body { flex: 1; display: flex; align-items: center; justify-content: center; padding: 0 40px; }
+  .login-left { display: flex; flex-direction: column; align-items: center; margin-right: 80px; }
+  .xp-logo-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
+  .xp-logo-img { max-width: 260px; height: auto; display: block; }
+  .login-instruction { margin-top: 4px; font-size: 18px; color: #f2f8ff; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); letter-spacing: 0.5px; text-align: center; }
+  .login-divider { width: 1px; height: 55%; background: rgba(255,255,255,0.25); box-shadow: inset -1px 0 0 rgba(0,0,0,0.15); }
+  .login-right { display: flex; align-items: center; margin-left: 80px; }
+  .user-button { background: linear-gradient(135deg, rgba(0, 80, 200, 0.4), rgba(0, 150, 255, 0.2)); border: 1px solid #a2c2f7; border-radius: 12px; padding: 12px 30px 12px 12px; display: flex; align-items: center; gap: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3); cursor: pointer; transition: background 0.2s ease; }
+  .user-button:hover { background: linear-gradient(135deg, rgba(0, 80, 200, 0.6), rgba(0, 150, 255, 0.3)); border-color: #c6dbff; }
+  .user-avatar { width: 78px; height: 78px; background: #f2efe5; border: 3px solid #e89a3c; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: inset 0 0 0 1px #ad7a2a; }
+  .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .user-name { font-size: 26px; font-family: Tahoma, sans-serif; color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.7); letter-spacing: 0.5px; }
+  .login-footer { position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+  .turn-off-btn { display: flex; align-items: center; gap: 12px; cursor: pointer; color: #f2f8ff; font-size: 13px; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); }
+  .turn-off-btn:hover { text-decoration: underline; }
+  .power-icon-wrapper { background: #e87a2e; border-radius: 4px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3); }
+  .power-icon-wrapper svg { width: 18px; height: 18px; }
+  .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
+
+  /* ===== START MENU ===== */
   .start-menu { position: fixed; bottom: 30px; left: 0; width: 400px; background: #fff; border: 2px solid #0831d9; border-bottom: none; border-radius: 9px 9px 0 0; display: none; flex-direction: column; z-index: 1001; box-shadow: 3px -3px 14px rgba(0,0,0,0.4); overflow: hidden; }
   .start-menu.open { display: flex; }
   .start-menu-header { background: linear-gradient(180deg, #3f8cf3 0%, #1c53c4 45%, #0f3fae 100%); padding: 6px; display: flex; align-items: center; gap: 10px; position: relative; height: 54px; }
@@ -254,24 +341,17 @@
   .shutdown-btn { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: linear-gradient(180deg, #4d87e8 0%, #2b63d9 100%); border: 1px solid #14367d; border-radius: 4px; color: white; font-size: 12px; font-weight: bold; cursor: pointer; text-shadow: 0 1px 1px rgba(0,0,0,0.3); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35); }
   .shutdown-btn img { width: 20px; height: 20px; }
   .shutdown-btn:hover { background: linear-gradient(180deg, #6fa2f5 0%, #3f78e8 100%); }
+
+  /* ===== MEDIA QUERIES ===== */
   @media (max-width: 768px) {
-    .window {
-      min-width: 92vw; max-width: 95vw;
-      left: 2.5vw !important; top: 36px !important;
-      max-height: calc(100vh - 80px);
-      max-height: calc(100dvh - 80px);
-    }
-    .window .window-content {
-      max-height: calc(100vh - 80px - 30px);
-      max-height: calc(100dvh - 80px - 30px);
-    }
+    .window { min-width: 92vw; max-width: 95vw; left: 2.5vw !important; top: 36px !important; max-height: calc(100vh - 80px); max-height: calc(100dvh - 80px); }
+    .window .window-content { max-height: calc(100vh - 80px - 30px); max-height: calc(100dvh - 80px - 30px); }
     .desktop-icons { display: none; }
     .about-layout { flex-direction: column; }
     .about-photo { width: 90px; height: 90px; margin: 0 auto; }
     .skill-name { white-space: normal; }
     .start-menu { width: 95vw; left: 2.5vw; }
-    .start-menu-body { height: min(360px, calc(100vh - 200px)); }
-    .start-menu-body { height: min(360px, calc(100dvh - 200px)); }
+    .start-menu-body { height: min(360px, calc(100vh - 200px)); height: min(360px, calc(100dvh - 200px)); }
     .avatar-area { width: 80px; height: 100px; }
     .avatar-area img { transform: scale(0.8); margin-left: -5px; }
     .chart-area { width: 200px; }
@@ -281,232 +361,6 @@
   html, body { height: 100vh; height: 100dvh; }
   #selection-box { position: fixed; border: 1px dotted #316AC5; background: rgba(49, 106, 197, 0.15); pointer-events: none; z-index: 5; display: none; }
   .vol-toggle svg { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3)); }
-  .clock-tray { display: flex; align-items: center; gap: 6px; margin-left: auto; padding: 0 4px 0 8px; background: linear-gradient(180deg, #1546a8 0%, #1c53c4 100%); border-left: 1px solid #3a7eef; box-shadow: inset 1px 0 2px rgba(0,0,0,0.25); height: 30px; }
-  .vol-toggle { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; cursor: pointer; position: relative; border-radius: 2px; transition: background 0.1s; }
-  .vol-toggle:hover { background: rgba(255,255,255,0.15); }
-  .vol-toggle.muted { opacity: 0.5; }
-  .vol-toggle img { width: 20px; height: 20px; object-fit: contain; }
-
-  #xp-login-screen {
-    position: fixed; inset: 0; z-index: 99999;
-    display: flex; flex-direction: column;
-    background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%);
-    font-family: Tahoma, "Segoe UI", sans-serif;
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  #xp-login-screen.hidden {
-    opacity: 0; transform: scale(1.05); pointer-events: none;
-  }
-  .login-header-bar {
-    background: #062348; height: 30px; border-bottom: 1px solid #1b4682;
-  }
-  .login-body {
-    flex: 1; display: flex; align-items: center; justify-content: center; padding: 0 40px;
-  }
-  .login-left { display: flex; flex-direction: column; align-items: center; margin-right: 80px; }
-  .xp-logo-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
-  .xp-logo-img { max-width: 260px; height: auto; display: block; }
-  .login-instruction {
-    margin-top: 4px; font-size: 18px; color: #f2f8ff;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.4); letter-spacing: 0.5px;
-    text-align: center;
-  }
-  .login-divider {
-    width: 1px; height: 55%; background: rgba(255,255,255,0.25);
-    box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
-  }
-  .login-right { display: flex; align-items: center; margin-left: 80px; }
-  .user-button {
-    background: linear-gradient(135deg, rgba(0, 80, 200, 0.4), rgba(0, 150, 255, 0.2));
-    border: 1px solid #a2c2f7;
-    border-radius: 12px; padding: 12px 30px 12px 12px;
-    display: flex; align-items: center; gap: 18px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3);
-    cursor: pointer; transition: background 0.2s ease;
-  }
-  .user-button:hover { background: linear-gradient(135deg, rgba(0, 80, 200, 0.6), rgba(0, 150, 255, 0.3)); border-color: #c6dbff; }
-  .user-avatar {
-    width: 78px; height: 78px; background: #f2efe5;
-    border: 3px solid #e89a3c; border-radius: 6px;
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-    box-shadow: inset 0 0 0 1px #ad7a2a;
-  }
-  .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .user-name {
-    font-size: 26px; font-family: Tahoma, sans-serif; color: white;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.7); letter-spacing: 0.5px;
-  }
-  .login-footer {
-    position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;
-    background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.1);
-    display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
-  }
-  .turn-off-btn {
-    display: flex; align-items: center; gap: 12px; cursor: pointer; color: #f2f8ff;
-    font-size: 13px; text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
-  }
-  .turn-off-btn:hover { text-decoration: underline; }
-  .power-icon-wrapper {
-    background: #e87a2e; border-radius: 4px; padding: 2px; display: flex; align-items: center; justify-content: center;
-    width: 28px; height: 28px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
-  }
-  .power-icon-wrapper svg { width: 18px; height: 18px; }
-  .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
-
-  /* ===== CONTEXT MENU ===== */
-  #context-menu {
-    position: fixed; display: none; background: #ece9d8;
-    border: 1px solid #0054e3; box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-    border-radius: 3px; z-index: 99999; padding: 2px; width: 200px;
-    font-family: Tahoma, sans-serif; font-size: 12px; color: #000;
-  }
-  .context-item { padding: 4px 12px; cursor: default; position: relative; color: #000; }
-  .context-item:hover { background: #0058e6; color: white; }
-  .context-item.disabled { 
-    color: #9e9a90; 
-    cursor: default; 
-    pointer-events: none; /* Impede clique e hover */ 
-  }
-  .context-item.disabled:hover { background: transparent; color: #9e9a90; }
-  .context-divider { height: 1px; background: #a0a0a0; margin: 2px 4px; }
-  .context-submenu-parent:after { content: "▶"; position: absolute; right: 6px; font-size: 8px; color: #000; top: 6px; }
-  .context-submenu-parent:hover:after { color: white; }
-  .context-submenu {
-    display: none; position: absolute; left: 100%; top: -2px;
-    background: #ece9d8; border: 1px solid #0054e3; box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-    border-radius: 3px; width: 160px; z-index: 99999; padding: 2px;
-  }
-  .context-submenu-parent:hover .context-submenu { display: block; }
-  .context-submenu .context-item { font-size: 12px; color: #000; }
-  .context-submenu .context-item:hover { background: #0058e6; color: white; }
-  .context-submenu .context-item.disabled { 
-    color: #9e9a90; 
-    pointer-events: none; 
-  }
-  .context-submenu .context-item.disabled:hover { background: transparent; color: #9e9a90; }
-
-  /* ===== ESTILOS DOS JOGOS ===== */
-  .game-overlay {
-    position: absolute; inset: 0; display: none;
-    align-items: center; justify-content: center; flex-direction: column;
-    background: rgba(0,0,0,0.75); color: #fff; font-family: 'Courier New', monospace;
-    text-align: center; cursor: pointer; z-index: 20;
-  }
-  .game-overlay.visible { display: flex; }
-  .game-overlay-title { font-size: 28px; font-weight: bold; text-shadow: 0 0 12px #00aaff; }
-  .game-overlay-score { font-size: 14px; color: #c8d8ff; margin-top: 4px; }
-  .game-overlay-hint { font-size: 13px; color: #8ab0d0; margin-top: 12px; }
-
-  /* CAMPO MINADO */
-  #win-minesweeper .ms-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 4px 12px; background: #d4d0c8; border-bottom: 1px solid #a09c94;
-    font-size: 14px; font-weight: bold; font-family: 'Courier New', monospace;
-  }
-  .ms-header span { min-width: 40px; text-align: center; background: #1a1a1a; color: #ff0000; padding: 0 6px; border-radius: 2px; }
-  .ms-header .ms-reset {
-    font-size: 20px; cursor: pointer; background: #ece9d8; border: 1px solid #808080;
-    padding: 0 8px; border-radius: 2px; line-height: 1.2; user-select: none;
-  }
-  .ms-header .ms-reset:hover { background: #f5f3ec; }
-  .ms-grid {
-    display: grid; gap: 1px; background: #808080; padding: 2px;
-    margin: 0 auto; width: fit-content;
-  }
-  .ms-cell {
-    width: 28px; height: 28px; background: #c0c0c0; border: 2px solid;
-    border-color: #fff #808080 #808080 #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: bold; font-size: 14px; cursor: pointer; user-select: none;
-  }
-  .ms-cell.revealed {
-    background: #d4d0c8; border: 1px solid #808080;
-  }
-  .ms-cell.flagged { background: #c0c0c0; }
-  .ms-cell.mine-exploded { background: #ff0000; }
-  .ms-cell.mine-shown { background: #d4d0c8; border: 1px solid #808080; }
-
-  /* FLAPPY BIRD */
-  #win-flappy .flappy-game-wrap {
-    flex: 1; position: relative; display: flex; align-items: center; justify-content: center;
-    background: #4a90d9; overflow: hidden;
-    min-height: 200px;
-  }
-  #flappy-canvas {
-    width: 100%; height: 100%; display: block;
-    image-rendering: pixelated;
-    background: #4a90d9;
-  }
-
-  /* BLOCO DE NOTAS */
-  #win-notepad .notepad-menubar {
-    background: #ece9d8;
-    border-bottom: 1px solid #a0a0a0;
-    padding: 2px 4px;
-    display: flex;
-    gap: 2px;
-    flex-shrink: 0;
-    user-select: none;
-  }
-  #win-notepad .notepad-menubar .menu-item {
-    padding: 2px 6px;
-    cursor: default;
-    font-size: 12px;
-    position: relative;
-    border: 1px solid transparent;
-  }
-  #win-notepad .notepad-menubar .menu-item:hover {
-    background: #0058e6;
-    color: white;
-    border-color: #0045b5;
-  }
-  #win-notepad .notepad-menubar .menu-item .dropdown {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #ece9d8;
-    border: 1px solid #a0a0a0;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    min-width: 180px;
-    padding: 2px 0;
-    z-index: 999;
-  }
-  #win-notepad .notepad-menubar .menu-item:hover .dropdown {
-    display: block;
-  }
-  #win-notepad .notepad-menubar .dropdown-item {
-    padding: 2px 18px 2px 24px;
-    font-size: 12px;
-    cursor: default;
-    white-space: nowrap;
-    color: #000; /* Fonte preta */
-  }
-  #win-notepad .notepad-menubar .dropdown-item:hover {
-    background: #0058e6;
-    color: white;
-  }
-  #win-notepad .notepad-menubar .dropdown-item.disabled {
-    color: #9e9a90;
-    pointer-events: none;
-  }
-  #win-notepad textarea {
-    width: 100%;
-    height: 100%;
-    border: none;
-    padding: 4px;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
-    background: #ffffff;
-    color: #000;
-    resize: none;
-    outline: none;
-    box-sizing: border-box;
-    flex: 1;
-  }
-  #win-notepad textarea:focus {
-    outline: none;
-  }
 </style>
 </head>
 <body>
@@ -563,7 +417,6 @@
   <div class="context-divider"></div>
   <div class="context-item disabled">Paste</div>
   <div class="context-divider"></div>
-  <!-- New – Text Document clicável, outros desabilitados -->
   <div class="context-item context-submenu-parent">
     New
     <div class="context-submenu">
@@ -577,7 +430,7 @@
   <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS (TODOS NA COLUNA ESQUERDA) ===== -->
+<!-- ===== DESKTOP ICONS ===== -->
 <div class="desktop-icons">
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
@@ -847,14 +700,18 @@
 
 <!-- ===== TASKBAR ===== -->
 <div class="taskbar">
-<div class="start-btn" id="start-btn" onclick="toggleStartMenu()" style="background: none; border: none; box-shadow: none; padding: 0; width: 100px; height: 30px; display: flex; align-items: center; justify-content: center;">
-  <img src="start.png" alt="Start" style="width: 100%; height: 100%; object-fit: contain; cursor: pointer;">
-</div>
-  <div class="taskbar-divider"></div>
+  <!-- Botão Start com imagem PNG -->
+  <div class="start-btn" id="start-btn" onclick="toggleStartMenu()">
+    <img src="start.png" alt="Start">
+  </div>
+
+  <!-- Divisória removida (linha não aparece mais) -->
+
   <div class="taskbar-item active" id="task-about" data-name="about" onclick="toggleWindow('about')">
     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%230058e6' x='2' y='3' width='12' height='9' rx='1'/%3E%3C/svg%3E" alt=""> About Me
   </div>
-   <div class="clock-tray">
+
+  <div class="clock-tray">
     <div class="vol-toggle" id="vol-toggle" onclick="toggleMute()">
       <img id="vol-img" src="icons/volume-icon.png" width="20" height="20" alt="">
       <svg id="vol-mute-overlay" width="20" height="20" viewBox="0 0 20 20" style="position:absolute;top:0;left:0;display:none;"><line x1="3" y1="3" x2="17" y2="17" stroke="#ff3333" stroke-width="2.5"/><line x1="17" y1="3" x2="3" y2="17" stroke="#ff3333" stroke-width="2.5"/></svg>
@@ -866,6 +723,7 @@
     
     <div class="clock" id="clock">00:00</div>
   </div>
+</div>
 
 <!-- ===== START MENU ===== -->
 <div class="start-menu" id="start-menu">
@@ -925,6 +783,7 @@
 <div id="selection-box"></div>
 
 <script>
+// (Aqui segue todo o seu JavaScript original, sem alterações)
 // ============================================================
 //  SISTEMA DE JANELAS E GERENCIAMENTO
 // ============================================================
@@ -1442,7 +1301,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ===== SKILLS (COM PRESERVAÇÃO DE ESTADO) =====
-let skillsAnimated = false; // Controla se a animação já foi executada
+let skillsAnimated = false;
 
 const skillsData = [
   { name: "Discord Management", percent: 100 },
@@ -1466,15 +1325,10 @@ function renderSkillBars() {
 }
 
 function animateSkillBars() {
-  // Se já foi animado nesta sessão, não faz nada (mantém o estado)
   if (skillsAnimated) return;
-  
   const fills = document.querySelectorAll('.skill-bar-fill');
   if (fills.length === 0) return;
-  
-  // Marcar como animado para não repetir
   skillsAnimated = true;
-  
   fills.forEach(fill => {
     const target = parseInt(fill.dataset.percent);
     const span = fill.closest('.skill-row').querySelector('.skill-percent');
@@ -2042,7 +1896,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 })();
 
 // ============================================================
-//  JOGO FLAPPY BIRD (CORRIGIDO)
+//  JOGO FLAPPY BIRD
 // ============================================================
 (function initFlappy() {
   const win = document.getElementById('win-flappy');
@@ -2266,7 +2120,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     if (animId) cancelAnimationFrame(animId); animId = null;
   }
 
-  // Sons
   function playFlapSound() {
     initAudio(); if (isMuted) return;
     const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -2290,7 +2143,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 
   window.__flappy = { pause: pauseGame, resume: resumeGame, stop: stopGame, resize: resizeCanvas };
 
-  // Eventos
   canvas.addEventListener('click', flap);
   canvas.addEventListener('touchstart', function(e) { e.preventDefault(); flap(); }, {passive:false});
   overlay.addEventListener('click', flap);
@@ -2301,7 +2153,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     }
   });
 
-  // Inicialização: jogo parado com overlay
   setTimeout(() => {
     resizeCanvas();
     bestSpan.textContent = bestScore;
@@ -2317,7 +2168,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     overlay.style.display = 'flex';
     overlay.querySelector('.game-overlay-hint').textContent = 'Click or press space to play';
     draw();
-    loop(); // loop apenas para desenho, sem atualizações (gameRunning=false)
+    loop();
   }, 100);
 
   window.addEventListener('resize', () => { resizeCanvas(); });
@@ -2358,7 +2209,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Inicializa áudio no primeiro clique do usuário (para permitir sons)
+// Inicializa áudio no primeiro clique do usuário
 document.addEventListener('click', function() {
   initAudio();
 }, { once: true });
