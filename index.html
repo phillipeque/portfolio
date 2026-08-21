@@ -95,29 +95,59 @@
   .window-content {
     flex: 1; padding: 12px; overflow-y: auto;
     background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
-    /* REMOVIDO o "scrollbar-width: none;" para a barra não sumir em navegadores sem suporte */
   }
 
-  /* ===== SCROLLBAR AUTÊNTICA DO WINDOWS XP (CORRIGIDA - SEM DUPLICAR) ===== */
-  .window-content::-webkit-scrollbar {
+  /* ===== SCROLLBAR AUTÊNTICA DO WINDOWS XP (CORRIGIDA) =====
+     Aplicada a TODA área com scroll do site (não só .window-content),
+     senão o menu Iniciar e outras listas mostram a barra padrão do
+     navegador e quebram a ilusão do XP. */
+  .window-content,
+  .start-menu-left-scroll,
+  .start-menu-right {
+    scrollbar-width: thin;              /* fallback Firefox */
+    scrollbar-color: #B0C4DE #F0F0F0;   /* fallback Firefox */
+  }
+
+  .window-content::-webkit-scrollbar,
+  .start-menu-left-scroll::-webkit-scrollbar,
+  .start-menu-right::-webkit-scrollbar {
     width: 17px;
     background-color: #F0F0F0;
   }
 
-  .window-content::-webkit-scrollbar-track {
+  .window-content::-webkit-scrollbar-track,
+  .start-menu-left-scroll::-webkit-scrollbar-track,
+  .start-menu-right::-webkit-scrollbar-track {
     background-color: #F0F0F0;
     background-image: linear-gradient(to right, #D4D0C8, #F0F0F0 2px, #F0F0F0 14px, #D4D0C8 100%);
     border-left: 1px solid #D4D0C8;
   }
 
-  .window-content::-webkit-scrollbar-thumb {
+  .window-content::-webkit-scrollbar-corner,
+  .start-menu-left-scroll::-webkit-scrollbar-corner,
+  .start-menu-right::-webkit-scrollbar-corner {
+    background-color: #F0F0F0;
+  }
+
+  .window-content::-webkit-scrollbar-thumb,
+  .start-menu-left-scroll::-webkit-scrollbar-thumb,
+  .start-menu-right::-webkit-scrollbar-thumb {
     background-color: #B0C4DE;
+    /* Camada 1: sombreado 3D do polegar (cobre 100% da altura, isso está certo).
+       Camada 2: o "grip" (tracinhos) — antes tinha posição fixa em px medida
+       a partir do TOPO do polegar, então em vez de ficar centralizado ele
+       ficava colado perto do topo (e sumia se o polegar ficasse pequeno).
+       Agora o grip tem tamanho fixo (6x24px) e background-position:center,
+       então fica sempre no meio do polegar, do jeito que o XP real faz. */
     background-image: 
       linear-gradient(to right, #D4E4F7, #B0C4DE 3px, #B0C4DE 14px, #8A9FC4 100%),
-      linear-gradient(to bottom, transparent 10px, #7A8FB4 11px, #7A8FB4 13px, transparent 14px),
-      linear-gradient(to bottom, transparent 20px, #7A8FB4 21px, #7A8FB4 23px, transparent 24px);
-    background-repeat: no-repeat;
-    background-size: 100% 100%, 100% 100%, 100% 100%;
+      repeating-linear-gradient(to bottom,
+        #7A8FB4 0, #7A8FB4 2px,
+        transparent 2px, transparent 5px);
+    background-repeat: no-repeat, no-repeat;
+    background-position: center, center;
+    background-size: 100% 100%, 7px 17px;
+    min-height: 24px; /* garante que o polegar nunca fique menor que o grip */
     border: 1px solid #808080;
     border-top-color: #FFFFFF;
     border-left-color: #FFFFFF;
@@ -126,7 +156,9 @@
     border-radius: 0;
   }
 
-  .window-content::-webkit-scrollbar-button {
+  .window-content::-webkit-scrollbar-button,
+  .start-menu-left-scroll::-webkit-scrollbar-button,
+  .start-menu-right::-webkit-scrollbar-button {
     background-color: #ECE9D8;
     background-repeat: no-repeat;
     background-position: center;
@@ -142,11 +174,15 @@
     display: block;
   }
 
-  .window-content::-webkit-scrollbar-button:vertical:decrement {
+  .window-content::-webkit-scrollbar-button:vertical:decrement,
+  .start-menu-left-scroll::-webkit-scrollbar-button:vertical:decrement,
+  .start-menu-right::-webkit-scrollbar-button:vertical:decrement {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15'%3E%3Crect width='15' height='15' fill='%23ECE9D8'/%3E%3Crect x='0' y='0' width='15' height='15' fill='url(%23grad)'/%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF'/%3E%3Cstop offset='100%25' stop-color='%23B0C4DE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7.5 4 L11 9 L4 9 Z' fill='%23000000'/%3E%3C/svg%3E");
   }
 
-  .window-content::-webkit-scrollbar-button:vertical:increment {
+  .window-content::-webkit-scrollbar-button:vertical:increment,
+  .start-menu-left-scroll::-webkit-scrollbar-button:vertical:increment,
+  .start-menu-right::-webkit-scrollbar-button:vertical:increment {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15'%3E%3Crect width='15' height='15' fill='%23ECE9D8'/%3E%3Crect x='0' y='0' width='15' height='15' fill='url(%23grad)'/%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF'/%3E%3Cstop offset='100%25' stop-color='%23B0C4DE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7.5 11 L4 6 L11 6 Z' fill='%23000000'/%3E%3C/svg%3E");
   }
 
