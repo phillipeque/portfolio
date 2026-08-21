@@ -133,12 +133,11 @@
     display: flex; align-items: center; justify-content: space-evenly;
     height: 160px; background: transparent; margin-bottom: 0; padding: 10px 15px; flex-shrink: 0;
   }
-  /* ===== AJUSTE DO GIF (50% MAIOR) ===== */
   .avatar-area {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 210px; /* Antes: 140px */
+    width: 210px;
     height: 100%;
     justify-content: center;
     position: relative; z-index: 1;
@@ -146,7 +145,7 @@
   }
   .avatar-area img {
     max-width: 100%;
-    max-height: 150px; /* Antes: 100px */
+    max-height: 150px;
     object-fit: contain;
     border-radius: 6px;
   }
@@ -370,7 +369,6 @@
     .skill-name { white-space: normal; }
     .start-menu { width: 95vw; left: 2.5vw; }
     .start-menu-body { height: min(360px, calc(100vh - 200px)); height: min(360px, calc(100dvh - 200px)); }
-    /* ===== AJUSTE DO GIF NO MOBILE (50% MAIOR) ===== */
     .avatar-area { width: 120px; height: 150px; }
     .avatar-area img { transform: scale(1.2); margin-left: -5px; }
     .chart-area { width: 200px; }
@@ -791,13 +789,16 @@
       <div class="start-menu-item" onclick="alert('Run');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23c0c0c0' x='4' y='7' width='16' height='11' rx='1'/%3E%3Cpath fill='%230058e6' d='M9 10 L15 12.5 L9 15 Z'/%3E%3C/svg%3E" alt=""> Run...</div>
     </div>
   </div>
-<div class="start-menu-footer">
+  <div class="start-menu-footer">
     <div class="shutdown-btn" onclick="toggleStartMenu(); showLoginScreen();">
-        <img src="icons/logoff.png" alt="Log Off" class="full-btn-img">
+      <img src="icons/logoff.png" alt="Log Off">
+      <span>Log Off</span>
     </div>
     <div class="shutdown-btn" onclick="alert('Turn Off Computer');">
-        <img src="icons/turnoff.png" alt="Turn Off Computer" class="full-btn-img">
+      <img src="icons/turnoff.png" alt="Turn Off Computer">
+      <span>Turn Off Computer</span>
     </div>
+  </div>
 </div>
 <div id="selection-box"></div>
 
