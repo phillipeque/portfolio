@@ -237,12 +237,13 @@
   .clock { padding: 3px 10px 3px 4px; font-size: 11px; font-family: Tahoma, sans-serif; color: white; min-width: 56px; text-align: center; text-shadow: 0 1px 1px rgba(0,0,0,0.3); height: 30px; display: flex; align-items: center; justify-content: center; }
   
   /* ===== BANDEJA DO SISTEMA (CLOCK-TRAY) ===== */
-  .clock-tray {
+.clock-tray {
     display: flex; align-items: center; gap: 6px; margin-left: auto; padding: 0 4px 0 8px;
-    background: linear-gradient(180deg, #2a5cb8 0%, #1e50c8 100%);
-    border-left: 1px solid #3a6ea5;
+    /* CORREÇÃO: Gradiente azul claro estilo XP */
+    background: linear-gradient(180deg, #3f8cf3 0%, #2569e0 6%, #1c53c4 94%, #1a4bb0 100%);
+    border-left: 1px solid #4a9eff; /* Borda esquerda clara */
     box-shadow: inset 1px 0 2px rgba(0,0,0,0.25); height: 30px;
-  }
+}
   .vol-toggle { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; cursor: pointer; position: relative; border-radius: 2px; transition: background 0.1s; }
   .vol-toggle:hover { background: rgba(255,255,255,0.15); }
   .vol-toggle.muted { opacity: 0.5; }
