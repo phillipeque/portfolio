@@ -133,11 +133,12 @@
     display: flex; align-items: center; justify-content: space-evenly;
     height: 160px; background: transparent; margin-bottom: 0; padding: 10px 15px; flex-shrink: 0;
   }
+  /* ===== AJUSTE DO GIF (50% MAIOR) ===== */
   .avatar-area {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 210px;
+    width: 210px; /* Antes: 140px */
     height: 100%;
     justify-content: center;
     position: relative; z-index: 1;
@@ -145,7 +146,7 @@
   }
   .avatar-area img {
     max-width: 100%;
-    max-height: 150px;
+    max-height: 150px; /* Antes: 100px */
     object-fit: contain;
     border-radius: 6px;
   }
@@ -177,6 +178,23 @@
   .skill-percent { width: 40px; text-align: right; font-size: 12px; font-weight: bold; color: #0045b5; flex-shrink: 0; }
   .chart-area { width: 320px; height: 160px; position: relative; z-index: 10; }
   #skillsRadarChart { width: 100% !important; height: 100% !important; }
+
+  /* Section header for skills categories */
+  .skill-section-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #1f3a6b;
+    background: linear-gradient(180deg, #e4e0d6 0%, #d4d0c8 100%);
+    border: 1px solid #9e9a90;
+    border-radius: 3px;
+    padding: 4px 8px;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: inset 0 1px 0 #fff;
+  }
+  .skill-section-title:first-child { margin-top: 0; }
 
   .contact-list { display: flex; flex-direction: column; gap: 8px; }
   .contact-row {
@@ -355,24 +373,9 @@
   .start-menu-allprograms img { width: 22px; height: 22px; }
   .start-menu-allprograms-arrow { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 6px solid #2b63d9; }
   .start-menu-footer { background: linear-gradient(180deg, #4d87e8 0%, #2b63d9 8%, #1c53c4 100%); padding: 8px 12px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; border-top: 1px solid #0f3fae; }
-  .shutdown-btn {
-    display: flex; align-items: center; gap: 4px; /* Espaço entre o ícone e o texto */
-    padding: 0;
-    background: none;
-    border: none;
-    border-radius: 0;
-    color: white; 
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
-    box-shadow: none;
-  }
-  .shutdown-btn img { 
-    width: 22px; /* Ajuste o tamanho do seu PNG aqui se precisar */
-    height: 22px;
-  }
-  .shutdown-btn:hover { background: linear-gradient(180deg, #6fa2f5 0%, #3f78e8 100%); }
+  .shutdown-btn { display: flex; align-items: center; gap: 4px; padding: 0; background: none; border: none; border-radius: 0; color: white; font-size: 12px; font-weight: bold; cursor: pointer; text-shadow: 0 1px 1px rgba(0,0,0,0.3); box-shadow: none; }
+  .shutdown-btn img { width: 22px; height: 22px; }
+  .shutdown-btn:hover { background: none; }
 
   /* ===== MEDIA QUERIES ===== */
   @media (max-width: 768px) {
@@ -816,7 +819,7 @@
 <div id="selection-box"></div>
 
 <script>
-// (Aqui segue todo o seu JavaScript original, sem alterações)
+// (Aqui segue todo o seu JavaScript original, com as alterações de categorias)
 // ============================================================
 //  SISTEMA DE JANELAS E GERENCIAMENTO
 // ============================================================
@@ -1337,23 +1340,52 @@ document.addEventListener('DOMContentLoaded', function() {
 let skillsAnimated = false;
 
 const skillsData = [
+  { section: "Community Management" },
   { name: "Discord Management", percent: 100 },
   { name: "Telegram Management", percent: 95 },
   { name: "Team Leadership", percent: 100 },
-  { name: "Web3 Knowledge", percent: 90 },
-  { name: "Process Organization", percent: 100 },
   { name: "Conflict Resolution", percent: 100 },
+  { name: "Scam Prevention", percent: 100 },
+
+  { section: "Languages & Localization" },
+  { name: "English (Fluent)", percent: 95 },
+  { name: "Portuguese (Native)", percent: 100 },
+  { name: "Spanish (Fluent)", percent: 85 }, /* Adicionado o Espanhol */
+  { name: "Translation (PT/EN)", percent: 100 },
+  { name: "Copywriting", percent: 75 },
+
+  { section: "Tools & Technology" },
+  { name: "Web3 Knowledge", percent: 90 },
+  { name: "Excel / Sheets", percent: 80 },
+  { name: "Notion / Organization", percent: 85 },
+  { name: "Moderation Bots", percent: 90 },
+
+  { section: "Strategy & Soft Skills" },
+  { name: "Process Organization", percent: 100 },
   { name: "Social Media Management", percent: 75 },
-  { name: "Scam Prevention", percent: 100 }
+  { name: "Onboarding New Members", percent: 100 },
+  { name: "Event Organization", percent: 85 }
 ];
 
 function renderSkillBars() {
-  const c=document.getElementById('skill-list'); if(!c) return;
-  c.innerHTML='';
+  const c = document.getElementById('skill-list'); 
+  if (!c) return;
+  c.innerHTML = '';
+  
   skillsData.forEach(s => {
-    const row=document.createElement('div'); row.className='skill-row';
-    row.innerHTML=`<span class="skill-name">${s.name}</span><div class="skill-bar-track"><div class="skill-bar-fill" data-percent="${s.percent}" style="width:0%;"></div></div><span class="skill-percent">0%</span>`;
-    c.appendChild(row);
+    // If the item has a 'section' property, create a header
+    if (s.section) {
+      const header = document.createElement('div');
+      header.className = 'skill-section-title';
+      header.textContent = s.section;
+      c.appendChild(header);
+    } else {
+      // Otherwise, create a normal skill bar row
+      const row = document.createElement('div'); 
+      row.className = 'skill-row';
+      row.innerHTML = `<span class="skill-name">${s.name}</span><div class="skill-bar-track"><div class="skill-bar-fill" data-percent="${s.percent}" style="width:0%;"></div></div><span class="skill-percent">0%</span>`;
+      c.appendChild(row);
+    }
   });
 }
 
