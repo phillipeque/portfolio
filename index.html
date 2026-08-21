@@ -283,83 +283,192 @@
   /* ===== POP-UPS ESTILO MSN MESSENGER ===== */
   #msn-popup-container {
     position: fixed;
-    bottom: 40px; /* Acima da taskbar (30px) + margem */
+    bottom: 40px;
     right: 10px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     z-index: 9999;
+    pointer-events: none;
   }
+  #msn-popup-container > * { pointer-events: auto; }
   .msn-popup {
-    width: 280px;
+    width: 300px;
     background: #f0f0f0;
-    border: 1px solid #0054e3;
-    border-radius: 5px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    border: 1px solid #7da2ce;
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.6);
     font-family: Tahoma, "Segoe UI", sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     overflow: hidden;
-    animation: slideIn 0.3s ease-out;
+    animation: msnSlideIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+  }
+  .msn-popup::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.5);
+    z-index: 2;
   }
   .msn-popup-header {
-    background: linear-gradient(180deg, #3a8fe0 0%, #1a5cb0 100%);
+    background: linear-gradient(180deg, #7eb6ea 0%, #4a90d9 15%, #2b6cb5 85%, #1a5cb0 100%);
     color: white;
-    padding: 4px 6px;
+    padding: 5px 8px 4px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
-    font-size: 12px;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    font-size: 11px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+    border-bottom: 1px solid #1a4a8a;
   }
-  .msn-popup-header span { display: flex; align-items: center; gap: 4px; }
-  .msn-popup-header img { width: 14px; height: 14px; }
+  .msn-popup-header-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .msn-popup-header-left .msn-butterfly {
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(135deg, #ffcc00, #ff6600);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    position: relative;
+  }
+  .msn-popup-header-left .msn-butterfly::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(135deg, #66ccff, #0066cc);
+    border-radius: 50% 50% 50% 0;
+    top: 3px;
+    left: 3px;
+    transform: rotate(90deg);
+  }
   .msn-popup-close {
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
-    padding: 0 4px;
-    border-radius: 2px;
+    padding: 1px 5px;
+    border-radius: 3px;
     line-height: 1;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    border: 1px solid transparent;
+    transition: all 0.1s;
   }
-  .msn-popup-close:hover { background: rgba(255,255,255,0.3); }
+  .msn-popup-close:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.4);
+  }
   .msn-popup-body {
-    padding: 10px;
-    background: #fff;
+    padding: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 12px;
   }
-  .msn-popup-icon {
-    width: 32px;
-    height: 32px;
-    background: #4a90d9;
+  .msn-popup-avatar {
+    width: 44px;
+    height: 44px;
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
+    border: 2px solid #fff;
+    outline: 1px solid #c0c0c0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
     flex-shrink: 0;
-    color: white;
+    overflow: hidden;
+    background: #e4e0d6;
+  }
+  .msn-popup-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .msn-popup-content {
     flex: 1;
-    line-height: 1.3;
+    line-height: 1.4;
+    color: #333;
   }
-  .msn-popup-content .title { font-weight: bold; }
-  .msn-popup-content .subtitle { color: #666; }
-  .msn-popup-content .link {
-    color: #0054e3;
-    text-decoration: underline;
+  .msn-popup-content .msn-from {
+    font-weight: bold;
+    color: #1a5cb0;
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+  .msn-popup-content .msn-msg {
+    color: #444;
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  .msn-popup-content .msn-link {
+    color: #0066cc;
+    text-decoration: none;
     cursor: pointer;
     font-weight: bold;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
   }
-  .msn-popup-content .link:hover { color: #003a99; }
-  .msn-popup-content .link img { width: 16px; height: 16px; vertical-align: middle; }
+  .msn-popup-content .msn-link:hover {
+    color: #003d7a;
+    border-bottom-color: #0066cc;
+  }
+  .msn-popup-footer {
+    background: linear-gradient(180deg, #f0f0f0, #e4e4e4);
+    border-top: 1px solid #d0d0d0;
+    padding: 6px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: #888;
+  }
+  .msn-popup-footer .msn-time {
+    font-size: 10px;
+    color: #999;
+  }
+  .msn-popup-footer .msn-actions {
+    display: flex;
+    gap: 6px;
+  }
+  .msn-popup-footer .msn-btn {
+    padding: 3px 10px;
+    font-size: 11px;
+    font-family: Tahoma, sans-serif;
+    background: linear-gradient(180deg, #ffffff, #e8e8e8);
+    border: 1px solid #a0a0a0;
+    border-radius: 3px;
+    cursor: pointer;
+    color: #333;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+  }
+  .msn-popup-footer .msn-btn:hover {
+    background: linear-gradient(180deg, #f0f8ff, #d0e8ff);
+    border-color: #7da2ce;
+  }
+  .msn-popup-footer .msn-btn:active {
+    background: linear-gradient(180deg, #d0e8ff, #b0d0f0);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+  }
 
-  @keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+  @keyframes msnSlideIn {
+    from { transform: translateX(120%) scale(0.9); opacity: 0; }
+    to { transform: translateX(0) scale(1); opacity: 1; }
+  }
+  @keyframes msnFadeOut {
+    from { transform: translateX(0) scale(1); opacity: 1; }
+    to { transform: translateX(120%) scale(0.9); opacity: 0; }
+  }
+  .msn-popup.removing {
+    animation: msnFadeOut 0.25s ease-in forwards;
   }
 
   /* Remove scrollbar da janela About Me */
@@ -541,6 +650,7 @@
   html, body { height: 100vh; height: 100dvh; }
   #selection-box { position: fixed; border: 1px dotted #316AC5; background: rgba(49, 106, 197, 0.15); pointer-events: none; z-index: 5; display: none; }
 </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -1003,6 +1113,8 @@ function updateClock() {
 setInterval(updateClock, 1000); updateClock();
 
 let zIndexCounter = 100;
+const NON_WINDOW_APPS = ['contact'];
+function isNonWindowApp(name) { return NON_WINDOW_APPS.includes(name); }
 const openWindows = new Set(['about']);
 const minimizedWindows = new Set();
 const windowPositions = {};
@@ -1147,7 +1259,9 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
 // ===== HELPERS DE JANELAS =====
 function getTaskbarItem(name) { return document.getElementById('task-'+name); }
 function createTaskbarItem(name) {
+  if (isNonWindowApp(name)) return null;
   const win = document.getElementById('win-'+name);
+  if (!win) return null;
   const titleEl = win.querySelector('.window-title');
   const task = document.createElement('div');
   task.className='taskbar-item active'; task.id='task-'+name; task.dataset.name=name;
@@ -1165,9 +1279,11 @@ function isWindowActive(name) {
 }
 function setActiveStates(name) {
   document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('active'));
-  const icon=document.getElementById('icon-'+name); if(icon) icon.classList.add('active');
+  const icon=document.getElementById('icon-'+name);
+  if(icon && !isNonWindowApp(name)) icon.classList.add('active');
   document.querySelectorAll('.taskbar-item').forEach(t => t.classList.remove('active'));
-  const task=getTaskbarItem(name); if(task) task.classList.add('active');
+  const task=getTaskbarItem(name);
+  if(task && !isNonWindowApp(name)) task.classList.add('active');
   updateTitlebarStates(name);
 }
 function updateTitlebarStates(activeName) {
@@ -1182,6 +1298,7 @@ function updateTitlebarStates(activeName) {
 
 // ===== ABRIR, FECHAR, MINIMIZAR, RESTAURAR =====
 function openWindow(name) {
+  if (isNonWindowApp(name)) return;
   const win=document.getElementById('win-'+name);
   let task=getTaskbarItem(name);
   if (minimizedWindows.has(name)) {
@@ -1212,6 +1329,7 @@ function openWindow(name) {
   }
 }
 function closeWindow(name) {
+  if (isNonWindowApp(name)) return;
   const win=document.getElementById('win-'+name);
   const task=getTaskbarItem(name);
   win.style.display='none'; openWindows.delete(name); minimizedWindows.delete(name);
@@ -1311,6 +1429,7 @@ function animateRestore(name) {
 }
 
 function minimizeWindow(name) {
+  if (isNonWindowApp(name)) return;
   const win=document.getElementById('win-'+name);
   const task=getTaskbarItem(name);
   if(!task) return;
@@ -1356,9 +1475,13 @@ function minimizeWindow(name) {
 }
 
 function toggleWindow(name) {
+  if (isNonWindowApp(name)) {
+    if (name === 'contact') showContactPopups();
+    return;
+  }
   const win=document.getElementById('win-'+name);
   if(minimizedWindows.has(name)) { animateRestore(name); return; }
-  if(win.style.display==='none' || win.style.display==='') { openWindow(name); return; }
+  if(!win || win.style.display==='none' || win.style.display==='') { openWindow(name); return; }
   if(name==='about') { minimizeWindow(name); return; }
   if(isWindowActive(name)) minimizeWindow(name);
   else animateRestore(name);
