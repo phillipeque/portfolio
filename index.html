@@ -1476,19 +1476,26 @@ function animateSkillBars() {
   const fills = document.querySelectorAll('.skill-bar-fill');
   if (fills.length === 0) return;
   skillsAnimated = true;
-  fills.forEach(fill => {
+
+  fills.forEach((fill, index) => {
     const target = parseInt(fill.dataset.percent);
     const span = fill.closest('.skill-row').querySelector('.skill-percent');
     fill.style.width = '0%';
     if (span) span.textContent = '0%';
-    let cur = 0;
-    const step = Math.max(1, Math.floor(target / 60));
-    const iv = setInterval(() => {
-      cur += step;
-      if (cur >= target) { cur = target; clearInterval(iv); }
-      fill.style.width = cur + '%';
-      if (span) span.textContent = cur + '%';
-    }, 40);
+
+    // Atraso progressivo: primeira barra começa em 100ms, as próximas +60ms cada
+    const delay = 100 + index * 60;
+
+    setTimeout(() => {
+      let cur = 0;
+      const step = Math.max(1, Math.floor(target / 20)); // 20 passos (mais rápido)
+      const iv = setInterval(() => {
+        cur += step;
+        if (cur >= target) { cur = target; clearInterval(iv); }
+        fill.style.width = cur + '%';
+        if (span) span.textContent = cur + '%';
+      }, 15); // intervalo de 15ms -> animação ~300ms
+    }, delay);
   });
 }
 
