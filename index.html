@@ -92,22 +92,43 @@
     border-color: #cc0000;
   }
   .win-btn svg { display: block; }
-  .window-content {
-    flex: 1; padding: 12px; overflow-y: auto;
-    background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
-  }
-  .window-content::-webkit-scrollbar { width: 16px; }
-  .window-content::-webkit-scrollbar-track { background: #f0f0f0; border-left: 1px solid #d4d0c8; }
-  .window-content::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #f0f0f0 0%, #c0c0c0 50%, #f0f0f0 100%);
-    border: 1px solid #808080; border-radius: 2px;
-  }
-  .window-content::-webkit-scrollbar-button { background: #ece9d8; border: 1px solid #808080; height: 16px; }
-  .minimize-clone {
-    position: fixed; pointer-events: none; z-index: 99999;
-    border-radius: 8px 8px 0 0; overflow: hidden;
-    opacity: 0.9; box-shadow: 2px 4px 12px rgba(0,0,0,0.35);
-  }
+.window-content {
+  flex: 1; padding: 12px; overflow-y: auto;
+  background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
+  
+  /* Estilo Clássico da Scrollbar do Windows XP */
+  scrollbar-width: thin;
+  scrollbar-color: #c0c0c0 #f0f0f0;
+}
+
+.window-content::-webkit-scrollbar { width: 16px; }
+
+.window-content::-webkit-scrollbar-track { 
+  background: #f0f0f0; 
+  border-left: 1px solid #d4d0c8; 
+}
+
+.window-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #f0f0f0 0%, #c0c0c0 50%, #f0f0f0 100%);
+  border: 1px solid #808080; 
+  border-radius: 2px;
+  /* Efeito de relevo: borda clara em cima e esquerda, escura embaixo e direita */
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  border-bottom-color: #404040;
+  border-right-color: #404040;
+}
+
+.window-content::-webkit-scrollbar-button {
+  background: #ece9d8; 
+  border: 1px solid #808080; 
+  height: 16px; 
+  /* Pequeno relevo para as setas */
+  border-top-color: #ffffff;
+  border-left-color: #ffffff;
+  border-bottom-color: #404040;
+  border-right-color: #404040;
+}
   .about-layout { display: flex; gap: 16px; align-items: flex-start; }
   .about-photo {
     width: 120px; height: 120px; background: #d4d0c8;
