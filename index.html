@@ -791,10 +791,13 @@
       <div class="start-menu-item" onclick="alert('Run');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23c0c0c0' x='4' y='7' width='16' height='11' rx='1'/%3E%3Cpath fill='%230058e6' d='M9 10 L15 12.5 L9 15 Z'/%3E%3C/svg%3E" alt=""> Run...</div>
     </div>
   </div>
-  <div class="start-menu-footer">
-    <div class="shutdown-btn" onclick="toggleStartMenu(); showLoginScreen();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle fill='%23e8a83c' cx='10' cy='10' r='9'/%3E%3Cpath fill='none' stroke='white' stroke-width='1.6' d='M10 5 v6 M6.5 6.5 A6 6 0 1 0 13.5 6.5'/%3E%3C/svg%3E" alt=""> Log Off</div>
-    <div class="shutdown-btn" onclick="alert('Turn Off Computer');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle fill='%23d94b4b' cx='10' cy='10' r='9'/%3E%3Cpath fill='none' stroke='white' stroke-width='1.6' d='M10 5 v6 M6.5 6.5 A6 6 0 1 0 13.5 6.5'/%3E%3C/svg%3E" alt=""> Turn Off Computer</div>
-  </div>
+<div class="start-menu-footer">
+    <div class="shutdown-btn" onclick="toggleStartMenu(); showLoginScreen();">
+        <img src="icons/logoff.png" alt="Log Off" class="full-btn-img">
+    </div>
+    <div class="shutdown-btn" onclick="alert('Turn Off Computer');">
+        <img src="icons/turnoff.png" alt="Turn Off Computer" class="full-btn-img">
+    </div>
 </div>
 <div id="selection-box"></div>
 
