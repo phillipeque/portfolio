@@ -187,36 +187,33 @@
   .contact-row:hover { background: #e0dfd8; }
   .contact-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
   /* ===== TASKBAR ===== */
-  .taskbar {
+.taskbar {
     position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
     background: linear-gradient(180deg, #245edb 0%, #1e4ec7 8%, #1b45b8 92%, #1941a5 100%);
     border-top: 1px solid #3a7eef; display: flex; align-items: center; 
-    /* ALTERAÇÃO: Removido padding e gap para encostar no canto */
-    padding: 0; gap: 0; z-index: 1000; box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
-  }
-  .start-btn {
-    /* ALTERAÇÃO: O botão ocupa exatamente a altura da barra, sem sobras */
+    padding: 0; 
+    gap: 4px; /* <--- AQUI: Distância de 4px (metade do original) */
+    z-index: 1000; box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
+}
+.start-btn {
     display: flex; align-items: center; justify-content: flex-start;
     background: none; border: none; box-shadow: none; border-radius: 0;
     padding: 0; margin: 0; 
-    height: 30px; /* Exatamente a altura da taskbar */
-    width: 110px; /* Largura ideal para a imagem não cortar */
+    height: 32px; /* Aumenta a altura */
+    margin-top: -2px; /* Sobe para cobrir a linha azul */
     cursor: pointer;
-    position: relative; overflow: hidden;
-  }
-  .start-btn::before { display: none; }
-  .start-btn::after { display: none; }
-  .start-btn:hover { background: none; }
-  .start-btn.open { background: none; box-shadow: none; }
-  .start-btn span { display: none; } 
-  .start-btn img { 
-    height: 100%; /* A imagem preenche a altura inteira do botão */
-    width: auto; 
-    display: block; 
-    object-fit: contain; 
-    filter: none; 
-    position: static; 
-  }
+    position: relative;
+    overflow: visible; /* Permite a imagem cobrir a borda sem cortar */
+}
+.start-btn::before { display: none; }
+.start-btn::after { display: none; }
+.start-btn:hover { background: none; }
+.start-btn.open { background: none; box-shadow: none; }
+.start-btn span { display: none; }
+.start-btn img {
+    height: 32px; /* Aumenta a altura da imagem para acompanhar */
+    width: auto; display: block; filter: none; position: static;
+}
 
   /* ALTERAÇÃO: Cria o respiro entre o Start e o primeiro item */
   .taskbar-item {
