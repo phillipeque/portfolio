@@ -1,3 +1,11 @@
+Aqui está o seu código HTML completo com todas as alterações aplicadas:
+
+- **Barra de tarefas (`.taskbar`)** com gradiente azul royal vibrante estilo Windows XP.
+- **Bandeja do sistema (`.clock-tray`)** ajustada para ter um fundo mais claro e uma linha divisória sutil.
+- **Botão Start** usando a imagem PNG (`start.png`), colado na borda esquerda, sem bordas extras.
+- **Ícones decorativos** (`leaf.png` e `shield.png`) adicionados ao lado direito do volume, com `pointer-events: none` (não clicáveis).
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -186,46 +194,35 @@
   }
   .contact-row:hover { background: #e0dfd8; }
   .contact-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-  /* ===== TASKBAR ===== */
-.taskbar {
+
+  /* ===== TASKBAR E BOTÃO START ===== */
+  .taskbar {
     position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
-    /* Gradiente sutil: azul vibrante e uniforme, com leve escurecida na base */
-    background: linear-gradient(180deg, #3066c5 0%, #2a5cb8 5%, #2455ae 95%, #1b4396 100%);
-    /* Linha fina de brilho no topo (2px) */
-    border-top: 2px solid #8cbdf5;
+    background: linear-gradient(180deg, #4a90d9 0%, #245edb 15%, #2455ae 85%, #1941a5 100%);
+    border-top: 1px solid #7baaf0;
     display: flex; align-items: center; 
     padding: 0; 
     gap: 4px; 
     z-index: 1000; box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
-}
-.start-btn {
+  }
+  .start-btn {
     display: flex; align-items: center; justify-content: flex-start;
     background: none; border: none; box-shadow: none; border-radius: 0;
     padding: 0; margin: 0; 
-    height: 32px; /* Aumenta a altura */
-    margin-top: -2px; /* Sobe para cobrir a linha azul */
+    height: 32px; 
+    margin-top: -2px;
     cursor: pointer;
     position: relative;
-    overflow: visible; /* Permite a imagem cobrir a borda sem cortar */
-}
-.start-btn::before { display: none; }
-.start-btn::after { display: none; }
-.start-btn:hover { background: none; }
-.start-btn.open { background: none; box-shadow: none; }
-.start-btn span { display: none; }
-.start-btn img {
-    height: 32px; /* Aumenta a altura da imagem para acompanhar */
-    width: auto; display: block; filter: none; position: static;
-}
-
-  /* ALTERAÇÃO: Cria o respiro entre o Start e o primeiro item */
-  .taskbar-item {
-    margin-left: 12px; /* Espaço entre o Start e o "About Me" */
-    /* ... resto do CSS original do taskbar-item ... */
+    overflow: visible;
   }
-
-  /* ALTERAÇÃO: Oculta a linha divisória */
-  .taskbar-divider { display: none; }
+  .start-btn::before { display: none; }
+  .start-btn::after { display: none; }
+  .start-btn:hover { background: none; }
+  .start-btn.open { background: none; box-shadow: none; }
+  .start-btn span { display: none; }
+  .start-btn img {
+    height: 32px; width: auto; display: block; filter: none; position: static;
+  }
 
   .taskbar-item {
     display: flex; align-items: center; gap: 6px; padding: 2px 8px;
@@ -234,6 +231,7 @@
     color: white; max-width: 160px; min-width: 40px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     cursor: pointer; height: 22px; flex: 1; box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.15);
     text-shadow: 0 1px 1px rgba(0,0,0,0.35); transition: background 0.08s ease; position: relative;
+    margin-left: 12px; /* Espaço entre o Start e o primeiro item */
   }
   .taskbar-item:hover { background: linear-gradient(180deg, #5ba0f6 0%, #3878e8 6%, #2560d0 94%, #1a4bb0 100%); }
   .taskbar-item.active {
@@ -241,12 +239,23 @@
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.45); border-color: #0a2c73; font-weight: bold;
   }
   .taskbar-item img { width: 16px; height: 16px; image-rendering: pixelated; flex-shrink: 0; }
+
+  .taskbar-divider { display: none; }
+
   .clock { padding: 3px 10px 3px 4px; font-size: 11px; font-family: Tahoma, sans-serif; color: white; min-width: 56px; text-align: center; text-shadow: 0 1px 1px rgba(0,0,0,0.3); height: 30px; display: flex; align-items: center; justify-content: center; }
-  .clock-tray { display: flex; align-items: center; gap: 6px; margin-left: auto; padding: 0 4px 0 8px; background: linear-gradient(180deg, #1546a8 0%, #1c53c4 100%); border-left: none; box-shadow: inset 1px 0 2px rgba(0,0,0,0.25); height: 30px; }
+  
+  /* ===== BANDEJA DO SISTEMA (CLOCK-TRAY) ===== */
+  .clock-tray {
+    display: flex; align-items: center; gap: 6px; margin-left: auto; padding: 0 4px 0 8px;
+    background: linear-gradient(180deg, #2a5cb8 0%, #1e50c8 100%);
+    border-left: 1px solid #3a6ea5;
+    box-shadow: inset 1px 0 2px rgba(0,0,0,0.25); height: 30px;
+  }
   .vol-toggle { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; cursor: pointer; position: relative; border-radius: 2px; transition: background 0.1s; }
   .vol-toggle:hover { background: rgba(255,255,255,0.15); }
   .vol-toggle.muted { opacity: 0.5; }
   .vol-toggle img { width: 20px; height: 20px; object-fit: contain; }
+  .vol-toggle svg { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3)); }
 
   /* ===== CONTEXT MENU ===== */
   #context-menu {
@@ -376,7 +385,6 @@
   * { touch-action: manipulation; }
   html, body { height: 100vh; height: 100dvh; }
   #selection-box { position: fixed; border: 1px dotted #316AC5; background: rgba(49, 106, 197, 0.15); pointer-events: none; z-index: 5; display: none; }
-  .vol-toggle svg { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3)); }
 </style>
 </head>
 <body>
@@ -489,8 +497,8 @@
       <div class="about-text">
         <h2>Phillipe Queiroz</h2>
         <p class="subtitle">a.k.a. 0xPhillipe · Rio de Janeiro, Brazil</p>
-        <p>Hey, I'm Phillipe — community builder, manager, and moderator who genuinely does this out of passion, not just a job title. I've spent my time founding communities from scratch and stepping into existing ones to rebuild what wasn't working, figuring out what's broken before it becomes a bigger problem.</p>
-        <p>I like digging into the details other people skip — spotting gaps, fixing dynamics, making spaces actually feel good to be in. If it involves people, structure, and a little bit of chaos to organize, that's where I do my best work.</p>
+        <p>Hey, I'm Phillipe — a community builder, manager, and English–Portuguese translator. I help projects build, manage, and grow their communities across Discord and Telegram.</p>
+        <p>With experience spanning from hands-on moderation to leadership roles, I oversee teams, handle escalations, and support large online communities while ensuring platform safety and high-quality bilingual communication.</p>
         <p class="clients">I've worked with Binance, Coinracer, BeeOS, CoralApp, Lion's Share Group, TAP-Protocol, and VS1Fiance.</p>
       </div>
     </div>
@@ -720,8 +728,6 @@
   <div class="start-btn" id="start-btn" onclick="toggleStartMenu()">
     <img src="start.png" alt="Start">
   </div>
-
-  <!-- Divisória removida (linha não aparece mais) -->
 
   <div class="taskbar-item active" id="task-about" data-name="about" onclick="toggleWindow('about')">
     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%230058e6' x='2' y='3' width='12' height='9' rx='1'/%3E%3C/svg%3E" alt=""> About Me
@@ -2232,3 +2238,4 @@ document.addEventListener('click', function() {
 </script>
 </body>
 </html>
+```
