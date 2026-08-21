@@ -1175,10 +1175,7 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
       
       // Se for Contact, não inicia arrasto (apenas clique para popups)
       if (this.dataset.name === 'contact') {
-        this.classList.add('active');
-        document.querySelectorAll('.desktop-icon').forEach(i => {
-          if (i !== this) i.classList.remove('selected', 'active');
-        });
+        document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected', 'active'));
         return; // impede o arrasto
       }
       
@@ -1504,55 +1501,87 @@ function toggleAllPrograms() {
 // ===== POP-UPS MSN MESSENGER =====
 function showContactPopups() {
   const container = document.getElementById('msn-popup-container');
-  // Limpa popups anteriores
   container.innerHTML = '';
-  
-  // Delay de 1.5s antes dos pop-ups
+
+  const now = new Date();
+  const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+
   setTimeout(() => {
     createPopup({
-      icon: '💬',
-      title: 'MSN Messenger',
-      body: 'Wanna contact me?'
+      from: 'Phillipe Queiroz',
+      msg: 'Hey! Wanna get in touch? Check out my links below. 👋',
+      time: timeStr,
+      actions: [{ label: 'Close', action: 'close' }]
     });
-    
+
     setTimeout(() => {
       createPopup({
-        icon: '🐦',
-        title: 'MSN Messenger',
-        body: 'My X: <a href="https://twitter.com/0xPhillipe" target="_blank" class="link">@0xPhillipe</a>'
+        from: 'Phillipe Queiroz',
+        msg: 'You can find me on X (Twitter):',
+        link: { text: '@0xPhillipe', url: 'https://twitter.com/0xPhillipe' },
+        time: timeStr,
+        actions: [
+          { label: 'Open Link', action: 'link', url: 'https://twitter.com/0xPhillipe' },
+          { label: 'Close', action: 'close' }
+        ]
       });
-      
+
       setTimeout(() => {
         createPopup({
-          icon: '✈️',
-          title: 'MSN Messenger',
-          body: 'My Telegram: <a href="https://t.me/0xPhillipe" target="_blank" class="link">@0xPhillipe</a>'
+          from: 'Phillipe Queiroz',
+          msg: 'Or hit me up on Telegram:',
+          link: { text: '@0xPhillipe', url: 'https://t.me/0xPhillipe' },
+          time: timeStr,
+          actions: [
+            { label: 'Open Link', action: 'link', url: 'https://t.me/0xPhillipe' },
+            { label: 'Close', action: 'close' }
+          ]
         });
-      }, 300);
-    }, 300);
-  }, 1500);
+      }, 350);
+    }, 350);
+  }, 1200);
 }
 
 function createPopup(data) {
   const container = document.getElementById('msn-popup-container');
   const popup = document.createElement('div');
   popup.className = 'msn-popup';
+
+  const hasLink = data.link ? `<a href="${data.link.url}" target="_blank" class="msn-link">${data.link.text}</a>` : '';
+  const actionsHtml = data.actions ? data.actions.map(a => {
+    if (a.action === 'link') return `<button class="msn-btn" onclick="window.open('${a.url}', '_blank')">${a.label}</button>`;
+    return `<button class="msn-btn" onclick="const p=this.closest('.msn-popup'); p.classList.add('removing'); setTimeout(()=>p.remove(), 250);">${a.label}</button>`;
+  }).join('') : '<button class="msn-btn" onclick="const p=this.closest(\'.msn-popup\'); p.classList.add(\'removing\'); setTimeout(()=>p.remove(), 250);">Close</button>';
+
   popup.innerHTML = `
     <div class="msn-popup-header">
-      <span>${data.icon} ${data.title}</span>
-      <div class="msn-popup-close" onclick="this.parentElement.parentElement.remove()">✕</div>
+      <div class="msn-popup-header-left">
+        <div class="msn-butterfly"></div>
+        <span>MSN Messenger</span>
+      </div>
+      <div class="msn-popup-close" onclick="const p=this.closest('.msn-popup'); p.classList.add('removing'); setTimeout(()=>p.remove(), 250);">✕</div>
     </div>
     <div class="msn-popup-body">
-      <div class="msn-popup-icon">${data.icon}</div>
-      <div class="msn-popup-content">${data.body}</div>
+      <div class="msn-popup-avatar"><img src="avatar_1.jpg" alt="Phillipe"></div>
+      <div class="msn-popup-content">
+        <div class="msn-from">${data.from}</div>
+        <div class="msn-msg">${data.msg}</div>
+        ${hasLink}
+      </div>
+    </div>
+    <div class="msn-popup-footer">
+      <span class="msn-time">Received at ${data.time || '00:00'}</span>
+      <div class="msn-actions">${actionsHtml}</div>
     </div>
   `;
   container.appendChild(popup);
-  
-  // Animação de entrada
+
   setTimeout(() => {
-    popup.style.animation = 'slideIn 0.3s ease-out';
-  }, 10);
+    if (popup.parentElement) {
+      popup.classList.add('removing');
+      setTimeout(() => popup.remove(), 250);
+    }
+  }, 12000);
 }
 
 // ===== DRAG DE JANELAS =====
@@ -1618,6 +1647,7 @@ document.querySelectorAll('.desktop-icon').forEach(icon => {
   icon.addEventListener('click', function(e) {
     const name = this.dataset.name;
     if (name === 'contact') {
+      document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected', 'active'));
       showContactPopups();
     }
   });
