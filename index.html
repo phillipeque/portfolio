@@ -198,7 +198,7 @@
     color: #1f3a6b;
     background: #ece9d8;
     padding: 0 6px;
-    text-transform: none; /* AQUI: Trocado de "uppercase" para "none" */
+    text-transform: none; /* AQUI: Corrigido para não forçar maiúsculas */
     letter-spacing: 0.5px;
     line-height: 1.2;
   }
@@ -826,7 +826,6 @@
 <div id="selection-box"></div>
 
 <script>
-// (Aqui segue todo o seu JavaScript original, com a lógica do Group Box)
 // ============================================================
 //  SISTEMA DE JANELAS E GERENCIAMENTO
 // ============================================================
@@ -1058,7 +1057,7 @@ function openWindow(name) {
     setTimeout(() => {
       animateSkillBars();
       initSkillsChart();
-    }, 100);
+    }, 250); // Aumentado para garantir que a janela esteja visível
   }
   // Flappy: apenas redimensiona, NÃO inicia o jogo automaticamente
   if(name==='flappy' && window.__flappy) {
@@ -1345,6 +1344,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===== SKILLS (COM PRESERVAÇÃO DE ESTADO) =====
 let skillsAnimated = false;
+let skillsChartAnimated = false;
 
 const skillsData = [
   { section: "Community Management" },
@@ -1430,13 +1430,18 @@ function animateSkillBars() {
 
 let radarChartInstance=null;
 function initSkillsChart() {
-  const ctx=document.getElementById('skillsRadarChart');
-  if(!ctx || typeof Chart==='undefined') return;
-  if(radarChartInstance) radarChartInstance.destroy();
+  const ctx = document.getElementById('skillsRadarChart');
+  if (!ctx || typeof Chart === 'undefined') return;
+  
+  if (radarChartInstance) radarChartInstance.destroy();
+  
+  const shouldAnimate = !skillsChartAnimated;
+  skillsChartAnimated = true;
+  
   radarChartInstance = new Chart(ctx, {
-    type:'radar',
+    type: 'radar',
     data: {
-      labels: ["Conflict Resolution","Discord Management","Telegram Management","Social Media Management","Team Leadership","Web3 Knowledge"],
+      labels: ["Conflict Resolution", "Discord Management", "Telegram Management", "Social Media Management", "Team Leadership", "Web3 Knowledge"],
       datasets: [{
         label: 'Proficiency',
         data: [100, 100, 95, 75, 100, 90],
@@ -1449,7 +1454,7 @@ function initSkillsChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: { duration: 4000, easing: 'easeOutQuart' },
+      animation: shouldAnimate ? { duration: 4000, easing: 'easeOutQuart' } : false,
       scales: {
         r: {
           beginAtZero: true,
