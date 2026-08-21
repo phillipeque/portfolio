@@ -138,7 +138,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 210px; /* Antes: 140px */
+    width: 210px;
     height: 100%;
     justify-content: center;
     position: relative; z-index: 1;
@@ -146,7 +146,7 @@
   }
   .avatar-area img {
     max-width: 100%;
-    max-height: 150px; /* Antes: 100px */
+    max-height: 150px;
     object-fit: contain;
     border-radius: 6px;
   }
@@ -179,22 +179,29 @@
   .chart-area { width: 320px; height: 160px; position: relative; z-index: 10; }
   #skillsRadarChart { width: 100% !important; height: 100% !important; }
 
-  /* Section header for skills categories */
+  /* ===== NOVO ESTILO GROUP BOX ===== */
+  .skill-section-group {
+    border: 1px solid #9e9a90;
+    border-radius: 4px;
+    padding: 8px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
   .skill-section-title {
-    font-size: 13px;
+    position: absolute;
+    top: -9px;
+    left: 10px;
+    font-size: 12px;
     font-weight: bold;
     color: #1f3a6b;
-    background: linear-gradient(180deg, #e4e0d6 0%, #d4d0c8 100%);
-    border: 1px solid #9e9a90;
-    border-radius: 3px;
-    padding: 4px 8px;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
+    background: #ece9d8;
+    padding: 0 6px;
+    text-transform: none; /* AQUI: Trocado de "uppercase" para "none" */
     letter-spacing: 0.5px;
-    box-shadow: inset 0 1px 0 #fff;
+    line-height: 1.2;
   }
-  .skill-section-title:first-child { margin-top: 0; }
 
   .contact-list { display: flex; flex-direction: column; gap: 8px; }
   .contact-row {
@@ -819,7 +826,7 @@
 <div id="selection-box"></div>
 
 <script>
-// (Aqui segue todo o seu JavaScript original, com as alterações de categorias)
+// (Aqui segue todo o seu JavaScript original, com a lógica do Group Box)
 // ============================================================
 //  SISTEMA DE JANELAS E GERENCIAMENTO
 // ============================================================
@@ -1350,7 +1357,7 @@ const skillsData = [
   { section: "Languages & Localization" },
   { name: "English (Fluent)", percent: 95 },
   { name: "Portuguese (Native)", percent: 100 },
-  { name: "Spanish (Fluent)", percent: 85 }, /* Adicionado o Espanhol */
+  { name: "Spanish (Fluent)", percent: 85 },
   { name: "Translation (PT/EN)", percent: 100 },
   { name: "Copywriting", percent: 75 },
 
@@ -1372,19 +1379,30 @@ function renderSkillBars() {
   if (!c) return;
   c.innerHTML = '';
   
+  let currentGroup = null;
+
   skillsData.forEach(s => {
-    // If the item has a 'section' property, create a header
     if (s.section) {
+      currentGroup = document.createElement('div');
+      currentGroup.className = 'skill-section-group';
+      
       const header = document.createElement('div');
       header.className = 'skill-section-title';
       header.textContent = s.section;
-      c.appendChild(header);
+      currentGroup.appendChild(header);
+      
+      c.appendChild(currentGroup);
     } else {
-      // Otherwise, create a normal skill bar row
+      if (!currentGroup) {
+        currentGroup = document.createElement('div');
+        currentGroup.className = 'skill-section-group';
+        c.appendChild(currentGroup);
+      }
+
       const row = document.createElement('div'); 
       row.className = 'skill-row';
       row.innerHTML = `<span class="skill-name">${s.name}</span><div class="skill-bar-track"><div class="skill-bar-fill" data-percent="${s.percent}" style="width:0%;"></div></div><span class="skill-percent">0%</span>`;
-      c.appendChild(row);
+      currentGroup.appendChild(row);
     }
   });
 }
@@ -1448,7 +1466,6 @@ function initSkillsChart() {
 
 document.addEventListener('DOMContentLoaded', function() {
   renderSkillBars();
-  // As animações do Skills agora só serão iniciadas quando a janela for aberta pela primeira vez
 });
 
 // ============================================================
