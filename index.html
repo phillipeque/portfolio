@@ -1504,19 +1504,20 @@ let radarChartInstance=null;
 function initSkillsChart() {
   const ctx = document.getElementById('skillsRadarChart');
   if (!ctx || typeof Chart === 'undefined') return;
-
+  
   if (radarChartInstance) radarChartInstance.destroy();
-
+  
   const shouldAnimate = !skillsChartAnimated;
   skillsChartAnimated = true;
-
+  
+  // Cria o gráfico com dados zerados
   radarChartInstance = new Chart(ctx, {
     type: 'radar',
     data: {
       labels: ["Conflict Resolution", "Discord Management", "Telegram Management", "Social Media Management", "Team Leadership", "Web3 Knowledge"],
       datasets: [{
         label: 'Proficiency',
-        data: [100, 100, 95, 75, 100, 90], // já entra com os valores finais
+        data: [0, 0, 0, 0, 0, 0],
         backgroundColor: 'rgba(54,162,235,0.2)',
         borderColor: 'rgba(54,162,235,1)',
         pointBackgroundColor: 'rgba(54,162,235,1)',
@@ -1526,8 +1527,7 @@ function initSkillsChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      resizeDelay: 150, // deixa o resize esperar o container "assentar" antes de redesenhar
-      animation: shouldAnimate ? { duration: 1400, easing: 'easeOutQuart' } : false,
+      animation: shouldAnimate ? { duration: 3000, easing: 'easeOutQuart' } : false,
       scales: {
         r: {
           beginAtZero: true,
@@ -1540,7 +1540,6 @@ function initSkillsChart() {
       plugins: { legend: { display: false } }
     }
   });
-}
 
   // Se deve animar, atualiza os dados reais após um pequeno delay
   if (shouldAnimate) {
