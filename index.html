@@ -280,16 +280,6 @@
     text-transform: none; letter-spacing: 0.5px; line-height: 1.2;
   }
 
-  .contact-list { display: flex; flex-direction: column; gap: 8px; }
-  .contact-row {
-    display: flex; align-items: center; gap: 10px; padding: 8px 10px;
-    background: #f0efe8; border: 1px solid #c0c0c0; border-radius: 3px;
-    cursor: pointer; font-size: 13px; text-decoration: none; color: #000;
-    box-shadow: inset 0 1px 0 #fff; transition: background 0.15s;
-  }
-  .contact-row:hover { background: #e0dfd8; }
-  .contact-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-
   /* ===== POP-UPS ESTILO MSN MESSENGER ===== */
   #msn-popup-container {
     position: fixed;
@@ -710,26 +700,6 @@
   </div>
 </div>
 
-<!-- ===== JANELA CONTACT (desativada, agora usa pop-ups) ===== -->
-<div class="window" id="win-contact" style="left: calc(50% - 190px); top: calc(50% - 140px - 16px); width: 380px; height: 280px;">
-  <div class="window-titlebar" onmousedown="startDrag(event, 'win-contact')">
-    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23ece9d8' x='2' y='4' width='12' height='8' rx='1'/%3E%3C/svg%3E" alt=""> Contact</div>
-    <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('contact')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('contact')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
-    </div>
-  </div>
-  <div class="window-content">
-    <div class="contact-list">
-      <a class="contact-row" href="mailto:phillipegugol@gmail.com"><div class="contact-icon"><img src="icons/contact-email.png" alt="Email" style="width:20px;height:20px;"></div><span>phillipegugol@gmail.com</span></a>
-      <a class="contact-row" href="https://twitter.com/0xPhillipe" target="_blank"><div class="contact-icon"><img src="icons/contact-twitter.png" alt="Twitter" style="width:20px;height:20px;"></div><span>Twitter — @0xPhillipe</span></a>
-      <a class="contact-row" href="#" onclick="alert('Discord: @0xPhillipe'); return false;"><div class="contact-icon"><img src="icons/contact-whatsapp.png" alt="WhatsApp" style="width:20px;height:20px;"></div><span>Discord — @0xPhillipe</span></a>
-      <a class="contact-row" href="#" onclick="alert('Telegram: @0xPhillipe'); return false;"><div class="contact-icon"><img src="icons/contact-telegram.png" alt="Telegram" style="width:20px;height:20px;"></div><span>Telegram — @0xPhillipe</span></a>
-      <div class="contact-row"><div class="contact-icon"><img src="icons/contact-location.png" alt="Location" style="width:20px;height:20px;"></div><span>Rio de Janeiro, Brazil</span></div>
-    </div>
-  </div>
-</div>
-
 <!-- ===== JANELA RESUME ===== -->
 <div class="window" id="win-resume" style="left: calc(50% - 200px); top: calc(50% - 100px - 16px); width: 400px; height: 200px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-resume')">
@@ -1084,20 +1054,30 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
 
 // ===== DRAG DE ICONES (SEM SALVAR POSIÇÃO) =====
 (function initIconDrag() {
-  let dragged=null, offX=0, offY=0, startTime=0, startPos={x:0,y:0};
+  let dragged = null, offX = 0, offY = 0, startTime = 0, startPos = { x: 0, y: 0 };
   let isDragging = false;
 
   document.querySelectorAll('.desktop-icon').forEach(icon => {
     icon.addEventListener('mousedown', function(e) {
-      if (e.button!==0) return;
-      startTime=Date.now();
-      startPos={x:e.clientX, y:e.clientY};
-      dragged=this;
-      offX=e.clientX-this.offsetLeft;
-      offY=e.clientY-this.offsetTop;
+      if (e.button !== 0) return;
+      
+      // Se for Contact, não inicia arrasto (apenas clique para popups)
+      if (this.dataset.name === 'contact') {
+        this.classList.add('active');
+        document.querySelectorAll('.desktop-icon').forEach(i => {
+          if (i !== this) i.classList.remove('selected', 'active');
+        });
+        return; // impede o arrasto
+      }
+      
+      startTime = Date.now();
+      startPos = { x: e.clientX, y: e.clientY };
+      dragged = this;
+      offX = e.clientX - this.offsetLeft;
+      offY = e.clientY - this.offsetTop;
       this.classList.add('active');
       document.querySelectorAll('.desktop-icon').forEach(i => {
-        if(i!==this) i.classList.remove('selected','active');
+        if (i !== this) i.classList.remove('selected', 'active');
       });
       e.preventDefault();
     });
@@ -1107,7 +1087,7 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
     if (!dragged) return;
     const dx = e.clientX - startPos.x;
     const dy = e.clientY - startPos.y;
-    const dist = Math.sqrt(dx*dx + dy*dy);
+    const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist > 8 && !isDragging) {
       isDragging = true;
       dragged.classList.add('dragging');
@@ -1125,9 +1105,17 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
 
   document.addEventListener('mouseup', function(e) {
     if (!dragged) return;
+    
+    // Se for Contact, não faz nada além de remover classes
+    if (dragged.dataset.name === 'contact') {
+      dragged.classList.remove('dragging', 'active');
+      dragged = null;
+      return;
+    }
+    
     const dx = e.clientX - startPos.x;
     const dy = e.clientY - startPos.y;
-    const dist = Math.sqrt(dx*dx + dy*dy);
+    const dist = Math.sqrt(dx * dx + dy * dy);
     const dur = Date.now() - startTime;
 
     if (dist < 12 && dur < 500) {
@@ -1396,33 +1384,30 @@ function showContactPopups() {
   // Limpa popups anteriores
   container.innerHTML = '';
   
-  // Cria os 3 pop-ups
+  // Delay de 1.5s antes dos pop-ups
   setTimeout(() => {
     createPopup({
       icon: '💬',
       title: 'MSN Messenger',
-      body: 'Wanna contact me?',
-      delay: 0
+      body: 'Wanna contact me?'
     });
-  }, 100);
-
-  setTimeout(() => {
-    createPopup({
-      icon: '🐦',
-      title: 'MSN Messenger',
-      body: 'My X: <a href="https://twitter.com/0xPhillipe" target="_blank" class="link">@0xPhillipe</a>',
-      delay: 1000
-    });
-  }, 1100);
-
-  setTimeout(() => {
-    createPopup({
-      icon: '✈️',
-      title: 'MSN Messenger',
-      body: 'My Telegram: <a href="https://t.me/0xPhillipe" target="_blank" class="link">@0xPhillipe</a>',
-      delay: 2000
-    });
-  }, 2200);
+    
+    setTimeout(() => {
+      createPopup({
+        icon: '🐦',
+        title: 'MSN Messenger',
+        body: 'My X: <a href="https://twitter.com/0xPhillipe" target="_blank" class="link">@0xPhillipe</a>'
+      });
+      
+      setTimeout(() => {
+        createPopup({
+          icon: '✈️',
+          title: 'MSN Messenger',
+          body: 'My Telegram: <a href="https://t.me/0xPhillipe" target="_blank" class="link">@0xPhillipe</a>'
+        });
+      }, 300);
+    }, 300);
+  }, 1500);
 }
 
 function createPopup(data) {
@@ -1507,12 +1492,10 @@ window.addEventListener('orientationchange', ()=>{ clampWindowsToViewport(); cla
 
 // ===== DOUBLE CLICK E BRING TO FRONT =====
 document.querySelectorAll('.desktop-icon').forEach(icon => {
-  icon.addEventListener('dblclick', function() {
+  icon.addEventListener('click', function(e) {
     const name = this.dataset.name;
     if (name === 'contact') {
       showContactPopups();
-    } else {
-      toggleWindow(name);
     }
   });
 });
