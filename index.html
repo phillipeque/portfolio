@@ -1398,8 +1398,7 @@ function initSkillsChart() {
 
 document.addEventListener('DOMContentLoaded', function() {
   renderSkillBars();
-  const sw=document.getElementById('win-skills');
-  if(sw.style.display!=='none') { animateSkillBars(); initSkillsChart(); }
+  // As animações do Skills agora só serão iniciadas quando a janela for aberta pela primeira vez
 });
 
 // ============================================================
