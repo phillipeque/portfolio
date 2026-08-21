@@ -355,8 +355,23 @@
   .start-menu-allprograms img { width: 22px; height: 22px; }
   .start-menu-allprograms-arrow { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 6px solid #2b63d9; }
   .start-menu-footer { background: linear-gradient(180deg, #4d87e8 0%, #2b63d9 8%, #1c53c4 100%); padding: 8px 12px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; border-top: 1px solid #0f3fae; }
-  .shutdown-btn { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: linear-gradient(180deg, #4d87e8 0%, #2b63d9 100%); border: 1px solid #14367d; border-radius: 4px; color: white; font-size: 12px; font-weight: bold; cursor: pointer; text-shadow: 0 1px 1px rgba(0,0,0,0.3); box-shadow: inset 0 1px 0 rgba(255,255,255,0.35); }
-  .shutdown-btn img { width: 20px; height: 20px; }
+  .shutdown-btn {
+    display: flex; align-items: center; gap: 4px; /* Espaço entre o ícone e o texto */
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    color: white; 
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    box-shadow: none;
+  }
+  .shutdown-btn img { 
+    width: 22px; /* Ajuste o tamanho do seu PNG aqui se precisar */
+    height: 22px;
+  }
   .shutdown-btn:hover { background: linear-gradient(180deg, #6fa2f5 0%, #3f78e8 100%); }
 
   /* ===== MEDIA QUERIES ===== */
@@ -791,12 +806,10 @@
   </div>
   <div class="start-menu-footer">
     <div class="shutdown-btn" onclick="toggleStartMenu(); showLoginScreen();">
-      <img src="icons/logoff.png" alt="Log Off">
-      <span>Log Off</span>
+      <img src="icons/logoff.png" alt="Log Off"> Log Off
     </div>
     <div class="shutdown-btn" onclick="alert('Turn Off Computer');">
-      <img src="icons/turnoff.png" alt="Turn Off Computer">
-      <span>Turn Off Computer</span>
+      <img src="icons/turnoff.png" alt="Turn Off Computer"> Turn Off Computer
     </div>
   </div>
 </div>
