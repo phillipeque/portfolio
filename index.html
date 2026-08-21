@@ -97,15 +97,12 @@
     background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
   }
 
-  /* ===== SCROLLBAR AUTÊNTICA DO WINDOWS XP =====
-     Aplicada a TODA área com scroll do site (não só .window-content),
-     senão o menu Iniciar e outras listas mostram a barra padrão do
-     navegador e quebram a ilusão do XP. */
+  /* ===== SCROLLBAR AUTÊNTICA DO WINDOWS XP ===== */
   .window-content,
   .start-menu-left-scroll,
   .start-menu-right {
-    scrollbar-width: thin;              /* fallback Firefox */
-    scrollbar-color: #B0C4DE #F0F0F0;   /* fallback Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #B0C4DE #F0F0F0;
   }
 
   .window-content::-webkit-scrollbar,
@@ -180,9 +177,7 @@
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15'%3E%3Crect width='15' height='15' fill='%23ECE9D8'/%3E%3Crect x='0' y='0' width='15' height='15' fill='url(%23grad)'/%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF'/%3E%3Cstop offset='100%25' stop-color='%23B0C4DE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7.5 11 L4 6 L11 6 Z' fill='%23000000'/%3E%3C/svg%3E");
   }
 
-  /* ===================================================== */
-  /* ===== FORÇA SCROLLBAR MAIS LARGA (40px) ============ */
-  /* ===================================================== */
+  /* ===== FORÇA SCROLLBAR MAIS LARGA ===== */
   .window-content::-webkit-scrollbar,
   .start-menu-left-scroll::-webkit-scrollbar,
   .start-menu-right::-webkit-scrollbar {
@@ -1146,6 +1141,11 @@ function closeWindow(name) {
   if (name==='snake' && window.__snake) window.__snake.stop();
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
+  // 👇 NOVO: Reseta animações de Skills ao fechar
+  if (name === 'skills') {
+    skillsAnimated = false;
+    skillsChartAnimated = false;
+  }
   let topName=null, topZ=-Infinity;
   openWindows.forEach(n => {
     const w=document.getElementById('win-'+n);
@@ -1483,7 +1483,7 @@ function animateSkillBars() {
     fill.style.width = '0%';
     if (span) span.textContent = '0%';
 
-    // Meio termo: delay inicial 150ms, +80ms entre barras
+    // Atraso inicial e espaçamento entre barras (meio-termo)
     const delay = 150 + index * 80;
 
     setTimeout(() => {
@@ -1526,7 +1526,7 @@ function initSkillsChart() {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: shouldAnimate ? { duration: 4000, easing: 'easeOutQuart' } : false,
+      animation: shouldAnimate ? { duration: 3000, easing: 'easeOutQuart' } : false,
       scales: {
         r: {
           beginAtZero: true,
