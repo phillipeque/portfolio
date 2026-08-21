@@ -111,7 +111,7 @@
   .window-content::-webkit-scrollbar,
   .start-menu-left-scroll::-webkit-scrollbar,
   .start-menu-right::-webkit-scrollbar {
-    width: 30px;                /* AUMENTADO DE 22px PARA 30px */
+    width: 30px;
     background-color: #F0F0F0;
   }
 
@@ -141,7 +141,7 @@
     background-repeat: no-repeat, no-repeat;
     background-position: center, center;
     background-size: 100% 100%, 7px 17px;
-    min-height: 24px; /* garante que o polegar nunca fique menor que o grip */
+    min-height: 24px;
     border: 1px solid #808080;
     border-top-color: #FFFFFF;
     border-left-color: #FFFFFF;
@@ -161,10 +161,10 @@
     border-left-color: #FFFFFF;
     border-bottom-color: #404040;
     border-right-color: #404040;
-    height: 30px;   /* AUMENTADO DE 22px PARA 30px */
-    width: 30px;    /* AUMENTADO DE 22px PARA 30px */
+    height: 30px;
+    width: 30px;
     background-size: 24px 24px;
-    -webkit-appearance: none; /* Remove estilo padrão */
+    -webkit-appearance: none;
     display: block;
   }
 
@@ -179,6 +179,42 @@
   .start-menu-right::-webkit-scrollbar-button:vertical:increment {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15'%3E%3Crect width='15' height='15' fill='%23ECE9D8'/%3E%3Crect x='0' y='0' width='15' height='15' fill='url(%23grad)'/%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF'/%3E%3Cstop offset='100%25' stop-color='%23B0C4DE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7.5 11 L4 6 L11 6 Z' fill='%23000000'/%3E%3C/svg%3E");
   }
+
+  /* ===================================================== */
+  /* ===== FORÇA SCROLLBAR MAIS LARGA (40px) ============ */
+  /* ===================================================== */
+  .window-content::-webkit-scrollbar,
+  .start-menu-left-scroll::-webkit-scrollbar,
+  .start-menu-right::-webkit-scrollbar {
+    width: 40px !important;
+    background-color: #F0F0F0 !important;
+  }
+
+  .window-content::-webkit-scrollbar-thumb,
+  .start-menu-left-scroll::-webkit-scrollbar-thumb,
+  .start-menu-right::-webkit-scrollbar-thumb {
+    min-height: 24px !important;
+    background-color: #B0C4DE !important;
+    background-image: 
+      linear-gradient(to right, #D4E4F7, #B0C4DE 3px, #B0C4DE 14px, #8A9FC4 100%),
+      repeating-linear-gradient(to bottom,
+        #7A8FB4 0, #7A8FB4 2px,
+        transparent 2px, transparent 5px) !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: center, center !important;
+    background-size: 100% 100%, 7px 17px !important;
+    border: 1px solid #808080 !important;
+  }
+
+  .window-content::-webkit-scrollbar-button,
+  .start-menu-left-scroll::-webkit-scrollbar-button,
+  .start-menu-right::-webkit-scrollbar-button {
+    height: 40px !important;
+    width: 40px !important;
+    background-color: #ECE9D8 !important;
+  }
+
+  /* ===== FIM DO BLOCO FORÇADO ===== */
 
   .about-layout { display: flex; gap: 16px; align-items: flex-start; }
   .about-photo {
@@ -1383,23 +1419,23 @@ const skillsData = [
   { name: "Scam Prevention", percent: 100 },
 
   { section: "Languages & Localization" },
-  { name: "Portuguese (Native)", percent: 100 },
   { name: "English (Fluent)", percent: 95 },
+  { name: "Portuguese (Native)", percent: 100 },
   { name: "Spanish (Fluent)", percent: 85 },
-  { name: "Business & Technical Writing", percent: 100 },
-  { name: "Copywriting", percent: 90 },
+  { name: "Translation (PT/EN)", percent: 100 },
+  { name: "Copywriting", percent: 75 },
 
   { section: "Tools & Technology" },
-  { name: "Web3 Knowledge", percent: 95 },
+  { name: "Web3 Knowledge", percent: 90 },
   { name: "Excel / Sheets", percent: 80 },
-  { name: "Notion / Organization", percent: 90 },
-  { name: "Moderation Bots", percent: 100 },
+  { name: "Notion / Organization", percent: 85 },
+  { name: "Moderation Bots", percent: 90 },
 
   { section: "Strategy & Soft Skills" },
   { name: "Process Organization", percent: 100 },
   { name: "Social Media Management", percent: 75 },
   { name: "Onboarding New Members", percent: 100 },
-  { name: "Event Organization", percent: 100 }
+  { name: "Event Organization", percent: 85 }
 ];
 
 function renderSkillBars() {
