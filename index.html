@@ -189,9 +189,10 @@
   /* ===== TASKBAR ===== */
 .taskbar {
     position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
-    /* CORRIGIDO: Gradiente azul vibrante estilo Windows XP */
-    background: linear-gradient(180deg, #5a9cf8 0%, #2a6bdf 15%, #1e50c8 85%, #15368a 100%);
-    border-top: 1px solid #8fc0ff; /* Borda superior clara para o brilho */
+    /* Gradiente sutil: azul vibrante e uniforme, com leve escurecida na base */
+    background: linear-gradient(180deg, #3066c5 0%, #2a5cb8 5%, #2455ae 95%, #1b4396 100%);
+    /* Linha fina de brilho no topo (2px) */
+    border-top: 2px solid #8cbdf5;
     display: flex; align-items: center; 
     padding: 0; 
     gap: 4px; 
