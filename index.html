@@ -97,7 +97,7 @@
     background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
   }
 
-  /* ===== SCROLLBAR AUTÊNTICA DO WINDOWS XP (CORRIGIDA) =====
+  /* ===== SCROLLBAR AUTÊNTICA DO WINDOWS XP =====
      Aplicada a TODA área com scroll do site (não só .window-content),
      senão o menu Iniciar e outras listas mostram a barra padrão do
      navegador e quebram a ilusão do XP. */
@@ -108,12 +108,12 @@
     scrollbar-color: #B0C4DE #F0F0F0;   /* fallback Firefox */
   }
 
-.window-content::-webkit-scrollbar,
-.start-menu-left-scroll::-webkit-scrollbar,
-.start-menu-right::-webkit-scrollbar {
-  width: 22px;
-  background-color: #F0F0F0;
-}
+  .window-content::-webkit-scrollbar,
+  .start-menu-left-scroll::-webkit-scrollbar,
+  .start-menu-right::-webkit-scrollbar {
+    width: 30px;                /* AUMENTADO DE 22px PARA 30px */
+    background-color: #F0F0F0;
+  }
 
   .window-content::-webkit-scrollbar-track,
   .start-menu-left-scroll::-webkit-scrollbar-track,
@@ -133,12 +133,6 @@
   .start-menu-left-scroll::-webkit-scrollbar-thumb,
   .start-menu-right::-webkit-scrollbar-thumb {
     background-color: #B0C4DE;
-    /* Camada 1: sombreado 3D do polegar (cobre 100% da altura, isso está certo).
-       Camada 2: o "grip" (tracinhos) — antes tinha posição fixa em px medida
-       a partir do TOPO do polegar, então em vez de ficar centralizado ele
-       ficava colado perto do topo (e sumia se o polegar ficasse pequeno).
-       Agora o grip tem tamanho fixo (6x24px) e background-position:center,
-       então fica sempre no meio do polegar, do jeito que o XP real faz. */
     background-image: 
       linear-gradient(to right, #D4E4F7, #B0C4DE 3px, #B0C4DE 14px, #8A9FC4 100%),
       repeating-linear-gradient(to bottom,
@@ -156,23 +150,23 @@
     border-radius: 0;
   }
 
-.window-content::-webkit-scrollbar-button,
-.start-menu-left-scroll::-webkit-scrollbar-button,
-.start-menu-right::-webkit-scrollbar-button {
-  background-color: #ECE9D8;
-  background-repeat: no-repeat;
-  background-position: center;
-  border: 1px solid #808080;
-  border-top-color: #FFFFFF;
-  border-left-color: #FFFFFF;
-  border-bottom-color: #404040;
-  border-right-color: #404040;
-  height: 22px;
-  width: 22px;
-  background-size: 20px 20px;
-  -webkit-appearance: none; /* Remove estilo padrão */
-  display: block;
-}
+  .window-content::-webkit-scrollbar-button,
+  .start-menu-left-scroll::-webkit-scrollbar-button,
+  .start-menu-right::-webkit-scrollbar-button {
+    background-color: #ECE9D8;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #808080;
+    border-top-color: #FFFFFF;
+    border-left-color: #FFFFFF;
+    border-bottom-color: #404040;
+    border-right-color: #404040;
+    height: 30px;   /* AUMENTADO DE 22px PARA 30px */
+    width: 30px;    /* AUMENTADO DE 22px PARA 30px */
+    background-size: 24px 24px;
+    -webkit-appearance: none; /* Remove estilo padrão */
+    display: block;
+  }
 
   .window-content::-webkit-scrollbar-button:vertical:decrement,
   .start-menu-left-scroll::-webkit-scrollbar-button:vertical:decrement,
