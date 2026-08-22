@@ -632,102 +632,111 @@
   .shutdown-btn img { width: 22px; height: 22px; }
   .shutdown-btn:hover { background: none; }
 
-/* ===== PAINT DO XP ===== */
-.paint-menubar {
-  background: #ece9d8;
-  border-bottom: 1px solid #a0a0a0;
-  display: flex;
-  padding: 2px 5px;
-  font-size: 12px;
-  user-select: none;
-}
-.paint-menubar .menu-item {
-  padding: 2px 6px;
-  cursor: default;
-  border: 1px solid transparent;
-}
-.paint-menubar .menu-item:hover {
-  background: #0058e6;
-  color: white;
-  border-color: #0045b5;
-}
+  /* ===== PAINT DO XP - VISUAL FIEL ===== */
+  .paint-menubar {
+    background: #ece9d8;
+    border-bottom: 1px solid #a0a0a0;
+    display: flex;
+    padding: 2px 5px;
+    font-size: 12px;
+    user-select: none;
+  }
+  .paint-menubar .menu-item {
+    padding: 2px 6px;
+    cursor: default;
+    border: 1px solid transparent;
+  }
+  .paint-menubar .menu-item:hover {
+    background: #0058e6;
+    color: white;
+    border-color: #0045b5;
+  }
 
-.paint-main {
-  flex: 1;
-  display: flex;
-  background: #ffffff;
-  position: relative;
-  overflow: hidden;
-}
+  .paint-main {
+    flex: 1;
+    display: flex;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
 
-.paint-tools {
-  width: 74px;              /* 2 colunas de 32px + gaps + padding */
-  background: #ece9d8;
-  border-right: 1px solid #a0a0a0;
-  display: flex;
-  flex-wrap: wrap;          /* permite 2 colunas */
-  align-content: flex-start;
-  padding: 5px;
-  gap: 4px;
-}
-.paint-tool-button {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  background: transparent;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.paint-tool-button:hover {
-  background: #d0d0d0;
-  border: 1px solid #a0a0a0;
-}
-.paint-tool-button.active {
-  background: #b0b0b0;
-  border: 1px solid #808080;
-}
+  /* Ferramentas em 2 colunas fixas (grid) */
+  .paint-tools {
+    width: 74px;               /* 2 colunas de 32px + gaps + padding */
+    background: #ece9d8;
+    border-right: 1px solid #a0a0a0;
+    display: grid;
+    grid-template-columns: repeat(2, 32px);
+    gap: 4px;
+    padding: 5px;
+    align-content: start;
+    justify-content: center;
+  }
+  /* Estilo de botão clássico do Windows XP */
+  .paint-tool-button {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    background: #c0c0c0;
+    border: 1px solid;
+    border-color: #ffffff #808080 #808080 #ffffff; /* relevo 3D */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .paint-tool-button:hover {
+    background: #d4d0c8;
+  }
+  .paint-tool-button.active {
+    background: #b0b0b0;
+    border-color: #808080 #ffffff #ffffff #808080; /* invertido */
+  }
+  .paint-tool-button svg {
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+  }
 
-#experience-canvas {
-  flex: 1;
-  cursor: crosshair;
-  background: #ffffff;
-}
+  #experience-canvas {
+    flex: 1;
+    cursor: crosshair;
+    background: #ffffff;
+  }
 
-.paint-palette {
-  height: 54px;             /* 2 linhas de 16px + gaps + padding */
-  background: #ece9d8;
-  border-top: 1px solid #a0a0a0;
-  display: flex;
-  flex-wrap: wrap;          /* quebra em 2 linhas */
-  align-items: center;
-  padding: 4px 10px;
-  gap: 2px;
-}
-.paint-color {
-  width: 16px;
-  height: 16px;
-  border: 1px solid #808080;
-  cursor: pointer;
-  box-shadow: inset 0 0 0 1px #ffffff;
-}
-.paint-color:hover {
-  border-color: #000;
-}
-.paint-color.selected {
-  outline: 2px solid #000;
-}
+  /* Paleta de cores em 2 linhas fixas (grid) */
+  .paint-palette {
+    height: 54px;              /* 2 linhas de 16px + gaps + padding */
+    background: #ece9d8;
+    border-top: 1px solid #a0a0a0;
+    display: grid;
+    grid-template-columns: repeat(14, 16px);
+    gap: 2px;
+    align-content: center;
+    justify-content: center;
+    padding: 4px 10px;
+  }
+  .paint-color {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #808080;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 1px #ffffff;
+  }
+  .paint-color:hover {
+    border-color: #000;
+  }
+  .paint-color.selected {
+    outline: 2px solid #000;
+  }
 
-.paint-status {
-  height: 20px;
-  background: #ece9d8;
-  border-top: 1px solid #a0a0a0;
-  font-size: 11px;
-  padding: 2px 5px;
-  color: #333;
-}
+  .paint-status {
+    height: 20px;
+    background: #ece9d8;
+    border-top: 1px solid #a0a0a0;
+    font-size: 11px;
+    padding: 2px 5px;
+    color: #333;
+  }
 
   @media (max-width: 768px) {
     .window { min-width: 92vw; max-width: 95vw; left: 2.5vw !important; top: 36px !important; max-height: calc(100vh - 80px); max-height: calc(100dvh - 80px); }
@@ -890,22 +899,70 @@
     <!-- Área principal: tools + canvas -->
     <div class="paint-main">
       <div class="paint-tools">
-        <!-- Coluna 1 (7 primeiros) -->
-        <div class="paint-tool-button active" id="tool-pencil" title="Lápis" onclick="setTool('pencil')">✏️</div>
-        <div class="paint-tool-button" id="tool-brush" title="Pincel" onclick="setTool('brush')">🖌️</div>
-        <div class="paint-tool-button" id="tool-eraser" title="Borracha" onclick="setTool('eraser')">🧽</div>
-        <div class="paint-tool-button" id="tool-fill" title="Balde de tinta" onclick="setTool('fill')">🪣</div>
-        <div class="paint-tool-button" id="tool-eyedropper" title="Conta-gotas" onclick="alert('Conta-gotas (sem função)')">💧</div>
-        <div class="paint-tool-button" id="tool-zoom" title="Lupa" onclick="alert('Lupa (sem função)')">🔍</div>
-        <div class="paint-tool-button" id="tool-text" title="Texto" onclick="alert('Texto (sem função)')">🔤</div>
-        <!-- Coluna 2 (7 próximos) -->
-        <div class="paint-tool-button" id="tool-line" title="Linha" onclick="setTool('line')">📏</div>
-        <div class="paint-tool-button" id="tool-curve" title="Curva" onclick="alert('Curva (sem função)')">〰️</div>
-        <div class="paint-tool-button" id="tool-rect" title="Retângulo" onclick="alert('Retângulo (sem função)')">▭</div>
-        <div class="paint-tool-button" id="tool-polygon" title="Polígono" onclick="alert('Polígono (sem função)')">⬠</div>
-        <div class="paint-tool-button" id="tool-ellipse" title="Elipse" onclick="alert('Elipse (sem função)')">⬭</div>
-        <div class="paint-tool-button" id="tool-roundrect" title="Retângulo arredondado" onclick="alert('Retângulo arredondado (sem função)')">▢</div>
-        <div class="paint-tool-button" id="tool-select" title="Selecionar" onclick="alert('Selecionar (sem função)')">⬚</div>
+        <!-- Selecionar forma livre -->
+        <div class="paint-tool-button" title="Selecionar forma livre" onclick="alert('Selecionar forma livre (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><path d="M3 3 C10 2, 18 5, 15 10 C12 15, 5 12, 4 17"/></svg>
+        </div>
+        <!-- Selecionar -->
+        <div class="paint-tool-button" title="Selecionar" onclick="alert('Selecionar (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><rect x="4" y="4" width="12" height="12" stroke-dasharray="3 2"/></svg>
+        </div>
+        <!-- Borracha -->
+        <div class="paint-tool-button" title="Borracha/apagar cor" onclick="setTool('eraser')">
+          <svg viewBox="0 0 20 20" fill="#f0a0a0" stroke="#000" stroke-width="1"><rect x="5" y="8" width="12" height="6" transform="rotate(-15 10 10)"/></svg>
+        </div>
+        <!-- Preencher com cor -->
+        <div class="paint-tool-button" title="Preencher com cor" onclick="setTool('fill')">
+          <svg viewBox="0 0 20 20" fill="#fff" stroke="#000" stroke-width="1.5"><path d="M10 3 L17 10 L10 17 L3 10 Z"/><path d="M12 5 L14 7 L10 11 L8 9 Z" fill="#00f"/></svg>
+        </div>
+        <!-- Escolher cor -->
+        <div class="paint-tool-button" title="Escolher cor" onclick="alert('Conta-gotas (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><path d="M10 2 L10 8 M10 8 L14 12 M10 8 L6 12"/><circle cx="10" cy="12" r="2"/></svg>
+        </div>
+        <!-- Lupa -->
+        <div class="paint-tool-button" title="Lupa" onclick="alert('Lupa (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="2"><circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="17" y2="17"/></svg>
+        </div>
+        <!-- Lápis (ativo) -->
+        <div class="paint-tool-button active" title="Lápis" onclick="setTool('pencil')">
+          <svg viewBox="0 0 20 20" fill="#ffcc00" stroke="#000" stroke-width="1"><path d="M4 16 L14 4 L16 6 L6 18 Z"/><path d="M14 4 L16 6" stroke="#000" stroke-width="2"/><path d="M4 16 L4 18 L6 18" fill="#ffcc00"/></svg>
+        </div>
+        <!-- Pincel -->
+        <div class="paint-tool-button" title="Pincel" onclick="setTool('brush')">
+          <svg viewBox="0 0 20 20" fill="#e0a080" stroke="#000" stroke-width="1"><path d="M6 16 C10 12, 14 8, 15 5 L15 4 L13 4 C12 6, 8 10, 5 14 Z"/><path d="M5 15 L5 18 L7 18 L7 15" fill="#808080"/></svg>
+        </div>
+        <!-- Aerógrafo -->
+        <div class="paint-tool-button" title="Aerógrafo" onclick="alert('Aerógrafo (sem função)')">
+          <svg viewBox="0 0 20 20" fill="#00bfff" stroke="#000" stroke-width="1"><circle cx="5" cy="5" r="2"/><circle cx="8" cy="8" r="2"/><circle cx="11" cy="11" r="2"/><circle cx="14" cy="14" r="2"/></svg>
+        </div>
+        <!-- Texto -->
+        <div class="paint-tool-button" title="Texto" onclick="alert('Texto (sem função)')">
+          <svg viewBox="0 0 20 20" fill="#fff" stroke="#000" stroke-width="1"><rect x="3" y="6" width="14" height="8"/><text x="5" y="12" font-size="8" font-family="Arial">A</text></svg>
+        </div>
+        <!-- Linha -->
+        <div class="paint-tool-button" title="Linha" onclick="setTool('line')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="2"><line x1="4" y1="16" x2="16" y2="4"/></svg>
+        </div>
+        <!-- Curva -->
+        <div class="paint-tool-button" title="Curva" onclick="alert('Curva (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="2"><path d="M3 15 C7 5, 13 5, 17 15"/></svg>
+        </div>
+        <!-- Retângulo -->
+        <div class="paint-tool-button" title="Retângulo" onclick="alert('Retângulo (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><rect x="4" y="6" width="12" height="8"/></svg>
+        </div>
+        <!-- Polígono -->
+        <div class="paint-tool-button" title="Polígono" onclick="alert('Polígono (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><polygon points="10,4 17,8 14,15 6,15 3,8"/></svg>
+        </div>
+        <!-- Elipse -->
+        <div class="paint-tool-button" title="Elipse" onclick="alert('Elipse (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><ellipse cx="10" cy="10" rx="6" ry="4"/></svg>
+        </div>
+        <!-- Retângulo arredondado -->
+        <div class="paint-tool-button" title="Retângulo arredondado" onclick="alert('Retângulo arredondado (sem função)')">
+          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><rect x="4" y="6" width="12" height="8" rx="3"/></svg>
+        </div>
       </div>
       <canvas id="experience-canvas"></canvas>
     </div>
@@ -2808,7 +2865,7 @@ function toggleMute() {
 }
 
 // ============================================================
-//  PAINT DO XP (EXPERIENCE)
+//  PAINT DO XP (EXPERIENCE) - CORRIGIDO
 // ============================================================
 (function initExperiencePaint() {
   const canvas = document.getElementById('experience-canvas');
