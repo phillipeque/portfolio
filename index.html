@@ -660,15 +660,15 @@
   overflow: hidden;
 }
 
-.paint-tools-left {
-  width: 56px;
+.paint-tools {
+  width: 74px;              /* 2 colunas de 32px + gaps + padding */
   background: #ece9d8;
   border-right: 1px solid #a0a0a0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8px 4px;
-  gap: 6px;
+  flex-wrap: wrap;          /* permite 2 colunas */
+  align-content: flex-start;
+  padding: 5px;
+  gap: 4px;
 }
 .paint-tool-button {
   width: 32px;
@@ -680,7 +680,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 2px;
 }
 .paint-tool-button:hover {
   background: #d0d0d0;
@@ -689,32 +688,22 @@
 .paint-tool-button.active {
   background: #b0b0b0;
   border: 1px solid #808080;
-  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
 }
 
-.paint-canvas-wrapper {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  background: #ffffff;
-  overflow: auto;
-}
 #experience-canvas {
-  background: #ffffff;
-  box-shadow: 0 0 0 1px #a0a0a0;
+  flex: 1;
   cursor: crosshair;
+  background: #ffffff;
 }
 
 .paint-palette {
-  height: 42px;
+  height: 54px;             /* 2 linhas de 16px + gaps + padding */
   background: #ece9d8;
   border-top: 1px solid #a0a0a0;
   display: flex;
+  flex-wrap: wrap;          /* quebra em 2 linhas */
   align-items: center;
-  padding: 5px 10px;
-  flex-wrap: wrap;
+  padding: 4px 10px;
   gap: 2px;
 }
 .paint-color {
@@ -879,12 +868,9 @@
 </div>
 
 <!-- ===== JANELA EXPERIENCE (PAINT) ===== -->
-<div class="window" id="win-experience" style="left: calc(50% - 400px); top: calc(50% - 300px); width: 800px; height: 600px; min-width: 600px; min-height: 450px;">
+<div class="window" id="win-experience" style="left: calc(50% - 580px); top: calc(50% - 460px); width: 1160px; height: 920px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
-    <div class="window-title">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3C/svg%3E" alt="">
-      untitled - Paint
-    </div>
+    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3C/svg%3E" alt=""> Experience</div>
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('experience')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
@@ -903,35 +889,30 @@
 
     <!-- Área principal: tools + canvas -->
     <div class="paint-main">
-      <!-- Barra de ferramentas esquerda -->
-      <div class="paint-tools-left">
-        <div class="paint-tool-button active" id="tool-free-select" title="Seleção livre" onclick="setTool('free-select')">✂️</div>
-        <div class="paint-tool-button" id="tool-select" title="Selecionar" onclick="setTool('select')">⬜</div>
+      <div class="paint-tools">
+        <!-- Coluna 1 (7 primeiros) -->
+        <div class="paint-tool-button active" id="tool-pencil" title="Lápis" onclick="setTool('pencil')">✏️</div>
+        <div class="paint-tool-button" id="tool-brush" title="Pincel" onclick="setTool('brush')">🖌️</div>
         <div class="paint-tool-button" id="tool-eraser" title="Borracha" onclick="setTool('eraser')">🧽</div>
         <div class="paint-tool-button" id="tool-fill" title="Balde de tinta" onclick="setTool('fill')">🪣</div>
-        <div class="paint-tool-button" id="tool-picker" title="Conta-gotas" onclick="setTool('picker')">💧</div>
-        <div class="paint-tool-button" id="tool-magnifier" title="Lupa" onclick="setTool('magnifier')">🔍</div>
-        <div class="paint-tool-button" id="tool-pencil" title="Lápis" onclick="setTool('pencil')">✏️</div>
-        <div class="paint-tool-button" id="tool-brush" title="Pincel" onclick="setTool('brush')">🖌️</div>
-        <div class="paint-tool-button" id="tool-airbrush" title="Spray" onclick="setTool('airbrush')">💨</div>
-        <div class="paint-tool-button" id="tool-text" title="Texto" onclick="setTool('text')">🅰️</div>
+        <div class="paint-tool-button" id="tool-eyedropper" title="Conta-gotas" onclick="alert('Conta-gotas (sem função)')">💧</div>
+        <div class="paint-tool-button" id="tool-zoom" title="Lupa" onclick="alert('Lupa (sem função)')">🔍</div>
+        <div class="paint-tool-button" id="tool-text" title="Texto" onclick="alert('Texto (sem função)')">🔤</div>
+        <!-- Coluna 2 (7 próximos) -->
         <div class="paint-tool-button" id="tool-line" title="Linha" onclick="setTool('line')">📏</div>
-        <div class="paint-tool-button" id="tool-curve" title="Curva" onclick="setTool('curve')">〰️</div>
-        <div class="paint-tool-button" id="tool-rect" title="Retângulo" onclick="setTool('rect')">▭</div>
-        <div class="paint-tool-button" id="tool-polygon" title="Polígono" onclick="setTool('polygon')">⬠</div>
-        <div class="paint-tool-button" id="tool-ellipse" title="Elipse" onclick="setTool('ellipse')">⬭</div>
-        <div class="paint-tool-button" id="tool-rounded-rect" title="Retângulo arredondado" onclick="setTool('rounded-rect')">▢</div>
+        <div class="paint-tool-button" id="tool-curve" title="Curva" onclick="alert('Curva (sem função)')">〰️</div>
+        <div class="paint-tool-button" id="tool-rect" title="Retângulo" onclick="alert('Retângulo (sem função)')">▭</div>
+        <div class="paint-tool-button" id="tool-polygon" title="Polígono" onclick="alert('Polígono (sem função)')">⬠</div>
+        <div class="paint-tool-button" id="tool-ellipse" title="Elipse" onclick="alert('Elipse (sem função)')">⬭</div>
+        <div class="paint-tool-button" id="tool-roundrect" title="Retângulo arredondado" onclick="alert('Retângulo arredondado (sem função)')">▢</div>
+        <div class="paint-tool-button" id="tool-select" title="Selecionar" onclick="alert('Selecionar (sem função)')">⬚</div>
       </div>
-
-      <!-- Canvas -->
-      <div class="paint-canvas-wrapper">
-        <canvas id="experience-canvas"></canvas>
-      </div>
+      <canvas id="experience-canvas"></canvas>
     </div>
 
-    <!-- Paleta de cores -->
+    <!-- Paleta de cores (2 linhas) -->
     <div class="paint-palette" id="paint-palette">
-      <!-- Cores serão geradas via JS -->
+      <!-- Cores geradas via JS -->
     </div>
 
     <!-- Barra de status -->
@@ -2833,20 +2814,20 @@ function toggleMute() {
   const canvas = document.getElementById('experience-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  
-  // Configuração inicial do canvas
+
+  // Ajusta o canvas para preencher a área branca
   function resizeCanvas() {
-    const wrapper = canvas.parentElement;
-    canvas.width = wrapper.clientWidth - 16; // padding
-    canvas.height = wrapper.clientHeight - 16;
+    const main = canvas.parentElement;
+    canvas.width = main.clientWidth - 74; // largura das tools (2 colunas)
+    canvas.height = main.clientHeight;
     drawExperienceContent();
   }
-  
-  // Dados das experiências para desenhar
+
+  // Desenha as experiências no canvas
   function drawExperienceContent() {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     const experiences = [
       { company: 'VS1Fiance', role: 'Community Builder', date: 'Oct 2025 — Present', color: '#4a90d9' },
       { company: "Lion's Share Group", role: 'Affiliate Community Manager', date: 'Mar 2025 — Jun 2025', color: '#e8a33d' },
@@ -2856,39 +2837,39 @@ function toggleMute() {
       { company: 'Coinracer', role: 'Head Moderator', date: 'Nov 2021 — Feb 2024', color: '#f39c12' },
       { company: 'Binance', role: 'Binance Angel', date: 'Feb 2021 — Mar 2022', color: '#f1c40f' }
     ];
-    
-    let y = 30;
+
+    let y = 50;
     experiences.forEach(exp => {
-      // Card
+      // Card da empresa
       ctx.fillStyle = exp.color;
-      ctx.fillRect(20, y, 320, 40);
+      ctx.fillRect(30, y, 360, 50);
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 14px Tahoma';
-      ctx.fillText(exp.company, 30, y + 25);
-      
+      ctx.font = 'bold 16px Tahoma';
+      ctx.fillText(exp.company, 45, y + 32);
+
       // Detalhes
       ctx.fillStyle = '#000000';
-      ctx.font = '12px Tahoma';
-      ctx.fillText(exp.role, 30, y + 65);
-      ctx.fillText(exp.date, 30, y + 85);
-      
-      y += 120;
+      ctx.font = '14px Tahoma';
+      ctx.fillText(exp.role, 45, y + 80);
+      ctx.fillText(exp.date, 45, y + 105);
+
+      y += 140;
     });
   }
-  
-  // Ferramentas e estado de desenho
-  let currentTool = 'pencil'; // pencil, brush, eraser, fill, line, etc.
+
+  // Ferramentas e estado
+  let currentTool = 'pencil';
   let currentColor = '#000000';
   let isDrawing = false;
   let lastX = 0, lastY = 0;
-  
-  // Paleta de cores (28 clássicas do Paint)
+
+  // Paleta de cores (28 em 2 linhas)
   const colors = [
     '#000000','#808080','#800000','#808000','#008000','#008080','#000080','#800080','#808040','#004040','#0080ff','#004080','#8000ff','#804000',
     '#ffffff','#c0c0c0','#ff0000','#ffff00','#00ff00','#00ffff','#0000ff','#ff00ff','#ffff80','#00ff80','#80ffff','#8080ff','#ff0080','#ff8040'
   ];
-  
-  // Criar paleta
+
+  // Cria paleta
   const palette = document.getElementById('paint-palette');
   colors.forEach(color => {
     const swatch = document.createElement('div');
@@ -2902,18 +2883,17 @@ function toggleMute() {
     });
     palette.appendChild(swatch);
   });
-  
-  // Selecionar primeira cor como padrão
+  // Seleciona preto por padrão
   document.querySelector('.paint-color').classList.add('selected');
-  
-  // Trocar ferramenta
+
+  // Trocar ferramenta (funcional ou não)
   window.setTool = function(tool) {
     currentTool = tool;
     document.querySelectorAll('.paint-tool-button').forEach(btn => btn.classList.remove('active'));
     const btn = document.getElementById('tool-' + tool);
     if (btn) btn.classList.add('active');
   };
-  
+
   // Eventos de desenho
   canvas.addEventListener('mousedown', (e) => {
     e.preventDefault();
@@ -2921,7 +2901,7 @@ function toggleMute() {
     lastX = e.clientX - rect.left;
     lastY = e.clientY - rect.top;
     isDrawing = true;
-    
+
     if (currentTool === 'fill') {
       ctx.fillStyle = currentColor;
       ctx.fillRect(lastX - 20, lastY - 20, 40, 40);
@@ -2929,39 +2909,29 @@ function toggleMute() {
     } else if (currentTool === 'line') {
       ctx.beginPath();
       ctx.moveTo(lastX, lastY);
-    } else if (currentTool === 'rect') {
-      ctx.strokeStyle = currentColor;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(lastX, lastY, 0, 0);
     }
   });
-  
+
   canvas.addEventListener('mousemove', (e) => {
     if (!isDrawing) return;
     const rect = canvas.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
-    ctx.strokeStyle = currentColor;
-    ctx.lineWidth = currentTool === 'pencil' ? 2 : (currentTool === 'brush' ? 5 : (currentTool === 'airbrush' ? 8 : 15));
+
+    ctx.strokeStyle = currentTool === 'eraser' ? '#ffffff' : currentColor;
+    ctx.lineWidth = currentTool === 'pencil' ? 2 : (currentTool === 'brush' ? 5 : 15);
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    
-    if (currentTool === 'eraser') {
-      ctx.strokeStyle = '#ffffff';
-    } else {
-      ctx.strokeStyle = currentColor;
-    }
-    
+
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(x, y);
     ctx.stroke();
-    
+
     lastX = x;
     lastY = y;
   });
-  
+
   canvas.addEventListener('mouseup', (e) => {
     if (currentTool === 'line' && isDrawing) {
       const rect = canvas.getBoundingClientRect();
@@ -2972,61 +2942,45 @@ function toggleMute() {
       ctx.lineTo(x, y);
       ctx.stroke();
     }
-    if (currentTool === 'rect' && isDrawing) {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.strokeStyle = currentColor;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(lastX, lastY, x - lastX, y - lastY);
-    }
     isDrawing = false;
   });
-  
+
   canvas.addEventListener('mouseleave', () => {
     if (currentTool === 'line' && isDrawing) {
       ctx.beginPath();
     }
     isDrawing = false;
   });
-  
-  // Suporte a touch (celular)
+
+  // Suporte touch
   canvas.addEventListener('touchstart', (e) => {
     e.preventDefault();
     const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousedown', {
-      clientX: touch.clientX,
-      clientY: touch.clientY
-    });
+    const mouseEvent = new MouseEvent('mousedown', { clientX: touch.clientX, clientY: touch.clientY });
     canvas.dispatchEvent(mouseEvent);
   }, {passive: false});
-  
+
   canvas.addEventListener('touchmove', (e) => {
     e.preventDefault();
     const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousemove', {
-      clientX: touch.clientX,
-      clientY: touch.clientY
-    });
+    const mouseEvent = new MouseEvent('mousemove', { clientX: touch.clientX, clientY: touch.clientY });
     canvas.dispatchEvent(mouseEvent);
   }, {passive: false});
-  
+
   canvas.addEventListener('touchend', (e) => {
     e.preventDefault();
     const mouseEvent = new MouseEvent('mouseup', {});
     canvas.dispatchEvent(mouseEvent);
   }, {passive: false});
-  
-  // Botão New no menu (limpa e redesenha)
+
+  // Botão New (File > New)
   window.paintNew = function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawExperienceContent();
   };
-  
-  // Inicializar ao abrir a janela
+
+  // Inicializa
   window.__initExperiencePaint = resizeCanvas;
-  
-  // Se a janela já estiver visível no carregamento, inicializa
   setTimeout(resizeCanvas, 100);
 })();
 
