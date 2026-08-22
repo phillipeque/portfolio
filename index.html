@@ -755,6 +755,22 @@
   * { touch-action: manipulation; }
   html, body { height: 100vh; height: 100dvh; }
   #selection-box { position: fixed; border: 1px dotted #316AC5; background: rgba(49, 106, 197, 0.15); pointer-events: none; z-index: 5; display: none; }
+
+  /* CORREÇÃO DO PAINT */
+#win-experience {
+    overflow: hidden !important;
+}
+#win-experience .window-content {
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+#win-experience iframe {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    overflow: hidden !important;
+}
 </style>
 <base target="_blank">
 </head>
