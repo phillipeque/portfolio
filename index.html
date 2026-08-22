@@ -879,93 +879,19 @@
 <!-- ===== JANELA EXPERIENCE (PAINT) ===== -->
 <div class="window" id="win-experience" style="left: calc(50% - 580px); top: calc(50% - 460px); width: 1160px; height: 920px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
-    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3C/svg%3E" alt=""> Experience</div>
+    <div class="window-title">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3C/svg%3E" alt="">
+      Experience
+    </div>
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('experience')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
     </div>
   </div>
-  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden;">
-    <!-- Barra de menu do Paint -->
-    <div class="paint-menubar">
-      <span class="menu-item" onclick="paintNew()">File</span>
-      <span class="menu-item" onclick="alert('Edit menu')">Edit</span>
-      <span class="menu-item" onclick="alert('View menu')">View</span>
-      <span class="menu-item" onclick="alert('Image menu')">Image</span>
-      <span class="menu-item" onclick="alert('Colors menu')">Colors</span>
-      <span class="menu-item" onclick="alert('Help')">Help</span>
-    </div>
-
-    <!-- Área principal: tools + canvas -->
-    <div class="paint-main">
-      <div class="paint-tools">
-        <!-- Selecionar forma livre -->
-        <div class="paint-tool-button" title="Selecionar forma livre" onclick="alert('Selecionar forma livre (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><path d="M3 3 C10 2, 18 5, 15 10 C12 15, 5 12, 4 17"/></svg>
-        </div>
-        <!-- Selecionar -->
-        <div class="paint-tool-button" title="Selecionar" onclick="alert('Selecionar (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><rect x="4" y="4" width="12" height="12" stroke-dasharray="3 2"/></svg>
-        </div>
-        <!-- Borracha -->
-        <div class="paint-tool-button" title="Borracha/apagar cor" onclick="setTool('eraser')">
-          <svg viewBox="0 0 20 20" fill="#f0a0a0" stroke="#000" stroke-width="1"><rect x="5" y="8" width="12" height="6" transform="rotate(-15 10 10)"/></svg>
-        </div>
-        <!-- Preencher com cor -->
-        <div class="paint-tool-button" title="Preencher com cor" onclick="setTool('fill')">
-          <svg viewBox="0 0 20 20" fill="#fff" stroke="#000" stroke-width="1.5"><path d="M10 3 L17 10 L10 17 L3 10 Z"/><path d="M12 5 L14 7 L10 11 L8 9 Z" fill="#00f"/></svg>
-        </div>
-        <!-- Escolher cor -->
-        <div class="paint-tool-button" title="Escolher cor" onclick="alert('Conta-gotas (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><path d="M10 2 L10 8 M10 8 L14 12 M10 8 L6 12"/><circle cx="10" cy="12" r="2"/></svg>
-        </div>
-        <!-- Lupa -->
-        <div class="paint-tool-button" title="Lupa" onclick="alert('Lupa (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="2"><circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="17" y2="17"/></svg>
-        </div>
-        <!-- Lápis (ativo) -->
-        <div class="paint-tool-button active" title="Lápis" onclick="setTool('pencil')">
-          <svg viewBox="0 0 20 20" fill="#ffcc00" stroke="#000" stroke-width="1"><path d="M4 16 L14 4 L16 6 L6 18 Z"/><path d="M14 4 L16 6" stroke="#000" stroke-width="2"/><path d="M4 16 L4 18 L6 18" fill="#ffcc00"/></svg>
-        </div>
-        <!-- Pincel -->
-        <div class="paint-tool-button" title="Pincel" onclick="setTool('brush')">
-          <svg viewBox="0 0 20 20" fill="#e0a080" stroke="#000" stroke-width="1"><path d="M6 16 C10 12, 14 8, 15 5 L15 4 L13 4 C12 6, 8 10, 5 14 Z"/><path d="M5 15 L5 18 L7 18 L7 15" fill="#808080"/></svg>
-        </div>
-        <!-- Aerógrafo -->
-        <div class="paint-tool-button" title="Aerógrafo" onclick="alert('Aerógrafo (sem função)')">
-          <svg viewBox="0 0 20 20" fill="#00bfff" stroke="#000" stroke-width="1"><circle cx="5" cy="5" r="2"/><circle cx="8" cy="8" r="2"/><circle cx="11" cy="11" r="2"/><circle cx="14" cy="14" r="2"/></svg>
-        </div>
-        <!-- Texto -->
-        <div class="paint-tool-button" title="Texto" onclick="alert('Texto (sem função)')">
-          <svg viewBox="0 0 20 20" fill="#fff" stroke="#000" stroke-width="1"><rect x="3" y="6" width="14" height="8"/><text x="5" y="12" font-size="8" font-family="Arial">A</text></svg>
-        </div>
-        <!-- Linha -->
-        <div class="paint-tool-button" title="Linha" onclick="setTool('line')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="2"><line x1="4" y1="16" x2="16" y2="4"/></svg>
-        </div>
-        <!-- Curva -->
-        <div class="paint-tool-button" title="Curva" onclick="alert('Curva (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="2"><path d="M3 15 C7 5, 13 5, 17 15"/></svg>
-        </div>
-        <!-- Retângulo -->
-        <div class="paint-tool-button" title="Retângulo" onclick="alert('Retângulo (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><rect x="4" y="6" width="12" height="8"/></svg>
-        </div>
-        <!-- Polígono -->
-        <div class="paint-tool-button" title="Polígono" onclick="alert('Polígono (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><polygon points="10,4 17,8 14,15 6,15 3,8"/></svg>
-        </div>
-        <!-- Elipse -->
-        <div class="paint-tool-button" title="Elipse" onclick="alert('Elipse (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><ellipse cx="10" cy="10" rx="6" ry="4"/></svg>
-        </div>
-        <!-- Retângulo arredondado -->
-        <div class="paint-tool-button" title="Retângulo arredondado" onclick="alert('Retângulo arredondado (sem função)')">
-          <svg viewBox="0 0 20 20" fill="none" stroke="#000" stroke-width="1.5"><rect x="4" y="6" width="12" height="8" rx="3"/></svg>
-        </div>
-      </div>
-      <canvas id="experience-canvas"></canvas>
-    </div>
+  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#ece9d8;">
+    <iframe src="xp-paint.html" style="width:100%; height:100%; border:none; display:block;"></iframe>
+  </div>
+</div>
 
     <!-- Paleta de cores (2 linhas) -->
     <div class="paint-palette" id="paint-palette">
