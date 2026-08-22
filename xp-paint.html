@@ -35,7 +35,8 @@ html, body {
 </style>
 
 <script>
-window.addEventListener('load', function() {
+// Aguarda o carregamento e depois um tempinho extra
+setTimeout(function() {
   var ctx = canvas.getContext('2d');
   var w = canvas.width;
   var h = canvas.height;
@@ -70,47 +71,38 @@ window.addEventListener('load', function() {
     var x = gap + (i % cols) * (cardW + gap);
     var y = gap + Math.floor(i / cols) * (cardH + gap);
     
-    // Fundo do card
     ctx.fillStyle = '#f5f5f5';
     ctx.fillRect(x, y, cardW, cardH);
     ctx.strokeStyle = '#cccccc';
     ctx.strokeRect(x, y, cardW, cardH);
     
-    // Círculo placeholder da logo (cor da empresa)
     ctx.fillStyle = empresas[i].cor;
     ctx.beginPath();
     ctx.arc(x + cardW / 2, y + cardH * 0.3, 30, 0, Math.PI * 2);
     ctx.fill();
     
-    // Nome da empresa
     ctx.fillStyle = '#000000';
     ctx.font = 'bold 20px Tahoma';
     ctx.textAlign = 'center';
     ctx.fillText(empresas[i].nome, x + cardW / 2, y + cardH * 0.55);
     
-    // Descrição
     ctx.fillStyle = '#555555';
     ctx.font = '14px Tahoma';
     ctx.fillText(empresas[i].desc, x + cardW / 2, y + cardH * 0.75);
   }
   
-  // Função de animação (um card por vez)
-  function animarCards(indice) {
-    if (indice >= empresas.length) return; // para quando acabar
-    
-    // Desenha o card atual
+  // Inicia a animação a partir do primeiro card
+  var indice = 0;
+  var intervalo = setInterval(function() {
+    if (indice >= empresas.length) {
+      clearInterval(intervalo);
+      return;
+    }
     desenharCard(indice);
-    
-    // Chama a próxima animação após um pequeno delay
-    setTimeout(function() {
-      animarCards(indice + 1);
-    }, 250); // 250ms de pausa entre cada card
-  }
-  
-  // Inicia a animação a partir do primeiro card (índice 0)
-  animarCards(0);
+    indice++;
+  }, 300); // 300ms entre cada card
   
   // Marca como não salvo (opcional)
   saved = false;
-});
+}, 300); // Espera 300ms após o carregamento
 </script>
