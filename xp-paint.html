@@ -33,6 +33,7 @@ html, body {
   bottom: auto;
 }
 </style>
+
 <script>
 window.addEventListener('load', function() {
   var ctx = canvas.getContext('2d');
@@ -64,8 +65,8 @@ window.addEventListener('load', function() {
   var cardW = (w - (cols + 1) * gap) / cols;
   var cardH = (h - (rows + 1) * gap) / rows;
   
-  // Desenha cada card
-  for (var i = 0; i < empresas.length; i++) {
+  // Função que desenha um card específico
+  function desenharCard(i) {
     var x = gap + (i % cols) * (cardW + gap);
     var y = gap + Math.floor(i / cols) * (cardH + gap);
     
@@ -92,6 +93,22 @@ window.addEventListener('load', function() {
     ctx.font = '14px Tahoma';
     ctx.fillText(empresas[i].desc, x + cardW / 2, y + cardH * 0.75);
   }
+  
+  // Função de animação (um card por vez)
+  function animarCards(indice) {
+    if (indice >= empresas.length) return; // para quando acabar
+    
+    // Desenha o card atual
+    desenharCard(indice);
+    
+    // Chama a próxima animação após um pequeno delay
+    setTimeout(function() {
+      animarCards(indice + 1);
+    }, 250); // 250ms de pausa entre cada card
+  }
+  
+  // Inicia a animação a partir do primeiro card (índice 0)
+  animarCards(0);
   
   // Marca como não salvo (opcional)
   saved = false;
