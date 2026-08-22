@@ -662,6 +662,7 @@
   #selection-box { position: fixed; border: 1px dotted #316AC5; background: rgba(49, 106, 197, 0.15); pointer-events: none; z-index: 5; display: none; }
 </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 
@@ -763,8 +764,8 @@
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-about')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%230058e6' x='2' y='3' width='12' height='9' rx='1'/%3E%3C/svg%3E" alt=""> About Me</div>
     <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('about')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('about')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+      <div class="win-btn minimize" onclick="minimizeWindow(\'about\')"><img src="icons/minimize.png" alt="" style="width:14px;height:14px;display:block;"></div>
+      <div class="win-btn close" onclick="closeWindow(\'about\')"><img src="icons/exit.png" alt="" style="width:14px;height:14px;display:block;"></div>
     </div>
   </div>
   <div class="window-content">
@@ -786,8 +787,8 @@
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3C/svg%3E" alt=""> Experience</div>
     <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('experience')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+      <div class="win-btn minimize" onclick="minimizeWindow(\'experience\')"><img src="icons/minimize.png" alt="" style="width:14px;height:14px;display:block;"></div>
+      <div class="win-btn close" onclick="closeWindow(\'experience\')"><img src="icons/exit.png" alt="" style="width:14px;height:14px;display:block;"></div>
     </div>
   </div>
   <div class="window-content">
@@ -806,8 +807,8 @@
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-skills')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23CC0000' x='4' y='3' width='8' height='10' rx='1'/%3E%3C/svg%3E" alt=""> Skills</div>
     <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('skills')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('skills')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+      <div class="win-btn minimize" onclick="minimizeWindow(\'skills\')"><img src="icons/minimize.png" alt="" style="width:14px;height:14px;display:block;"></div>
+      <div class="win-btn close" onclick="closeWindow(\'skills\')"><img src="icons/exit.png" alt="" style="width:14px;height:14px;display:block;"></div>
     </div>
   </div>
   <div class="window-content" style="padding: 12px 16px; display: flex; flex-direction: column;">
@@ -826,8 +827,8 @@
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-resume')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23fff' x='4' y='2' width='8' height='12' rx='1'/%3E%3C/svg%3E" alt=""> Resume.pdf</div>
     <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('resume')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('resume')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+      <div class="win-btn minimize" onclick="minimizeWindow(\'resume\')"><img src="icons/minimize.png" alt="" style="width:14px;height:14px;display:block;"></div>
+      <div class="win-btn close" onclick="closeWindow(\'resume\')"><img src="icons/exit.png" alt="" style="width:14px;height:14px;display:block;"></div>
     </div>
   </div>
   <div class="window-content" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
@@ -842,8 +843,8 @@
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-snake')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%2333cc55' x='1' y='7' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='5' y='7' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='5' y='3' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='9' y='3' width='4' height='4'/%3E%3Ccircle fill='%23ff3333' cx='12' cy='11' r='2'/%3E%3C/svg%3E" alt=""> Snake.exe</div>
     <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('snake')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('snake')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+      <div class="win-btn minimize" onclick="minimizeWindow(\'snake\')"><img src="icons/minimize.png" alt="" style="width:14px;height:14px;display:block;"></div>
+      <div class="win-btn close" onclick="closeWindow(\'snake\')"><img src="icons/exit.png" alt="" style="width:14px;height:14px;display:block;"></div>
     </div>
   </div>
   <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#0a1f0a;">
@@ -868,8 +869,8 @@
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-minesweeper')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle fill='%23666' cx='8' cy='8' r='6'/%3E%3Ccircle fill='%23ff4d4d' cx='8' cy='8' r='4'/%3E%3C/svg%3E" alt=""> Minesweeper</div>
     <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('minesweeper')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('minesweeper')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+      <div class="win-btn minimize" onclick="minimizeWindow(\'minesweeper\')"><img src="icons/minimize.png" alt="" style="width:14px;height:14px;display:block;"></div>
+      <div class="win-btn close" onclick="closeWindow(\'minesweeper\')"><img src="icons/exit.png" alt="" style="width:14px;height:14px;display:block;"></div>
     </div>
   </div>
   <div class="window-content" style="padding:0; display:flex; flex-direction:column; background:#c0c0c0; overflow:hidden;">
@@ -894,8 +895,8 @@
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-flappy')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle fill='%23FFD700' cx='8' cy='8' r='6'/%3E%3Cpath fill='%23FF8C00' d='M11 4 L14 2 L13 6 Z'/%3E%3C/svg%3E" alt=""> Flappy Bird</div>
     <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('flappy')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('flappy')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+      <div class="win-btn minimize" onclick="minimizeWindow(\'flappy\')"><img src="icons/minimize.png" alt="" style="width:14px;height:14px;display:block;"></div>
+      <div class="win-btn close" onclick="closeWindow(\'flappy\')"><img src="icons/exit.png" alt="" style="width:14px;height:14px;display:block;"></div>
     </div>
   </div>
   <div class="window-content" style="padding:0; display:flex; flex-direction:column; background:#4a90d9; overflow:hidden;">
@@ -922,8 +923,8 @@
       Notepad
     </div>
     <div class="window-buttons">
-      <div class="win-btn minimize" onclick="minimizeWindow('notepad')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
-      <div class="win-btn close" onclick="closeWindow('notepad')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+      <div class="win-btn minimize" onclick="minimizeWindow(\'notepad\')"><img src="icons/minimize.png" alt="" style="width:14px;height:14px;display:block;"></div>
+      <div class="win-btn close" onclick="closeWindow(\'notepad\')"><img src="icons/exit.png" alt="" style="width:14px;height:14px;display:block;"></div>
     </div>
   </div>
   <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden;">
