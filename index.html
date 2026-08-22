@@ -1511,13 +1511,14 @@ function showContactPopups() {
   const now = new Date();
   const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   
-  // Toca o som do MSN 1 segundo após o clique
-  setTimeout(() => {
+  function playMSNSound() {
     const audio = new Audio('msn-notification.mp3');
     audio.volume = 0.6;
     audio.play().catch(() => {});
-  }, 1000);
+  }
   
+  // Som + Popup 1
+  setTimeout(() => { playMSNSound(); }, 1000);
   setTimeout(() => {
     createPopup({
       from: 'Phillipe Queiroz',
@@ -1525,33 +1526,37 @@ function showContactPopups() {
       time: timeStr,
       actions: [{ label: 'Close', action: 'close' }]
     });
-    
-    setTimeout(() => {
-      createPopup({
-        from: 'Phillipe Queiroz',
-        msg: 'You can find me on X (Twitter):',
-        link: { text: '@0xPhillipe', url: 'https://twitter.com/0xPhillipe' },
-        time: timeStr,
-        actions: [
-          { label: 'Open Link', action: 'link', url: 'https://twitter.com/0xPhillipe' },
-          { label: 'Close', action: 'close' }
-        ]
-      });
-      
-      setTimeout(() => {
-        createPopup({
-          from: 'Phillipe Queiroz',
-          msg: 'Or hit me up on Telegram:',
-          link: { text: '@0xPhillipe', url: 'https://t.me/0xPhillipe' },
-          time: timeStr,
-          actions: [
-            { label: 'Open Link', action: 'link', url: 'https://t.me/0xPhillipe' },
-            { label: 'Close', action: 'close' }
-          ]
-        });
-      }, 1500);
-    }, 1500);
   }, 1200);
+  
+  // Som + Popup 2
+  setTimeout(() => { playMSNSound(); }, 2500);
+  setTimeout(() => {
+    createPopup({
+      from: 'Phillipe Queiroz',
+      msg: 'You can find me on X (Twitter):',
+      link: { text: '@0xPhillipe', url: 'https://twitter.com/0xPhillipe' },
+      time: timeStr,
+      actions: [
+        { label: 'Open Link', action: 'link', url: 'https://twitter.com/0xPhillipe' },
+        { label: 'Close', action: 'close' }
+      ]
+    });
+  }, 2700);
+  
+  // Som + Popup 3
+  setTimeout(() => { playMSNSound(); }, 4000);
+  setTimeout(() => {
+    createPopup({
+      from: 'Phillipe Queiroz',
+      msg: 'Or hit me up on Telegram:',
+      link: { text: '@0phillipeque', url: 'https://t.me/phillipeque' },
+      time: timeStr,
+      actions: [
+        { label: 'Open Link', action: 'link', url: 'https://t.me/phillipeque' },
+        { label: 'Close', action: 'close' }
+      ]
+    });
+  }, 4200);
 }
 
 function createPopup(data) {
