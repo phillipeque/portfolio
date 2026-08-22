@@ -33,3 +33,67 @@ html, body {
   bottom: auto;
 }
 </style>
+<script>
+window.addEventListener('load', function() {
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width;
+  var h = canvas.height;
+  
+  // Limpa o canvas
+  ctx.clearRect(0, 0, w, h);
+  
+  // Fundo branco
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, w, h);
+  
+  // Lista de empresas (pode adicionar ou remover linhas)
+  var empresas = [
+    { nome: 'Binance', desc: 'Binance Angel', cor: '#f0b90b' },
+    { nome: 'Coinracer', desc: 'Head Moderator', cor: '#ff6a00' },
+    { nome: 'CoralApp', desc: 'Customer Support', cor: '#e34c26' },
+    { nome: 'BeeOS', desc: 'Community Manager', cor: '#1e88e5' },
+    { nome: 'TAP-Protocol', desc: 'Customer Service', cor: '#8e44ad' },
+    { nome: "Lion's Share", desc: 'Affiliate Manager', cor: '#43a047' },
+    { nome: 'VS1Fiance', desc: 'Community Builder', cor: '#6d4c41' }
+  ];
+  
+  // Configurações da grade
+  var cols = 3;
+  var rows = Math.ceil(empresas.length / cols);
+  var gap = 20;
+  var cardW = (w - (cols + 1) * gap) / cols;
+  var cardH = (h - (rows + 1) * gap) / rows;
+  
+  // Desenha cada card
+  for (var i = 0; i < empresas.length; i++) {
+    var x = gap + (i % cols) * (cardW + gap);
+    var y = gap + Math.floor(i / cols) * (cardH + gap);
+    
+    // Fundo do card
+    ctx.fillStyle = '#f5f5f5';
+    ctx.fillRect(x, y, cardW, cardH);
+    ctx.strokeStyle = '#cccccc';
+    ctx.strokeRect(x, y, cardW, cardH);
+    
+    // Círculo placeholder da logo (cor da empresa)
+    ctx.fillStyle = empresas[i].cor;
+    ctx.beginPath();
+    ctx.arc(x + cardW / 2, y + cardH * 0.3, 30, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Nome da empresa
+    ctx.fillStyle = '#000000';
+    ctx.font = 'bold 20px Tahoma';
+    ctx.textAlign = 'center';
+    ctx.fillText(empresas[i].nome, x + cardW / 2, y + cardH * 0.55);
+    
+    // Descrição
+    ctx.fillStyle = '#555555';
+    ctx.font = '14px Tahoma';
+    ctx.fillText(empresas[i].desc, x + cardW / 2, y + cardH * 0.75);
+  }
+  
+  // Marca como não salvo (opcional)
+  saved = false;
+});
+</script>
