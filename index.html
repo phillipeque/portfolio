@@ -420,12 +420,6 @@
     display: block;
     background: transparent !important;
   }
-  .msn-popup-logo-bar img {
-    height: 21px;
-    width: auto;
-    object-fit: contain;
-    background: transparent;
-  }
   .msn-popup-footer {
     background: linear-gradient(180deg, #f5f5f5, #e4e4e4);
     border-top: none;
@@ -638,6 +632,103 @@
   .shutdown-btn img { width: 22px; height: 22px; }
   .shutdown-btn:hover { background: none; }
 
+  /* ===== PAINT DO XP ===== */
+  .paint-menubar {
+    background: #ece9d8;
+    border-bottom: 1px solid #a0a0a0;
+    display: flex;
+    padding: 2px 5px;
+    font-size: 12px;
+    user-select: none;
+  }
+  .paint-menubar .menu-item {
+    padding: 2px 6px;
+    cursor: default;
+    border: 1px solid transparent;
+  }
+  .paint-menubar .menu-item:hover {
+    background: #0058e6;
+    color: white;
+    border-color: #0045b5;
+  }
+
+  .paint-main {
+    flex: 1;
+    display: flex;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .paint-tools {
+    width: 56px;
+    background: #ece9d8;
+    border-right: 1px solid #a0a0a0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+    gap: 4px;
+  }
+  .paint-tool-button {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: transparent;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .paint-tool-button:hover {
+    background: #d0d0d0;
+    border: 1px solid #a0a0a0;
+  }
+  .paint-tool-button.active {
+    background: #b0b0b0;
+    border: 1px solid #808080;
+  }
+
+  #experience-canvas {
+    flex: 1;
+    cursor: crosshair;
+    background: #ffffff;
+  }
+
+  .paint-palette {
+    height: 42px;
+    background: #ece9d8;
+    border-top: 1px solid #a0a0a0;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+  .paint-color {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #808080;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 1px #ffffff;
+  }
+  .paint-color:hover {
+    border-color: #000;
+  }
+  .paint-color.selected {
+    outline: 2px solid #000;
+  }
+
+  .paint-status {
+    height: 20px;
+    background: #ece9d8;
+    border-top: 1px solid #a0a0a0;
+    font-size: 11px;
+    padding: 2px 5px;
+    color: #333;
+  }
+
   @media (max-width: 768px) {
     .window { min-width: 92vw; max-width: 95vw; left: 2.5vw !important; top: 36px !important; max-height: calc(100vh - 80px); max-height: calc(100dvh - 80px); }
     .window .window-content { max-height: calc(100vh - 80px - 30px); max-height: calc(100dvh - 80px - 30px); }
@@ -776,7 +867,7 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE ===== -->
+<!-- ===== JANELA EXPERIENCE (PAINT) ===== -->
 <div class="window" id="win-experience" style="left: calc(50% - 290px); top: calc(50% - 230px - 16px); width: 580px; height: 460px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3C/svg%3E" alt=""> Experience</div>
@@ -785,14 +876,36 @@
       <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
     </div>
   </div>
-  <div class="window-content">
-    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Community Builder</p><p class="exp-company">VS1Fiance</p></div><span class="exp-date">Oct 2025 — Present</span></div><ul class="exp-duties"><li>Built and launched a dedicated online community from the ground up</li><li>Established structure, guidelines, and initial moderation processes</li></ul></div>
-    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Affiliate Community Manager</p><p class="exp-company">Lion's Share Group</p></div><span class="exp-date">Mar 2025 — Jun 2025</span></div><ul class="exp-duties"><li>Managed and supported client-affiliated communities</li><li>Addressed inquiries and provided guidance to community members</li></ul></div>
-    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Customer Service</p><p class="exp-company">TAP-Protocol</p></div><span class="exp-date">May 2024 — Feb 2025</span></div><ul class="exp-duties"><li>Real-time chat moderation and in-app content review</li><li>Ensured compliance with community guidelines and safety policies</li></ul></div>
-    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Community Builder, Customer Supporter & Community Manager</p><p class="exp-company">BeeOS</p></div><span class="exp-date">Mar 2022 — Present</span></div><ul class="exp-duties"><li>Joined at an early stage and built the community from the ground up</li><li>Progressed through leadership roles as the company grew</li></ul></div>
-    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Customer Support</p><p class="exp-company">CoralApp</p></div><span class="exp-date">Mar 2023 — Jun 2023</span></div><ul class="exp-duties"><li>Real-time chat moderation and in-app content review</li><li>Ensured compliance with community guidelines and safety policies</li></ul></div>
-    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Head Moderator</p><p class="exp-company">Coinracer</p></div><span class="exp-date">Nov 2021 — Feb 2024</span></div><ul class="exp-duties"><li>Coordinated and supervised moderation teams</li><li>Handled escalations and maintained compliance with community guidelines</li></ul></div>
-    <div class="exp-item"><div class="exp-header"><div><p class="exp-role">Binance Angel</p><p class="exp-company">Binance Holdings Ltd.</p></div><span class="exp-date">Feb 2021 — Mar 2022</span></div><ul class="exp-duties"><li>Volunteer contributor supporting the Binance ecosystem</li><li>Assisted users, moderated community channels</li></ul></div>
+  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden;">
+    <!-- Barra de menu do Paint -->
+    <div class="paint-menubar">
+      <span class="menu-item" onclick="paintNew()">File</span>
+      <span class="menu-item" onclick="alert('Edit menu')">Edit</span>
+      <span class="menu-item" onclick="alert('View menu')">View</span>
+      <span class="menu-item" onclick="alert('Image menu')">Image</span>
+      <span class="menu-item" onclick="alert('Colors menu')">Colors</span>
+      <span class="menu-item" onclick="alert('Help')">Help</span>
+    </div>
+
+    <!-- Área principal: tools + canvas -->
+    <div class="paint-main">
+      <div class="paint-tools">
+        <div class="paint-tool-button active" id="tool-pencil" title="Lápis" onclick="setTool('pencil')">✏️</div>
+        <div class="paint-tool-button" id="tool-brush" title="Pincel" onclick="setTool('brush')">🖌️</div>
+        <div class="paint-tool-button" id="tool-eraser" title="Borracha" onclick="setTool('eraser')">🧽</div>
+        <div class="paint-tool-button" id="tool-fill" title="Balde de tinta" onclick="setTool('fill')">🪣</div>
+        <div class="paint-tool-button" id="tool-line" title="Linha" onclick="setTool('line')">📏</div>
+      </div>
+      <canvas id="experience-canvas"></canvas>
+    </div>
+
+    <!-- Paleta de cores -->
+    <div class="paint-palette" id="paint-palette">
+      <!-- Cores serão geradas via JS -->
+    </div>
+
+    <!-- Barra de status -->
+    <div class="paint-status">For Help, click Help Topics on the Help Menu.</div>
   </div>
 </div>
 
@@ -1317,6 +1430,12 @@ function openWindow(name) {
       initSkillsChart();
     }, 250);
   }
+  // Experience (Paint): redimensiona o canvas
+  if(name==='experience') {
+    setTimeout(() => {
+      if (window.__initExperiencePaint) window.__initExperiencePaint();
+    }, 250);
+  }
   // Flappy: apenas redimensiona, NÃO inicia o jogo automaticamente
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
@@ -1414,6 +1533,7 @@ function animateRestore(name) {
       openWindows.add(name);
       setActiveStates(name);
       if(name==='skills') { animateSkillBars(); initSkillsChart(); }
+      if(name==='experience') { setTimeout(() => { if (window.__initExperiencePaint) window.__initExperiencePaint(); }, 100); }
       if(name==='flappy' && window.__flappy) {
         setTimeout(() => {
           const canvas = document.getElementById('flappy-canvas');
@@ -1603,51 +1723,6 @@ function createPopup(data) {
     }
   }, 20000);
 }
-function createPopup(data) {
-  const container = document.getElementById('msn-popup-container');
-  const popup = document.createElement('div');
-  popup.className = 'msn-popup';
-  
-  const hasLink = data.link ? `<a href="${data.link.url}" target="_blank" class="msn-link">${data.link.text}</a>` : '';
-  const actionsHtml = data.actions ? data.actions.map(a => {
-    if (a.action === 'link') return `<button class="msn-btn" onclick="window.open('${a.url}', '_blank')">${a.label}</button>`;
-    return `<button class="msn-btn" onclick="const p=this.closest('.msn-popup'); p.classList.add('removing'); setTimeout(()=>p.remove(), 250);">${a.label}</button>`;
-  }).join('') : '<button class="msn-btn" onclick="const p=this.closest(\'.msn-popup\'); p.classList.add(\'removing\'); setTimeout(()=>p.remove(), 250);">Close</button>';
-  
-  popup.innerHTML = `
-    <div class="msn-popup-header">
-      <div class="msn-popup-header-left">
-        <img src="icons/msn-icon.png" alt="" style="width:18px;height:18px;display:block;">
-        <span>MSN Messenger</span>
-      </div>
-      <div class="msn-popup-close" onclick="const p=this.closest('.msn-popup'); p.classList.add('removing'); setTimeout(()=>p.remove(), 250);">✕</div>
-    </div>
-    <div class="msn-popup-body">
-      <div class="msn-popup-avatar"><img src="avatar_1.jpg" alt="Phillipe"></div>
-      <div class="msn-popup-content">
-        <div class="msn-from">${data.from}</div>
-        <div class="msn-msg">${data.msg}</div>
-        ${hasLink}
-      </div>
-    </div>
-    <div class="msn-popup-logo-bar">
-      <img src="icons/msn-logo.png" alt="MSN">
-    </div>
-    <div class="msn-popup-footer">
-      <span class="msn-time">Received at ${data.time || '00:00'}</span>
-      <div class="msn-actions">${actionsHtml}</div>
-    </div>
-  `;
-  container.appendChild(popup);
-  
-  setTimeout(() => {
-    if (popup.parentElement) {
-      popup.classList.add('removing');
-      setTimeout(() => popup.remove(), 250);
-    }
-  }, 20000);
-}
-
 
 // ===== DRAG DE JANELAS =====
 let draggedWindow=null, dragOffX=0, dragOffY=0;
@@ -2720,6 +2795,200 @@ function toggleMute() {
   if(isMuted) { btn.classList.add('muted'); if(ov) ov.style.display='block'; }
   else { btn.classList.remove('muted'); if(ov) ov.style.display='none'; }
 }
+
+// ============================================================
+//  PAINT DO XP (EXPERIENCE)
+// ============================================================
+(function initExperiencePaint() {
+  const canvas = document.getElementById('experience-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  // Configuração inicial do canvas
+  function resizeCanvas() {
+    const container = canvas.parentElement;
+    canvas.width = container.clientWidth - 56; // subtrai largura das tools
+    canvas.height = container.clientHeight;
+    drawExperienceContent();
+  }
+  
+  // Dados das experiências para desenhar
+  function drawExperienceContent() {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    const experiences = [
+      { company: 'VS1Fiance', role: 'Community Builder', date: 'Oct 2025 — Present', color: '#4a90d9' },
+      { company: "Lion's Share Group", role: 'Affiliate Community Manager', date: 'Mar 2025 — Jun 2025', color: '#e8a33d' },
+      { company: 'TAP-Protocol', role: 'Customer Service', date: 'May 2024 — Feb 2025', color: '#8e44ad' },
+      { company: 'BeeOS', role: 'Community Manager', date: 'Mar 2022 — Present', color: '#27ae60' },
+      { company: 'CoralApp', role: 'Customer Support', date: 'Mar 2023 — Jun 2023', color: '#e74c3c' },
+      { company: 'Coinracer', role: 'Head Moderator', date: 'Nov 2021 — Feb 2024', color: '#f39c12' },
+      { company: 'Binance', role: 'Binance Angel', date: 'Feb 2021 — Mar 2022', color: '#f1c40f' }
+    ];
+    
+    let y = 30;
+    experiences.forEach(exp => {
+      // Card
+      ctx.fillStyle = exp.color;
+      ctx.fillRect(20, y, 320, 40);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 14px Tahoma';
+      ctx.fillText(exp.company, 30, y + 25);
+      
+      // Detalhes
+      ctx.fillStyle = '#000000';
+      ctx.font = '12px Tahoma';
+      ctx.fillText(exp.role, 30, y + 65);
+      ctx.fillText(exp.date, 30, y + 85);
+      
+      y += 120;
+    });
+  }
+  
+  // Ferramentas e estado de desenho
+  let currentTool = 'pencil'; // pencil, brush, eraser, fill, line
+  let currentColor = '#000000';
+  let isDrawing = false;
+  let lastX = 0, lastY = 0;
+  
+  // Paleta de cores (28 clássicas do Paint)
+  const colors = [
+    '#000000','#808080','#800000','#808000','#008000','#008080','#000080','#800080','#808040','#004040','#0080ff','#004080','#8000ff','#804000',
+    '#ffffff','#c0c0c0','#ff0000','#ffff00','#00ff00','#00ffff','#0000ff','#ff00ff','#ffff80','#00ff80','#80ffff','#8080ff','#ff0080','#ff8040'
+  ];
+  
+  // Criar paleta
+  const palette = document.getElementById('paint-palette');
+  colors.forEach(color => {
+    const swatch = document.createElement('div');
+    swatch.className = 'paint-color';
+    swatch.style.backgroundColor = color;
+    swatch.dataset.color = color;
+    swatch.addEventListener('click', () => {
+      currentColor = color;
+      document.querySelectorAll('.paint-color').forEach(s => s.classList.remove('selected'));
+      swatch.classList.add('selected');
+    });
+    palette.appendChild(swatch);
+  });
+  
+  // Selecionar primeira cor como padrão
+  document.querySelector('.paint-color').classList.add('selected');
+  
+  // Trocar ferramenta
+  window.setTool = function(tool) {
+    currentTool = tool;
+    document.querySelectorAll('.paint-tool-button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('tool-' + tool).classList.add('active');
+  };
+  
+  // Eventos de desenho
+  canvas.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    lastX = e.clientX - rect.left;
+    lastY = e.clientY - rect.top;
+    isDrawing = true;
+    
+    if (currentTool === 'fill') {
+      // Balde de tinta (simplificado: preenche um retângulo ao redor)
+      ctx.fillStyle = currentColor;
+      ctx.fillRect(lastX - 20, lastY - 20, 40, 40);
+      isDrawing = false;
+    } else if (currentTool === 'line') {
+      // Linha simples (será desenhada no mouseup)
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+    }
+  });
+  
+  canvas.addEventListener('mousemove', (e) => {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    ctx.strokeStyle = currentColor;
+    ctx.lineWidth = currentTool === 'pencil' ? 2 : (currentTool === 'brush' ? 5 : 15);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    
+    if (currentTool === 'eraser') {
+      ctx.strokeStyle = '#ffffff';
+    } else {
+      ctx.strokeStyle = currentColor;
+    }
+    
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    
+    lastX = x;
+    lastY = y;
+  });
+  
+  canvas.addEventListener('mouseup', (e) => {
+    if (currentTool === 'line' && isDrawing) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      ctx.strokeStyle = currentColor;
+      ctx.lineWidth = 2;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    }
+    isDrawing = false;
+  });
+  
+  canvas.addEventListener('mouseleave', () => {
+    if (currentTool === 'line' && isDrawing) {
+      // cancelar linha
+      ctx.beginPath();
+    }
+    isDrawing = false;
+  });
+  
+  // Suporte a touch (celular)
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const mouseEvent = new MouseEvent('mousedown', {
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    });
+    canvas.dispatchEvent(mouseEvent);
+  }, {passive: false});
+  
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const mouseEvent = new MouseEvent('mousemove', {
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    });
+    canvas.dispatchEvent(mouseEvent);
+  }, {passive: false});
+  
+  canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    const mouseEvent = new MouseEvent('mouseup', {});
+    canvas.dispatchEvent(mouseEvent);
+  }, {passive: false});
+  
+  // Botão New no menu (limpa e redesenha)
+  window.paintNew = function() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawExperienceContent();
+  };
+  
+  // Inicializar ao abrir a janela
+  window.__initExperiencePaint = resizeCanvas;
+  
+  // Se a janela já estiver visível no carregamento, inicializa
+  setTimeout(resizeCanvas, 100);
+})();
 
 // ============================================================
 //  INICIALIZAÇÃO FINAL
