@@ -1558,13 +1558,13 @@ function createPopup(data) {
   const container = document.getElementById('msn-popup-container');
   const popup = document.createElement('div');
   popup.className = 'msn-popup';
-
+  
   const hasLink = data.link ? `<a href="${data.link.url}" target="_blank" class="msn-link">${data.link.text}</a>` : '';
   const actionsHtml = data.actions ? data.actions.map(a => {
     if (a.action === 'link') return `<button class="msn-btn" onclick="window.open('${a.url}', '_blank')">${a.label}</button>`;
     return `<button class="msn-btn" onclick="const p=this.closest('.msn-popup'); p.classList.add('removing'); setTimeout(()=>p.remove(), 250);">${a.label}</button>`;
   }).join('') : '<button class="msn-btn" onclick="const p=this.closest(\'.msn-popup\'); p.classList.add(\'removing\'); setTimeout(()=>p.remove(), 250);">Close</button>';
-
+  
   popup.innerHTML = `
     <div class="msn-popup-header">
       <div class="msn-popup-header-left">
@@ -1581,19 +1581,22 @@ function createPopup(data) {
         ${hasLink}
       </div>
     </div>
+    <div class="msn-popup-logo-bar">
+      <img src="icons/msn-logo.png" alt="MSN">
+    </div>
     <div class="msn-popup-footer">
       <span class="msn-time">Received at ${data.time || '00:00'}</span>
       <div class="msn-actions">${actionsHtml}</div>
     </div>
   `;
   container.appendChild(popup);
-
+  
   setTimeout(() => {
     if (popup.parentElement) {
       popup.classList.add('removing');
       setTimeout(() => popup.remove(), 250);
     }
-  }, 12000);
+  }, 20000);
 }
 
 // ===== DRAG DE JANELAS =====
