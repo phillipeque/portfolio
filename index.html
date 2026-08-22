@@ -1507,10 +1507,17 @@ function toggleAllPrograms() {
 function showContactPopups() {
   const container = document.getElementById('msn-popup-container');
   container.innerHTML = '';
-
+  
   const now = new Date();
   const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-
+  
+  // Toca o som do MSN 1 segundo após o clique
+  setTimeout(() => {
+    const audio = new Audio('msn-notification.mp3');
+    audio.volume = 0.6;
+    audio.play().catch(() => {});
+  }, 1000);
+  
   setTimeout(() => {
     createPopup({
       from: 'Phillipe Queiroz',
@@ -1518,7 +1525,7 @@ function showContactPopups() {
       time: timeStr,
       actions: [{ label: 'Close', action: 'close' }]
     });
-
+    
     setTimeout(() => {
       createPopup({
         from: 'Phillipe Queiroz',
@@ -1530,7 +1537,7 @@ function showContactPopups() {
           { label: 'Close', action: 'close' }
         ]
       });
-
+      
       setTimeout(() => {
         createPopup({
           from: 'Phillipe Queiroz',
@@ -1542,8 +1549,8 @@ function showContactPopups() {
             { label: 'Close', action: 'close' }
           ]
         });
-      }, 350);
-    }, 350);
+      }, 1500);
+    }, 1500);
   }, 1200);
 }
 
