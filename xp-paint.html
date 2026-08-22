@@ -12,3 +12,24 @@
 							0 0 1 0 0
 							-1000 -1000 -1000 1 0
 						" result=black-parts-isolated></feColorMatrix><feFlood result=shadow-color flood-color=var(--ButtonShadow)></feFlood><feFlood result=hilight-color flood-color=var(--ButtonHilight)></feFlood><feOffset in=black-parts-isolated dx=1 dy=1 result=offset></feOffset><feComposite in=hilight-color in2=offset operator=in result=hilight-colored-offset></feComposite><feComposite in=shadow-color in2=black-parts-isolated operator=in result=shadow-colored></feComposite><feMerge><feMergeNode in=hilight-colored-offset></feMergeNode><feMergeNode in=shadow-colored></feMergeNode></feMerge></filter></defs></svg>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.jspaint {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+.paint-status {
+  order: 2;
+  flex-shrink: 0;
+  position: static;
+  top: auto;
+  bottom: auto;
+}
+</style>
