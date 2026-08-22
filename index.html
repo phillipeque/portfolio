@@ -622,7 +622,8 @@
   .start-menu-left .start-menu-item { padding: 3px 12px; }
   .start-menu-left .start-menu-item:hover, .start-menu-left .start-menu-item.highlight { background: #2b63d9; color: white; }
   .start-menu-right .start-menu-item:hover { background: #2b63d9; color: white; }
-  .start-menu-item img { width: 26px; height: 26px; image-rendering: pixelated; flex-shrink: 0; }
+  .start-menu-item img { width: 26px; height: 26px; image-rendering: auto; flex-shrink: 0; object-fit: contain; }
+  .start-menu-left-scroll .start-menu-item img { image-rendering: auto; }
   .start-menu-item span.label { font-weight: bold; }
   .start-menu-divider { height: 1px; background: #d6d2c4; margin: 4px 10px; }
   .start-menu-right .start-menu-divider { background: #9cbfe8; }
@@ -1008,17 +1009,16 @@
   </div>
   <div class="start-menu-body">
     <div class="start-menu-left">
-      <div class="start-menu-left-scroll">
-        <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%230058e6' x='4' y='5' width='16' height='13' rx='1'/%3E%3C/svg%3E" alt=""><span class="label">About Me</span></div>
-        <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%238B4513' x='5' y='6' width='14' height='12' rx='1'/%3E%3C/svg%3E" alt=""><span class="label">Experience</span></div>
-        <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23CC0000' x='6' y='4' width='12' height='16' rx='1'/%3E%3C/svg%3E" alt=""><span class="label">Skills</span></div>
-        <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23ece9d8' x='3' y='7' width='18' height='12' rx='1'/%3E%3C/svg%3E" alt=""><span class="label">Contact</span></div>
+     <div class="start-menu-left-scroll">
+        <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();"><img src="icons/icon-about.png" alt=""><span class="label">About Me</span></div>
+        <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();"><img src="icons/icon-experience.png" alt=""><span class="label">Experience</span></div>
+        <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();"><img src="icons/icon-skills.png" alt=""><span class="label">Skills</span></div>
+        <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();"><img src="icons/icon-contact.png" alt=""><span class="label">Contact</span></div>
+        <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();"><img src="icons/icon-resume.png" alt=""><span class="label">Resume.pdf</span></div>
         <div class="start-menu-divider"></div>
-        <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23fff' x='6' y='3' width='12' height='18' rx='1'/%3E%3C/svg%3E" alt=""><span class="label">Resume.pdf</span></div>
-        <div class="start-menu-divider"></div>
-        <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%2333cc55' x='2' y='11' width='6' height='6'/%3E%3C/svg%3E" alt=""><span class="label">Snake.exe</span></div>
-        <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%23666' cx='12' cy='12' r='8'/%3E%3Ccircle fill='%23ff4d4d' cx='12' cy='12' r='5'/%3E%3C/svg%3E" alt=""><span class="label">Minesweeper</span></div>
-        <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%23FFD700' cx='12' cy='12' r='8'/%3E%3Cpath fill='%23FF8C00' d='M16 6 L19 3 L18 9 Z'/%3E%3C/svg%3E" alt=""><span class="label">Flappy Bird</span></div>
+        <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();"><img src="icons/icon-snake.png" alt=""><span class="label">Snake.exe</span></div>
+        <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="icons/icon-minesweeper.png" alt=""><span class="label">Minesweeper</span></div>
+        <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt=""><span class="label">Flappy Bird</span></div>
         <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23ece9d8' x='3' y='4' width='18' height='14' rx='1'/%3E%3Crect fill='%23ffffff' x='4' y='5' width='16' height='12'/%3E%3C/svg%3E" alt=""><span class="label">Notepad</span></div>
       </div>
       <div class="start-menu-allprograms" id="all-programs-btn" onclick="toggleAllPrograms()">
