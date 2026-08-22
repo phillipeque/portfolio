@@ -280,26 +280,26 @@
     text-transform: none; letter-spacing: 0.5px; line-height: 1.2;
   }
 
- /* ===== POP-UPS ESTILO MSN MESSENGER ===== */
+  /* ===== POP-UPS ESTILO MSN MESSENGER ===== */
   #msn-popup-container {
     position: fixed;
     bottom: 40px;
     right: 10px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
     z-index: 9999;
     pointer-events: none;
   }
   #msn-popup-container > * { pointer-events: auto; }
   .msn-popup {
-    width: 450px;
+    width: 340px;
     background: #f0f0f0;
     border: 1px solid #7da2ce;
     border-radius: 9px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.6);
     font-family: Tahoma, "Segoe UI", sans-serif;
-    font-size: 16px;
+    font-size: 12px;
     overflow: hidden;
     animation: msnSlideIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
@@ -315,45 +315,30 @@
   .msn-popup-header {
     background: linear-gradient(180deg, #7eb6ea 0%, #4a90d9 15%, #2b6cb5 85%, #1a5cb0 100%);
     color: white;
-    padding: 8px 12px 6px;
+    padding: 6px 9px 5px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 12px;
     text-shadow: 0 1px 1px rgba(0,0,0,0.4);
     border-bottom: 1px solid #1a4a8a;
   }
   .msn-popup-header-left {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 7px;
   }
-  .msn-popup-header-left .msn-butterfly {
-    width: 24px;
-    height: 24px;
-    background: linear-gradient(135deg, #ffcc00, #ff6600);
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
-    position: relative;
-  }
-  .msn-popup-header-left .msn-butterfly::after {
-    content: "";
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    background: linear-gradient(135deg, #66ccff, #0066cc);
-    border-radius: 50% 50% 50% 0;
-    top: 4.5px;
-    left: 4.5px;
-    transform: rotate(90deg);
+  .msn-popup-header-left img {
+    width: 18px;
+    height: 18px;
+    display: block;
   }
   .msn-popup-close {
     cursor: pointer;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
-    padding: 2px 8px;
+    padding: 2px 6px;
     border-radius: 4px;
     line-height: 1;
     color: #fff;
@@ -366,15 +351,15 @@
     border-color: rgba(255,255,255,0.4);
   }
   .msn-popup-body {
-    padding: 18px;
+    padding: 14px;
     background: linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
     display: flex;
     align-items: flex-start;
-    gap: 18px;
+    gap: 13px;
   }
   .msn-popup-avatar {
-    width: 66px;
-    height: 66px;
+    width: 50px;
+    height: 50px;
     border-radius: 6px;
     border: 2px solid #fff;
     outline: 1px solid #c0c0c0;
@@ -396,24 +381,24 @@
   .msn-popup-content .msn-from {
     font-weight: bold;
     color: #1a5cb0;
-    font-size: 18px;
-    margin-bottom: 3px;
+    font-size: 14px;
+    margin-bottom: 2px;
   }
   .msn-popup-content .msn-msg {
     color: #444;
-    font-size: 16px;
-    margin-bottom: 9px;
+    font-size: 12px;
+    margin-bottom: 6px;
   }
   .msn-popup-content .msn-link {
     color: #0066cc;
     text-decoration: none;
     cursor: pointer;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 12px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 3px 0;
+    gap: 4px;
+    padding: 2px 0;
     border-bottom: 1px solid transparent;
     transition: border-color 0.15s;
   }
@@ -424,36 +409,37 @@
   .msn-popup-logo-bar {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 6px 0;
+    justify-content: flex-end;
+    padding: 4px 14px;
     background: linear-gradient(180deg, #ffffff, #f5f5f5);
   }
   .msn-popup-logo-bar img {
-    height: 28px;
+    height: 21px;
     width: auto;
     object-fit: contain;
+    background: transparent;
   }
   .msn-popup-footer {
     background: linear-gradient(180deg, #f0f0f0, #e4e4e4);
     border-top: 1px solid #d0d0d0;
-    padding: 9px 18px;
+    padding: 7px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
+    font-size: 11px;
     color: #888;
   }
   .msn-popup-footer .msn-time {
-    font-size: 14px;
+    font-size: 11px;
     color: #999;
   }
   .msn-popup-footer .msn-actions {
     display: flex;
-    gap: 9px;
+    gap: 7px;
   }
   .msn-popup-footer .msn-btn {
-    padding: 5px 15px;
-    font-size: 16px;
+    padding: 4px 11px;
+    font-size: 12px;
     font-family: Tahoma, sans-serif;
     background: linear-gradient(180deg, #ffffff, #e8e8e8);
     border: 1px solid #a0a0a0;
@@ -1568,7 +1554,7 @@ function createPopup(data) {
   popup.innerHTML = `
     <div class="msn-popup-header">
       <div class="msn-popup-header-left">
-        <div class="msn-butterfly"></div>
+        <img src="icons/msn-icon.png" alt="" style="width:18px;height:18px;display:block;">
         <span>MSN Messenger</span>
       </div>
       <div class="msn-popup-close" onclick="const p=this.closest('.msn-popup'); p.classList.add('removing'); setTimeout(()=>p.remove(), 250);">✕</div>
@@ -1598,6 +1584,51 @@ function createPopup(data) {
     }
   }, 20000);
 }
+function createPopup(data) {
+  const container = document.getElementById('msn-popup-container');
+  const popup = document.createElement('div');
+  popup.className = 'msn-popup';
+  
+  const hasLink = data.link ? `<a href="${data.link.url}" target="_blank" class="msn-link">${data.link.text}</a>` : '';
+  const actionsHtml = data.actions ? data.actions.map(a => {
+    if (a.action === 'link') return `<button class="msn-btn" onclick="window.open('${a.url}', '_blank')">${a.label}</button>`;
+    return `<button class="msn-btn" onclick="const p=this.closest('.msn-popup'); p.classList.add('removing'); setTimeout(()=>p.remove(), 250);">${a.label}</button>`;
+  }).join('') : '<button class="msn-btn" onclick="const p=this.closest(\'.msn-popup\'); p.classList.add(\'removing\'); setTimeout(()=>p.remove(), 250);">Close</button>';
+  
+  popup.innerHTML = `
+    <div class="msn-popup-header">
+      <div class="msn-popup-header-left">
+        <img src="icons/msn-icon.png" alt="" style="width:18px;height:18px;display:block;">
+        <span>MSN Messenger</span>
+      </div>
+      <div class="msn-popup-close" onclick="const p=this.closest('.msn-popup'); p.classList.add('removing'); setTimeout(()=>p.remove(), 250);">✕</div>
+    </div>
+    <div class="msn-popup-body">
+      <div class="msn-popup-avatar"><img src="avatar_1.jpg" alt="Phillipe"></div>
+      <div class="msn-popup-content">
+        <div class="msn-from">${data.from}</div>
+        <div class="msn-msg">${data.msg}</div>
+        ${hasLink}
+      </div>
+    </div>
+    <div class="msn-popup-logo-bar">
+      <img src="icons/msn-logo.png" alt="MSN">
+    </div>
+    <div class="msn-popup-footer">
+      <span class="msn-time">Received at ${data.time || '00:00'}</span>
+      <div class="msn-actions">${actionsHtml}</div>
+    </div>
+  `;
+  container.appendChild(popup);
+  
+  setTimeout(() => {
+    if (popup.parentElement) {
+      popup.classList.add('removing');
+      setTimeout(() => popup.remove(), 250);
+    }
+  }, 20000);
+}
+
 
 // ===== DRAG DE JANELAS =====
 let draggedWindow=null, dragOffX=0, dragOffY=0;
