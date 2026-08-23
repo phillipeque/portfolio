@@ -1081,7 +1081,11 @@
 
 // ===== CONTEXT MENU E LOGIN =====
 document.addEventListener('contextmenu', function(e) {
-  if (e.target.closest('.window') || e.target.closest('.taskbar') || e.target.closest('.start-menu')) return;
+  // Bloqueia menu nativo em TODO o sistema (ícones, janelas, taskbar, start menu)
+  if (e.target.closest('.window') || e.target.closest('.taskbar') || e.target.closest('.start-menu') || e.target.closest('.desktop-icon')) {
+    e.preventDefault();
+    return;
+  }
   e.preventDefault();
   const menu = document.getElementById('context-menu');
   menu.style.display = 'block';
