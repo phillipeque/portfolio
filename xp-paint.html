@@ -35,21 +35,20 @@ html, body {
 </style>
 
 <script>
-// Função que desenha os cards com animação progressiva (com retângulo)
 function desenharExperience() {
   var ctx = canvas.getContext('2d');
   var w = canvas.width;
   var h = canvas.height;
 
-  // Lista de empresas
+  // Lista de empresas com o caminho da logo (pasta /logos/)
   var empresas = [
-    { nome: 'Binance', desc: 'Binance Angel', cor: '#f0b90b' },
-    { nome: 'Coinracer', desc: 'Head Moderator', cor: '#ff6a00' },
-    { nome: 'CoralApp', desc: 'Customer Support', cor: '#e34c26' },
-    { nome: 'BeeOS', desc: 'Community Manager', cor: '#1e88e5' },
-    { nome: 'TAP-Protocol', desc: 'Customer Service', cor: '#8e44ad' },
-    { nome: "Lion's Share", desc: 'Affiliate Manager', cor: '#43a047' },
-    { nome: 'VS1Fiance', desc: 'Community Builder', cor: '#6d4c41' }
+    { nome: 'Binance', desc: 'Binance Angel', logo: 'logos/binance.png' },
+    { nome: 'Coinracer', desc: 'Head Moderator', logo: 'logos/coinracer.png' },
+    { nome: 'CoralApp', desc: 'Customer Support', logo: 'logos/coralapp.png' },
+    { nome: 'BeeOS', desc: 'Community Manager', logo: 'logos/beeos.png' },
+    { nome: 'TAP-Protocol', desc: 'Customer Service', logo: 'logos/tapprotocol.png' },
+    { nome: "Lion's Share", desc: 'Affiliate Manager', logo: 'logos/lionshare.png' },
+    { nome: 'VS1Fiance', desc: 'Community Builder', logo: 'logos/vs1fiance.png' }
   ];
 
   // Configurações da grade
@@ -59,7 +58,7 @@ function desenharExperience() {
   var cardW = (w - (cols + 1) * gap) / cols;
   var cardH = (h - (rows + 1) * gap) / rows;
 
-  // Prepara os dados de cada card com delay e duração
+  // Prepara os cards
   var cards = empresas.map(function(emp, i) {
     var x = gap + (i % cols) * (cardW + gap);
     var y = gap + Math.floor(i / cols) * (cardH + gap);
@@ -67,111 +66,146 @@ function desenharExperience() {
       empresa: emp,
       x: x, y: y,
       w: cardW, h: cardH,
-      delay: i * 300,    // cada card começa 300ms após o anterior
-      duration: 800,     // cada card leva 800ms para ficar completo
-      progress: 0
+      delay: i * 300,
+      duration: 800,
+      progress: 0,
+      img: null // será carregado depois
     };
   });
 
-  var startTime = null;
+  // Função para carregar todas as imagens
+  function carregarImagens(callback) {
+    var total = cards.length;
+    var carregadas = 0;
 
-  // Função de animação chamada a cada frame (60 fps)
-  function animar(timestamp) {
-    if (!startTime) startTime = timestamp;
-    var elapsed = timestamp - startTime;
-
-    // Limpa e fundo branco
-    ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, w, h);
-
-    var todosCompletos = true;
-
-    // Desenha cada card conforme seu progresso
     cards.forEach(function(card) {
-      var tempoCard = elapsed - card.delay;
-      if (tempoCard < 0) {
-        card.progress = 0;
-        todosCompletos = false;
+      var img = new Image();
+      img.onload = function() {
+        card.img = img;
+        carregadas++;
+        if (carregadas === total) callback();
+      };
+      img.onerror = function() {
+        console.warn('Erro ao carregar: ' + card.empresa.logo);
+        card.img = null;
+        carregadas++;
+        if (carregadas === total) callback();
+      };
+      img.src = card.empresa.logo;
+    });
+  }
+
+  // Inicia a animação após carregar todas as imagens
+  carregarImagens(function() {
+    var startTime = null;
+
+    function animar(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var elapsed = timestamp - startTime;
+
+      // Limpa e fundo branco
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      var todosCompletos = true;
+
+      cards.forEach(function(card) {
+        var tempoCard = elapsed - card.delay;
+        if (tempoCard < 0) {
+          card.progress = 0;
+          todosCompletos = false;
+          return;
+        }
+        var prog = Math.min(tempoCard / card.duration, 1);
+        card.progress = prog;
+        if (prog < 1) todosCompletos = false;
+
+        var x = card.x, y = card.y, w = card.w, h = card.h;
+        var p = card.progress;
+
+        // 1. Fundo do card (revelação esquerda → direita)
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(x, y, w * p, h);
+        ctx.clip();
+        ctx.fillStyle = '#f5f5f5';
+        ctx.fillRect(x, y, w, h);
+        ctx.strokeStyle = '#cccccc';
+        ctx.strokeRect(x, y, w, h);
+        ctx.restore();
+
+        // 2. Logo (em vez do círculo)
+        var cx = x + w/2;
+        var cy = y + h * 0.3;
+        var tamanhoLogo = 50; // diâmetro da logo (ajuste conforme necessário)
+
+        if (card.img) {
+          // Efeitos: escala de 0.5 → 1 e fade-in
+          var escala = 0.5 + 0.5 * Math.min(p * 1.5, 1);
+          var opacidade = Math.min(p * 1.2, 1);
+          ctx.save();
+          ctx.globalAlpha = opacidade;
+          ctx.translate(cx, cy);
+          ctx.scale(escala, escala);
+          ctx.drawImage(card.img, -tamanhoLogo/2, -tamanhoLogo/2, tamanhoLogo, tamanhoLogo);
+          ctx.restore();
+        } else {
+          // Fallback: círculo cinza (caso a imagem não carregue)
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(cx, cy, 30, 0, p * 2 * Math.PI);
+          ctx.strokeStyle = '#cccccc';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+          if (p > 0.8) {
+            ctx.globalAlpha = (p - 0.8) / 0.2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 30, 0, 2 * Math.PI);
+            ctx.fillStyle = '#999999';
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          }
+          ctx.restore();
+        }
+
+        // 3. Nome da empresa (fade-in a partir de 60%)
+        if (p > 0.6) {
+          ctx.save();
+          ctx.globalAlpha = (p - 0.6) / 0.4;
+          ctx.fillStyle = '#000000';
+          ctx.font = 'bold 20px Tahoma';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(card.empresa.nome, cx, y + h * 0.55);
+          ctx.restore();
+        }
+
+        // 4. Descrição (fade-in a partir de 80%)
+        if (p > 0.8) {
+          ctx.save();
+          ctx.globalAlpha = (p - 0.8) / 0.2;
+          ctx.fillStyle = '#555555';
+          ctx.font = '14px Tahoma';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(card.empresa.desc, cx, y + h * 0.75);
+          ctx.restore();
+        }
+      });
+
+      if (todosCompletos) {
+        saved = false;
         return;
       }
-      var prog = Math.min(tempoCard / card.duration, 1);
-      card.progress = prog;
-      if (prog < 1) todosCompletos = false;
-
-      var x = card.x, y = card.y, w = card.w, h = card.h;
-      var p = card.progress;
-
-      // 1. Fundo do card – revelação da esquerda para a direita (com clipping)
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(x, y, w * p, h);
-      ctx.clip();
-      ctx.fillStyle = '#f5f5f5';
-      ctx.fillRect(x, y, w, h);
-      ctx.strokeStyle = '#cccccc';
-      ctx.strokeRect(x, y, w, h);
-      ctx.restore();
-
-      // 2. Círculo da empresa – traço e preenchimento progressivos
-      var cx = x + w/2;
-      var cy = y + h * 0.3;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, 30, 0, p * 2 * Math.PI);
-      ctx.strokeStyle = card.empresa.cor;
-      ctx.lineWidth = 4;
-      ctx.stroke();
-      // Preenchimento só aparece após 80% do traço
-      if (p > 0.8) {
-        ctx.globalAlpha = (p - 0.8) / 0.2;
-        ctx.beginPath();
-        ctx.arc(cx, cy, 30, 0, 2 * Math.PI);
-        ctx.fillStyle = card.empresa.cor;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-      ctx.restore();
-
-      // 3. Nome da empresa – fade-in a partir de 60% do progresso
-      if (p > 0.6) {
-        ctx.save();
-        ctx.globalAlpha = (p - 0.6) / 0.4;
-        ctx.fillStyle = '#000000';
-        ctx.font = 'bold 20px Tahoma';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(card.empresa.nome, cx, y + h * 0.55);
-        ctx.restore();
-      }
-
-      // 4. Descrição – fade-in a partir de 80% do progresso
-      if (p > 0.8) {
-        ctx.save();
-        ctx.globalAlpha = (p - 0.8) / 0.2;
-        ctx.fillStyle = '#555555';
-        ctx.font = '14px Tahoma';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(card.empresa.desc, cx, y + h * 0.75);
-        ctx.restore();
-      }
-    });
-
-    // Se todos os cards terminaram, para a animação
-    if (todosCompletos) {
-      saved = false;   // mantém compatibilidade com o restante do sistema
-      return;
+      requestAnimationFrame(animar);
     }
 
     requestAnimationFrame(animar);
-  }
-
-  // Inicia a animação
-  requestAnimationFrame(animar);
+  });
 }
 
-// Verifica se o iframe que contém este Paint está visível
+// (Mesma verificação de visibilidade)
 function verificarVisibilidade() {
   var iframe = window.frameElement;
   if (iframe) {
