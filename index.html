@@ -632,16 +632,39 @@
   .shutdown-btn img { width: 22px; height: 22px; }
   .shutdown-btn:hover { background: none; }
 
-  /* All Programs - hover para abrir */
-  #all-programs-submenu {
-    display: none;
-  }
-  #all-programs-btn:hover + #all-programs-submenu {
-    display: flex;
-  }
-  #all-programs-submenu:hover {
-    display: flex;
-  }
+/* All Programs container */
+.all-programs-container {
+  position: relative;
+}
+
+/* Só exibe o submenu quando passa o mouse na container */
+.all-programs-container:hover .all-programs-submenu {
+  display: flex;
+}
+
+.all-programs-submenu {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 100%;
+  background: #f0f4fc;
+  padding: 4px 0;
+  border: 1px solid #c0c0c0;
+  border-radius: 4px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  z-index: 1002;
+  flex-direction: column;
+  width: 180px;
+}
+
+.all-programs-submenu .start-menu-item {
+  padding: 3px 12px;
+}
+
+.all-programs-submenu .start-menu-item:hover {
+  background: #2b63d9;
+  color: white;
+}
 
   /* ===== PAINT DO XP - VISUAL FIEL ===== */
   .paint-menubar {
@@ -1145,25 +1168,26 @@
         <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt=""><span class="label">Flappy Bird</span></div>
         <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="icons/notepad.png" alt=""><span class="label">Notepad</span></div>
       </div>
-      <div class="start-menu-allprograms" id="all-programs-btn">
-        <div class="start-menu-allprograms-left">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23ffb400' x='2' y='6' width='9' height='7' rx='1'/%3E%3Crect fill='%23ffd166' x='4' y='4' width='9' height='7' rx='1'/%3E%3Crect fill='%23ff8a00' x='13' y='8' width='9' height='7' rx='1'/%3E%3C/svg%3E" alt="">
-          <span>All Programs</span>
+      <div class="all-programs-container">
+        <div class="start-menu-allprograms" id="all-programs-btn">
+          <div class="start-menu-allprograms-left">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23ffb400' x='2' y='6' width='9' height='7' rx='1'/%3E%3Crect fill='%23ffd166' x='4' y='4' width='9' height='7' rx='1'/%3E%3Crect fill='%23ff8a00' x='13' y='8' width='9' height='7' rx='1'/%3E%3C/svg%3E" alt="">
+            <span>All Programs</span>
+          </div>
+          <span class="start-menu-allprograms-arrow"></span>
         </div>
-        <span class="start-menu-allprograms-arrow"></span>
+        <div id="all-programs-submenu" class="all-programs-submenu">
+          <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();">About Me</div>
+          <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();">Experience</div>
+          <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();">Skills</div>
+          <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();">Contact</div>
+          <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();">Resume</div>
+          <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();">Snake</div>
+          <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();">Minesweeper</div>
+          <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();">Flappy Bird</div>
+          <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();">Notepad</div>
+        </div>
       </div>
-      <div id="all-programs-submenu" style="display:none; background:#f0f4fc; padding:4px 0; border-top:1px solid #c0c0c0; flex-direction:column;">
-        <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();">About Me</div>
-        <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();">Experience</div>
-        <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();">Skills</div>
-        <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();">Contact</div>
-        <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();">Resume</div>
-        <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();">Snake</div>
-        <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();">Minesweeper</div>
-        <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();">Flappy Bird</div>
-        <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();">Notepad</div>
-      </div>
-    </div>
     <div class="start-menu-right">
       <div class="start-menu-item" onclick="alert('My Documents');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3C/svg%3E" alt=""> My Documents</div>
       <div class="start-menu-item" onclick="alert('My Pictures');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3Ccircle fill='%23fff' cx='9' cy='11' r='2'/%3E%3Cpath fill='%234a90d9' d='M6 16 L11 12 L14 15 L18 11 L20 16 Z'/%3E%3C/svg%3E" alt=""> My Pictures</div>
@@ -1632,10 +1656,6 @@ document.addEventListener('click', function(e) {
   const menu=document.getElementById('start-menu'), btn=document.getElementById('start-btn');
   if(!menu.contains(e.target) && !btn.contains(e.target)) { menu.classList.remove('open'); btn.classList.remove('open'); }
 });
-function toggleAllPrograms() {
-  const sub = document.getElementById('all-programs-submenu');
-  sub.style.display = sub.style.display === 'none' || sub.style.display === '' ? 'flex' : 'none';
-}
 
 // ===== POP-UPS MSN MESSENGER =====
 function showContactPopups() {
