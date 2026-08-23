@@ -35,10 +35,19 @@ html, body {
 </style>
 
 <script>
+// ============================================================
+// CONFIGURAÇÕES QUE VOCÊ PODE AJUSTAR
+// ============================================================
+var spraySrc = 'spray.gif';        // Nome do seu arquivo GIF (pode ser .png também)
+var sprayLargura = 400;            // 500% maior que 80 → 80 * 5 = 400
+var sprayAltura = 400;             // 500% maior que 80 → 80 * 5 = 400
+var tempoPorLinha = 2500;          // milissegundos para atravessar uma linha
+var atrasoEntreLinhas = 500;       // pausa antes de ir para a próxima linha
+// ============================================================
+
 // Carrega a imagem do spray (lata espirrando tinta)
 var sprayImg = new Image();
 var sprayLoaded = false;
-var spraySrc = 'spray.gif';   // ou o nome que você deu ao seu arquivo .gif
 
 sprayImg.onload = function() {
   sprayLoaded = true;
@@ -81,14 +90,7 @@ function desenharExperience() {
     };
   });
 
-  // Parâmetros da animação do spray
-  var tempoPorLinha = 2500;  // milissegundos para percorrer uma linha
-  var atrasoEntreLinhas = 500; // pausa antes de ir para a próxima linha
   var inicioAnimacao = null;
-
-  // Tamanho da imagem do spray (ajuste conforme sua imagem)
-  var sprayLargura = 80;
-  var sprayAltura = 80;
 
   function animar(timestamp) {
     if (!inicioAnimacao) inicioAnimacao = timestamp;
@@ -168,7 +170,7 @@ function desenharExperience() {
       // Fallback: desenha um círculo vermelho enquanto a imagem não carrega
       ctx.fillStyle = 'red';
       ctx.beginPath();
-      ctx.arc(sprayX, sprayY, 20, 0, 2 * Math.PI);
+      ctx.arc(sprayX, sprayY, 40, 0, 2 * Math.PI);
       ctx.fill();
     }
 
@@ -181,7 +183,7 @@ function desenharExperience() {
     desenharCardProgressivo(ctx, card, 1);
   }
 
-  // Função que desenha um card com um progresso (0 a 1)
+  // Função que desenha um card com um progresso (0 a 1) – SEM RETÂNGULO EXTERNO
   function desenharCardProgressivo(ctx, card, progresso) {
     var x = card.x, y = card.y, w = card.w, h = card.h;
     var p = Math.min(Math.max(progresso, 0), 1);
