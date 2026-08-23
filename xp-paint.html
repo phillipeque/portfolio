@@ -35,8 +35,8 @@ html, body {
 </style>
 
 <script>
-// Aguarda o carregamento e depois um tempinho extra
-setTimeout(function() {
+// Função que desenha os cards
+function desenharExperience() {
   var ctx = canvas.getContext('2d');
   var w = canvas.width;
   var h = canvas.height;
@@ -102,7 +102,26 @@ setTimeout(function() {
     indice++;
   }, 300); // 300ms entre cada card
   
-  // Marca como não salvo (opcional)
   saved = false;
-}, 300); // Espera 300ms após o carregamento
+}
+
+// Verifica se a janela Experience está visível
+function verificarVisibilidade() {
+  var win = document.getElementById('win-experience');
+  
+  // Se a janela ainda não existe (não foi criada), tenta novamente
+  if (!win) {
+    setTimeout(verificarVisibilidade, 200);
+    return;
+  }
+  
+  // Se a janela está visível (display != none) e ainda não desenhamos
+  if (win.style.display !== 'none' && win.style.display !== '') {
+    // Desenha a experiência
+    desenharExperience();
+    clearInterval(verificarIntervalo);
+  }
+}
+
+var verificarIntervalo = setInterval(verificarVisibilidade, 200);
 </script>
