@@ -105,19 +105,21 @@ function desenharExperience() {
   saved = false;
 }
 
-// Verifica se a janela Experience está visível
+// Verifica se o iframe que contém este Paint está visível
 function verificarVisibilidade() {
-  var win = document.getElementById('win-experience');
+  // Tenta acessar o elemento iframe que contém este script
+  var iframe = window.frameElement;
   
-  // Se a janela ainda não existe (não foi criada), tenta novamente
-  if (!win) {
-    setTimeout(verificarVisibilidade, 200);
-    return;
-  }
-  
-  // Se a janela está visível (display != none) e ainda não desenhamos
-  if (win.style.display !== 'none' && win.style.display !== '') {
-    // Desenha a experiência
+  if (iframe) {
+    // Se o iframe existe, verifica se ele (ou a janela pai) está visível
+    var win = iframe.closest('#win-experience');
+    
+    if (win && win.style.display !== 'none' && win.style.display !== '') {
+      desenharExperience();
+      clearInterval(verificarIntervalo);
+    }
+  } else {
+    // Se não está em um iframe (aberto diretamente), desenha imediatamente
     desenharExperience();
     clearInterval(verificarIntervalo);
   }
