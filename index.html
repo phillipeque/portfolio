@@ -108,7 +108,7 @@
   .window-content::-webkit-scrollbar,
   .start-menu-left-scroll::-webkit-scrollbar,
   .start-menu-right::-webkit-scrollbar {
-    width: 30px;
+    width: 40px;
     background-color: #F0F0F0;
   }
 
@@ -158,8 +158,8 @@
     border-left-color: #FFFFFF;
     border-bottom-color: #404040;
     border-right-color: #404040;
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     background-size: 24px 24px;
     -webkit-appearance: none;
     display: block;
@@ -177,39 +177,6 @@
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 15 15'%3E%3Crect width='15' height='15' fill='%23ECE9D8'/%3E%3Crect x='0' y='0' width='15' height='15' fill='url(%23grad)'/%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFFFFF'/%3E%3Cstop offset='100%25' stop-color='%23B0C4DE'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M7.5 11 L4 6 L11 6 Z' fill='%23000000'/%3E%3C/svg%3E");
   }
 
-  /* ===== FORÇA SCROLLBAR MAIS LARGA ===== */
-  .window-content::-webkit-scrollbar,
-  .start-menu-left-scroll::-webkit-scrollbar,
-  .start-menu-right::-webkit-scrollbar {
-    width: 40px !important;
-    background-color: #F0F0F0 !important;
-  }
-
-  .window-content::-webkit-scrollbar-thumb,
-  .start-menu-left-scroll::-webkit-scrollbar-thumb,
-  .start-menu-right::-webkit-scrollbar-thumb {
-    min-height: 24px !important;
-    background-color: #B0C4DE !important;
-    background-image: 
-      linear-gradient(to right, #D4E4F7, #B0C4DE 3px, #B0C4DE 14px, #8A9FC4 100%),
-      repeating-linear-gradient(to bottom,
-        #7A8FB4 0, #7A8FB4 2px,
-        transparent 2px, transparent 5px) !important;
-    background-repeat: no-repeat, no-repeat !important;
-    background-position: center, center !important;
-    background-size: 100% 100%, 7px 17px !important;
-    border: 1px solid #808080 !important;
-  }
-
-  .window-content::-webkit-scrollbar-button,
-  .start-menu-left-scroll::-webkit-scrollbar-button,
-  .start-menu-right::-webkit-scrollbar-button {
-    height: 40px !important;
-    width: 40px !important;
-    background-color: #ECE9D8 !important;
-  }
-
-  /* ===== FIM DO BLOCO FORÇADO ===== */
 
   .about-layout { display: flex; gap: 16px; align-items: flex-start; }
   .about-photo {
@@ -632,122 +599,39 @@
   .shutdown-btn img { width: 22px; height: 22px; }
   .shutdown-btn:hover { background: none; }
 
-  /* All Programs - hover para abrir */
-  #all-programs-submenu {
-    display: none;
-  }
-  #all-programs-btn:hover + #all-programs-submenu {
-    display: flex;
-  }
-  #all-programs-submenu:hover {
-    display: flex;
-  }
+/* All Programs container */
+.all-programs-container {
+  position: relative;
+}
 
-  /* ===== PAINT DO XP - VISUAL FIEL ===== */
-  .paint-menubar {
-    background: #ece9d8;
-    border-bottom: 1px solid #a0a0a0;
-    display: flex;
-    padding: 2px 5px;
-    font-size: 12px;
-    user-select: none;
-  }
-  .paint-menubar .menu-item {
-    padding: 2px 6px;
-    cursor: default;
-    border: 1px solid transparent;
-  }
-  .paint-menubar .menu-item:hover {
-    background: #0058e6;
-    color: white;
-    border-color: #0045b5;
-  }
+/* Só exibe o submenu quando passa o mouse na container */
+.all-programs-container:hover .all-programs-submenu {
+  display: flex;
+}
 
-  .paint-main {
-    flex: 1;
-    display: flex;
-    background: #ffffff;
-    position: relative;
-    overflow: hidden;
-  }
+.all-programs-submenu {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 100%;
+  background: #f0f4fc;
+  padding: 4px 0;
+  border: 1px solid #c0c0c0;
+  border-radius: 4px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  z-index: 1002;
+  flex-direction: column;
+  width: 180px;
+}
 
-  /* Ferramentas em 2 colunas fixas (grid) */
-  .paint-tools {
-    width: 74px;               /* 2 colunas de 32px + gaps + padding */
-    background: #ece9d8;
-    border-right: 1px solid #a0a0a0;
-    display: grid;
-    grid-template-columns: repeat(2, 32px);
-    gap: 4px;
-    padding: 5px;
-    align-content: start;
-    justify-content: center;
-  }
-  /* Estilo de botão clássico do Windows XP */
-  .paint-tool-button {
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    background: #c0c0c0;
-    border: 1px solid;
-    border-color: #ffffff #808080 #808080 #ffffff; /* relevo 3D */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .paint-tool-button:hover {
-    background: #d4d0c8;
-  }
-  .paint-tool-button.active {
-    background: #b0b0b0;
-    border-color: #808080 #ffffff #ffffff #808080; /* invertido */
-  }
-  .paint-tool-button svg {
-    width: 20px;
-    height: 20px;
-    pointer-events: none;
-  }
+.all-programs-submenu .start-menu-item {
+  padding: 3px 12px;
+}
 
-  #experience-canvas {
-    flex: 1;
-    cursor: crosshair;
-    background: #ffffff;
-  }
-
-  /* Paleta de cores em 2 linhas fixas (grid) */
-  .paint-palette {
-    height: 54px;              /* 2 linhas de 16px + gaps + padding */
-    background: #ece9d8;
-    border-top: 1px solid #a0a0a0;
-    display: grid;
-    grid-template-columns: repeat(14, 16px);
-    gap: 2px;
-    align-content: center;
-    justify-content: center;
-    padding: 4px 10px;
-  }
-  .paint-color {
-    width: 16px;
-    height: 16px;
-    border: 1px solid #808080;
-    cursor: pointer;
-    box-shadow: inset 0 0 0 1px #ffffff;
-  }
-  .paint-color:hover {
-    border-color: #000;
-  }
-  .paint-color.selected {
-    outline: 2px solid #000;
-  }
-
-  .paint-status {
-    height: 20px;
-    background: #ece9d8;
-    border-top: 1px solid #a0a0a0;
-    font-size: 11px;
-    padding: 2px 5px;
-    color: #333;
-  }
+.all-programs-submenu .start-menu-item:hover {
+  background: #2b63d9;
+  color: white;
+}
 
   @media (max-width: 768px) {
     .window { min-width: 92vw; max-width: 95vw; left: 2.5vw !important; top: 36px !important; max-height: calc(100vh - 80px); max-height: calc(100dvh - 80px); }
@@ -783,7 +667,6 @@
     overflow: hidden !important;
   }
 </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -1145,25 +1028,26 @@
         <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt=""><span class="label">Flappy Bird</span></div>
         <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="icons/notepad.png" alt=""><span class="label">Notepad</span></div>
       </div>
-      <div class="start-menu-allprograms" id="all-programs-btn">
-        <div class="start-menu-allprograms-left">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23ffb400' x='2' y='6' width='9' height='7' rx='1'/%3E%3Crect fill='%23ffd166' x='4' y='4' width='9' height='7' rx='1'/%3E%3Crect fill='%23ff8a00' x='13' y='8' width='9' height='7' rx='1'/%3E%3C/svg%3E" alt="">
-          <span>All Programs</span>
+      <div class="all-programs-container">
+        <div class="start-menu-allprograms" id="all-programs-btn">
+          <div class="start-menu-allprograms-left">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23ffb400' x='2' y='6' width='9' height='7' rx='1'/%3E%3Crect fill='%23ffd166' x='4' y='4' width='9' height='7' rx='1'/%3E%3Crect fill='%23ff8a00' x='13' y='8' width='9' height='7' rx='1'/%3E%3C/svg%3E" alt="">
+            <span>All Programs</span>
+          </div>
+          <span class="start-menu-allprograms-arrow"></span>
         </div>
-        <span class="start-menu-allprograms-arrow"></span>
+        <div id="all-programs-submenu" class="all-programs-submenu">
+          <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();">About Me</div>
+          <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();">Experience</div>
+          <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();">Skills</div>
+          <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();">Contact</div>
+          <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();">Resume</div>
+          <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();">Snake</div>
+          <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();">Minesweeper</div>
+          <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();">Flappy Bird</div>
+          <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();">Notepad</div>
+        </div>
       </div>
-      <div id="all-programs-submenu" style="display:none; background:#f0f4fc; padding:4px 0; border-top:1px solid #c0c0c0; flex-direction:column;">
-        <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();">About Me</div>
-        <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();">Experience</div>
-        <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();">Skills</div>
-        <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();">Contact</div>
-        <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();">Resume</div>
-        <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();">Snake</div>
-        <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();">Minesweeper</div>
-        <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();">Flappy Bird</div>
-        <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();">Notepad</div>
-      </div>
-    </div>
     <div class="start-menu-right">
       <div class="start-menu-item" onclick="alert('My Documents');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3C/svg%3E" alt=""> My Documents</div>
       <div class="start-menu-item" onclick="alert('My Pictures');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3Ccircle fill='%23fff' cx='9' cy='11' r='2'/%3E%3Cpath fill='%234a90d9' d='M6 16 L11 12 L14 15 L18 11 L20 16 Z'/%3E%3C/svg%3E" alt=""> My Pictures</div>
@@ -1444,12 +1328,6 @@ function openWindow(name) {
       initSkillsChart();
     }, 250);
   }
-  // Experience (Paint): redimensiona o canvas
-  if(name==='experience') {
-    setTimeout(() => {
-      if (window.__initExperiencePaint) window.__initExperiencePaint();
-    }, 250);
-  }
   // Flappy: apenas redimensiona, NÃO inicia o jogo automaticamente
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
@@ -1547,7 +1425,6 @@ function animateRestore(name) {
       openWindows.add(name);
       setActiveStates(name);
       if(name==='skills') { animateSkillBars(); initSkillsChart(); }
-      if(name==='experience') { setTimeout(() => { if (window.__initExperiencePaint) window.__initExperiencePaint(); }, 100); }
       if(name==='flappy' && window.__flappy) {
         setTimeout(() => {
           const canvas = document.getElementById('flappy-canvas');
@@ -1632,10 +1509,6 @@ document.addEventListener('click', function(e) {
   const menu=document.getElementById('start-menu'), btn=document.getElementById('start-btn');
   if(!menu.contains(e.target) && !btn.contains(e.target)) { menu.classList.remove('open'); btn.classList.remove('open'); }
 });
-function toggleAllPrograms() {
-  const sub = document.getElementById('all-programs-submenu');
-  sub.style.display = sub.style.display === 'none' || sub.style.display === '' ? 'flex' : 'none';
-}
 
 // ===== POP-UPS MSN MESSENGER =====
 function showContactPopups() {
@@ -1814,7 +1687,7 @@ document.querySelectorAll('.window').forEach(win => {
 });
 
 // ===== SELECTION BOX =====
-document.addEventListener('DOMContentLoaded', function() {
+function initSelectionBox() {
   const box=document.getElementById('selection-box');
   let isSel=false, sx=0, sy=0;
   function isClickable(el) {
@@ -1845,7 +1718,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(!isSel) return;
     isSel=false; box.style.display='none';
   });
-});
+}
 
 // ===== SKILLS =====
 let skillsAnimated = false;
@@ -1996,10 +1869,6 @@ function initSkillsChart() {
     radarChartInstance.update();
   }
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-  renderSkillBars();
-});
 
 // ============================================================
 //  NOTEPAD FUNCTIONS
@@ -2811,186 +2680,16 @@ function toggleMute() {
 }
 
 // ============================================================
-//  PAINT DO XP (EXPERIENCE) - CORRIGIDO
-// ============================================================
-(function initExperiencePaint() {
-  const canvas = document.getElementById('experience-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  // Ajusta o canvas para preencher a área branca
-  function resizeCanvas() {
-    const main = canvas.parentElement;
-    canvas.width = main.clientWidth - 74; // largura das tools (2 colunas)
-    canvas.height = main.clientHeight;
-    drawExperienceContent();
-  }
-
-  // Desenha as experiências no canvas
-  function drawExperienceContent() {
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    const experiences = [
-      { company: 'VS1Fiance', role: 'Community Builder', date: 'Oct 2025 — Present', color: '#4a90d9' },
-      { company: "Lion's Share Group", role: 'Affiliate Community Manager', date: 'Mar 2025 — Jun 2025', color: '#e8a33d' },
-      { company: 'TAP-Protocol', role: 'Customer Service', date: 'May 2024 — Feb 2025', color: '#8e44ad' },
-      { company: 'BeeOS', role: 'Community Manager', date: 'Mar 2022 — Present', color: '#27ae60' },
-      { company: 'CoralApp', role: 'Customer Support', date: 'Mar 2023 — Jun 2023', color: '#e74c3c' },
-      { company: 'Coinracer', role: 'Head Moderator', date: 'Nov 2021 — Feb 2024', color: '#f39c12' },
-      { company: 'Binance', role: 'Binance Angel', date: 'Feb 2021 — Mar 2022', color: '#f1c40f' }
-    ];
-
-    let y = 50;
-    experiences.forEach(exp => {
-      // Card da empresa
-      ctx.fillStyle = exp.color;
-      ctx.fillRect(30, y, 360, 50);
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 16px Tahoma';
-      ctx.fillText(exp.company, 45, y + 32);
-
-      // Detalhes
-      ctx.fillStyle = '#000000';
-      ctx.font = '14px Tahoma';
-      ctx.fillText(exp.role, 45, y + 80);
-      ctx.fillText(exp.date, 45, y + 105);
-
-      y += 140;
-    });
-  }
-
-  // Ferramentas e estado
-  let currentTool = 'pencil';
-  let currentColor = '#000000';
-  let isDrawing = false;
-  let lastX = 0, lastY = 0;
-
-  // Paleta de cores (28 em 2 linhas)
-  const colors = [
-    '#000000','#808080','#800000','#808000','#008000','#008080','#000080','#800080','#808040','#004040','#0080ff','#004080','#8000ff','#804000',
-    '#ffffff','#c0c0c0','#ff0000','#ffff00','#00ff00','#00ffff','#0000ff','#ff00ff','#ffff80','#00ff80','#80ffff','#8080ff','#ff0080','#ff8040'
-  ];
-
-  // Cria paleta
-  const palette = document.getElementById('paint-palette');
-  colors.forEach(color => {
-    const swatch = document.createElement('div');
-    swatch.className = 'paint-color';
-    swatch.style.backgroundColor = color;
-    swatch.dataset.color = color;
-    swatch.addEventListener('click', () => {
-      currentColor = color;
-      document.querySelectorAll('.paint-color').forEach(s => s.classList.remove('selected'));
-      swatch.classList.add('selected');
-    });
-    palette.appendChild(swatch);
-  });
-  // Seleciona preto por padrão
-  document.querySelector('.paint-color').classList.add('selected');
-
-  // Trocar ferramenta (funcional ou não)
-  window.setTool = function(tool) {
-    currentTool = tool;
-    document.querySelectorAll('.paint-tool-button').forEach(btn => btn.classList.remove('active'));
-    const btn = document.getElementById('tool-' + tool);
-    if (btn) btn.classList.add('active');
-  };
-
-  // Eventos de desenho
-  canvas.addEventListener('mousedown', (e) => {
-    e.preventDefault();
-    const rect = canvas.getBoundingClientRect();
-    lastX = e.clientX - rect.left;
-    lastY = e.clientY - rect.top;
-    isDrawing = true;
-
-    if (currentTool === 'fill') {
-      ctx.fillStyle = currentColor;
-      ctx.fillRect(lastX - 20, lastY - 20, 40, 40);
-      isDrawing = false;
-    } else if (currentTool === 'line') {
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-    }
-  });
-
-  canvas.addEventListener('mousemove', (e) => {
-    if (!isDrawing) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    ctx.strokeStyle = currentTool === 'eraser' ? '#ffffff' : currentColor;
-    ctx.lineWidth = currentTool === 'pencil' ? 2 : (currentTool === 'brush' ? 5 : 15);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-
-    lastX = x;
-    lastY = y;
-  });
-
-  canvas.addEventListener('mouseup', (e) => {
-    if (currentTool === 'line' && isDrawing) {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      ctx.strokeStyle = currentColor;
-      ctx.lineWidth = 2;
-      ctx.lineTo(x, y);
-      ctx.stroke();
-    }
-    isDrawing = false;
-  });
-
-  canvas.addEventListener('mouseleave', () => {
-    if (currentTool === 'line' && isDrawing) {
-      ctx.beginPath();
-    }
-    isDrawing = false;
-  });
-
-  // Suporte touch
-  canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousedown', { clientX: touch.clientX, clientY: touch.clientY });
-    canvas.dispatchEvent(mouseEvent);
-  }, {passive: false});
-
-  canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const mouseEvent = new MouseEvent('mousemove', { clientX: touch.clientX, clientY: touch.clientY });
-    canvas.dispatchEvent(mouseEvent);
-  }, {passive: false});
-
-  canvas.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    const mouseEvent = new MouseEvent('mouseup', {});
-    canvas.dispatchEvent(mouseEvent);
-  }, {passive: false});
-
-  // Botão New (File > New)
-  window.paintNew = function() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawExperienceContent();
-  };
-
-  // Inicializa
-  window.__initExperiencePaint = resizeCanvas;
-  setTimeout(resizeCanvas, 100);
-})();
-
-// ============================================================
-//  INICIALIZAÇÃO FINAL
+//  INICIALIZAÇÃO FINAL (ponto único de DOMContentLoaded)
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
+  // 1. Seleção por arrasto na área de trabalho
+  initSelectionBox();
+
+  // 2. Barras de habilidades (Skills)
+  renderSkillBars();
+
+  // 3. Janela "About Me" ativa por padrão
   const aboutWin = document.getElementById('win-about');
   if(aboutWin) {
     aboutWin.style.zIndex = ++zIndexCounter;
