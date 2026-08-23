@@ -35,32 +35,13 @@ html, body {
 </style>
 
 <script>
-// ============================================================
-// CONFIGURAÇÕES QUE VOCÊ PODE AJUSTAR
-// ============================================================
-var spraySrc = 'spray.gif';        // Nome do seu arquivo GIF (pode ser .png também)
-var sprayLargura = 400;            // 500% maior que 80 → 80 * 5 = 400
-var sprayAltura = 400;             // 500% maior que 80 → 80 * 5 = 400
-var tempoPorLinha = 2500;          // milissegundos para atravessar uma linha
-var atrasoEntreLinhas = 500;       // pausa antes de ir para a próxima linha
-// ============================================================
-
-// Carrega a imagem do spray (lata espirrando tinta)
-var sprayImg = new Image();
-var sprayLoaded = false;
-
-sprayImg.onload = function() {
-  sprayLoaded = true;
-};
-sprayImg.src = spraySrc;
-
-// Função que desenha os cards com efeito de spray
+// Função que desenha os cards com animação progressiva (sem retângulo externo)
 function desenharExperience() {
   var ctx = canvas.getContext('2d');
   var w = canvas.width;
   var h = canvas.height;
 
-  // Lista de empresas (mantida igual)
+  // Lista de empresas
   var empresas = [
     { nome: 'Binance', desc: 'Binance Angel', cor: '#f0b90b' },
     { nome: 'Coinracer', desc: 'Head Moderator', cor: '#ff6a00' },
@@ -71,14 +52,14 @@ function desenharExperience() {
     { nome: 'VS1Fiance', desc: 'Community Builder', cor: '#6d4c41' }
   ];
 
-  // Configurações da grade (apenas para posicionar os cards)
+  // Configurações da grade (ainda usamos para posicionar, mas sem desenhar o retângulo)
   var cols = 3;
   var rows = Math.ceil(empresas.length / cols);
   var gap = 20;
   var cardW = (w - (cols + 1) * gap) / cols;
   var cardH = (h - (rows + 1) * gap) / rows;
 
-  // Prepara os cards com suas posições e linha
+  // Prepara os dados de cada card com posição e animação
   var cards = empresas.map(function(emp, i) {
     var x = gap + (i % cols) * (cardW + gap);
     var y = gap + Math.floor(i / cols) * (cardH + gap);
@@ -86,159 +67,97 @@ function desenharExperience() {
       empresa: emp,
       x: x, y: y,
       w: cardW, h: cardH,
-      linha: Math.floor(i / cols)  // 0, 1 ou 2
+      delay: i * 300,    // cada card começa 300ms após o anterior
+      duration: 800,     // cada card leva 800ms para ficar completo
+      progress: 0
     };
   });
 
-  var inicioAnimacao = null;
+  var startTime = null;
 
   function animar(timestamp) {
-    if (!inicioAnimacao) inicioAnimacao = timestamp;
-    var elapsed = timestamp - inicioAnimacao;
+    if (!startTime) startTime = timestamp;
+    var elapsed = timestamp - startTime;
 
-    // Limpa o canvas e fundo branco
+    // Limpa e fundo branco
     ctx.clearRect(0, 0, w, h);
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, w, h);
 
-    // Calcula em qual linha o spray está e seu progresso
-    var tempoTotalPorLinha = tempoPorLinha + atrasoEntreLinhas;
-    var linhaIndex = Math.min(Math.floor(elapsed / tempoTotalPorLinha), rows - 1);
-    var tempoNaLinha = elapsed - linhaIndex * tempoTotalPorLinha;
+    var todosCompletos = true;
 
-    // Se já passou de todas as linhas, termina a animação
-    if (linhaIndex >= rows) {
-      // Desenha todos os cards completamente
-      cards.forEach(function(card) {
-        desenharCardCompleto(ctx, card);
-      });
+    cards.forEach(function(card) {
+      var tempoCard = elapsed - card.delay;
+      if (tempoCard < 0) {
+        card.progress = 0;
+        todosCompletos = false;
+        return;
+      }
+      var prog = Math.min(tempoCard / card.duration, 1);
+      card.progress = prog;
+      if (prog < 1) todosCompletos = false;
+
+      var x = card.x, y = card.y, w = card.w, h = card.h;
+      var p = card.progress;
+
+      // Centro do círculo (posicionado no centro do card virtual)
+      var cx = x + w/2;
+      var cy = y + h * 0.3; // 30% da altura para o círculo
+
+      // --- Desenho do círculo (traço e preenchimento) ---
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, 30, 0, p * 2 * Math.PI);
+      ctx.strokeStyle = card.empresa.cor;
+      ctx.lineWidth = 4;
+      ctx.stroke();
+      if (p > 0.8) {
+        ctx.globalAlpha = (p - 0.8) / 0.2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 30, 0, 2 * Math.PI);
+        ctx.fillStyle = card.empresa.cor;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+      ctx.restore();
+
+      // --- Nome da empresa (fade-in a partir de 60%) ---
+      if (p > 0.6) {
+        ctx.save();
+        ctx.globalAlpha = (p - 0.6) / 0.4;
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 20px Tahoma';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(card.empresa.nome, cx, y + h * 0.55);
+        ctx.restore();
+      }
+
+      // --- Descrição (fade-in a partir de 80%) ---
+      if (p > 0.8) {
+        ctx.save();
+        ctx.globalAlpha = (p - 0.8) / 0.2;
+        ctx.fillStyle = '#555555';
+        ctx.font = '14px Tahoma';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(card.empresa.desc, cx, y + h * 0.75);
+        ctx.restore();
+      }
+    });
+
+    if (todosCompletos) {
       saved = false;
       return;
     }
 
-    // Progresso da linha atual (0 a 1)
-    var progressoLinha = Math.min(tempoNaLinha / tempoPorLinha, 1);
-    // Posição X do spray ao longo da linha (da esquerda para direita)
-    var sprayX = progressoLinha * w;
-
-    // Altura da linha (distribui igualmente pela altura)
-    var alturaLinha = h / rows;
-    // Posição Y do spray (centralizado na linha)
-    var sprayY = linhaIndex * alturaLinha + alturaLinha / 2;
-
-    // Desenha cada card
-    cards.forEach(function(card) {
-      var progressoCard = 0;
-
-      if (card.linha < linhaIndex) {
-        // Linha já passou → card completamente visível
-        progressoCard = 1;
-      } else if (card.linha === linhaIndex) {
-        // Linha atual → calcula progresso baseado na posição do spray
-        var metadeCard = card.w / 2;
-        var centroCard = card.x + metadeCard;
-        // O spray "pinta" tudo que está à esquerda dele
-        if (sprayX >= centroCard) {
-          progressoCard = 1;
-        } else if (sprayX <= card.x) {
-          progressoCard = 0;
-        } else {
-          // Spray está dentro do card → progresso proporcional
-          progressoCard = (sprayX - card.x) / card.w;
-        }
-        // Suaviza um pouco (opcional)
-        progressoCard = Math.min(Math.max(progressoCard, 0), 1);
-      } else {
-        // Linha futura → ainda não visível
-        progressoCard = 0;
-      }
-
-      // Desenha o card com o progresso calculado
-      desenharCardProgressivo(ctx, card, progressoCard);
-    });
-
-    // Desenha a imagem do spray (se já carregou)
-    if (sprayLoaded) {
-      ctx.drawImage(
-        sprayImg,
-        sprayX - sprayLargura/2,
-        sprayY - sprayAltura/2,
-        sprayLargura,
-        sprayAltura
-      );
-    } else {
-      // Fallback: desenha um círculo vermelho enquanto a imagem não carrega
-      ctx.fillStyle = 'red';
-      ctx.beginPath();
-      ctx.arc(sprayX, sprayY, 40, 0, 2 * Math.PI);
-      ctx.fill();
-    }
-
-    // Continua animando
     requestAnimationFrame(animar);
   }
 
-  // Função que desenha um card completamente (sem progresso)
-  function desenharCardCompleto(ctx, card) {
-    desenharCardProgressivo(ctx, card, 1);
-  }
-
-  // Função que desenha um card com um progresso (0 a 1) – SEM RETÂNGULO EXTERNO
-  function desenharCardProgressivo(ctx, card, progresso) {
-    var x = card.x, y = card.y, w = card.w, h = card.h;
-    var p = Math.min(Math.max(progresso, 0), 1);
-    var cx = x + w/2;
-    var cy = y + h * 0.3;
-
-    // 1. Círculo – traço progressivo
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, 30, 0, p * 2 * Math.PI);
-    ctx.strokeStyle = card.empresa.cor;
-    ctx.lineWidth = 4;
-    ctx.stroke();
-    // Preenchimento do círculo (só quando p > 0.8)
-    if (p > 0.8) {
-      ctx.globalAlpha = (p - 0.8) / 0.2;
-      ctx.beginPath();
-      ctx.arc(cx, cy, 30, 0, 2 * Math.PI);
-      ctx.fillStyle = card.empresa.cor;
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-    ctx.restore();
-
-    // 2. Nome da empresa – fade a partir de 0.6
-    if (p > 0.6) {
-      ctx.save();
-      ctx.globalAlpha = (p - 0.6) / 0.4;
-      ctx.fillStyle = '#000000';
-      ctx.font = 'bold 20px Tahoma';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(card.empresa.nome, cx, y + h * 0.55);
-      ctx.restore();
-    }
-
-    // 3. Descrição – fade a partir de 0.8
-    if (p > 0.8) {
-      ctx.save();
-      ctx.globalAlpha = (p - 0.8) / 0.2;
-      ctx.fillStyle = '#555555';
-      ctx.font = '14px Tahoma';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(card.empresa.desc, cx, y + h * 0.75);
-      ctx.restore();
-    }
-  }
-
-  // Inicia a animação
-  inicioAnimacao = null; // reseta caso seja chamado novamente
   requestAnimationFrame(animar);
 }
 
-// Verifica se o iframe que contém este Paint está visível (NÃO MEXA)
+// Verifica se o iframe que contém este Paint está visível
 function verificarVisibilidade() {
   var iframe = window.frameElement;
   if (iframe) {
