@@ -787,6 +787,7 @@
     overflow: hidden !important;
   }
 </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -1197,17 +1198,17 @@
           <span class="start-menu-allprograms-arrow"></span>
         </div>
         <div id="all-programs-submenu" class="all-programs-submenu">
-          <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();">About Me</div>
-          <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();">Experience</div>
-          <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();">Skills</div>
-          <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();">Contact</div>
-          <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();">Resume</div>
-          <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();">Snake</div>
-          <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();">Minesweeper</div>
-          <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();">Flappy Bird</div>
-          <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();">Notepad</div>
+          <div class="start-menu-item" onclick="openWindow('about'); toggleStartMenu();"><img src="icons/icon-about.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>About Me</span></div>
+          <div class="start-menu-item" onclick="openWindow('experience'); toggleStartMenu();"><img src="icons/icon-experience.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Experience</span></div>
+          <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();"><img src="icons/icon-skills.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Skills</span></div>
+          <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();"><img src="icons/icon-contact.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Contact</span></div>
+          <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();"><img src="icons/icon-resume.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Resume</span></div>
+          <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();"><img src="icons/icon-snake.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Snake</span></div>
+          <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="icons/icon-minesweeper.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Minesweeper</span></div>
+          <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Flappy Bird</span></div>
+          <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="icons/notepad.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Notepad</span></div>
           <!-- NOVO: PAINT no All Programs -->
-          <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();">Paint</div>
+          <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();"><img src="icons/paint.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Paint</span></div>
         </div>
       </div>
     </div>
@@ -1301,6 +1302,8 @@ function isNonWindowApp(name) { return NON_WINDOW_APPS.includes(name); }
 const openWindows = new Set(['about']);
 const minimizedWindows = new Set();
 const windowPositions = {};
+let contactPopupLocked = false;
+const CONTACT_LOCK_DURATION = 1000; // 10s de cooldown
 
 function snapToGrid(x,y) {
   const col = Math.round((x-GRID_MARGIN_X)/GRID_W), row = Math.round((y-GRID_MARGIN_Y)/GRID_H);
@@ -1766,6 +1769,10 @@ function adjustMsnPopupPosition() {
 }
 
 function showContactPopups() {
+  if (contactPopupLocked) return;
+  contactPopupLocked = true;
+  setTimeout(() => { contactPopupLocked = false; }, CONTACT_LOCK_DURATION);
+
   adjustMsnPopupPosition();
   const container = document.getElementById('msn-popup-container');
   container.innerHTML = '';
