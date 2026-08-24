@@ -2469,6 +2469,10 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   let isPaused = false;
   let animId = null;
 
+  // === NOVO: Carrega a imagem do pássaro ===
+  const birdImg = new Image();
+  birdImg.src = 'icons/bird.png';
+
   function resizeCanvas() {
     const rect = canvas.parentElement.getBoundingClientRect();
     if (rect.width === 0) rect.width = 360;
@@ -2570,35 +2574,42 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     ctx.translate(bird.x, bird.y);
     const angle = Math.min(Math.max(bird.vy * 0.05, -0.5), 0.5);
     ctx.rotate(angle);
-    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 8;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, BIRD_RADIUS, BIRD_RADIUS*0.85, 0, 0, Math.PI*2);
-    ctx.fillStyle = '#FFD700';
-    ctx.fill();
-    ctx.strokeStyle = '#E6A800';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.ellipse(-4, -4, 10, 6, -0.3, 0, Math.PI*2);
-    ctx.fillStyle = '#FFA500';
-    ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.beginPath();
-    ctx.arc(6, -4, 4, 0, Math.PI*2);
-    ctx.fillStyle = '#fff';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(8, -5, 2, 0, Math.PI*2);
-    ctx.fillStyle = '#000';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(12, 0);
-    ctx.lineTo(18, 2);
-    ctx.lineTo(12, 4);
-    ctx.closePath();
-    ctx.fillStyle = '#FF6600';
-    ctx.fill();
+
+    // === NOVO: Desenha a imagem do pássaro se carregou, senão fallback ===
+    if (birdImg.complete && birdImg.naturalWidth > 0) {
+      ctx.drawImage(birdImg, -BIRD_RADIUS, -BIRD_RADIUS, BIRD_RADIUS * 2, BIRD_RADIUS * 2);
+    } else {
+      // Fallback: desenho antigo (círculo amarelo)
+      ctx.shadowColor = 'rgba(0,0,0,0.3)';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, BIRD_RADIUS, BIRD_RADIUS*0.85, 0, 0, Math.PI*2);
+      ctx.fillStyle = '#FFD700';
+      ctx.fill();
+      ctx.strokeStyle = '#E6A800';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(-4, -4, 10, 6, -0.3, 0, Math.PI*2);
+      ctx.fillStyle = '#FFA500';
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.arc(6, -4, 4, 0, Math.PI*2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(8, -5, 2, 0, Math.PI*2);
+      ctx.fillStyle = '#000';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(12, 0);
+      ctx.lineTo(18, 2);
+      ctx.lineTo(12, 4);
+      ctx.closePath();
+      ctx.fillStyle = '#FF6600';
+      ctx.fill();
+    }
     ctx.restore();
 
     ctx.fillStyle = 'rgba(0,0,0,0.3)';
