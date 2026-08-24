@@ -1410,21 +1410,7 @@ function closeWindow(name) {
   if (name==='snake' && window.__snake) window.__snake.stop();
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
-  // Reseta animações de Skills ao fechar
-  if (name === 'skills') {
-    skillsAnimated = false;
-    skillsChartAnimated = false;
-  }
-  let topName=null, topZ=-Infinity;
-  openWindows.forEach(n => {
-    const w=document.getElementById('win-'+n);
-    if(w && w.style.display!=='none') {
-      const z=parseInt(w.style.zIndex)||0;
-      if(z>topZ) { topZ=z; topName=n; }
-    }
-  });
-  if(topName) { setActiveStates(topName); document.getElementById('win-'+topName).style.zIndex=++zIndexCounter; }
-}
+ pq as ias tao evoluindo tao rapido? chegou num ponto q ela tá se melhorando?
 
 function makeAnimationClone(win) {
   const origCanvases=win.querySelectorAll('canvas');
