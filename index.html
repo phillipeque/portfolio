@@ -2752,13 +2752,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // 3. Janela "About Me" ativa por padrão
   const aboutWin = document.getElementById('win-about');
   if(aboutWin) {
+    aboutWin.style.display = 'flex';        // ← NOVO: sincroniza o estado inline
+    openWindows.add('about');               // ← NOVO: registra como "aberta"
     aboutWin.style.zIndex = ++zIndexCounter;
     document.getElementById('icon-about').classList.add('active');
     document.getElementById('task-about').classList.add('active');
     updateTitlebarStates('about');
   }
 });
-
 // Inicializa áudio no primeiro clique do usuário
 document.addEventListener('click', function() {
   initAudio();
