@@ -439,7 +439,7 @@
   }
   .xp-balloon {
     position: relative;
-    width: 260px;
+    width: 325px;
     pointer-events: auto;
     background: linear-gradient(180deg, #ffffe1 0%, #ffffc1 100%);
     border: 1px solid #aca899;
@@ -448,7 +448,7 @@
     box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
     font-family: Tahoma, "Segoe UI", sans-serif;
     color: #000;
-    padding: 8px 18px 10px 9px;
+    padding: 10px 22px 12px 11px;
     animation: xpBalloonIn 0.25s ease-out;
   }
   @keyframes xpBalloonIn {
@@ -456,22 +456,22 @@
     to   { opacity: 1; transform: translateY(0); }
   }
   .xp-balloon::after {
-    /* rabinho apontando para o ícone na bandeja */
+    /* rabinho apontando para o ícone na bandeja — posição ajustada via JS (positionXpBalloon) */
     content: "";
     position: absolute;
-    bottom: -10px;
-    right: 20px;
+    bottom: -13px;
+    right: 25px;
     width: 0; height: 0;
-    border-left: 9px solid transparent;
-    border-right: 2px solid transparent;
-    border-top: 10px solid #ffffc1;
+    border-left: 11px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 13px solid #ffffc1;
   }
   .xp-balloon-close {
     position: absolute;
-    top: 5px;
-    right: 6px;
+    top: 6px;
+    right: 8px;
     font-family: Tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 14px;
     font-weight: bold;
     color: #555;
     cursor: pointer;
@@ -482,11 +482,11 @@
   .xp-balloon-header {
     display: flex;
     align-items: flex-start;
-    gap: 7px;
+    gap: 9px;
   }
   .xp-balloon-icon {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     flex-shrink: 0;
     margin-top: 1px;
   }
@@ -494,20 +494,20 @@
   .xp-balloon-body { flex: 1; }
   .xp-balloon-title {
     font-weight: bold;
-    font-size: 12px;
-    margin-bottom: 3px;
+    font-size: 15px;
+    margin-bottom: 4px;
     /* EDITE O TÍTULO AQUI (ou no HTML abaixo) */
   }
   .xp-balloon-text {
-    font-size: 11px;
+    font-size: 14px;
     line-height: 1.4;
     color: #000;
     /* EDITE O TEXTO AQUI (ou no HTML abaixo) */
   }
   .xp-balloon-link {
     display: block;
-    margin-top: 4px;
-    font-size: 11px;
+    margin-top: 5px;
+    font-size: 14px;
     color: #0645ad;
     text-decoration: underline;
     cursor: pointer;
@@ -1120,15 +1120,14 @@
 <div id="msn-popup-container"></div>
 
 <!-- ===== BALÃO ESTILO WINDOWS XP (Security Center) =====
-     Edite o ícone, título e texto abaixo à vontade.
-     Pra trocar o ícone, troque o src do <img> dentro de .xp-balloon-icon
-     (pode usar icons/shield.png ou outro ícone seu). -->
+     Edite o título e texto abaixo à vontade.
+     O ícone do balão usa icons/info.png — troque o src se quiser outro. -->
 <div id="xp-balloon-container">
   <div class="xp-balloon" id="xp-balloon">
     <span class="xp-balloon-close" onclick="closeXpBalloon()">✕</span>
     <div class="xp-balloon-header">
       <div class="xp-balloon-icon">
-        <img src="icons/shield.png" alt="">
+        <img src="icons/info.png" alt="">
       </div>
       <div class="xp-balloon-body">
         <div class="xp-balloon-title">Your computer might be at risk</div>
@@ -1159,7 +1158,7 @@
 
     <!-- NOVOS ÍCONES (MODO DECORATIVO, MOUSE IGNORA) -->
     <img src="icons/leaf.png" width="20" height="20" alt="Folha" style="pointer-events: none;">
-    <img src="icons/shield.png" width="20" height="20" alt="Escudo" style="margin-left: 2px; cursor: pointer;" onclick="toggleXpBalloon()">
+    <img id="tray-shield-icon" src="icons/shield.png" width="20" height="20" alt="Escudo" style="margin-left: 2px; cursor: pointer;" onclick="toggleXpBalloon()">
     
     <div class="clock" id="clock">00:00</div>
   </div>
@@ -1702,10 +1701,26 @@ document.addEventListener('click', function(e) {
 
 // ===== POP-UPS MSN MESSENGER =====
 // ===== BALÃO ESTILO XP (Security Center) =====
+function positionXpBalloon() {
+  const container = document.getElementById('xp-balloon-container');
+  const balloon = document.getElementById('xp-balloon');
+  const shield = document.getElementById('tray-shield-icon');
+  if (!container || !balloon || !shield) return;
+  const shieldRect = shield.getBoundingClientRect();
+  const shieldCenterX = shieldRect.left + shieldRect.width / 2;
+  // distância do centro do rabinho até a borda direita do balão (right: 25px + metade da largura do rabinho)
+  const tailCenterFromRight = 25 + 7;
+  let right = window.innerWidth - shieldCenterX - tailCenterFromRight;
+  const minRight = 8;
+  const maxRight = window.innerWidth - balloon.offsetWidth - 8;
+  right = Math.max(minRight, Math.min(right, maxRight));
+  container.style.right = right + 'px';
+}
 function showXpBalloon() {
   const b = document.getElementById('xp-balloon-container');
   if (!b) return;
   b.style.display = 'block';
+  positionXpBalloon();
 }
 function closeXpBalloon() {
   const b = document.getElementById('xp-balloon-container');
@@ -1715,8 +1730,13 @@ function closeXpBalloon() {
 function toggleXpBalloon() {
   const b = document.getElementById('xp-balloon-container');
   if (!b) return;
-  b.style.display = (b.style.display === 'none') ? 'block' : 'none';
+  if (b.style.display === 'none') { showXpBalloon(); }
+  else { b.style.display = 'none'; }
 }
+window.addEventListener('resize', () => {
+  const b = document.getElementById('xp-balloon-container');
+  if (b && b.style.display !== 'none') positionXpBalloon();
+});
 // mostra automaticamente pouco depois de carregar a página (comportamento clássico do XP)
 setTimeout(showXpBalloon, 2500);
 
