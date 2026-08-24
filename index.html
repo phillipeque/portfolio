@@ -1581,7 +1581,6 @@ function toggleWindow(name) {
   const win=document.getElementById('win-'+name);
   if(minimizedWindows.has(name)) { animateRestore(name); return; }
   if(!win || win.style.display==='none' || win.style.display==='') { openWindow(name); return; }
-  if(name==='about') { minimizeWindow(name); return; }
   if(isWindowActive(name)) minimizeWindow(name);
   else bringToFront(name);
 }
