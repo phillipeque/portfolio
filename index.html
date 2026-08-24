@@ -766,7 +766,7 @@
   <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS ===== -->
+<!-- ===== DESKTOP ICONS (sem Paint, apenas 8) ===== -->
 <div class="desktop-icons">
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
@@ -817,7 +817,7 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE (PAINT) ===== -->
+<!-- ===== JANELA EXPERIENCE (placeholder) ===== -->
 <div class="window" id="win-experience" style="left: calc(50% - 580px); top: calc(50% - 460px); width: 1160px; height: 920px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
@@ -827,6 +827,27 @@
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('experience')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
+    </div>
+  </div>
+  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#ece9d8;">
+    <!-- Placeholder: conteúdo vazio -->
+    <div style="display:flex; align-items:center; justify-content:center; height:100%; flex-direction:column; gap:12px;">
+      <div style="font-size:48px;">💼</div>
+      <p style="font-size:16px; color:#555;">Esta seção será atualizada em breve.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== JANELA PAINT ===== -->
+<div class="window" id="win-paint" style="left: calc(50% - 380px); top: calc(50% - 300px); width: 760px; height: 600px; min-width: 400px; min-height: 300px;">
+  <div class="window-titlebar" onmousedown="startDrag(event, 'win-paint')">
+    <div class="window-title">
+      <img src="icons/paint.png" alt="" style="width:16px; height:16px;">
+      Paint
+    </div>
+    <div class="window-buttons">
+      <div class="win-btn minimize" onclick="minimizeWindow('paint')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
+      <div class="win-btn close" onclick="closeWindow('paint')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
     </div>
   </div>
   <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#ece9d8;">
@@ -1053,11 +1074,12 @@
         <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();"><img src="icons/icon-skills.png" alt=""><span class="label">Skills</span></div>
         <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();"><img src="icons/icon-contact.png" alt=""><span class="label">Contact</span></div>
         <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();"><img src="icons/icon-resume.png" alt=""><span class="label">Resume.pdf</span></div>
-        <div class="start-menu-divider"></div>
         <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();"><img src="icons/icon-snake.png" alt=""><span class="label">Snake.exe</span></div>
         <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="icons/icon-minesweeper.png" alt=""><span class="label">Minesweeper</span></div>
         <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt=""><span class="label">Flappy Bird</span></div>
         <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="icons/notepad.png" alt=""><span class="label">Notepad</span></div>
+        <!-- NOVO: PAINT no menu iniciar -->
+        <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();"><img src="icons/paint.png" alt=""><span class="label">Paint</span></div>
       </div>
       <div class="all-programs-container">
         <div class="start-menu-allprograms" id="all-programs-btn">
@@ -1077,6 +1099,8 @@
           <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();">Minesweeper</div>
           <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();">Flappy Bird</div>
           <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();">Notepad</div>
+          <!-- NOVO: PAINT no All Programs -->
+          <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();">Paint</div>
         </div>
       </div>
     </div>
