@@ -557,10 +557,16 @@
     animation: msnFadeOut 0.25s ease-in forwards;
   }
 
-  /* Remove scrollbar da janela About Me */
-  #win-about .window-content {
-    overflow: hidden;
-  }
+/* Remove scrollbar da janela About Me — sem glitch de reflow */
+#win-about .window-content {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#win-about .window-content::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+  display: none;
 
   .taskbar {
     position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
