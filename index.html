@@ -1414,6 +1414,15 @@ function closeWindow(name) {
   if (name === 'skills') {
     skillsAnimated = false;
     skillsChartAnimated = false;
+    if (radarChartInstance) {
+      radarChartInstance.destroy();
+      radarChartInstance = null;
+    }
+    const canvas = document.getElementById('skillsRadarChart');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
   }
   let topName=null, topZ=-Infinity;
   openWindows.forEach(n => {
