@@ -1421,8 +1421,8 @@ function closeWindow(name) {
     }
     const canvas = document.getElementById('skillsRadarChart');
     if (canvas) {
-      // Hack definitivo para limpar o canvas fisicamente
       canvas.width = canvas.width;
+      canvas.style.opacity = '0';
     }
   }
 
@@ -1890,7 +1890,12 @@ function initSkillsChart() {
   const ctx = document.getElementById('skillsRadarChart');
   if (!ctx || typeof Chart === 'undefined') return;
   
+  ctx.style.opacity = '1';  // ← COLE ESTA LINHA AQUI
+  
   if (radarChartInstance) radarChartInstance.destroy();
+  
+  const shouldAnimate = !skillsChartAnimated;
+  // ... resto continua igual
   
   const shouldAnimate = !skillsChartAnimated;
   skillsChartAnimated = true;
