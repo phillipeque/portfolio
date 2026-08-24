@@ -1424,6 +1424,14 @@ function closeWindow(name) {
       canvas.width = canvas.width;
       canvas.style.opacity = '0';
     }
+    // Zera as barras IMEDIATAMENTE (sem esperar o reopen), pra não sobrar
+    // o valor final visível por um instante quando a janela reabrir
+    document.querySelectorAll('.skill-bar-fill').forEach(fill => {
+      fill.style.width = '0%';
+    });
+    document.querySelectorAll('.skill-row .skill-percent').forEach(span => {
+      span.textContent = '0%';
+    });
   }
 
   let topName=null, topZ=-Infinity;
@@ -1890,12 +1898,12 @@ function initSkillsChart() {
   const ctx = document.getElementById('skillsRadarChart');
   if (!ctx || typeof Chart === 'undefined') return;
   
-  ctx.style.opacity = '1';  // ← COLE ESTA LINHA AQUI
+  ctx.style.opacity = '1';
   
   if (radarChartInstance) radarChartInstance.destroy();
   
   const shouldAnimate = !skillsChartAnimated;
-  // ... resto continua igual
+  skillsChartAnimated = true;
   
   // Cria o gráfico com dados zerados
   radarChartInstance = new Chart(ctx, {
