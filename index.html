@@ -1410,6 +1410,7 @@ function closeWindow(name) {
   if (name==='snake' && window.__snake) window.__snake.stop();
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
+
   // Reseta animações de Skills ao fechar
   if (name === 'skills') {
     skillsAnimated = false;
@@ -1424,6 +1425,7 @@ function closeWindow(name) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
   }
+
   let topName=null, topZ=-Infinity;
   openWindows.forEach(n => {
     const w=document.getElementById('win-'+n);
