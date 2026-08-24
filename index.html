@@ -1566,6 +1566,13 @@ function minimizeWindow(name) {
   requestAnimationFrame(anim);
 }
 
+function bringToFront(name) {
+  const win=document.getElementById('win-'+name);
+  if(!win) return;
+  win.style.zIndex=++zIndexCounter;
+  setActiveStates(name);
+}
+
 function toggleWindow(name) {
   if (isNonWindowApp(name)) {
     if (name === 'contact') showContactPopups();
@@ -1576,7 +1583,7 @@ function toggleWindow(name) {
   if(!win || win.style.display==='none' || win.style.display==='') { openWindow(name); return; }
   if(name==='about') { minimizeWindow(name); return; }
   if(isWindowActive(name)) minimizeWindow(name);
-  else animateRestore(name);
+  else bringToFront(name);
 }
 
 // ===== START MENU =====
