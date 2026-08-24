@@ -1421,8 +1421,8 @@ function closeWindow(name) {
     }
     const canvas = document.getElementById('skillsRadarChart');
     if (canvas) {
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Hack definitivo para limpar o canvas fisicamente
+      canvas.width = canvas.width;
     }
   }
 
