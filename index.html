@@ -439,7 +439,7 @@
   }
   .xp-balloon {
     position: relative;
-    width: 370px;
+    width: 325px;
     pointer-events: auto;
     background: linear-gradient(180deg, #ffffe1 0%, #ffffc1 100%);
     border: 1px solid #aca899;
@@ -1721,16 +1721,21 @@ function positionXpBalloon() {
   right = Math.max(minRight, Math.min(right, maxRight));
   container.style.right = right + 'px';
 }
+let xpBalloonAutoCloseTimer = null;
 function showXpBalloon() {
   const b = document.getElementById('xp-balloon-container');
   if (!b) return;
   b.style.display = 'block';
   positionXpBalloon();
+  // fecha sozinho depois de 10s (cancela um timer anterior se já existia)
+  if (xpBalloonAutoCloseTimer) clearTimeout(xpBalloonAutoCloseTimer);
+  xpBalloonAutoCloseTimer = setTimeout(closeXpBalloon, 10000);
 }
 function closeXpBalloon() {
   const b = document.getElementById('xp-balloon-container');
   if (!b) return;
   b.style.display = 'none';
+  if (xpBalloonAutoCloseTimer) { clearTimeout(xpBalloonAutoCloseTimer); xpBalloonAutoCloseTimer = null; }
 }
 function toggleXpBalloon() {
   const b = document.getElementById('xp-balloon-container');
@@ -1745,7 +1750,23 @@ window.addEventListener('resize', () => {
 // mostra automaticamente pouco depois de carregar a página (comportamento clássico do XP)
 setTimeout(showXpBalloon, 2500);
 
+// desloca a pilha de popups do MSN pra cima do balão do XP, se ele estiver aberto
+function adjustMsnPopupPosition() {
+  const container = document.getElementById('msn-popup-container');
+  const balloon = document.getElementById('xp-balloon-container');
+  if (!container) return;
+  if (balloon && balloon.style.display !== 'none') {
+    const balloonRect = balloon.getBoundingClientRect();
+    const gap = 14; // espaço entre o topo do balão e o popup do MSN
+    const bottomOffset = (window.innerHeight - balloonRect.top) + gap;
+    container.style.bottom = bottomOffset + 'px';
+  } else {
+    container.style.bottom = '40px';
+  }
+}
+
 function showContactPopups() {
+  adjustMsnPopupPosition();
   const container = document.getElementById('msn-popup-container');
   container.innerHTML = '';
   
@@ -1801,6 +1822,7 @@ function showContactPopups() {
 }
 
 function createPopup(data) {
+  adjustMsnPopupPosition();
   const container = document.getElementById('msn-popup-container');
   const popup = document.createElement('div');
   popup.className = 'msn-popup';
