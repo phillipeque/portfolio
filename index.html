@@ -1303,7 +1303,7 @@ const openWindows = new Set(['about']);
 const minimizedWindows = new Set();
 const windowPositions = {};
 let contactPopupLocked = false;
-const CONTACT_LOCK_DURATION = 10000; // 10s de cooldown
+const CONTACT_LOCK_DURATION = 15000; // 10s de cooldown
 
 function snapToGrid(x,y) {
   const col = Math.round((x-GRID_MARGIN_X)/GRID_W), row = Math.round((y-GRID_MARGIN_Y)/GRID_H);
