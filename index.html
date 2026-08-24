@@ -666,29 +666,161 @@
   #win-notepad textarea { width: 100%; height: 100%; border: none; padding: 4px; font-family: 'Courier New', monospace; font-size: 13px; background: #ffffff; color: #000; resize: none; outline: none; box-sizing: border-box; flex: 1; }
   #win-notepad textarea:focus { outline: none; }
 
-  #xp-login-screen { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%); font-family: Tahoma, "Segoe UI", sans-serif; transition: opacity 0.6s ease, transform 0.6s ease; }
-  #xp-login-screen.hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
-  .login-header-bar { background: #062348; height: 30px; border-bottom: 1px solid #1b4682; }
-  .login-body { flex: 1; display: flex; align-items: center; justify-content: center; padding: 0 40px; }
-  .login-left { display: flex; flex-direction: column; align-items: center; margin-right: 80px; }
-  .xp-logo-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
-  .xp-logo-img { max-width: 260px; height: auto; display: block; }
-  .login-instruction { margin-top: 4px; font-size: 18px; color: #f2f8ff; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); letter-spacing: 0.5px; text-align: center; }
-  .login-divider { width: 1px; height: 55%; background: rgba(255,255,255,0.25); box-shadow: inset -1px 0 0 rgba(0,0,0,0.15); }
-  .login-right { display: flex; align-items: center; margin-left: 80px; }
-  .user-button { background: linear-gradient(135deg, rgba(0, 80, 200, 0.4), rgba(0, 150, 255, 0.2)); border: 1px solid #a2c2f7; border-radius: 12px; padding: 12px 30px 12px 12px; display: flex; align-items: center; gap: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3); cursor: pointer; transition: background 0.2s ease; }
-  .user-button:hover { background: linear-gradient(135deg, rgba(0, 80, 200, 0.6), rgba(0, 150, 255, 0.3)); border-color: #c6dbff; }
-  .user-avatar { width: 78px; height: 78px; background: #f2efe5; border: 3px solid #e89a3c; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: inset 0 0 0 1px #ad7a2a; }
-  .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .user-name { font-size: 26px; font-family: Tahoma, sans-serif; color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.7); letter-spacing: 0.5px; }
-  .login-footer { position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
-  .turn-off-btn { display: flex; align-items: center; gap: 12px; cursor: pointer; color: #f2f8ff; font-size: 13px; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); }
-  .turn-off-btn:hover { text-decoration: underline; }
-  .power-icon-wrapper { background: #e87a2e; border-radius: 4px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3); }
-  .power-icon-wrapper svg { width: 18px; height: 18px; }
-  .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
+  /* ===== TELA DE LOGIN (ESTILO WINDOWS XP ORIGINAL) ===== */
+  #xp-login-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%);
+    font-family: Tahoma, "Segoe UI", sans-serif;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  #xp-login-screen.hidden {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+  }
 
-  .start-menu { position: fixed; bottom: 30px; left: 0; width: 400px; background: #fff; border: 2px solid #0831d9; border-bottom: none; border-radius: 9px 9px 0 0; display: none; flex-direction: column; z-index: 1001; box-shadow: 3px -3px 14px rgba(0,0,0,0.4); overflow: hidden; }
+  .login-header-bar {
+    background: #062348;
+    height: 30px;
+    border-bottom: 1px solid #1b4682;
+  }
+
+  .login-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+  }
+
+  .login-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 80px;
+  }
+
+  .xp-logo-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .xp-logo-img {
+    max-width: 260px;
+    height: auto;
+    display: block;
+  }
+
+  .login-instruction {
+    margin-top: 4px;
+    font-size: 18px;
+    color: #f2f8ff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  .login-divider {
+    width: 1px;
+    height: 55%;
+    background: rgba(255,255,255,0.25);
+    box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
+  }
+
+  .login-right {
+    display: flex;
+    align-items: center;
+    margin-left: 80px;
+  }
+
+  .user-button {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #2668c4;
+    border: 1px solid #3d8bff;
+    border-radius: 6px;
+    padding: 10px 30px 10px 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .user-button:hover {
+    background: #3478d4;
+  }
+
+  .user-avatar {
+    width: 64px;
+    height: 64px;
+    background: #e8e8e8;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px #aaa;
+  }
+  .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-name {
+    font-size: 24px;
+    font-family: Tahoma, sans-serif;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    letter-spacing: 0.5px;
+  }
+
+  .login-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(0,0,0,0.15);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .turn-off-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    color: #f2f8ff;
+    font-size: 13px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+  }
+  .turn-off-btn:hover {
+    text-decoration: underline;
+  }
+
+  .turnoff-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .footer-text {
+    font-size: 11px;
+    color: #c6dbf5;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+    text-align: right;
+  }
+
+  .start-menu {
+    position: fixed; bottom: 30px; left: 0; width: 400px; background: #fff; border: 2px solid #0831d9; border-bottom: none; border-radius: 9px 9px 0 0; display: none; flex-direction: column; z-index: 1001; box-shadow: 3px -3px 14px rgba(0,0,0,0.4); overflow: hidden; }
   .start-menu.open { display: flex; }
   .start-menu-header { background: linear-gradient(180deg, #3f8cf3 0%, #1c53c4 45%, #0f3fae 100%); padding: 6px; display: flex; align-items: center; gap: 10px; position: relative; height: 54px; }
   .start-menu-header::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 6px; background: linear-gradient(180deg, #0f3fae 0%, rgba(15,63,174,0) 100%); }
@@ -792,162 +924,37 @@
 </head>
 <body>
 
-/* ===== TELA DE LOGIN (ESTILO WINDOWS XP ORIGINAL) ===== */
-#xp-login-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%);
-  font-family: Tahoma, "Segoe UI", sans-serif;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-#xp-login-screen.hidden {
-  opacity: 0;
-  transform: scale(1.05);
-  pointer-events: none;
-}
-
-.login-header-bar {
-  background: #062348;
-  height: 30px;
-  border-bottom: 1px solid #1b4682;
-}
-
-.login-body {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 40px;
-}
-
-/* Lado esquerdo: logo + instrução */
-.login-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-right: 80px;
-}
-
-.xp-logo-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.xp-logo-img {
-  max-width: 260px;
-  height: auto;
-  display: block;
-}
-
-.login-instruction {
-  margin-top: 4px;
-  font-size: 18px;
-  color: #f2f8ff;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-  letter-spacing: 0.5px;
-  text-align: center;
-}
-
-/* Divisor vertical */
-.login-divider {
-  width: 1px;
-  height: 55%;
-  background: rgba(255,255,255,0.25);
-  box-shadow: inset -1px 0 0 rgba(0,0,0,0.15);
-}
-
-/* Lado direito: botão do usuário */
-.login-right {
-  display: flex;
-  align-items: center;
-  margin-left: 80px;
-}
-
-.user-button {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  background: #2668c4;
-  border: 1px solid #3d8bff;
-  border-radius: 6px;
-  padding: 10px 30px 10px 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-.user-button:hover {
-  background: #3478d4;
-}
-
-.user-avatar {
-  width: 64px;
-  height: 64px;
-  background: #e8e8e8;
-  border: 2px solid #fff;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: inset 0 0 0 1px #aaa;
-}
-.user-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.user-name {
-  font-size: 24px;
-  font-family: Tahoma, sans-serif;
-  color: white;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-  letter-spacing: 0.5px;
-}
-
-/* Rodapé */
-.login-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background: rgba(0,0,0,0.15);
-  border-top: 1px solid rgba(255,255,255,0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-}
-
-.turn-off-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  color: #f2f8ff;
-  font-size: 13px;
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
-}
-.turn-off-btn:hover {
-  text-decoration: underline;
-}
-
-.turnoff-icon {
-  width: 28px;
-  height: 28px;
-}
-
-.footer-text {
-  font-size: 11px;
-  color: #c6dbf5;
-  text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
-  text-align: right;
-}
+<!-- ===== TELA DE LOGIN (ESTILO WINDOWS XP ORIGINAL) ===== -->
+<div id="xp-login-screen">
+  <div class="login-header-bar"></div>
+  <div class="login-body">
+    <div class="login-left">
+      <div class="xp-logo-wrapper">
+        <img src="icons/xp-logo.png" alt="Windows XP" class="xp-logo-img">
+      </div>
+      <div class="login-instruction">To begin, click your user name</div>
+    </div>
+    <div class="login-divider"></div>
+    <div class="login-right">
+      <div class="user-button" onclick="loginToDesktop()">
+        <div class="user-avatar">
+          <img src="avatar_1.jpg" alt="User">
+        </div>
+        <div class="user-name">Phillipe</div>
+      </div>
+    </div>
+  </div>
+  <div class="login-footer">
+    <div class="turn-off-btn" onclick="alert('Computer is shutting down...')">
+      <img src="icons/turnoff.png" alt="Turn Off" class="turnoff-icon">
+      <span>Turn off computer</span>
+    </div>
+    <div class="footer-text">
+      After you log on, you can add or change accounts.<br>
+      Just go to Control Panel and click User Accounts.
+    </div>
+  </div>
+</div>
 
 <!-- ===== CONTEXT MENU ===== -->
 <div id="context-menu" class="context-menu">
@@ -989,7 +996,7 @@
   <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS (sem Paint, apenas 8) ===== -->
+<!-- ===== DESKTOP ICONS ===== -->
 <div class="desktop-icons">
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
@@ -1040,7 +1047,7 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE (placeholder) ===== -->
+<!-- ===== JANELA EXPERIENCE ===== -->
 <div class="window" id="win-experience" style="left: calc(50% - 580px); top: calc(50% - 460px); width: 1160px; height: 920px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
@@ -1053,7 +1060,6 @@
     </div>
   </div>
   <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#ece9d8;">
-    <!-- Placeholder: conteúdo vazio -->
     <div style="display:flex; align-items:center; justify-content:center; height:100%; flex-direction:column; gap:12px;">
       <div style="font-size:48px;">💼</div>
       <p style="font-size:16px; color:#555;">Esta seção será atualizada em breve.</p>
@@ -1258,9 +1264,7 @@
 <!-- ===== POP-UPS MSN (container) ===== -->
 <div id="msn-popup-container"></div>
 
-<!-- ===== BALÃO ESTILO WINDOWS XP (Security Center) =====
-     Edite o título e texto abaixo à vontade.
-     O ícone do balão usa icons/info.png — troque o src se quiser outro. -->
+<!-- ===== BALÃO ESTILO WINDOWS XP ===== -->
 <div id="xp-balloon-container">
   <div class="xp-balloon" id="xp-balloon">
     <span class="xp-balloon-close" onclick="closeXpBalloon()">✕</span>
@@ -1278,7 +1282,6 @@
 
 <!-- ===== TASKBAR ===== -->
 <div class="taskbar">
-  <!-- Botão Start com imagem PNG -->
   <div class="start-btn" id="start-btn" onclick="toggleStartMenu()">
     <img src="start.png" alt="Start">
   </div>
@@ -1293,7 +1296,6 @@
       <svg id="vol-mute-overlay" width="20" height="20" viewBox="0 0 20 20" style="position:absolute;top:0;left:0;display:none;"><line x1="3" y1="3" x2="17" y2="17" stroke="#ff3333" stroke-width="2.5"/><line x1="17" y1="3" x2="3" y2="17" stroke="#ff3333" stroke-width="2.5"/></svg>
     </div>
 
-    <!-- NOVOS ÍCONES (MODO DECORATIVO, MOUSE IGNORA) -->
     <img src="icons/leaf.png" width="20" height="20" alt="Folha" style="pointer-events: none;">
     <img id="tray-shield-icon" src="icons/shield.png" width="20" height="20" alt="Escudo" style="margin-left: 2px; cursor: pointer;" onclick="toggleXpBalloon()">
     
@@ -1319,7 +1321,6 @@
         <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="icons/icon-minesweeper.png" alt=""><span class="label">Minesweeper</span></div>
         <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt=""><span class="label">Flappy Bird</span></div>
         <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="icons/notepad.png" alt=""><span class="label">Notepad</span></div>
-        <!-- NOVO: PAINT no menu iniciar -->
         <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();"><img src="icons/paint.png" alt=""><span class="label">Paint</span></div>
       </div>
       <div class="all-programs-container">
@@ -1340,7 +1341,6 @@
           <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="icons/icon-minesweeper.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Minesweeper</span></div>
           <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Flappy Bird</span></div>
           <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="icons/notepad.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Notepad</span></div>
-          <!-- NOVO: PAINT no All Programs -->
           <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();"><img src="icons/paint.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Paint</span></div>
         </div>
       </div>
@@ -1376,7 +1376,6 @@
 
 // ===== CONTEXT MENU E LOGIN =====
 document.addEventListener('contextmenu', function(e) {
-  // Bloqueia menu nativo em TODO o sistema (ícones, janelas, taskbar, start menu)
   if (e.target.closest('.window') || e.target.closest('.taskbar') || e.target.closest('.start-menu') || e.target.closest('.desktop-icon')) {
     e.preventDefault();
     return;
@@ -1436,7 +1435,7 @@ const openWindows = new Set(['about']);
 const minimizedWindows = new Set();
 const windowPositions = {};
 let contactPopupLocked = false;
-const CONTACT_LOCK_DURATION = 25000; // 10s de cooldown
+const CONTACT_LOCK_DURATION = 25000;
 
 function snapToGrid(x,y) {
   const col = Math.round((x-GRID_MARGIN_X)/GRID_W), row = Math.round((y-GRID_MARGIN_Y)/GRID_H);
@@ -1483,7 +1482,7 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
   return { col: Math.max(0,Math.min(tCol,bounds.maxCols)), row: Math.max(0,Math.min(tRow,bounds.maxRows)) };
 }
 
-// ===== DRAG DE ICONES (SEM SALVAR POSIÇÃO) =====
+// ===== DRAG DE ICONES =====
 (function initIconDrag() {
   let dragged = null, offX = 0, offY = 0, startTime = 0, startPos = { x: 0, y: 0 };
   let isDragging = false;
@@ -1491,13 +1490,10 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
   document.querySelectorAll('.desktop-icon').forEach(icon => {
     icon.addEventListener('mousedown', function(e) {
       if (e.button !== 0) return;
-      
-      // Se for Contact, não inicia arrasto (apenas clique para popups)
       if (this.dataset.name === 'contact') {
         document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected', 'active'));
-        return; // impede o arrasto
+        return;
       }
-      
       startTime = Date.now();
       startPos = { x: e.clientX, y: e.clientY };
       dragged = this;
@@ -1533,14 +1529,11 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
 
   document.addEventListener('mouseup', function(e) {
     if (!dragged) return;
-    
-    // Se for Contact, não faz nada além de remover classes
     if (dragged.dataset.name === 'contact') {
       dragged.classList.remove('dragging', 'active');
       dragged = null;
       return;
     }
-    
     const dx = e.clientX - startPos.x;
     const dy = e.clientY - startPos.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
@@ -1624,14 +1617,12 @@ function openWindow(name) {
   win.style.display='flex'; win.style.zIndex=++zIndexCounter; openWindows.add(name);
   if(!task) task=createTaskbarItem(name);
   setActiveStates(name);
-  // Skills: anima somente se ainda não foi animada na sessão
   if(name==='skills') {
     setTimeout(() => {
       animateSkillBars();
       initSkillsChart();
     }, 250);
   }
-  // Flappy: apenas redimensiona, NÃO inicia o jogo automaticamente
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
       const canvas = document.getElementById('flappy-canvas');
@@ -1654,7 +1645,6 @@ function closeWindow(name) {
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
 
-  // Reseta animações de Skills ao fechar
   if (name === 'skills') {
     skillsAnimated = false;
     skillsChartAnimated = false;
@@ -1667,8 +1657,6 @@ function closeWindow(name) {
       canvas.width = canvas.width;
       canvas.style.opacity = '0';
     }
-    // Zera as barras IMEDIATAMENTE (sem esperar o reopen), pra não sobrar
-    // o valor final visível por um instante quando a janela reabrir
     document.querySelectorAll('.skill-bar-fill').forEach(fill => {
       fill.style.width = '0%';
     });
@@ -1839,7 +1827,6 @@ document.addEventListener('click', function(e) {
 });
 
 // ===== POP-UPS MSN MESSENGER =====
-// ===== BALÃO ESTILO XP (Security Center) =====
 function positionXpBalloon() {
   const container = document.getElementById('xp-balloon-container');
   const balloon = document.getElementById('xp-balloon');
@@ -1847,9 +1834,6 @@ function positionXpBalloon() {
   if (!container || !balloon || !shield) return;
   const shieldRect = shield.getBoundingClientRect();
   const shieldCenterX = shieldRect.left + shieldRect.width / 2;
-  // distância do centro (ponta) do rabinho até a borda direita do balão.
-  // ::after tem right:25px e border-right:3px — a ponta do triângulo fica
-  // exatamente em (right + border-right), não no meio da caixa do triângulo.
   const tailCenterFromRight = 25 + 3;
   let right = window.innerWidth - shieldCenterX - tailCenterFromRight;
   const minRight = 8;
@@ -1863,7 +1847,6 @@ function showXpBalloon() {
   if (!b) return;
   b.style.display = 'block';
   positionXpBalloon();
-  // fecha sozinho depois de 10s (cancela um timer anterior se já existia)
   if (xpBalloonAutoCloseTimer) clearTimeout(xpBalloonAutoCloseTimer);
   xpBalloonAutoCloseTimer = setTimeout(closeXpBalloon, 10000);
 }
@@ -1883,17 +1866,15 @@ window.addEventListener('resize', () => {
   const b = document.getElementById('xp-balloon-container');
   if (b && b.style.display !== 'none') positionXpBalloon();
 });
-// mostra automaticamente pouco depois de carregar a página (comportamento clássico do XP)
 setTimeout(showXpBalloon, 2500);
 
-// desloca a pilha de popups do MSN pra cima do balão do XP, se ele estiver aberto
 function adjustMsnPopupPosition() {
   const container = document.getElementById('msn-popup-container');
   const balloon = document.getElementById('xp-balloon-container');
   if (!container) return;
   if (balloon && balloon.style.display !== 'none') {
     const balloonRect = balloon.getBoundingClientRect();
-    const gap = 14; // espaço entre o topo do balão e o popup do MSN
+    const gap = 14;
     const bottomOffset = (window.innerHeight - balloonRect.top) + gap;
     container.style.bottom = bottomOffset + 'px';
   } else {
@@ -1919,7 +1900,6 @@ function showContactPopups() {
     audio.play().catch(() => {});
   }
   
-  // Som + Popup 1
   setTimeout(() => { playMSNSound(); }, 1000);
   setTimeout(() => {
     createPopup({
@@ -1930,7 +1910,6 @@ function showContactPopups() {
     });
   }, 1200);
   
-  // Som + Popup 2
   setTimeout(() => { playMSNSound(); }, 2500);
   setTimeout(() => {
     createPopup({
@@ -1945,7 +1924,6 @@ function showContactPopups() {
     });
   }, 2700);
   
-  // Som + Popup 3
   setTimeout(() => { playMSNSound(); }, 4000);
   setTimeout(() => {
     createPopup({
@@ -2193,19 +2171,17 @@ function animateSkillBars() {
     fill.style.width = '0%';
     if (span) span.textContent = '0%';
 
-    // Atraso inicial e espaçamento entre barras (meio-termo)
     const delay = 150 + index * 80;
 
     setTimeout(() => {
       let cur = 0;
-      // Divisor 30 = barra enche em ~1 segundo
       const step = Math.max(1, Math.floor(target / 30));
       const iv = setInterval(() => {
         cur += step;
         if (cur >= target) { cur = target; clearInterval(iv); }
         fill.style.width = cur + '%';
         if (span) span.textContent = cur + '%';
-      }, 35); // intervalo de 35ms
+      }, 35);
     }, delay);
   });
 }
@@ -2222,7 +2198,6 @@ function initSkillsChart() {
   const shouldAnimate = !skillsChartAnimated;
   skillsChartAnimated = true;
   
-  // Cria o gráfico com dados zerados
   radarChartInstance = new Chart(ctx, {
     type: 'radar',
     data: {
@@ -2253,7 +2228,6 @@ function initSkillsChart() {
     }
   });
 
-  // Se deve animar, atualiza os dados reais após um pequeno delay
   if (shouldAnimate) {
     setTimeout(() => {
       if (radarChartInstance) {
@@ -2262,7 +2236,6 @@ function initSkillsChart() {
       }
     }, 50);
   } else {
-    // Se não animar, define os dados reais imediatamente
     radarChartInstance.data.datasets[0].data = [100, 100, 95, 75, 100, 90];
     radarChartInstance.update();
   }
@@ -2520,7 +2493,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     else setDir(0, dy > 0 ? 1 : -1);
   }, { passive: true });
 
-  // Inicializa pausado
   snake = [{ x: 8, y: 9 }, { x: 7, y: 9 }, { x: 6, y: 9 }];
   dir = { x: 1, y: 0 };
   nextDir = { x: 1, y: 0 };
@@ -2979,7 +2951,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   function flap() {
     if (gameOver) { resetGame(); return; }
     if (!gameRunning) {
-      resetGame(); // inicia o jogo
+      resetGame();
       return;
     }
     if (isPaused) { resumeGame(); return; }
@@ -3078,27 +3050,23 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INICIALIZAÇÃO FINAL (ponto único de DOMContentLoaded)
+//  INICIALIZAÇÃO FINAL
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Seleção por arrasto na área de trabalho
   initSelectionBox();
-
-  // 2. Barras de habilidades (Skills)
   renderSkillBars();
 
-  // 3. Janela "About Me" ativa por padrão
   const aboutWin = document.getElementById('win-about');
   if(aboutWin) {
-    aboutWin.style.display = 'flex';        // ← NOVO: sincroniza o estado inline
-    openWindows.add('about');               // ← NOVO: registra como "aberta"
+    aboutWin.style.display = 'flex';
+    openWindows.add('about');
     aboutWin.style.zIndex = ++zIndexCounter;
     document.getElementById('icon-about').classList.add('active');
     document.getElementById('task-about').classList.add('active');
     updateTitlebarStates('about');
   }
 });
-// Inicializa áudio no primeiro clique do usuário
+
 document.addEventListener('click', function() {
   initAudio();
 }, { once: true });
@@ -3109,8 +3077,8 @@ document.addEventListener('click', function() {
   const img = photo ? photo.querySelector('img') : null;
   if (!photo || !img) return;
 
-  const maxTilt = 8; // graus máximos de inclinação
-  const maxZoom = 1.12; // zoom no hover
+  const maxTilt = 8;
+  const maxZoom = 1.12;
 
   photo.addEventListener('mousemove', function(e) {
     const rect = photo.getBoundingClientRect();
