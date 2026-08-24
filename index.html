@@ -559,14 +559,14 @@
 
 /* Remove scrollbar da janela About Me — sem glitch de reflow */
 #win-about .window-content {
-  overflow-y: auto;
+  overflow-y: scroll;        /* ← SEMPRE reserva o slot de 16px da scrollbar */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 #win-about .window-content::-webkit-scrollbar {
+  display: none;
   width: 0;
   background: transparent;
-  display: none;
 }
 
   .taskbar {
