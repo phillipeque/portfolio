@@ -66,7 +66,7 @@
     font-size: 13px; font-weight: bold;
     letter-spacing: 0.2px; text-shadow: 0 1px 1px rgba(0,0,0,0.3);
   }
-  .window-title img { width: 16px; height: 16px; image-rendering: pixelated; }
+  .window-title img { width: 16px; height: 16px; image-rendering: auto; }
   .window-buttons { display: flex; gap: 2px; }
   .win-btn {
     width: 22px; height: 22px;
@@ -546,12 +546,12 @@
   }
 
   @keyframes msnSlideIn {
-    from { transform: translateX(120%) scale(0.9); opacity: 0; }
-    to { transform: translateX(0) scale(1); opacity: 1; }
+    from { transform: translateY(120%) scale(0.9); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
   }
   @keyframes msnFadeOut {
-    from { transform: translateX(0) scale(1); opacity: 1; }
-    to { transform: translateX(120%) scale(0.9); opacity: 0; }
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to { transform: translateY(120%) scale(0.9); opacity: 0; }
   }
   .msn-popup.removing {
     animation: msnFadeOut 0.25s ease-in forwards;
@@ -598,7 +598,7 @@
     background: linear-gradient(180deg, #12408f 0%, #1c53c4 6%, #2a6ce8 94%, #3f8cf3 100%);
     box-shadow: inset 0 2px 5px rgba(0,0,0,0.45); border-color: #0a2c73; font-weight: bold;
   }
-  .taskbar-item img { width: 16px; height: 16px; image-rendering: pixelated; flex-shrink: 0; }
+  .taskbar-item img { width: 16px; height: 16px; image-rendering: auto; flex-shrink: 0; }
 
   .taskbar-divider { display: none; }
 
@@ -709,7 +709,19 @@
   .start-menu-divider { height: 1px; background: #d6d2c4; margin: 4px 10px; }
   .start-menu-right .start-menu-divider { background: #9cbfe8; }
   .start-menu-gold-line { height: 2px; background: linear-gradient(90deg, #c98a00 0%, #ffcc33 20%, #ffe38a 50%, #ffcc33 80%, #c98a00 100%); }
-  .start-menu-allprograms { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px 8px 12px; font-size: 14px; font-weight: bold; cursor: pointer; color: #000; border-top: 1px solid #d6d2c4; background: #fff; }
+  .start-menu-allprograms {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 10px 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #000;
+    border-top: 1px solid #d6d2c4;
+    background: #fff;
+  }
   .start-menu-allprograms:hover { background: #2b63d9; color: white; }
   .start-menu-allprograms:hover .start-menu-allprograms-arrow { border-left-color: white; }
   .start-menu-allprograms-left { display: flex; align-items: center; gap: 8px; }
@@ -858,16 +870,18 @@
   <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS (sem Paint, apenas 8) ===== -->
+<!-- ===== DESKTOP ICONS (Skills e Experience trocados) ===== -->
 <div class="desktop-icons">
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
   </div>
-  <div class="desktop-icon" data-name="experience" id="icon-experience" style="left:16px;top:100px;">
-    <img src="icons/icon-experience.png" alt=""><span>Experience</span>
-  </div>
-  <div class="desktop-icon" data-name="skills" id="icon-skills" style="left:16px;top:184px;">
+  <!-- Skills agora em cima (top:100px) -->
+  <div class="desktop-icon" data-name="skills" id="icon-skills" style="left:16px;top:100px;">
     <img src="icons/icon-skills.png" alt=""><span>Skills</span>
+  </div>
+  <!-- Experience agora em baixo (top:184px) -->
+  <div class="desktop-icon" data-name="experience" id="icon-experience" style="left:16px;top:184px;">
+    <img src="icons/icon-experience.png" alt=""><span>Experience</span>
   </div>
   <div class="desktop-icon" data-name="contact" id="icon-contact" style="left:16px;top:268px;">
     <img src="icons/icon-contact.png" alt=""><span>Contact</span>
@@ -889,7 +903,7 @@
 <!-- ===== JANELA ABOUT ===== -->
 <div class="window active" id="win-about" style="left: calc(50% - 260px); top: calc(50% - 180px - 16px); width: 520px; height: 400px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-about')">
-    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%230058e6' x='2' y='3' width='12' height='9' rx='1'/%3E%3C/svg%3E" alt=""> About Me</div>
+    <div class="window-title"><img src="icons/icon-about.png" alt="" style="width:16px;height:16px;"> About Me</div>
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('about')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('about')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
@@ -913,7 +927,7 @@
 <div class="window" id="win-experience" style="left: calc(50% - 580px); top: calc(50% - 460px); width: 1160px; height: 920px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%238B4513' x='3' y='4' width='10' height='8' rx='1'/%3E%3C/svg%3E" alt="">
+      <img src="icons/icon-experience.png" alt="" style="width:16px;height:16px;">
       Experience
     </div>
     <div class="window-buttons">
@@ -950,7 +964,7 @@
 <!-- ===== JANELA SKILLS ===== -->
 <div class="window" id="win-skills" style="left: calc(50% - 280px); top: calc(50% - 240px - 16px); width: 560px; height: 480px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-skills')">
-    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23CC0000' x='4' y='3' width='8' height='10' rx='1'/%3E%3C/svg%3E" alt=""> Skills</div>
+    <div class="window-title"><img src="icons/icon-skills.png" alt="" style="width:16px;height:16px;"> Skills</div>
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('skills')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('skills')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
@@ -970,7 +984,7 @@
 <!-- ===== JANELA RESUME ===== -->
 <div class="window" id="win-resume" style="left: calc(50% - 200px); top: calc(50% - 100px - 16px); width: 400px; height: 200px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-resume')">
-    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23fff' x='4' y='2' width='8' height='12' rx='1'/%3E%3C/svg%3E" alt=""> Resume.pdf</div>
+    <div class="window-title"><img src="icons/icon-resume.png" alt="" style="width:16px;height:16px;"> Resume.pdf</div>
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('resume')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('resume')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
@@ -986,7 +1000,7 @@
 <!-- ===== JANELA SNAKE ===== -->
 <div class="window" id="win-snake" style="left: calc(50% - 220px); top: calc(50% - 240px - 16px); width: 440px; height: 500px; min-width: 320px; min-height: 400px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-snake')">
-    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%2333cc55' x='1' y='7' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='5' y='7' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='5' y='3' width='4' height='4'/%3E%3Crect fill='%2333cc55' x='9' y='3' width='4' height='4'/%3E%3Ccircle fill='%23ff3333' cx='12' cy='11' r='2'/%3E%3C/svg%3E" alt=""> Snake.exe</div>
+    <div class="window-title"><img src="icons/icon-snake.png" alt="" style="width:16px;height:16px;"> Snake.exe</div>
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('snake')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('snake')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
@@ -1012,7 +1026,7 @@
 <!-- ===== JANELA MINESWEEPER ===== -->
 <div class="window" id="win-minesweeper" style="left: calc(50% - 180px); top: calc(50% - 200px); width: 360px; height: 440px; min-width: 300px; min-height: 380px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-minesweeper')">
-    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle fill='%23666' cx='8' cy='8' r='6'/%3E%3Ccircle fill='%23ff4d4d' cx='8' cy='8' r='4'/%3E%3C/svg%3E" alt=""> Minesweeper</div>
+    <div class="window-title"><img src="icons/icon-minesweeper.png" alt="" style="width:16px;height:16px;"> Minesweeper</div>
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('minesweeper')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('minesweeper')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
@@ -1038,7 +1052,7 @@
 <!-- ===== JANELA FLAPPY BIRD ===== -->
 <div class="window" id="win-flappy" style="left: calc(50% - 180px); top: calc(50% - 240px); width: 360px; height: 500px; min-width: 300px; min-height: 400px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-flappy')">
-    <div class="window-title"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle fill='%23FFD700' cx='8' cy='8' r='6'/%3E%3Cpath fill='%23FF8C00' d='M11 4 L14 2 L13 6 Z'/%3E%3C/svg%3E" alt=""> Flappy Bird</div>
+    <div class="window-title"><img src="icons/icon-flappy.png" alt="" style="width:16px;height:16px;"> Flappy Bird</div>
     <div class="window-buttons">
       <div class="win-btn minimize" onclick="minimizeWindow('flappy')"><svg width="11" height="2"><rect width="11" height="2" rx="0.5" fill="#fff"/></svg></div>
       <div class="win-btn close" onclick="closeWindow('flappy')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
@@ -1064,7 +1078,7 @@
 <div class="window" id="win-notepad" style="left: calc(50% - 250px); top: calc(50% - 200px); width: 500px; height: 400px; min-width: 300px; min-height: 250px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-notepad')">
     <div class="window-title">
-      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%23ece9d8' x='2' y='3' width='12' height='10' rx='1'/%3E%3Crect fill='%23ffffff' x='3' y='4' width='10' height='8'/%3E%3C/svg%3E" alt="">
+      <img src="icons/notepad.png" alt="" style="width:16px;height:16px;">
       Notepad
     </div>
     <div class="window-buttons">
@@ -1127,9 +1141,7 @@
 <!-- ===== POP-UPS MSN (container) ===== -->
 <div id="msn-popup-container"></div>
 
-<!-- ===== BALÃO ESTILO WINDOWS XP (Security Center) =====
-     Edite o título e texto abaixo à vontade.
-     O ícone do balão usa icons/info.png — troque o src se quiser outro. -->
+<!-- ===== BALÃO ESTILO WINDOWS XP (Security Center) ===== -->
 <div id="xp-balloon-container">
   <div class="xp-balloon" id="xp-balloon">
     <span class="xp-balloon-close" onclick="closeXpBalloon()">✕</span>
@@ -1147,13 +1159,12 @@
 
 <!-- ===== TASKBAR ===== -->
 <div class="taskbar">
-  <!-- Botão Start com imagem PNG -->
   <div class="start-btn" id="start-btn" onclick="toggleStartMenu()">
     <img src="start.png" alt="Start">
   </div>
 
   <div class="taskbar-item active" id="task-about" data-name="about" onclick="toggleWindow('about')">
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect fill='%230058e6' x='2' y='3' width='12' height='9' rx='1'/%3E%3C/svg%3E" alt=""> About Me
+    <img src="icons/icon-about.png" alt=""> About Me
   </div>
 
   <div class="clock-tray">
@@ -1162,7 +1173,6 @@
       <svg id="vol-mute-overlay" width="20" height="20" viewBox="0 0 20 20" style="position:absolute;top:0;left:0;display:none;"><line x1="3" y1="3" x2="17" y2="17" stroke="#ff3333" stroke-width="2.5"/><line x1="17" y1="3" x2="3" y2="17" stroke="#ff3333" stroke-width="2.5"/></svg>
     </div>
 
-    <!-- NOVOS ÍCONES (MODO DECORATIVO, MOUSE IGNORA) -->
     <img src="icons/leaf.png" width="20" height="20" alt="Folha" style="pointer-events: none;">
     <img id="tray-shield-icon" src="icons/shield.png" width="20" height="20" alt="Escudo" style="margin-left: 2px; cursor: pointer;" onclick="toggleXpBalloon()">
     
@@ -1185,18 +1195,17 @@
         <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();"><img src="icons/icon-skills.png" alt=""><span class="label">Skills</span></div>
         <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();"><img src="icons/icon-contact.png" alt=""><span class="label">Contact</span></div>
         <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();"><img src="icons/icon-resume.png" alt=""><span class="label">Resume.pdf</span></div>
+        <!-- Linha divisória abaixo do Resume.pdf -->
+        <div class="start-menu-divider"></div>
         <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();"><img src="icons/icon-snake.png" alt=""><span class="label">Snake.exe</span></div>
         <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="icons/icon-minesweeper.png" alt=""><span class="label">Minesweeper</span></div>
         <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt=""><span class="label">Flappy Bird</span></div>
         <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="icons/notepad.png" alt=""><span class="label">Notepad</span></div>
-        <!-- NOVO: PAINT no menu iniciar -->
         <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();"><img src="icons/paint.png" alt=""><span class="label">Paint</span></div>
       </div>
       <div class="all-programs-container">
         <div class="start-menu-allprograms" id="all-programs-btn">
-          <div class="start-menu-allprograms-left">
-            <span>All Programs</span>
-          </div>
+          <span>All Programs</span>
           <span class="start-menu-allprograms-arrow"></span>
         </div>
         <div id="all-programs-submenu" class="all-programs-submenu">
@@ -1209,22 +1218,21 @@
           <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="icons/icon-minesweeper.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Minesweeper</span></div>
           <div class="start-menu-item" onclick="openWindow('flappy'); toggleStartMenu();"><img src="icons/icon-flappy.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Flappy Bird</span></div>
           <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();"><img src="icons/notepad.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Notepad</span></div>
-          <!-- NOVO: PAINT no All Programs -->
           <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();"><img src="icons/paint.png" alt="" style="width:18px;height:18px;flex-shrink:0;"><span>Paint</span></div>
         </div>
       </div>
     </div>
     <div class="start-menu-right">
-      <div class="start-menu-item" onclick="alert('My Documents');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3C/svg%3E" alt=""> My Documents</div>
-      <div class="start-menu-item" onclick="alert('My Pictures');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3Ccircle fill='%23fff' cx='9' cy='11' r='2'/%3E%3Cpath fill='%234a90d9' d='M6 16 L11 12 L14 15 L18 11 L20 16 Z'/%3E%3C/svg%3E" alt=""> My Pictures</div>
-      <div class="start-menu-item" onclick="alert('My Music');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3Ccircle fill='%23444' cx='9' cy='15' r='2'/%3E%3Crect fill='%23444' x='10.5' y='9' width='1.5' height='6'/%3E%3C/svg%3E" alt=""> My Music</div>
-      <div class="start-menu-item" onclick="alert('My Computer');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23c0c0c0' x='5' y='5' width='14' height='14' rx='1'/%3E%3Crect fill='%230058e6' x='7' y='7' width='10' height='8'/%3E%3C/svg%3E" alt=""> My Computer</div>
-      <div class="start-menu-item" onclick="alert('Network');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='none' stroke='%232f6fd6' stroke-width='2' cx='12' cy='12' r='9'/%3E%3C/svg%3E" alt=""> My Network Places</div>
-      <div class="start-menu-item" onclick="alert('Control Panel');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%23808080' cx='12' cy='12' r='8'/%3E%3C/svg%3E" alt=""> Control Panel</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3C/svg%3E" alt=""> My Documents</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3Ccircle fill='%23fff' cx='9' cy='11' r='2'/%3E%3Cpath fill='%234a90d9' d='M6 16 L11 12 L14 15 L18 11 L20 16 Z'/%3E%3C/svg%3E" alt=""> My Pictures</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3Ccircle fill='%23444' cx='9' cy='15' r='2'/%3E%3Crect fill='%23444' x='10.5' y='9' width='1.5' height='6'/%3E%3C/svg%3E" alt=""> My Music</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23c0c0c0' x='5' y='5' width='14' height='14' rx='1'/%3E%3Crect fill='%230058e6' x='7' y='7' width='10' height='8'/%3E%3C/svg%3E" alt=""> My Computer</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='none' stroke='%232f6fd6' stroke-width='2' cx='12' cy='12' r='9'/%3E%3C/svg%3E" alt=""> My Network Places</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%23808080' cx='12' cy='12' r='8'/%3E%3C/svg%3E" alt=""> Control Panel</div>
       <div class="start-menu-divider"></div>
-      <div class="start-menu-item" onclick="alert('Help and Support');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%230058e6' cx='12' cy='12' r='9'/%3E%3Ctext x='12' y='17' text-anchor='middle' fill='white' font-size='14' font-weight='bold'%3E?%3C/text%3E%3C/svg%3E" alt=""> Help and Support</div>
-      <div class="start-menu-item" onclick="alert('Search');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='none' stroke='%232f9e2f' stroke-width='2.5' cx='10' cy='10' r='6'/%3E%3Cline x1='14.5' y1='14.5' x2='20' y2='20' stroke='%232f9e2f' stroke-width='2.5'/%3E%3C/svg%3E" alt=""> Search</div>
-      <div class="start-menu-item" onclick="alert('Run');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23c0c0c0' x='4' y='7' width='16' height='11' rx='1'/%3E%3Cpath fill='%230058e6' d='M9 10 L15 12.5 L9 15 Z'/%3E%3C/svg%3E" alt=""> Run...</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='%230058e6' cx='12' cy='12' r='9'/%3E%3Ctext x='12' y='17' text-anchor='middle' fill='white' font-size='14' font-weight='bold'%3E?%3C/text%3E%3C/svg%3E" alt=""> Help and Support</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle fill='none' stroke='%232f9e2f' stroke-width='2.5' cx='10' cy='10' r='6'/%3E%3Cline x1='14.5' y1='14.5' x2='20' y2='20' stroke='%232f9e2f' stroke-width='2.5'/%3E%3C/svg%3E" alt=""> Search</div>
+      <div class="start-menu-item" onclick="return false;"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23c0c0c0' x='4' y='7' width='16' height='11' rx='1'/%3E%3Cpath fill='%230058e6' d='M9 10 L15 12.5 L9 15 Z'/%3E%3C/svg%3E" alt=""> Run...</div>
     </div>
   </div>
   <div class="start-menu-footer">
@@ -1245,7 +1253,6 @@
 
 // ===== CONTEXT MENU E LOGIN =====
 document.addEventListener('contextmenu', function(e) {
-  // Bloqueia menu nativo em TODO o sistema (ícones, janelas, taskbar, start menu)
   if (e.target.closest('.window') || e.target.closest('.taskbar') || e.target.closest('.start-menu') || e.target.closest('.desktop-icon')) {
     e.preventDefault();
     return;
@@ -1305,7 +1312,7 @@ const openWindows = new Set(['about']);
 const minimizedWindows = new Set();
 const windowPositions = {};
 let contactPopupLocked = false;
-const CONTACT_LOCK_DURATION = 25000; // 10s de cooldown
+const CONTACT_LOCK_DURATION = 25000;
 
 function snapToGrid(x,y) {
   const col = Math.round((x-GRID_MARGIN_X)/GRID_W), row = Math.round((y-GRID_MARGIN_Y)/GRID_H);
@@ -1361,10 +1368,9 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
     icon.addEventListener('mousedown', function(e) {
       if (e.button !== 0) return;
       
-      // Se for Contact, não inicia arrasto (apenas clique para popups)
       if (this.dataset.name === 'contact') {
         document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected', 'active'));
-        return; // impede o arrasto
+        return;
       }
       
       startTime = Date.now();
@@ -1403,7 +1409,6 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
   document.addEventListener('mouseup', function(e) {
     if (!dragged) return;
     
-    // Se for Contact, não faz nada além de remover classes
     if (dragged.dataset.name === 'contact') {
       dragged.classList.remove('dragging', 'active');
       dragged = null;
@@ -1493,14 +1498,12 @@ function openWindow(name) {
   win.style.display='flex'; win.style.zIndex=++zIndexCounter; openWindows.add(name);
   if(!task) task=createTaskbarItem(name);
   setActiveStates(name);
-  // Skills: anima somente se ainda não foi animada na sessão
   if(name==='skills') {
     setTimeout(() => {
       animateSkillBars();
       initSkillsChart();
     }, 250);
   }
-  // Flappy: apenas redimensiona, NÃO inicia o jogo automaticamente
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
       const canvas = document.getElementById('flappy-canvas');
@@ -1523,7 +1526,6 @@ function closeWindow(name) {
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
 
-  // Reseta animações de Skills ao fechar
   if (name === 'skills') {
     skillsAnimated = false;
     skillsChartAnimated = false;
@@ -1536,8 +1538,6 @@ function closeWindow(name) {
       canvas.width = canvas.width;
       canvas.style.opacity = '0';
     }
-    // Zera as barras IMEDIATAMENTE (sem esperar o reopen), pra não sobrar
-    // o valor final visível por um instante quando a janela reabrir
     document.querySelectorAll('.skill-bar-fill').forEach(fill => {
       fill.style.width = '0%';
     });
@@ -1716,9 +1716,6 @@ function positionXpBalloon() {
   if (!container || !balloon || !shield) return;
   const shieldRect = shield.getBoundingClientRect();
   const shieldCenterX = shieldRect.left + shieldRect.width / 2;
-  // distância do centro (ponta) do rabinho até a borda direita do balão.
-  // ::after tem right:25px e border-right:3px — a ponta do triângulo fica
-  // exatamente em (right + border-right), não no meio da caixa do triângulo.
   const tailCenterFromRight = 25 + 3;
   let right = window.innerWidth - shieldCenterX - tailCenterFromRight;
   const minRight = 8;
@@ -1732,7 +1729,6 @@ function showXpBalloon() {
   if (!b) return;
   b.style.display = 'block';
   positionXpBalloon();
-  // fecha sozinho depois de 10s (cancela um timer anterior se já existia)
   if (xpBalloonAutoCloseTimer) clearTimeout(xpBalloonAutoCloseTimer);
   xpBalloonAutoCloseTimer = setTimeout(closeXpBalloon, 10000);
 }
@@ -1752,17 +1748,15 @@ window.addEventListener('resize', () => {
   const b = document.getElementById('xp-balloon-container');
   if (b && b.style.display !== 'none') positionXpBalloon();
 });
-// mostra automaticamente pouco depois de carregar a página (comportamento clássico do XP)
 setTimeout(showXpBalloon, 2500);
 
-// desloca a pilha de popups do MSN pra cima do balão do XP, se ele estiver aberto
 function adjustMsnPopupPosition() {
   const container = document.getElementById('msn-popup-container');
   const balloon = document.getElementById('xp-balloon-container');
   if (!container) return;
   if (balloon && balloon.style.display !== 'none') {
     const balloonRect = balloon.getBoundingClientRect();
-    const gap = 14; // espaço entre o topo do balão e o popup do MSN
+    const gap = 14;
     const bottomOffset = (window.innerHeight - balloonRect.top) + gap;
     container.style.bottom = bottomOffset + 'px';
   } else {
@@ -1788,7 +1782,6 @@ function showContactPopups() {
     audio.play().catch(() => {});
   }
   
-  // Som + Popup 1
   setTimeout(() => { playMSNSound(); }, 1000);
   setTimeout(() => {
     createPopup({
@@ -1799,7 +1792,6 @@ function showContactPopups() {
     });
   }, 1200);
   
-  // Som + Popup 2
   setTimeout(() => { playMSNSound(); }, 2500);
   setTimeout(() => {
     createPopup({
@@ -1814,13 +1806,12 @@ function showContactPopups() {
     });
   }, 2700);
   
-  // Som + Popup 3
   setTimeout(() => { playMSNSound(); }, 4000);
   setTimeout(() => {
     createPopup({
       from: 'Phillipe Queiroz',
       msg: 'Or hit me up on Telegram:',
-      link: { text: '@0phillipeque', url: 'https://t.me/phillipeque' },
+      link: { text: '@phillipeque', url: 'https://t.me/phillipeque' },
       time: timeStr,
       actions: [
         { label: 'Open Link', action: 'link', url: 'https://t.me/phillipeque' },
@@ -2062,19 +2053,17 @@ function animateSkillBars() {
     fill.style.width = '0%';
     if (span) span.textContent = '0%';
 
-    // Atraso inicial e espaçamento entre barras (meio-termo)
     const delay = 150 + index * 80;
 
     setTimeout(() => {
       let cur = 0;
-      // Divisor 30 = barra enche em ~1 segundo
       const step = Math.max(1, Math.floor(target / 30));
       const iv = setInterval(() => {
         cur += step;
         if (cur >= target) { cur = target; clearInterval(iv); }
         fill.style.width = cur + '%';
         if (span) span.textContent = cur + '%';
-      }, 35); // intervalo de 35ms
+      }, 35);
     }, delay);
   });
 }
@@ -2091,7 +2080,6 @@ function initSkillsChart() {
   const shouldAnimate = !skillsChartAnimated;
   skillsChartAnimated = true;
   
-  // Cria o gráfico com dados zerados
   radarChartInstance = new Chart(ctx, {
     type: 'radar',
     data: {
@@ -2122,7 +2110,6 @@ function initSkillsChart() {
     }
   });
 
-  // Se deve animar, atualiza os dados reais após um pequeno delay
   if (shouldAnimate) {
     setTimeout(() => {
       if (radarChartInstance) {
@@ -2131,14 +2118,13 @@ function initSkillsChart() {
       }
     }, 50);
   } else {
-    // Se não animar, define os dados reais imediatamente
     radarChartInstance.data.datasets[0].data = [100, 100, 95, 75, 100, 90];
     radarChartInstance.update();
   }
 }
 
 // ============================================================
-//  NOTEPAD FUNCTIONS
+//  NOTEPAD FUNCTIONS (corrigidas com API Clipboard moderna)
 // ============================================================
 function getNotepadText() {
   return document.getElementById('notepad-text');
@@ -2152,20 +2138,47 @@ function notepadOpen() { alert('Open dialog (simulated)'); }
 function notepadSave() { alert('File saved (simulated)'); }
 function notepadSaveAs() { alert('Save As dialog (simulated)'); }
 function notepadExit() { closeWindow('notepad'); }
-function notepadUndo() { alert('Undo (simulated)'); }
+function notepadUndo() { document.execCommand('undo'); }
 function notepadCut() {
   const t = getNotepadText();
-  t.focus(); document.execCommand('cut');
+  t.focus();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    const selected = t.value.substring(t.selectionStart, t.selectionEnd);
+    navigator.clipboard.writeText(selected).then(() => {
+      const start = t.selectionStart;
+      const end = t.selectionEnd;
+      t.value = t.value.substring(0, start) + t.value.substring(end);
+      t.selectionStart = t.selectionEnd = start;
+    }).catch(() => document.execCommand('cut'));
+  } else {
+    document.execCommand('cut');
+  }
 }
 function notepadCopy() {
   const t = getNotepadText();
-  t.focus(); document.execCommand('copy');
+  t.focus();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    const selected = t.value.substring(t.selectionStart, t.selectionEnd);
+    navigator.clipboard.writeText(selected).catch(() => document.execCommand('copy'));
+  } else {
+    document.execCommand('copy');
+  }
 }
 function notepadPaste() {
   const t = getNotepadText();
-  t.focus(); document.execCommand('paste');
+  t.focus();
+  if (navigator.clipboard && navigator.clipboard.readText) {
+    navigator.clipboard.readText().then(text => {
+      const start = t.selectionStart;
+      const end = t.selectionEnd;
+      t.value = t.value.substring(0, start) + text + t.value.substring(end);
+      t.selectionStart = t.selectionEnd = start + text.length;
+    }).catch(() => document.execCommand('paste'));
+  } else {
+    document.execCommand('paste');
+  }
 }
-function notepadDelete() { alert('Delete (simulated)'); }
+function notepadDelete() { document.execCommand('delete'); }
 function notepadFind() { alert('Find dialog (simulated)'); }
 function notepadFindNext() { alert('Find Next (simulated)'); }
 function notepadReplace() { alert('Replace dialog (simulated)'); }
@@ -2389,7 +2402,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     else setDir(0, dy > 0 ? 1 : -1);
   }, { passive: true });
 
-  // Inicializa pausado
   snake = [{ x: 8, y: 9 }, { x: 7, y: 9 }, { x: 6, y: 9 }];
   dir = { x: 1, y: 0 };
   nextDir = { x: 1, y: 0 };
@@ -2646,7 +2658,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 })();
 
 // ============================================================
-//  JOGO FLAPPY BIRD
+//  JOGO FLAPPY BIRD (corrigido com delta time para mobile)
 // ============================================================
 (function initFlappy() {
   const win = document.getElementById('win-flappy');
@@ -2660,11 +2672,11 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   const bestSpan = document.getElementById('flappy-best');
 
   let W, H;
-  const GRAVITY = 0.10;
-  const FLAP = -3.5;
+  const GRAVITY = 600; // pixels por segundo²
+  const FLAP = -200;   // pixels por segundo (impulso)
   const PIPE_WIDTH = 50;
   const PIPE_GAP = 150;
-  const PIPE_SPEED = 1.0;
+  const PIPE_SPEED = 120; // pixels por segundo
   const BIRD_RADIUS = 14;
 
   let bird = { x: 60, y: 0, vy: 0 };
@@ -2675,6 +2687,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   let gameOver = false;
   let isPaused = false;
   let animId = null;
+  let lastTime = 0;
 
   function resizeCanvas() {
     const rect = canvas.parentElement.getBoundingClientRect();
@@ -2701,7 +2714,8 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     scoreSpan.textContent = '0';
     bestSpan.textContent = bestScore;
     overlay.style.display = 'none';
-    loop();
+    lastTime = performance.now();
+    loop(lastTime);
   }
 
   function addPipe() {
@@ -2709,10 +2723,10 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     pipes.push({ x: W, gapY: gapY, scored: false });
   }
 
-  function update() {
+  function update(dt) {
     if (!gameRunning || isPaused || gameOver) return;
-    bird.vy += GRAVITY;
-    bird.y += bird.vy;
+    bird.vy += GRAVITY * dt;
+    bird.y += bird.vy * dt;
     if (bird.y < 0) bird.y = 0;
     if (bird.y + BIRD_RADIUS > H) {
       bird.y = H - BIRD_RADIUS;
@@ -2721,7 +2735,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     }
     if (pipes.length === 0 || pipes[pipes.length-1].x < W - 250) addPipe();
     for (let i = pipes.length - 1; i >= 0; i--) {
-      pipes[i].x -= PIPE_SPEED;
+      pipes[i].x -= PIPE_SPEED * dt;
       if (pipes[i].x + PIPE_WIDTH < 0) { pipes.splice(i, 1); continue; }
       const px = pipes[i].x, py = pipes[i].gapY;
       if (bird.x + BIRD_RADIUS > px && bird.x - BIRD_RADIUS < px + PIPE_WIDTH) {
@@ -2775,7 +2789,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 
     ctx.save();
     ctx.translate(bird.x, bird.y);
-    const angle = Math.min(Math.max(bird.vy * 0.05, -0.5), 0.5);
+    const angle = Math.min(Math.max(bird.vy * 0.03, -0.5), 0.5);
     ctx.rotate(angle);
     ctx.shadowColor = 'rgba(0,0,0,0.3)';
     ctx.shadowBlur = 8;
@@ -2830,14 +2844,16 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     };
   }
 
-  function loop() {
+  function loop(timestamp) {
     if (!gameRunning && !gameOver) {
       draw();
       animId = requestAnimationFrame(loop);
       return;
     }
     if (!isPaused && !gameOver) {
-      update();
+      const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
+      lastTime = timestamp;
+      update(dt);
       draw();
     } else {
       draw();
@@ -2848,7 +2864,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   function flap() {
     if (gameOver) { resetGame(); return; }
     if (!gameRunning) {
-      resetGame(); // inicia o jogo
+      resetGame();
       return;
     }
     if (isPaused) { resumeGame(); return; }
@@ -2862,7 +2878,8 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   function resumeGame() {
     if (!gameOver && gameRunning && isPaused) {
       isPaused = false;
-      if (!animId) loop();
+      lastTime = performance.now();
+      if (!animId) loop(lastTime);
     }
   }
   function stopGame() {
@@ -2918,7 +2935,8 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     overlay.style.display = 'flex';
     overlay.querySelector('.game-overlay-hint').textContent = 'Click or press space to play';
     draw();
-    loop();
+    lastTime = performance.now();
+    loop(lastTime);
   }, 100);
 
   window.addEventListener('resize', () => { resizeCanvas(); });
@@ -2947,27 +2965,22 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INICIALIZAÇÃO FINAL (ponto único de DOMContentLoaded)
+//  INICIALIZAÇÃO FINAL
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Seleção por arrasto na área de trabalho
   initSelectionBox();
-
-  // 2. Barras de habilidades (Skills)
   renderSkillBars();
 
-  // 3. Janela "About Me" ativa por padrão
   const aboutWin = document.getElementById('win-about');
   if(aboutWin) {
-    aboutWin.style.display = 'flex';        // ← NOVO: sincroniza o estado inline
-    openWindows.add('about');               // ← NOVO: registra como "aberta"
+    aboutWin.style.display = 'flex';
+    openWindows.add('about');
     aboutWin.style.zIndex = ++zIndexCounter;
     document.getElementById('icon-about').classList.add('active');
     document.getElementById('task-about').classList.add('active');
     updateTitlebarStates('about');
   }
 });
-// Inicializa áudio no primeiro clique do usuário
 document.addEventListener('click', function() {
   initAudio();
 }, { once: true });
@@ -2978,8 +2991,8 @@ document.addEventListener('click', function() {
   const img = photo ? photo.querySelector('img') : null;
   if (!photo || !img) return;
 
-  const maxTilt = 8; // graus máximos de inclinação
-  const maxZoom = 1.12; // zoom no hover
+  const maxTilt = 8;
+  const maxZoom = 1.12;
 
   photo.addEventListener('mousemove', function(e) {
     const rect = photo.getBoundingClientRect();
