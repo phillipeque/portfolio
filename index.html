@@ -76,22 +76,22 @@
     cursor: pointer;
   }
   .win-btn.minimize {
-    background: linear-gradient(180deg, #3a9eff 0%, #0058e6 100%);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+    background: url('icons/minimize.png') no-repeat center/cover;
+    border: none;
+    box-shadow: none;
   }
   .win-btn.minimize:hover {
-    background: linear-gradient(180deg, #5cb0ff 0%, #1a6fd4 100%);
+    filter: brightness(1.15);
   }
   .win-btn.close {
-    background: linear-gradient(180deg, #ff6b6b 0%, #cc0000 100%);
-    border-color: #aa0000;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+    background: url('icons/exit.png') no-repeat center/cover;
+    border: none;
+    box-shadow: none;
   }
   .win-btn.close:hover {
-    background: linear-gradient(180deg, #ff8a8a 0%, #bb0000 100%);
-    border-color: #cc0000;
+    filter: brightness(1.15);
   }
-  .win-btn svg { display: block; }
+  .win-btn svg { display: none; }
   .window-content {
     flex: 1; padding: 12px; overflow-y: auto;
     background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
