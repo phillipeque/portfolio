@@ -459,12 +459,12 @@
     /* rabinho apontando para o ícone na bandeja — posição ajustada via JS (positionXpBalloon) */
     content: "";
     position: absolute;
-    bottom: -13px;
+    bottom: -18px;
     right: 25px;
     width: 0; height: 0;
     border-left: 11px solid transparent;
     border-right: 3px solid transparent;
-    border-top: 13px solid #ffffc1;
+    border-top: 18px solid #ffffc1;
   }
   .xp-balloon-close {
     position: absolute;
@@ -485,12 +485,21 @@
     gap: 9px;
   }
   .xp-balloon-icon {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
     margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .xp-balloon-icon img { width: 100%; height: 100%; display: block; }
+  .xp-balloon-icon img {
+    /* um pouco menor que a caixa pra não ficar grande demais visualmente
+       (a caixa em si já é do tamanho do escudo da taskbar) */
+    width: 82%;
+    height: 82%;
+    display: block;
+  }
   .xp-balloon-body { flex: 1; min-width: 0; }
   .xp-balloon-title {
     font-weight: bold;
@@ -503,16 +512,10 @@
     font-size: 14px;
     line-height: 1.4;
     color: #000;
+    text-align: justify;
+    text-align-last: left;
     /* usa a largura toda até o canto do balão */
     /* EDITE O TEXTO AQUI (ou no HTML abaixo) */
-  }
-  .xp-balloon-link {
-    display: block;
-    margin-top: 5px;
-    font-size: 14px;
-    color: #0645ad;
-    text-decoration: underline;
-    cursor: pointer;
   }
   .msn-popup-footer .msn-time {
     font-size: 11px;
