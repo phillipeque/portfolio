@@ -428,6 +428,90 @@
     font-size: 11px;
     color: #888;
   }
+  /* ===== BALÃO ESTILO XP (Security Center tray balloon) ===== */
+  #xp-balloon-container {
+    position: fixed;
+    bottom: 38px;
+    right: 8px;
+    z-index: 9997;
+    pointer-events: none;
+    display: none; /* começa escondido; aparece via showXpBalloon()/toggleXpBalloon() */
+  }
+  .xp-balloon {
+    position: relative;
+    width: 260px;
+    pointer-events: auto;
+    background: linear-gradient(180deg, #ffffe1 0%, #ffffc1 100%);
+    border: 1px solid #aca899;
+    outline: 1px solid #fffbe0;
+    outline-offset: -2px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+    font-family: Tahoma, "Segoe UI", sans-serif;
+    color: #000;
+    padding: 8px 18px 10px 9px;
+    animation: xpBalloonIn 0.25s ease-out;
+  }
+  @keyframes xpBalloonIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .xp-balloon::after {
+    /* rabinho apontando para o ícone na bandeja */
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    right: 20px;
+    width: 0; height: 0;
+    border-left: 9px solid transparent;
+    border-right: 2px solid transparent;
+    border-top: 10px solid #ffffc1;
+  }
+  .xp-balloon-close {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    line-height: 1;
+    user-select: none;
+  }
+  .xp-balloon-close:hover { color: #000; }
+  .xp-balloon-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+  }
+  .xp-balloon-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .xp-balloon-icon img { width: 100%; height: 100%; display: block; }
+  .xp-balloon-body { flex: 1; }
+  .xp-balloon-title {
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 3px;
+    /* EDITE O TÍTULO AQUI (ou no HTML abaixo) */
+  }
+  .xp-balloon-text {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #000;
+    /* EDITE O TEXTO AQUI (ou no HTML abaixo) */
+  }
+  .xp-balloon-link {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    color: #0645ad;
+    text-decoration: underline;
+    cursor: pointer;
+  }
   .msn-popup-footer .msn-time {
     font-size: 11px;
     color: #999;
@@ -1035,6 +1119,27 @@
 <!-- ===== POP-UPS MSN (container) ===== -->
 <div id="msn-popup-container"></div>
 
+<!-- ===== BALÃO ESTILO WINDOWS XP (Security Center) =====
+     Edite o ícone, título e texto abaixo à vontade.
+     Pra trocar o ícone, troque o src do <img> dentro de .xp-balloon-icon
+     (pode usar icons/shield.png ou outro ícone seu). -->
+<div id="xp-balloon-container">
+  <div class="xp-balloon" id="xp-balloon">
+    <span class="xp-balloon-close" onclick="closeXpBalloon()">✕</span>
+    <div class="xp-balloon-header">
+      <div class="xp-balloon-icon">
+        <img src="icons/shield.png" alt="">
+      </div>
+      <div class="xp-balloon-body">
+        <div class="xp-balloon-title">Your computer might be at risk</div>
+        <div class="xp-balloon-text">Edit this text here — this is a placeholder for whatever message you want to show.</div>
+        <!-- opcional: remova este link se não for usar -->
+        <span class="xp-balloon-link" onclick="closeXpBalloon()">Click here for more details...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== TASKBAR ===== -->
 <div class="taskbar">
   <!-- Botão Start com imagem PNG -->
@@ -1054,7 +1159,7 @@
 
     <!-- NOVOS ÍCONES (MODO DECORATIVO, MOUSE IGNORA) -->
     <img src="icons/leaf.png" width="20" height="20" alt="Folha" style="pointer-events: none;">
-    <img src="icons/shield.png" width="20" height="20" alt="Escudo" style="pointer-events: none; margin-left: 2px;">
+    <img src="icons/shield.png" width="20" height="20" alt="Escudo" style="margin-left: 2px; cursor: pointer;" onclick="toggleXpBalloon()">
     
     <div class="clock" id="clock">00:00</div>
   </div>
@@ -1596,6 +1701,25 @@ document.addEventListener('click', function(e) {
 });
 
 // ===== POP-UPS MSN MESSENGER =====
+// ===== BALÃO ESTILO XP (Security Center) =====
+function showXpBalloon() {
+  const b = document.getElementById('xp-balloon-container');
+  if (!b) return;
+  b.style.display = 'block';
+}
+function closeXpBalloon() {
+  const b = document.getElementById('xp-balloon-container');
+  if (!b) return;
+  b.style.display = 'none';
+}
+function toggleXpBalloon() {
+  const b = document.getElementById('xp-balloon-container');
+  if (!b) return;
+  b.style.display = (b.style.display === 'none') ? 'block' : 'none';
+}
+// mostra automaticamente pouco depois de carregar a página (comportamento clássico do XP)
+setTimeout(showXpBalloon, 2500);
+
 function showContactPopups() {
   const container = document.getElementById('msn-popup-container');
   container.innerHTML = '';
@@ -1641,7 +1765,7 @@ function showContactPopups() {
     createPopup({
       from: 'Phillipe Queiroz',
       msg: 'Or hit me up on Telegram:',
-      link: { text: '@phillipeque', url: 'https://t.me/phillipeque' },
+      link: { text: '@0phillipeque', url: 'https://t.me/phillipeque' },
       time: timeStr,
       actions: [
         { label: 'Open Link', action: 'link', url: 'https://t.me/phillipeque' },
