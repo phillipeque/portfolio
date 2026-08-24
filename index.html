@@ -708,12 +708,13 @@
   .start-menu-item span.label { font-weight: bold; }
   .start-menu-divider { height: 1px; background: #d6d2c4; margin: 4px 10px; }
   .start-menu-right .start-menu-divider { background: #9cbfe8; }
-  .start-menu-allprograms { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 10px 6px 12px; font-size: 12px; font-weight: bold; cursor: pointer; color: #000; border-top: 1px solid #d6d2c4; background: #eef4fc; }
+  .start-menu-yellow-divider { width: 5px; flex-shrink: 0; background: linear-gradient(180deg, #fff7d6 0%, #ffdd55 15%, #f2a900 50%, #ffdd55 85%, #fff7d6 100%); box-shadow: inset 1px 0 0 rgba(255,255,255,.7), inset -1px 0 0 rgba(0,0,0,.25); }
+  .start-menu-allprograms { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 10px 6px 12px; font-size: 12px; font-weight: bold; cursor: pointer; color: #000; border-top: 1px solid #d6d2c4; background: #fff; }
   .start-menu-allprograms:hover { background: #2b63d9; color: white; }
   .start-menu-allprograms:hover .start-menu-allprograms-arrow { border-left-color: white; }
   .start-menu-allprograms-left { display: flex; align-items: center; gap: 8px; }
   .start-menu-allprograms img { width: 22px; height: 22px; }
-  .start-menu-allprograms-arrow { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 6px solid #2b63d9; }
+  .start-menu-allprograms-arrow { width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 6px solid #3c8f3c; }
   .start-menu-footer { background: linear-gradient(180deg, #4d87e8 0%, #2b63d9 8%, #1c53c4 100%); padding: 8px 12px; display: flex; align-items: center; justify-content: flex-end; gap: 10px; border-top: 1px solid #0f3fae; }
   .shutdown-btn { display: flex; align-items: center; gap: 4px; padding: 0; background: none; border: none; border-radius: 0; color: white; font-size: 12px; font-weight: bold; cursor: pointer; text-shadow: 0 1px 1px rgba(0,0,0,0.3); box-shadow: none; }
   .shutdown-btn img { width: 22px; height: 22px; }
@@ -1213,6 +1214,7 @@
         </div>
       </div>
     </div>
+    <div class="start-menu-yellow-divider"></div>
     <div class="start-menu-right">
       <div class="start-menu-item" onclick="alert('My Documents');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3C/svg%3E" alt=""> My Documents</div>
       <div class="start-menu-item" onclick="alert('My Pictures');"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect fill='%23FFD700' x='4' y='6' width='16' height='12' rx='1'/%3E%3Ccircle fill='%23fff' cx='9' cy='11' r='2'/%3E%3Cpath fill='%234a90d9' d='M6 16 L11 12 L14 15 L18 11 L20 16 Z'/%3E%3C/svg%3E" alt=""> My Pictures</div>
