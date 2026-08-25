@@ -808,190 +808,19 @@
   #selection-box { position: fixed; border: 1px dotted #316AC5; background: rgba(49, 106, 197, 0.15); pointer-events: none; z-index: 5; display: none; }
 
   /* CORREÇÃO DO PAINT */
-  #win-paint {
+  #win-experience {
     overflow: hidden !important;
   }
-  #win-paint .window-content {
+  #win-experience .window-content {
     overflow: hidden !important;
     padding: 0 !important;
   }
-  #win-paint iframe {
+  #win-experience iframe {
     position: relative !important;
     width: 100% !important;
     height: 100% !important;
     border: none !important;
     overflow: hidden !important;
-  }
-
-  /* ===== TERMINAL EXPERIENCE — MOLDURA ASCII COM LOGOS DENTRO ===== */
-  #win-experience .window-content {
-    overflow: hidden !important;
-    padding: 0 !important;
-  }
-  #exp-terminal {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 10px 12px;
-  }
-  .xp-term-header {
-    flex-shrink: 0;
-    font-size: 13px;
-    line-height: 1.5;
-  }
-  .xp-term-frame {
-    flex: 1;
-    position: relative;
-    min-height: 0;
-    margin: 4px 0;
-  }
-  .xp-term-ascii {
-    position: absolute;
-    inset: 0;
-    white-space: pre;
-    font-size: clamp(8px, 1.05vw, 12px);
-    line-height: 1.55;
-    color: #33ff33;
-    overflow: hidden;
-    pointer-events: none;
-    user-select: none;
-  }
-  .xp-term-ascii .xp-term-box {
-    border: 1px solid #33ff33;
-    padding: 0 8px;
-    color: #5fff5f;
-    font-weight: bold;
-    letter-spacing: 2px;
-  }
-
-  .xp-logo-grid-overlay {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr 1fr;
-    padding: 5.2em 3em 5em 3em;
-    gap: 0.8em 1.2em;
-    z-index: 10;
-  }
-
-  .xp-logo-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    cursor: pointer;
-    padding: 4px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    transition: all 0.15s ease;
-    position: relative;
-    min-height: 0;
-  }
-  .xp-logo-item:hover {
-    background: rgba(51, 255, 51, 0.07);
-    border-color: rgba(51, 255, 51, 0.3);
-    box-shadow: 0 0 10px rgba(51, 255, 51, 0.12);
-  }
-  .xp-logo-item:active { transform: scale(0.96); }
-
-  .xp-logo-img {
-    width: clamp(36px, 4.5vw, 56px);
-    height: clamp(36px, 4.5vw, 56px);
-    object-fit: contain;
-    filter: drop-shadow(0 0 4px rgba(51, 255, 51, 0.25));
-    background: rgba(255,255,255,0.03);
-    border-radius: 6px;
-    padding: 3px;
-    pointer-events: none;
-  }
-  .xp-logo-label {
-    font-size: clamp(9px, 1vw, 11px);
-    color: #5fff5f;
-    text-align: center;
-    font-family: "Consolas", "Courier New", monospace;
-    pointer-events: none;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-  }
-
-  .xp-logo-dropdown {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 50%;
-    transform: translateX(-50%) scale(0.92);
-    background: #0c0c0c;
-    border: 1px solid #33ff33;
-    border-radius: 4px;
-    padding: 10px 12px;
-    min-width: 180px;
-    max-width: 220px;
-    z-index: 200;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 0 18px rgba(51, 255, 51, 0.18), inset 0 0 24px rgba(51, 255, 51, 0.02);
-    font-family: "Consolas", "Courier New", monospace;
-  }
-  .xp-logo-dropdown::before {
-    content: "▲";
-    position: absolute;
-    top: -11px;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #33ff33;
-    font-size: 9px;
-  }
-  .xp-logo-dropdown.active {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateX(-50%) scale(1);
-  }
-
-  .xp-dropdown-title {
-    font-size: 12px;
-    font-weight: bold;
-    color: #5fff5f;
-    margin-bottom: 4px;
-    border-bottom: 1px solid rgba(51, 255, 51, 0.25);
-    padding-bottom: 4px;
-    padding-right: 14px;
-  }
-  .xp-dropdown-desc {
-    font-size: 11px;
-    color: #33ff33;
-    line-height: 1.5;
-  }
-  .xp-dropdown-meta {
-    font-size: 10px;
-    color: #1f9e1f;
-    margin-top: 6px;
-    font-style: italic;
-  }
-  .xp-dropdown-close {
-    position: absolute;
-    top: 5px;
-    right: 7px;
-    font-size: 11px;
-    color: #1f9e1f;
-    cursor: pointer;
-    line-height: 1;
-  }
-  .xp-dropdown-close:hover { color: #33ff33; }
-
-  @media (max-width: 768px) {
-    .xp-logo-grid-overlay {
-      padding: 4.5em 1.5em 4.5em 1.5em;
-      gap: 0.5em 0.6em;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(4, 1fr);
-    }
-    .xp-term-ascii { font-size: 7px; line-height: 1.6; }
-    .xp-logo-img { width: 40px; height: 40px; }
-    .xp-logo-label { font-size: 9px; }
   }
 </style>
 <base target="_blank">
@@ -1117,8 +946,8 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE (Terminal CMD com logos na moldura) ===== -->
-<div class="window" id="win-experience" style="left: calc(50% - 400px); top: calc(50% - 320px); width: 800px; height: 640px;">
+<!-- ===== JANELA EXPERIENCE (placeholder) ===== -->
+<div class="window" id="win-experience" style="left: calc(50% - 580px); top: calc(50% - 460px); width: 1160px; height: 920px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
       <img src="icons/icon-experience.png" alt="" style="width:16px;height:16px;">
@@ -1129,39 +958,8 @@
       <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
     </div>
   </div>
-  <div class="window-content" style="background:#0c0c0c;">
-    <div class="terminal-body" id="exp-terminal">
-      <div class="dim xp-term-header">C:\Users\Phillipe&gt; cd experience</div>
-      <div class="dim xp-term-header">C:\Users\Phillipe\experience&gt; dir /b</div>
-
-      <div class="xp-term-frame">
-        <div class="xp-term-ascii">┌────────────────────────────────────────────────────────────────────────┐
-│                                                                        │
-│                     <span class="xp-term-box">E X P E R I E N C E</span>                        │
-│                                                                        │
-│                                                                        │
-│    ┌────────┐      ┌────────┐      ┌────────┐      ┌────────┐         │
-│    │        │      │        │      │        │      │        │         │
-│    │        │      │        │      │        │      │        │         │
-│    │        │      │        │      │        │      │        │         │
-│    └────────┘      └────────┘      └────────┘      └────────┘         │
-│                                                                        │
-│    ┌────────┐      ┌────────┐      ┌────────┐      ┌────────┐         │
-│    │        │      │        │      │        │      │        │         │
-│    │        │      │        │      │        │      │        │         │
-│    │        │      │        │      │        │      │        │         │
-│    └────────┘      └────────┘      └────────┘      └────────┘         │
-│                                                                        │
-│              ┌─────────────────────────────────────┐                  │
-│              │  Click a logo to view role details  │                  │
-│              └─────────────────────────────────────┘                  │
-│                                                                        │
-└────────────────────────────────────────────────────────────────────────┘</div>
-        <div class="xp-logo-grid-overlay" id="xp-logo-grid"></div>
-      </div>
-
-      <div class="dim xp-term-header">C:\Users\Phillipe\experience&gt; <span class="terminal-cursor"></span></div>
-    </div>
+  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#0c0c0c;">
+    <div class="terminal-body" id="exp-terminal"><span class="terminal-cursor"></span></div>
   </div>
 </div>
 
@@ -1725,8 +1523,8 @@ function openWindow(name) {
       initSkillsChart();
     }, 250);
   }
-  if(name==='experience' && !window.__expRendered) {
-    window.__expRendered = true;
+  if(name==='experience' && !window.__expTyped) {
+    window.__expTyped = true;
     setTimeout(() => typeTerminal(), 200);
   }
   if(name==='flappy' && window.__flappy) {
@@ -1857,104 +1655,65 @@ function animateRestore(name) {
   requestAnimationFrame(anim);
 }
 
-// ===== TERMINAL EXPERIENCE (CMD style com logos clickáveis) =====
-const experienceData = [
-  {
-    id: 'binance',
-    name: 'Binance',
-    logo: 'logos/binance.png',
-    desc: 'Community Manager & Front-end integrations for blockchain products. Built engagement systems and managed global communities across multiple channels.',
-    period: '2023 — Present'
-  },
-  {
-    id: 'coinracer',
-    name: 'Coinracer',
-    logo: 'logos/coinracer.png',
-    desc: 'Managed Discord/Telegram communities for a play-to-earn racing game. Onboarded 5,000+ users and coordinated weekly AMAs with the dev team.',
-    period: '2022 — 2023'
-  },
-  {
-    id: 'beeos',
-    name: 'BeeOS',
-    logo: 'logos/beeos.png',
-    desc: 'Community strategy and moderation. Implemented verification flows, anti-scam protocols, and structured support tickets across social channels.',
-    period: '2022'
-  },
-  {
-    id: 'coralapp',
-    name: 'CoralApp',
-    logo: 'logos/coralapp.png',
-    desc: 'Led community growth initiatives. Created content calendars, managed influencer partnerships, and drove launch campaign engagement.',
-    period: '2021 — 2022'
-  },
-  {
-    id: 'lionshare',
-    name: "Lion's Share",
-    logo: 'logos/lionshare.png',
-    desc: 'Community operations and member retention. Built SOPs for the support team and reduced average ticket response time by 60%.',
-    period: '2021'
-  },
-  {
-    id: 'tap',
-    name: 'TAP Protocol',
-    logo: 'logos/tap.png',
-    desc: 'Moderation lead for an Ordinals-based protocol. Managed technical discussions, educated users on Bitcoin NFTs, and filtered FUD.',
-    period: '2023'
-  },
-  {
-    id: 'vs1',
-    name: 'VS1Finance',
-    logo: 'logos/vs1.png',
-    desc: 'DeFi community management. Coordinated beta testing programs, gathered user feedback, and managed ambassador programs.',
-    period: '2022 — 2023'
-  }
+// ===== TERMINAL EXPERIENCE (CMD style) =====
+const expTerminalScript = [
+  { type: 'line', text: 'C:\\Users\\Phillipe> whoami' },
+  { type: 'line', text: 'Phillipe — Full Stack Developer' },
+  { type: 'line', text: '' },
+  { type: 'line', text: 'C:\\Users\\Phillipe> dir experience' },
+  { type: 'ascii', text:
+`╔══════════════════════════╗
+║        B I N A N C E      ║
+╚══════════════════════════╝` },
+  { type: 'line', text: '  > Front-end para integrações blockchain' },
+  { type: 'line', text: '  > 2023 - Presente' },
+  { type: 'line', text: '' },
+  { type: 'ascii', text:
+`╔══════════════════════════╗
+║      C O I N R A C E R    ║
+╚══════════════════════════╝` },
+  { type: 'line', text: '  > Descreva aqui o que voce fez' },
+  { type: 'line', text: '  > 2022 - 2023' },
+  { type: 'line', text: '' },
+  { type: 'line', text: 'C:\\Users\\Phillipe> _' },
 ];
-
-function renderExperienceLogos() {
-  const grid = document.getElementById('xp-logo-grid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  experienceData.forEach(item => {
-    const el = document.createElement('div');
-    el.className = 'xp-logo-item';
-    el.onclick = function(e) { toggleXpDropdown(this); };
-    el.innerHTML = `
-      <img class="xp-logo-img" src="${item.logo}" alt="${item.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2256%22 height=%2256%22%3E%3Crect fill=%22%230c0c0c%22 width=%2256%22 height=%2256%22/%3E%3Ctext x=%2228%22 y=%2232%22 text-anchor=%22middle%22 fill=%22%2333ff33%22 font-size=%2210%22 font-family=%22monospace%22%3E${item.name.substring(0,4)}%3C/text%3E%3C/svg%3E'">
-      <span class="xp-logo-label">${item.name}</span>
-      <div class="xp-logo-dropdown">
-        <span class="xp-dropdown-close" onclick="event.stopPropagation(); closeAllXpDropdowns();">✕</span>
-        <div class="xp-dropdown-title">${item.name}</div>
-        <div class="xp-dropdown-desc">${item.desc}</div>
-        <div class="xp-dropdown-meta">${item.period}</div>
-      </div>
-    `;
-    grid.appendChild(el);
-  });
-}
-
-function closeAllXpDropdowns() {
-  document.querySelectorAll('.xp-logo-dropdown').forEach(d => d.classList.remove('active'));
-}
-
-function toggleXpDropdown(item) {
-  const dropdown = item.querySelector('.xp-logo-dropdown');
-  const isActive = dropdown.classList.contains('active');
-  closeAllXpDropdowns();
-  if (!isActive) dropdown.classList.add('active');
-}
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.xp-logo-item')) closeAllXpDropdowns();
-});
 
 function typeTerminal() {
   const el = document.getElementById('exp-terminal');
   if (!el) return;
-  renderExperienceLogos();
-  el.style.opacity = '0';
-  el.style.transition = 'opacity 0.5s ease';
-  requestAnimationFrame(() => { el.style.opacity = '1'; });
+  const cursor = el.querySelector('.terminal-cursor');
+  el.innerHTML = '';
+  el.appendChild(cursor || document.createElement('span'));
+
+  let i = 0;
+  function nextItem() {
+    if (i >= expTerminalScript.length) return;
+    const item = expTerminalScript[i++];
+    const lineEl = document.createElement('div');
+    if (item.type === 'ascii') {
+      lineEl.className = 't-ascii';
+      lineEl.textContent = item.text;
+      el.insertBefore(lineEl, el.querySelector('.terminal-cursor'));
+      el.scrollTop = el.scrollHeight;
+      setTimeout(nextItem, 150);
+      return;
+    }
+    lineEl.className = item.text.startsWith('C:\\') ? 't-prompt' : 't-dim';
+    el.insertBefore(lineEl, el.querySelector('.terminal-cursor'));
+    let charIndex = 0;
+    const text = item.text;
+    function typeChar() {
+      if (charIndex < text.length) {
+        lineEl.textContent += text[charIndex++];
+        el.scrollTop = el.scrollHeight;
+        setTimeout(typeChar, 18);
+      } else {
+        setTimeout(nextItem, text === '' ? 80 : 200);
+      }
+    }
+    typeChar();
+  }
+  nextItem();
 }
   function minimizeWindow(name) {
   if (isNonWindowApp(name)) return;
