@@ -858,7 +858,7 @@
     box-shadow: 0 0 8px rgba(51,255,51,0.8);
   }
 
-  /* ===== SQUARES VERDES ===== */
+  /* ===== SQUARES VERDES (borda fina) ===== */
   #exp-squares {
     display: none;
     flex-wrap: wrap;
@@ -876,16 +876,18 @@
   .exp-square {
     width: 100px;
     height: 100px;
-    background: #33ff33;
-    border: 2px solid #1a8a1a;
-    border-radius: 8px;
+    background: transparent;
+    border: 1px solid #33ff33; /* Borda fina */
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     position: relative;
-    transition: transform 0.1s;
-    box-shadow: 0 0 10px rgba(51,255,51,0.4);
+    box-shadow: 0 0 5px rgba(51,255,51,0.3);
+    opacity: 0; /* Começa invisível para animação */
+    transform: translateY(10px);
+    animation: exp-square-in 0.5s forwards;
   }
   .exp-square img {
     width: 70%;
@@ -894,6 +896,10 @@
   }
   .exp-square:hover {
     animation: exp-shake 0.3s ease;
+  }
+  @keyframes exp-square-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   @keyframes exp-shake {
     0% { transform: translateX(0); }
@@ -1070,6 +1076,7 @@
     <!-- NOVO: SQUARES VERDES -->
     <div id="exp-squares"></div>
   </div>
+</div>
 
 <!-- ===== JANELA PAINT ===== -->
 <div class="window" id="win-paint" style="left: calc(50% - 380px); top: calc(50% - 300px); width: 760px; height: 600px; min-width: 400px; min-height: 300px;">
@@ -1632,11 +1639,9 @@ function openWindow(name) {
     }, 250);
   }
   if(name==='experience') {
-    // Inicia o loading apenas se o terminal ainda não foi digitado ou se foi fechado antes
     if (!window.__expTyped) {
       startExperienceLoading();
     } else {
-      // Se já foi digitado, apenas garante que o terminal esteja visível
       const loading = document.getElementById('exp-loading');
       if (loading) loading.style.display = 'none';
     }
@@ -1664,20 +1669,7 @@ function closeWindow(name) {
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
 
   if (name === 'experience') {
-    // Limpa timers do loading e reseta para próxima abertura
-    if (expLoadingInterval) {
-      cancelAnimationFrame(expLoadingInterval);
-      expLoadingInterval = null;
-    }
-    window.__expTyped = false;
-    const loading = document.getElementById('exp-loading');
-    if (loading) {
-      loading.style.display = 'none';
-      loading.style.opacity = '1';
-    }
-    // Limpa terminal para próxima vez
-    const terminal = document.getElementById('exp-terminal');
-    if (terminal) terminal.innerHTML = '<span class="terminal-cursor"></span>';
+    resetExperience();
   }
 
   let topName=null, topZ=-Infinity;
@@ -1766,70 +1758,8 @@ function animateRestore(name) {
   requestAnimationFrame(anim);
 }
 
-// ===== TERMINAL EXPERIENCE (CMD style) =====
-const expTerminalScript = [
-  { type: 'line', text: 'C:\\Users\\Phillipe> whoami' },
-  { type: 'line', text: 'Phillipe — Full Stack Developer' },
-  { type: 'line', text: '' },
-  { type: 'line', text: 'C:\\Users\\Phillipe> dir experience' },
-  { type: 'ascii', text:
-`╔══════════════════════════╗
-║        B I N A N C E      ║
-╚══════════════════════════╝` },
-  { type: 'line', text: '  > Front-end para integrações blockchain' },
-  { type: 'line', text: '  > 2023 - Presente' },
-  { type: 'line', text: '' },
-  { type: 'ascii', text:
-`╔══════════════════════════╗
-║      C O I N R A C E R    ║
-╚══════════════════════════╝` },
-  { type: 'line', text: '  > Descreva aqui o que voce fez' },
-  { type: 'line', text: '  > 2022 - 2023' },
-  { type: 'line', text: '' },
-  { type: 'line', text: 'C:\\Users\\Phillipe> _' },
-];
-
-function typeTerminal() {
-  const el = document.getElementById('exp-terminal');
-  if (!el) return;
-  const cursor = el.querySelector('.terminal-cursor');
-  el.innerHTML = '';
-  el.appendChild(cursor || document.createElement('span'));
-
-  let i = 0;
-  function nextItem() {
-    if (i >= expTerminalScript.length) return;
-    const item = expTerminalScript[i++];
-    const lineEl = document.createElement('div');
-    if (item.type === 'ascii') {
-      lineEl.className = 't-ascii';
-      lineEl.textContent = item.text;
-      el.insertBefore(lineEl, el.querySelector('.terminal-cursor'));
-      el.scrollTop = el.scrollHeight;
-      setTimeout(nextItem, 150);
-      return;
-    }
-    lineEl.className = item.text.startsWith('C:\\') ? 't-prompt' : 't-dim';
-    el.insertBefore(lineEl, el.querySelector('.terminal-cursor'));
-    let charIndex = 0;
-    const text = item.text;
-    function typeChar() {
-      if (charIndex < text.length) {
-        lineEl.textContent += text[charIndex++];
-        el.scrollTop = el.scrollHeight;
-        setTimeout(typeChar, 18);
-      } else {
-        setTimeout(nextItem, text === '' ? 80 : 200);
-      }
-    }
-    typeChar();
-  }
-  nextItem();
-}
-
 // ===== NOVO: FUNÇÕES DE LOADING DA EXPERIENCE =====
 let expLoadingInterval = null;
-let expTypingInterval = null;
 
 function drawPixelExperience(canvas) {
     const ctx = canvas.getContext('2d');
@@ -1878,7 +1808,7 @@ function startExperienceLoading() {
     if (expLoadingInterval) cancelAnimationFrame(expLoadingInterval);
 
     const startTime = performance.now();
-    const duration = 3000; // 3 segundos
+    const duration = 3000;
 
     function updateBar(now) {
         const elapsed = now - startTime;
@@ -1891,7 +1821,6 @@ function startExperienceLoading() {
             setTimeout(() => {
                 loading.style.display = 'none';
             }, 500);
-            // Iniciar terminal de comandos
             startExpTerminal();
         }
     }
@@ -1904,35 +1833,51 @@ function startExpTerminal() {
     terminal.innerHTML = '<span class="terminal-cursor"></span>';
     const cursor = terminal.querySelector('.terminal-cursor');
     
+    // Lista de comandos/linhas "hacker" para preencher a tela rapidamente
     const commands = [
         'C:\\Users\\Phillipe> whoami',
-        'C:\\Users\\Phillipe> dir experience',
-        'C:\\Users\\Phillipe> echo %PATH%',
-        'C:\\Users\\Phillipe> ipconfig',
         'C:\\Users\\Phillipe> systeminfo',
+        'C:\\Users\\Phillipe> ipconfig /all',
         'C:\\Users\\Phillipe> netstat -an',
-        'C:\\Users\\Phillipe> tasklist',
         'C:\\Users\\Phillipe> ping 8.8.8.8',
-        'C:\\Users\\Phillipe> cd ..',
-        'C:\\Users\\Phillipe> type config.json',
+        'C:\\Users\\Phillipe> tracert google.com',
+        'C:\\Users\\Phillipe> tasklist /v',
+        'C:\\Users\\Phillipe> reg query HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion',
+        'C:\\Users\\Phillipe> sc query',
+        'C:\\Users\\Phillipe> wmic process list brief',
+        'C:\\Users\\Phillipe> set',
+        'C:\\Users\\Phillipe> echo %PATH%',
+        'C:\\Users\\Phillipe> type C:\\Users\\Phillipe\\Desktop\\config.json',
+        'C:\\Users\\Phillipe> dir C:\\Windows\\System32\\drivers\\etc',
         'C:\\Users\\Phillipe> tree /f',
         'C:\\Users\\Phillipe> ver',
-        'C:\\Users\\Phillipe> set',
-        'C:\\Users\\Phillipe> reg query',
-        'C:\\Users\\Phillipe> sc query',
-        'C:\\Users\\Phillipe> wmic cpu get name',
-        'C:\\Users\\Phillipe> tracert google.com',
+        'C:\\Users\\Phillipe> cd C:\\Users\\Phillipe\\Documents',
+        'C:\\Users\\Phillipe> cls',
+        'C:\\Users\\Phillipe> dir /a',
+        'C:\\Users\\Phillipe> attrib -h -s C:\\Users\\Phillipe\\Desktop\\secret.txt',
+        'C:\\Users\\Phillipe> echo Decrypting...',
+        'C:\\Users\\Phillipe> chcp 65001',
+        'C:\\Users\\Phillipe> hostname',
+        'C:\\Users\\Phillipe> nslookup google.com',
         'C:\\Users\\Phillipe> arp -a',
+        'C:\\Users\\Phillipe> route print',
+        'C:\\Users\\Phillipe> netsh wlan show interfaces',
+        'C:\\Users\\Phillipe> getmac /v /fo list',
+        'C:\\Users\\Phillipe> cd ..',
+        'C:\\Users\\Phillipe> cd C:\\',
+        'C:\\Users\\Phillipe> dir C:\\',
+        'C:\\Users\\Phillipe> type C:\\pagefile.sys',
+        'C:\\Users\\Phillipe> echo Access Denied',
+        'C:\\Users\\Phillipe> exit',
     ];
 
     let index = 0;
     function typeLine() {
         if (index >= commands.length) {
-            // Terminal preenchido, agora mostrar squares
             setTimeout(() => {
                 terminal.style.display = 'none';
                 showExpSquares();
-            }, 800);
+            }, 300);
             return;
         }
         
@@ -1946,10 +1891,10 @@ function startExpTerminal() {
             if (charIndex < text.length) {
                 lineEl.textContent += text[charIndex++];
                 terminal.scrollTop = terminal.scrollHeight;
-                setTimeout(typeChar, 18);
+                setTimeout(typeChar, 5); // rápido
             } else {
                 index++;
-                setTimeout(typeLine, 200);
+                setTimeout(typeLine, 30); // intervalos curtos
             }
         }
         typeChar();
@@ -1983,9 +1928,10 @@ function showExpSquares() {
         'binance.png': 'Binance - Exchange líder.'
     };
     
-    logos.forEach(logo => {
+    logos.forEach((logo, i) => {
         const square = document.createElement('div');
         square.className = 'exp-square';
+        square.style.animationDelay = (i * 0.15) + 's'; // animação gradual
         
         const img = document.createElement('img');
         img.src = 'logos/' + logo;
@@ -2007,7 +1953,6 @@ function resetExperience() {
     const terminal = document.getElementById('exp-terminal');
     
     if (expLoadingInterval) cancelAnimationFrame(expLoadingInterval);
-    if (expTypingInterval) clearTimeout(expTypingInterval);
     
     if (loading) {
         loading.style.display = 'none';
@@ -2025,7 +1970,7 @@ function resetExperience() {
 }
 
 // ===== TERMINAL EXPERIENCE (CMD style) — MANTIDO =====
-// ... (já definido acima)
+// ... (removido o script antigo porque agora é gerado pelo startExpTerminal)
 
   function minimizeWindow(name) {
   if (isNonWindowApp(name)) return;
@@ -3365,6 +3310,7 @@ function toggleMute() {
 document.addEventListener('DOMContentLoaded', function() {
   initSelectionBox();
   renderSkillBars();
+  resetExperience(); // <-- ADICIONADO
 
   const aboutWin = document.getElementById('win-about');
   if(aboutWin) {
