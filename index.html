@@ -1757,34 +1757,55 @@ function typeTerminal() {
 
 // ===== NOVO: FUNÇÕES DE LOADING DA EXPERIENCE =====
 let expLoadingInterval = null;
+
 function drawPixelExperience(canvas) {
     const ctx = canvas.getContext('2d');
     const off = document.createElement('canvas');
+    // Ajuste o tamanho do canvas offscreen para caber a palavra sem perspectiva
     off.width = canvas.width;
-    off.height = canvas.height;
+    off.height = 200; // altura do texto plano
     const octx = off.getContext('2d');
-    // Desenhar texto grande
+    
+    // Desenhar texto grande (branco) para servir de máscara
     octx.fillStyle = '#ffffff';
-    octx.font = 'bold 100px "Courier New", monospace';
+    octx.font = 'bold 80px "Courier New", monospace';
     octx.textAlign = 'center';
     octx.textBaseline = 'middle';
     octx.fillText('EXPERIENCE', off.width/2, off.height/2);
+    
     // Pegar dados da imagem
     const imgData = octx.getImageData(0, 0, off.width, off.height);
     const pixels = imgData.data;
-    // Limpar canvas principal
+    
+    // Limpar canvas principal (fundo preto)
     ctx.fillStyle = '#0c0c0c';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
     // Tamanho do bloco (pixel size)
     const blockSize = 5;
-    ctx.fillStyle = '#33ff33';
+    
+    // Parâmetros da perspectiva
+    const skewX = 0.5;      // inclinação horizontal (maior = mais caída)
+    const scaleY = 0.8;     // redução vertical (maior = mais achatada)
+    const baseY = 60;       // deslocamento vertical inicial
+    
+    // Percorrer o offscreen
     for (let y = 0; y < off.height; y += blockSize) {
+        // Para cada linha, calcula o deslocamento horizontal
+        const offsetX = Math.floor((y / off.height) * skewX * off.width * 0.5);
+        const yPos = Math.floor(y * scaleY) + baseY; // nova posição Y
+        
         for (let x = 0; x < off.width; x += blockSize) {
             // Pegar o pixel central do bloco
             const pixelIndex = (Math.floor(y) * off.width + Math.floor(x)) * 4;
             const alpha = pixels[pixelIndex + 3]; // alpha
             if (alpha > 128) {
-                ctx.fillRect(x, y, blockSize, blockSize);
+                // Nova posição X com inclinação
+                const xPos = x - offsetX;
+                if (xPos >= 0 && xPos < canvas.width) {
+                    ctx.fillStyle = '#33ff33';
+                    ctx.fillRect(xPos, yPos, blockSize, blockSize);
+                }
             }
         }
     }
