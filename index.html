@@ -845,11 +845,14 @@
     border: 2px solid #33ff33;
     background: #000;
     box-shadow: 0 0 10px rgba(51,255,51,0.5);
+    position: relative;
+    padding: 3px; /* Cria o vão interno */
   }
   .exp-loading-bar-fill {
     height: 100%;
     width: 0%;
     background: #33ff33;
+    box-shadow: 0 0 8px rgba(51,255,51,0.8);
   }
 </style>
 <base target="_blank">
@@ -1761,7 +1764,6 @@ let expLoadingInterval = null;
 function drawPixelExperience(canvas) {
     const ctx = canvas.getContext('2d');
     const off = document.createElement('canvas');
-    // Ajuste o tamanho do canvas offscreen para caber a palavra sem perspectiva
     off.width = canvas.width;
     off.height = 200; // altura do texto plano
     const octx = off.getContext('2d');
@@ -1784,28 +1786,15 @@ function drawPixelExperience(canvas) {
     // Tamanho do bloco (pixel size)
     const blockSize = 5;
     
-    // Parâmetros da perspectiva
-    const skewX = 0.5;      // inclinação horizontal (maior = mais caída)
-    const scaleY = 0.8;     // redução vertical (maior = mais achatada)
-    const baseY = 60;       // deslocamento vertical inicial
-    
     // Percorrer o offscreen
     for (let y = 0; y < off.height; y += blockSize) {
-        // Para cada linha, calcula o deslocamento horizontal
-        const offsetX = Math.floor((y / off.height) * skewX * off.width * 0.5);
-        const yPos = Math.floor(y * scaleY) + baseY; // nova posição Y
-        
         for (let x = 0; x < off.width; x += blockSize) {
             // Pegar o pixel central do bloco
             const pixelIndex = (Math.floor(y) * off.width + Math.floor(x)) * 4;
             const alpha = pixels[pixelIndex + 3]; // alpha
             if (alpha > 128) {
-                // Nova posição X com inclinação
-                const xPos = x - offsetX;
-                if (xPos >= 0 && xPos < canvas.width) {
-                    ctx.fillStyle = '#33ff33';
-                    ctx.fillRect(xPos, yPos, blockSize, blockSize);
-                }
+                ctx.fillStyle = '#33ff33';
+                ctx.fillRect(x, y, blockSize, blockSize);
             }
         }
     }
@@ -1817,7 +1806,7 @@ function startExperienceLoading() {
     const canvas = document.getElementById('exp-loading-canvas');
     if (!loading || !barFill || !canvas) return;
 
-    // Desenhar a palavra
+    // Desenhar a palavra (plana)
     drawPixelExperience(canvas);
 
     // Resetar barra
@@ -1836,6 +1825,7 @@ function startExperienceLoading() {
     function updateBar(now) {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
+        // Preenche apenas a área interna (considerando o padding de 3px)
         barFill.style.width = (progress * 100) + '%';
         if (progress < 1) {
             expLoadingInterval = requestAnimationFrame(updateBar);
