@@ -96,6 +96,28 @@
     flex: 1; padding: 12px; overflow-y: auto;
     background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
   }
+  .terminal-body {
+    flex: 1; width: 100%; height: 100%;
+    background: #0c0c0c;
+    color: #33ff33;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 14px 16px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+  }
+  .terminal-body .t-prompt { color: #5fff5f; }
+  .terminal-body .t-dim { color: #1f9e1f; }
+  .terminal-body .t-ascii { color: #33ff33; display: block; margin: 6px 0; }
+  .terminal-cursor {
+    display: inline-block; width: 8px; height: 14px;
+    background: #33ff33; margin-left: 2px;
+    animation: t-blink 1s steps(1) infinite;
+    vertical-align: text-bottom;
+  }
+  @keyframes t-blink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
 
   /* ===== SCROLLBAR AUTÊNTICA DO WINDOWS XP ===== */
   .window-content,
@@ -935,12 +957,8 @@
       <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
     </div>
   </div>
-  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#ece9d8;">
-    <!-- Placeholder: conteúdo vazio -->
-    <div style="display:flex; align-items:center; justify-content:center; height:100%; flex-direction:column; gap:12px;">
-      <div style="font-size:48px;">💼</div>
-      <p style="font-size:16px; color:#555;">Esta seção será atualizada em breve.</p>
-    </div>
+  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#0c0c0c;">
+    <div class="terminal-body" id="exp-terminal"><span class="terminal-cursor"></span></div>
   </div>
 </div>
 
@@ -1504,6 +1522,10 @@ function openWindow(name) {
       initSkillsChart();
     }, 250);
   }
+  if(name==='experience' && !window.__expTyped) {
+    window.__expTyped = true;
+    setTimeout(() => typeTerminal(), 200);
+  }
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
       const canvas = document.getElementById('flappy-canvas');
@@ -1632,7 +1654,67 @@ function animateRestore(name) {
   requestAnimationFrame(anim);
 }
 
-function minimizeWindow(name) {
+// ===== TERMINAL EXPERIENCE (CMD style) =====
+const expTerminalScript = [
+  { type: 'line', text: 'C:\\Users\\Phillipe> whoami' },
+  { type: 'line', text: 'Phillipe — Full Stack Developer' },
+  { type: 'line', text: '' },
+  { type: 'line', text: 'C:\\Users\\Phillipe> dir experience' },
+  { type: 'ascii', text:
+`╔══════════════════════════╗
+║        B I N A N C E      ║
+╚══════════════════════════╝` },
+  { type: 'line', text: '  > Front-end para integrações blockchain' },
+  { type: 'line', text: '  > 2023 - Presente' },
+  { type: 'line', text: '' },
+  { type: 'ascii', text:
+`╔══════════════════════════╗
+║      C O I N R A C E R    ║
+╚══════════════════════════╝` },
+  { type: 'line', text: '  > Descreva aqui o que voce fez' },
+  { type: 'line', text: '  > 2022 - 2023' },
+  { type: 'line', text: '' },
+  { type: 'line', text: 'C:\\Users\\Phillipe> _' },
+];
+
+function typeTerminal() {
+  const el = document.getElementById('exp-terminal');
+  if (!el) return;
+  const cursor = el.querySelector('.terminal-cursor');
+  el.innerHTML = '';
+  el.appendChild(cursor || document.createElement('span'));
+
+  let i = 0;
+  function nextItem() {
+    if (i >= expTerminalScript.length) return;
+    const item = expTerminalScript[i++];
+    const lineEl = document.createElement('div');
+    if (item.type === 'ascii') {
+      lineEl.className = 't-ascii';
+      lineEl.textContent = item.text;
+      el.insertBefore(lineEl, el.querySelector('.terminal-cursor'));
+      el.scrollTop = el.scrollHeight;
+      setTimeout(nextItem, 150);
+      return;
+    }
+    lineEl.className = item.text.startsWith('C:\\') ? 't-prompt' : 't-dim';
+    el.insertBefore(lineEl, el.querySelector('.terminal-cursor'));
+    let charIndex = 0;
+    const text = item.text;
+    function typeChar() {
+      if (charIndex < text.length) {
+        lineEl.textContent += text[charIndex++];
+        el.scrollTop = el.scrollHeight;
+        setTimeout(typeChar, 18);
+      } else {
+        setTimeout(nextItem, text === '' ? 80 : 200);
+      }
+    }
+    typeChar();
+  }
+  nextItem();
+}
+  function minimizeWindow(name) {
   if (isNonWindowApp(name)) return;
   const win=document.getElementById('win-'+name);
   const task=getTaskbarItem(name);
