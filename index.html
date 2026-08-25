@@ -822,7 +822,10 @@
     overflow: hidden !important;
   }
 
-  /* ===== NOVO: LOADING DA EXPERIENCE ===== */
+   /* ===== NOVO: LOADING DA EXPERIENCE ===== */
+  #win-experience .window-content {
+    position: relative; /* Para o loading cobrir só o conteúdo, não a titlebar */
+  }
   #exp-loading {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -853,6 +856,71 @@
     width: 0%;
     background: #33ff33;
     box-shadow: 0 0 8px rgba(51,255,51,0.8);
+  }
+
+  /* ===== SQUARES VERDES ===== */
+  #exp-squares {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #0c0c0c;
+    z-index: 5;
+  }
+  .exp-square {
+    width: 100px;
+    height: 100px;
+    background: #33ff33;
+    border: 2px solid #1a8a1a;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.1s;
+    box-shadow: 0 0 10px rgba(51,255,51,0.4);
+  }
+  .exp-square img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+  }
+  .exp-square:hover {
+    animation: exp-shake 0.3s ease;
+  }
+  @keyframes exp-shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-3px); }
+    100% { transform: translateX(0); }
+  }
+  .exp-square-submenu {
+    display: none;
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0c0c0c;
+    border: 1px solid #33ff33;
+    border-radius: 4px;
+    padding: 8px;
+    width: 200px;
+    color: #33ff33;
+    font-size: 12px;
+    text-align: center;
+    z-index: 100;
+    white-space: normal;
+  }
+  .exp-square:hover .exp-square-submenu {
+    display: block;
   }
 </style>
 <base target="_blank">
@@ -999,8 +1067,9 @@
         <div id="exp-loading-bar-fill" class="exp-loading-bar-fill"></div>
       </div>
     </div>
+    <!-- NOVO: SQUARES VERDES -->
+    <div id="exp-squares"></div>
   </div>
-</div>
 
 <!-- ===== JANELA PAINT ===== -->
 <div class="window" id="win-paint" style="left: calc(50% - 380px); top: calc(50% - 300px); width: 760px; height: 600px; min-width: 400px; min-height: 300px;">
@@ -1760,38 +1829,33 @@ function typeTerminal() {
 
 // ===== NOVO: FUNÇÕES DE LOADING DA EXPERIENCE =====
 let expLoadingInterval = null;
+let expTypingInterval = null;
 
 function drawPixelExperience(canvas) {
     const ctx = canvas.getContext('2d');
     const off = document.createElement('canvas');
     off.width = canvas.width;
-    off.height = 200; // altura do texto plano
+    off.height = 200;
     const octx = off.getContext('2d');
     
-    // Desenhar texto grande (branco) para servir de máscara
     octx.fillStyle = '#ffffff';
     octx.font = 'bold 80px "Courier New", monospace';
     octx.textAlign = 'center';
     octx.textBaseline = 'middle';
     octx.fillText('EXPERIENCE', off.width/2, off.height/2);
     
-    // Pegar dados da imagem
     const imgData = octx.getImageData(0, 0, off.width, off.height);
     const pixels = imgData.data;
     
-    // Limpar canvas principal (fundo preto)
     ctx.fillStyle = '#0c0c0c';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Tamanho do bloco (pixel size)
     const blockSize = 5;
     
-    // Percorrer o offscreen
     for (let y = 0; y < off.height; y += blockSize) {
         for (let x = 0; x < off.width; x += blockSize) {
-            // Pegar o pixel central do bloco
             const pixelIndex = (Math.floor(y) * off.width + Math.floor(x)) * 4;
-            const alpha = pixels[pixelIndex + 3]; // alpha
+            const alpha = pixels[pixelIndex + 3];
             if (alpha > 128) {
                 ctx.fillStyle = '#33ff33';
                 ctx.fillRect(x, y, blockSize, blockSize);
@@ -1806,41 +1870,158 @@ function startExperienceLoading() {
     const canvas = document.getElementById('exp-loading-canvas');
     if (!loading || !barFill || !canvas) return;
 
-    // Desenhar a palavra (plana)
     drawPixelExperience(canvas);
-
-    // Resetar barra
     barFill.style.width = '0%';
-
-    // Mostrar overlay
     loading.style.display = 'flex';
     loading.style.opacity = '1';
 
-    // Limpar interval anterior
     if (expLoadingInterval) cancelAnimationFrame(expLoadingInterval);
 
     const startTime = performance.now();
-    const duration = 5000;
+    const duration = 3000; // 3 segundos
 
     function updateBar(now) {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        // Preenche apenas a área interna (considerando o padding de 3px)
         barFill.style.width = (progress * 100) + '%';
         if (progress < 1) {
             expLoadingInterval = requestAnimationFrame(updateBar);
         } else {
-            // Loading completo
             loading.style.opacity = '0';
             setTimeout(() => {
                 loading.style.display = 'none';
             }, 500);
-            // Iniciar terminal
-            window.__expTyped = true;
-            typeTerminal();
+            // Iniciar terminal de comandos
+            startExpTerminal();
         }
     }
     expLoadingInterval = requestAnimationFrame(updateBar);
+}
+
+function startExpTerminal() {
+    const terminal = document.getElementById('exp-terminal');
+    if (!terminal) return;
+    terminal.innerHTML = '<span class="terminal-cursor"></span>';
+    const cursor = terminal.querySelector('.terminal-cursor');
+    
+    const commands = [
+        'C:\\Users\\Phillipe> whoami',
+        'C:\\Users\\Phillipe> dir experience',
+        'C:\\Users\\Phillipe> echo %PATH%',
+        'C:\\Users\\Phillipe> ipconfig',
+        'C:\\Users\\Phillipe> systeminfo',
+        'C:\\Users\\Phillipe> netstat -an',
+        'C:\\Users\\Phillipe> tasklist',
+        'C:\\Users\\Phillipe> ping 8.8.8.8',
+        'C:\\Users\\Phillipe> cd ..',
+        'C:\\Users\\Phillipe> type config.json',
+        'C:\\Users\\Phillipe> tree /f',
+        'C:\\Users\\Phillipe> ver',
+        'C:\\Users\\Phillipe> set',
+        'C:\\Users\\Phillipe> reg query',
+        'C:\\Users\\Phillipe> sc query',
+        'C:\\Users\\Phillipe> wmic cpu get name',
+        'C:\\Users\\Phillipe> tracert google.com',
+        'C:\\Users\\Phillipe> arp -a',
+    ];
+
+    let index = 0;
+    function typeLine() {
+        if (index >= commands.length) {
+            // Terminal preenchido, agora mostrar squares
+            setTimeout(() => {
+                terminal.style.display = 'none';
+                showExpSquares();
+            }, 800);
+            return;
+        }
+        
+        const lineEl = document.createElement('div');
+        lineEl.className = 't-prompt';
+        terminal.insertBefore(lineEl, cursor);
+        let charIndex = 0;
+        const text = commands[index];
+        
+        function typeChar() {
+            if (charIndex < text.length) {
+                lineEl.textContent += text[charIndex++];
+                terminal.scrollTop = terminal.scrollHeight;
+                setTimeout(typeChar, 18);
+            } else {
+                index++;
+                setTimeout(typeLine, 200);
+            }
+        }
+        typeChar();
+    }
+    typeLine();
+}
+
+function showExpSquares() {
+    const squares = document.getElementById('exp-squares');
+    if (!squares) return;
+    squares.innerHTML = '';
+    squares.style.display = 'flex';
+    
+    const logos = [
+        'beeos.png',
+        'vs1fiance.png',
+        'tapprotocol.png',
+        'lionshare.png',
+        'coralapp.png',
+        'coinracer.png',
+        'binance.png'
+    ];
+    
+    const descriptions = {
+        'beeos.png': 'BeeOS - Sistema operacional descentralizado.',
+        'vs1fiance.png': 'VS1Fiance - Plataforma de finanças.',
+        'tapprotocol.png': 'TAP Protocol - Protocolo inovador.',
+        'lionshare.png': 'Lion\'s Share Group - Grupo de investimentos.',
+        'coralapp.png': 'CoralApp - Aplicativo de comunidade.',
+        'coinracer.png': 'Coinracer - Jogo de corrida crypto.',
+        'binance.png': 'Binance - Exchange líder.'
+    };
+    
+    logos.forEach(logo => {
+        const square = document.createElement('div');
+        square.className = 'exp-square';
+        
+        const img = document.createElement('img');
+        img.src = 'logos/' + logo;
+        img.alt = logo;
+        
+        const submenu = document.createElement('div');
+        submenu.className = 'exp-square-submenu';
+        submenu.textContent = descriptions[logo] || 'Descrição do projeto.';
+        
+        square.appendChild(img);
+        square.appendChild(submenu);
+        squares.appendChild(square);
+    });
+}
+
+function resetExperience() {
+    const loading = document.getElementById('exp-loading');
+    const squares = document.getElementById('exp-squares');
+    const terminal = document.getElementById('exp-terminal');
+    
+    if (expLoadingInterval) cancelAnimationFrame(expLoadingInterval);
+    if (expTypingInterval) clearTimeout(expTypingInterval);
+    
+    if (loading) {
+        loading.style.display = 'none';
+        loading.style.opacity = '1';
+    }
+    if (squares) {
+        squares.style.display = 'none';
+        squares.innerHTML = '';
+    }
+    if (terminal) {
+        terminal.style.display = 'block';
+        terminal.innerHTML = '<span class="terminal-cursor"></span>';
+    }
+    window.__expTyped = false;
 }
 
 // ===== TERMINAL EXPERIENCE (CMD style) — MANTIDO =====
