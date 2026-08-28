@@ -96,29 +96,6 @@
     flex: 1; padding: 12px; overflow-y: auto;
     background: #ece9d8; font-size: 13px; line-height: 1.5; color: #000;
   }
-  .terminal-body {
-    flex: 1; width: 100%; height: 100%;
-    background: #0c0c0c;
-    color: #33ff33;
-    font-family: "Consolas", "Courier New", monospace;
-    font-size: 14px;
-    line-height: 1.5;
-    padding: 14px 16px;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    box-sizing: border-box;
-  }
-  .terminal-body .t-prompt { color: #5fff5f; }
-  .terminal-body .t-dim { color: #1f9e1f; }
-  .terminal-body .t-ascii { color: #33ff33; display: block; margin: 6px 0; }
-  .terminal-cursor {
-    display: inline-block; width: 8px; height: 14px;
-    background: #33ff33; margin-left: 2px;
-    animation: t-blink 1s steps(1) infinite;
-    vertical-align: text-bottom;
-  }
-  @keyframes t-blink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
-
   /* ===== SCROLLBAR AUTÊNTICA DO WINDOWS XP ===== */
   .window-content,
   .start-menu-left-scroll,
@@ -477,7 +454,6 @@
     to   { opacity: 1; transform: translateY(0); }
   }
   .xp-balloon::after {
-    /* rabinho apontando para o ícone na bandeja — posição ajustada via JS (positionXpBalloon) */
     content: "";
     position: absolute;
     bottom: -18px;
@@ -515,8 +491,6 @@
     justify-content: center;
   }
   .xp-balloon-icon img {
-    /* um pouco menor que a caixa pra não ficar grande demais visualmente
-       (a caixa em si já é do tamanho do escudo da taskbar) */
     width: 82%;
     height: 82%;
     display: block;
@@ -526,8 +500,7 @@
     font-weight: bold;
     font-size: 15px;
     margin-bottom: 4px;
-    padding-right: 18px; /* só o título precisa desviar do botão ✕ */
-    /* EDITE O TÍTULO AQUI (ou no HTML abaixo) */
+    padding-right: 18px;
   }
   .xp-balloon-text {
     font-size: 14px;
@@ -535,8 +508,6 @@
     color: #000;
     text-align: justify;
     text-align-last: left;
-    /* usa a largura toda até o canto do balão */
-    /* EDITE O TEXTO AQUI (ou no HTML abaixo) */
   }
   .msn-popup-footer .msn-time {
     font-size: 11px;
@@ -577,11 +548,6 @@
   .msn-popup.removing {
     animation: msnFadeOut 0.25s ease-in forwards;
   }
-
-/* About Me: altura calculada pra sempre comportar o texto (ver medições).
-   Sem hack de esconder scrollbar -> sem flash. Em telas extremamente baixas
-   (fora do normal) o overflow padrão do .window-content ainda funciona como
-   rede de segurança, com a scrollbar bonita do XP em vez de um glitch. */
 
   .taskbar {
     position: fixed; bottom: 0; left: 0; right: 0; height: 30px;
@@ -822,114 +788,32 @@
     overflow: hidden !important;
   }
 
-   /* ===== NOVO: LOADING DA EXPERIENCE ===== */
   #win-experience .window-content {
-    position: relative; /* Para o loading cobrir só o conteúdo, não a titlebar */
-  }
-  #exp-loading {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #0c0c0c;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 30px;
-    z-index: 10;
-    transition: opacity 0.5s;
-  }
-  #exp-loading-canvas {
-    max-width: 90%;
-    height: auto;
-  }
-  .exp-loading-bar {
-    width: 300px;
-    height: 22px;
-    border: 2px solid #33ff33;
-    background: #000;
-    box-shadow: 0 0 10px rgba(51,255,51,0.5);
     position: relative;
-    padding: 3px; /* Cria o vão interno */
-  }
-  .exp-loading-bar-fill {
-    height: 100%;
-    width: 0%;
-    background: #33ff33;
-    box-shadow: 0 0 8px rgba(51,255,51,0.8);
   }
 
-  /* ===== SQUARES VERDES (borda fina) ===== */
-  #exp-squares {
-    display: none;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-    height: 100%;
-    overflow-y: auto;
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #0c0c0c;
-    z-index: 5;
-  }
-  .exp-square {
-    width: 100px;
-    height: 100px;
-    background: transparent;
-    border: 1px solid #33ff33; /* Borda fina */
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    position: relative;
-    box-shadow: 0 0 5px rgba(51,255,51,0.3);
-    opacity: 0; /* Começa invisível para animação */
-    transform: translateY(10px);
-    animation: exp-square-in 0.5s forwards;
-  }
-  .exp-square img {
-    width: 70%;
-    height: 70%;
-    object-fit: contain;
-  }
-  .exp-square:hover {
-    animation: exp-shake 0.3s ease;
-  }
-  @keyframes exp-square-in {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes exp-shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-3px); }
-    100% { transform: translateX(0); }
-  }
-  .exp-square-submenu {
-    display: none;
-    position: absolute;
-    bottom: 110%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #0c0c0c;
-    border: 1px solid #33ff33;
-    border-radius: 4px;
-    padding: 8px;
-    width: 200px;
-    color: #33ff33;
-    font-size: 12px;
-    text-align: center;
-    z-index: 100;
-    white-space: normal;
-  }
-  .exp-square:hover .exp-square-submenu {
-    display: block;
-  }
+  #xp-login-screen { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; background: linear-gradient(180deg, #07224d 0%, #17529e 40%, #418ce6 100%); font-family: Tahoma, "Segoe UI", sans-serif; transition: opacity 0.6s ease, transform 0.6s ease; }
+  #xp-login-screen.hidden { opacity: 0; transform: scale(1.05); pointer-events: none; }
+  .login-header-bar { background: #062348; height: 30px; border-bottom: 1px solid #1b4682; }
+  .login-body { flex: 1; display: flex; align-items: center; justify-content: center; padding: 0 40px; }
+  .login-left { display: flex; flex-direction: column; align-items: center; margin-right: 80px; }
+  .xp-logo-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
+  .xp-logo-img { max-width: 260px; height: auto; display: block; }
+  .login-instruction { margin-top: 4px; font-size: 18px; color: #f2f8ff; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); letter-spacing: 0.5px; text-align: center; }
+  .login-divider { width: 1px; height: 55%; background: rgba(255,255,255,0.25); box-shadow: inset -1px 0 0 rgba(0,0,0,0.15); }
+  .login-right { display: flex; align-items: center; margin-left: 80px; }
+  .user-button { background: linear-gradient(135deg, rgba(0, 80, 200, 0.4), rgba(0, 150, 255, 0.2)); border: 1px solid #a2c2f7; border-radius: 12px; padding: 12px 30px 12px 12px; display: flex; align-items: center; gap: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.3); cursor: pointer; transition: background 0.2s ease; }
+  .user-button:hover { background: linear-gradient(135deg, rgba(0, 80, 200, 0.6), rgba(0, 150, 255, 0.3)); border-color: #c6dbff; }
+  .user-avatar { width: 78px; height: 78px; background: #f2efe5; border: 3px solid #e89a3c; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: inset 0 0 0 1px #ad7a2a; }
+  .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .user-name { font-size: 26px; font-family: Tahoma, sans-serif; color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.7); letter-spacing: 0.5px; }
+  .login-footer { position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: rgba(0,0,0,0.15); border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+  .turn-off-btn { display: flex; align-items: center; gap: 12px; cursor: pointer; color: #f2f8ff; font-size: 13px; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); }
+  .turn-off-btn:hover { text-decoration: underline; }
+  .power-icon-wrapper { background: #e87a2e; border-radius: 4px; padding: 2px; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3); }
+  .power-icon-wrapper svg { width: 18px; height: 18px; }
+  .footer-text { font-size: 11px; color: #c6dbf5; text-shadow: 1px 1px 1px rgba(0,0,0,0.3); text-align: right; }
 </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -999,16 +883,14 @@
   <div class="context-item" onclick="alert('Properties')">Properties</div>
 </div>
 
-<!-- ===== DESKTOP ICONS (Skills e Experience trocados) ===== -->
+<!-- ===== DESKTOP ICONS ===== -->
 <div class="desktop-icons">
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
   </div>
-  <!-- Skills agora em cima (top:100px) -->
   <div class="desktop-icon" data-name="skills" id="icon-skills" style="left:16px;top:100px;">
     <img src="icons/icon-skills.png" alt=""><span>Skills</span>
   </div>
-  <!-- Experience agora em baixo (top:184px) -->
   <div class="desktop-icon" data-name="experience" id="icon-experience" style="left:16px;top:184px;">
     <img src="icons/icon-experience.png" alt=""><span>Experience</span>
   </div>
@@ -1052,8 +934,8 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE ===== -->
-<div class="window" id="win-experience" style="left: calc(50% - 580px); top: calc(50% - 460px); width: 1160px; height: 920px;">
+<!-- ===== JANELA EXPERIENCE (PLACEHOLDER VAZIO) ===== -->
+<div class="window" id="win-experience" style="left: calc(50% - 300px); top: calc(50% - 200px); width: 600px; height: 400px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
       <img src="icons/icon-experience.png" alt="" style="width:16px;height:16px;">
@@ -1064,17 +946,11 @@
       <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
     </div>
   </div>
-  <div class="window-content" style="padding:0; display:flex; flex-direction:column; overflow:hidden; background:#0c0c0c;">
-    <div class="terminal-body" id="exp-terminal"><span class="terminal-cursor"></span></div>
-    <!-- NOVO: OVERLAY DE CARREGAMENTO -->
-    <div id="exp-loading" style="display: none;">
-      <canvas id="exp-loading-canvas" width="600" height="200"></canvas>
-      <div class="exp-loading-bar">
-        <div id="exp-loading-bar-fill" class="exp-loading-bar-fill"></div>
-      </div>
+  <div class="window-content" style="display:flex; align-items:center; justify-content:center; background:#ece9d8;">
+    <div style="font-size:24px; color:#0045b5; font-weight:bold; text-align:center;">
+      Experience<br>
+      <span style="font-size:14px; font-weight:normal; color:#606060;">(placeholder – em breve)</span>
     </div>
-    <!-- NOVO: SQUARES VERDES -->
-    <div id="exp-squares"></div>
   </div>
 </div>
 
@@ -1329,7 +1205,6 @@
         <div class="start-menu-item" onclick="openWindow('skills'); toggleStartMenu();"><img src="icons/icon-skills.png" alt=""><span class="label">Skills</span></div>
         <div class="start-menu-item" onclick="showContactPopups(); toggleStartMenu();"><img src="icons/icon-contact.png" alt=""><span class="label">Contact</span></div>
         <div class="start-menu-item" onclick="openWindow('resume'); toggleStartMenu();"><img src="icons/icon-resume.png" alt=""><span class="label">Resume.pdf</span></div>
-        <!-- Linha divisória abaixo do Resume.pdf -->
         <div class="start-menu-divider"></div>
         <div class="start-menu-item" onclick="openWindow('snake'); toggleStartMenu();"><img src="icons/icon-snake.png" alt=""><span class="label">Snake.exe</span></div>
         <div class="start-menu-item" onclick="openWindow('minesweeper'); toggleStartMenu();"><img src="icons/icon-minesweeper.png" alt=""><span class="label">Minesweeper</span></div>
@@ -1638,14 +1513,6 @@ function openWindow(name) {
       initSkillsChart();
     }, 250);
   }
-  if(name==='experience') {
-    if (!window.__expTyped) {
-      startExperienceLoading();
-    } else {
-      const loading = document.getElementById('exp-loading');
-      if (loading) loading.style.display = 'none';
-    }
-  }
   if(name==='flappy' && window.__flappy) {
     setTimeout(() => {
       const canvas = document.getElementById('flappy-canvas');
@@ -1667,10 +1534,6 @@ function closeWindow(name) {
   if (name==='snake' && window.__snake) window.__snake.stop();
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
-
-  if (name === 'experience') {
-    resetExperience();
-  }
 
   let topName=null, topZ=-Infinity;
   openWindows.forEach(n => {
@@ -1758,236 +1621,7 @@ function animateRestore(name) {
   requestAnimationFrame(anim);
 }
 
-// ===== NOVO: FUNÇÕES DE LOADING DA EXPERIENCE =====
-let expLoadingInterval = null;
-
-function drawPixelExperience(canvas) {
-    const ctx = canvas.getContext('2d');
-    const off = document.createElement('canvas');
-    off.width = canvas.width;
-    off.height = 200;
-    const octx = off.getContext('2d');
-    
-    octx.fillStyle = '#ffffff';
-    octx.font = 'bold 80px "Courier New", monospace';
-    octx.textAlign = 'center';
-    octx.textBaseline = 'middle';
-    octx.fillText('EXPERIENCE', off.width/2, off.height/2);
-    
-    const imgData = octx.getImageData(0, 0, off.width, off.height);
-    const pixels = imgData.data;
-    
-    ctx.fillStyle = '#0c0c0c';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    const blockSize = 5;
-    
-    for (let y = 0; y < off.height; y += blockSize) {
-        for (let x = 0; x < off.width; x += blockSize) {
-            const pixelIndex = (Math.floor(y) * off.width + Math.floor(x)) * 4;
-            const alpha = pixels[pixelIndex + 3];
-            if (alpha > 128) {
-                ctx.fillStyle = '#33ff33';
-                ctx.fillRect(x, y, blockSize, blockSize);
-            }
-        }
-    }
-}
-
-function startExperienceLoading() {
-    const loading = document.getElementById('exp-loading');
-    const barFill = document.getElementById('exp-loading-bar-fill');
-    const canvas = document.getElementById('exp-loading-canvas');
-    if (!loading || !barFill || !canvas) return;
-
-    drawPixelExperience(canvas);
-    barFill.style.width = '0%';
-    loading.style.display = 'flex';
-    loading.style.opacity = '1';
-
-    if (expLoadingInterval) cancelAnimationFrame(expLoadingInterval);
-
-    const startTime = performance.now();
-    const duration = 3000;
-
-    function updateBar(now) {
-        const elapsed = now - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        barFill.style.width = (progress * 100) + '%';
-        if (progress < 1) {
-            expLoadingInterval = requestAnimationFrame(updateBar);
-        } else {
-            loading.style.opacity = '0';
-            setTimeout(() => {
-                loading.style.display = 'none';
-            }, 500);
-            startExpTerminal();
-        }
-    }
-    expLoadingInterval = requestAnimationFrame(updateBar);
-}
-
-function startExpTerminal() {
-    const terminal = document.getElementById('exp-terminal');
-    if (!terminal) return;
-    terminal.innerHTML = '<span class="terminal-cursor"></span>';
-    const cursor = terminal.querySelector('.terminal-cursor');
-    
-    // Lista de comandos + respostas estilo "hacker de cinema" (bem fictício)
-    const commands = [
-        'C:\\Users\\Phillipe> whoami',
-        'ACCESS GRANTED',
-        '',
-        'C:\\Users\\Phillipe> scan --network',
-        'SCANNING NETWORK...',
-        'NODE 1: 192.168.1.101 [ONLINE]',
-        'NODE 2: 192.168.1.102 [ONLINE]',
-        'NODE 3: 192.168.1.103 [OFFLINE]',
-        'TARGET FOUND: MAINFRAME',
-        '',
-        'C:\\Users\\Phillipe> decrypt --file=encrypted.dat',
-        'LOADING ALGORITHM...',
-        'AES-256 KEY DETECTED',
-        'DECRYPTING...',
-        'PROGRESS: 25%',
-        'PROGRESS: 50%',
-        'PROGRESS: 75%',
-        'PROGRESS: 100%',
-        'DECRYPTION COMPLETE',
-        '',
-        'C:\\Users\\Phillipe> upload --data=compressed.bin',
-        'CONNECTING TO SERVER...',
-        'HANDSHAKE... OK',
-        'UPLOADING DATA: 1.2 MB',
-        'UPLOAD COMPLETE',
-        '',
-        'C:\\Users\\Phillipe> bypass --firewall',
-        'BYPASSING FIREWALL...',
-        'FIREWALL RULE FOUND: 0x7F2A',
-        'PATCHING...',
-        'FIREWALL BYPASSED',
-        '',
-        'C:\\Users\\Phillipe> trace --target=unknown',
-        'TRACING ROUTE...',
-        'HOP 1: 10.0.0.1',
-        'HOP 2: 10.0.0.2',
-        'HOP 3: 10.0.0.3',
-        'ROUTE TRACED: 3 HOPS',
-        '',
-        'C:\\Users\\Phillipe> inject --payload=shellcode.bin',
-        'INJECTING PAYLOAD...',
-        'EXECUTION SUCCESSFUL',
-        '',
-        'C:\\Users\\Phillipe> status --all',
-        'SYSTEM: NORMAL',
-        'NETWORK: ENCRYPTED',
-        'UPTIME: 42 DAYS',
-    ];
-
-    let index = 0;
-    function typeLine() {
-        if (index >= commands.length) {
-            setTimeout(() => {
-                terminal.style.display = 'none';
-                showExpSquares();
-            }, 200);
-            return;
-        }
-        
-        const lineEl = document.createElement('div');
-        // Comandos em verde brilhante, respostas em tom mais escuro
-        const isCommand = commands[index].startsWith('C:\\Users\\Phillipe>');
-        lineEl.className = isCommand ? 't-prompt' : 't-dim';
-        terminal.insertBefore(lineEl, cursor);
-        let charIndex = 0;
-        const text = commands[index];
-        
-        function typeChar() {
-            if (charIndex < text.length) {
-                lineEl.textContent += text[charIndex++];
-                terminal.scrollTop = terminal.scrollHeight;
-                setTimeout(typeChar, 3); // velocidade rápida
-            } else {
-                index++;
-                setTimeout(typeLine, 20); // intervalo rápido
-            }
-        }
-        typeChar();
-    }
-    typeLine();
-}
-
-function showExpSquares() {
-    const squares = document.getElementById('exp-squares');
-    if (!squares) return;
-    squares.innerHTML = '';
-    squares.style.display = 'flex';
-    
-    const logos = [
-        'beeos.png',
-        'vs1fiance.png',
-        'tapprotocol.png',
-        'lionshare.png',
-        'coralapp.png',
-        'coinracer.png',
-        'binance.png'
-    ];
-    
-    const descriptions = {
-        'beeos.png': 'BeeOS - Sistema operacional descentralizado.',
-        'vs1fiance.png': 'VS1Fiance - Plataforma de finanças.',
-        'tapprotocol.png': 'TAP Protocol - Protocolo inovador.',
-        'lionshare.png': 'Lion\'s Share Group - Grupo de investimentos.',
-        'coralapp.png': 'CoralApp - Aplicativo de comunidade.',
-        'coinracer.png': 'Coinracer - Jogo de corrida crypto.',
-        'binance.png': 'Binance - Exchange líder.'
-    };
-    
-    logos.forEach((logo, i) => {
-        const square = document.createElement('div');
-        square.className = 'exp-square';
-        square.style.animationDelay = (i * 0.15) + 's'; // animação gradual
-        
-        const img = document.createElement('img');
-        img.src = 'logos/' + logo;
-        img.alt = logo;
-        
-        const submenu = document.createElement('div');
-        submenu.className = 'exp-square-submenu';
-        submenu.textContent = descriptions[logo] || 'Descrição do projeto.';
-        
-        square.appendChild(img);
-        square.appendChild(submenu);
-        squares.appendChild(square);
-    });
-}
-
-function resetExperience() {
-    const loading = document.getElementById('exp-loading');
-    const squares = document.getElementById('exp-squares');
-    const terminal = document.getElementById('exp-terminal');
-    
-    if (expLoadingInterval) cancelAnimationFrame(expLoadingInterval);
-    
-    if (loading) {
-        loading.style.display = 'none';
-        loading.style.opacity = '1';
-    }
-    if (squares) {
-        squares.style.display = 'none';
-        squares.innerHTML = '';
-    }
-    if (terminal) {
-        terminal.style.display = 'block';
-        terminal.innerHTML = '<span class="terminal-cursor"></span>';
-    }
-    window.__expTyped = false;
-}
-
-// ===== TERMINAL EXPERIENCE (CMD style) — MANTIDO =====
-// ... (removido o script antigo porque agora é gerado pelo startExpTerminal)
-
-  function minimizeWindow(name) {
+function minimizeWindow(name) {
   if (isNonWindowApp(name)) return;
   const win=document.getElementById('win-'+name);
   const task=getTaskbarItem(name);
@@ -3325,7 +2959,6 @@ function toggleMute() {
 document.addEventListener('DOMContentLoaded', function() {
   initSelectionBox();
   renderSkillBars();
-  resetExperience(); // <-- ADICIONADO
 
   const aboutWin = document.getElementById('win-about');
   if(aboutWin) {
