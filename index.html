@@ -694,8 +694,10 @@
     position: relative;
     top: -40px;
   }
-  #xp-login-screen .xp-login-img svg {
-    max-width: 260px; height: auto; display: block;
+  #xp-login-screen .xp-login-img img {
+    max-width: 260px;
+    height: auto;
+    display: block;
     margin-right: 40px;
   }
   #xp-login-screen .xp-login-img h1 {
@@ -771,29 +773,17 @@
   #xp-login-screen .xp-login-btn {
     margin-left: 50px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    gap: 14px;
     cursor: pointer;
-  }
-  #xp-login-screen .xp-login-btn button {
-    width: 40px; height: 40px;
-    background-color: #E55022;
-    border: 1px solid #fff;
-    box-shadow: inset 4px 2px 8px rgba(255, 255, 255, 0.6), inset -2px -3px 5px #AA2300;
-    border-radius: 4px;
-    outline: none; cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  #xp-login-screen .xp-login-btn button svg {
-    width: 22px; height: 22px;
-  }
-  #xp-login-screen .xp-login-btn p {
-    color: #fff; margin-left: 20px;
+    color: white;
     font-size: 18px;
     font-family: "Source Sans Pro", sans-serif;
     font-weight: 400;
+  }
+  #xp-login-screen .xp-login-btn img {
+    width: 28px;
+    height: 28px;
   }
 
   #xp-login-screen .xp-login-informations {
@@ -818,6 +808,9 @@
       align-items: center;
       top: 0;
       order: 1;
+    }
+    #xp-login-screen .xp-login-img img {
+      margin-right: 0;
     }
     #xp-login-screen .xp-login-img h1 {
       margin-right: 0;
@@ -979,23 +972,12 @@
   <div class="xp-login-header"></div>
   <div class="xp-login-main">
     <div class="xp-login-img">
-      <!-- Logo original do Windows XP -->
-      <svg viewBox="0 0 280 110" xmlns="http://www.w3.org/2000/svg" style="max-width:260px;height:auto;display:block;margin-right:40px;">
-        <g transform="translate(10,5)">
-          <path d="M30,15 C45,5 55,25 70,15 C85,5 95,25 110,15 L110,45 C95,55 85,35 70,45 C55,55 45,35 30,45 Z" fill="#F25022"/>
-          <path d="M35,20 C50,10 60,30 75,20 C90,10 100,30 115,20 L115,50 C100,60 90,40 75,50 C60,60 50,40 35,50 Z" fill="#7FBA00"/>
-          <path d="M40,25 C55,15 65,35 80,25 C95,15 105,35 120,25 L120,55 C105,65 95,45 80,55 C65,65 55,45 40,55 Z" fill="#00A4EF"/>
-          <path d="M45,30 C60,20 70,40 85,30 C100,20 110,40 125,30 L125,60 C110,70 100,50 85,60 C70,70 60,50 45,60 Z" fill="#FFB900"/>
-          <text x="0" y="95" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="white">Microsoft</text>
-          <text x="0" y="95" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" fill="white" letter-spacing="-0.5" style="font-style:italic;">Windows</text>
-          <text x="148" y="95" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="bold" fill="#FFB900" letter-spacing="-1">xp</text>
-        </g>
-      </svg>
+      <!-- Logo original (imagem) -->
+      <img src="icons/xp-logo.png" alt="Windows XP Logo" class="xp-logo-img">
       <h1>To begin, click your user name</h1>
     </div>
     <div class="xp-login-line"></div>
     <div class="xp-login-users">
-      <!-- Usuário Phillipe (sem senha) -->
       <section class="xp-login-phillipe" onclick="loginToDesktop()">
         <div class="xp-login-icon"><img src="avatar_1.jpg" alt="Phillipe"></div>
         <div class="xp-login-user-info">
@@ -1006,13 +988,10 @@
     </div>
   </div>
   <div class="xp-login-footer">
+    <!-- Botão "Turn off computer" original com imagem -->
     <div class="xp-login-btn" onclick="alert('Computer is shutting down...')">
-      <button>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 3V15M12 15L7 10M12 15L17 10M5 21H19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-      <p>Turn off computer</p>
+      <img src="icons/turnoff.png" alt="Turn Off" style="width: 28px; height: 28px;">
+      <span>Turn off computer</span>
     </div>
     <div class="xp-login-informations">
       <p>After you log on, you can add or change accounts</p>
