@@ -1045,25 +1045,25 @@
   <div class="desktop-icon active" data-name="about" id="icon-about" style="left:16px;top:16px;">
     <img src="icons/icon-about.png" alt=""><span>About Me</span>
   </div>
-  <div class="desktop-icon" data-name="skills" id="icon-skills" style="left:16px;top:100px;">
+  <div class="desktop-icon" data-name="skills" id="icon-skills" style="left:16px;top:104px;">
     <img src="icons/icon-skills.png" alt=""><span>Skills</span>
   </div>
-  <div class="desktop-icon" data-name="experience" id="icon-experience" style="left:16px;top:184px;">
+  <div class="desktop-icon" data-name="experience" id="icon-experience" style="left:16px;top:192px;">
     <img src="icons/icon-experience.png" alt=""><span>Experience</span>
   </div>
-  <div class="desktop-icon" data-name="contact" id="icon-contact" style="left:16px;top:268px;">
+  <div class="desktop-icon" data-name="contact" id="icon-contact" style="left:16px;top:280px;">
     <img src="icons/icon-contact.png" alt=""><span>Contact</span>
   </div>
-  <div class="desktop-icon" data-name="resume" id="icon-resume" style="left:16px;top:352px;">
+  <div class="desktop-icon" data-name="resume" id="icon-resume" style="left:16px;top:368px;">
     <img src="icons/icon-resume.png" alt=""><span>Resume.pdf</span>
   </div>
-  <div class="desktop-icon" data-name="snake" id="icon-snake" style="left:16px;top:440px;">
+  <div class="desktop-icon" data-name="snake" id="icon-snake" style="left:16px;top:456px;">
     <img src="icons/icon-snake.png" alt=""><span>Snake.exe</span>
   </div>
-  <div class="desktop-icon" data-name="minesweeper" id="icon-minesweeper" style="left:16px;top:524px;">
+  <div class="desktop-icon" data-name="minesweeper" id="icon-minesweeper" style="left:16px;top:544px;">
     <img src="icons/icon-minesweeper.png" alt=""><span>Minesweeper</span>
   </div>
-  <div class="desktop-icon" data-name="flappy" id="icon-flappy" style="left:16px;top:608px;">
+  <div class="desktop-icon" data-name="flappy" id="icon-flappy" style="left:16px;top:632px;">
     <img src="icons/icon-flappy.png" alt=""><span>Flappy Bird</span>
   </div>
 </div>
@@ -1419,6 +1419,12 @@
 
 // ===== CONTEXT MENU E LOGIN =====
 document.addEventListener('contextmenu', function(e) {
+  const loginScreenEl = document.getElementById('xp-login-screen');
+  const loginVisible = loginScreenEl && loginScreenEl.style.display !== 'none' && !loginScreenEl.classList.contains('hidden');
+  if (loginVisible) {
+    e.preventDefault();
+    return;
+  }
   if (e.target.closest('.window') || e.target.closest('.taskbar') || e.target.closest('.start-menu') || e.target.closest('.desktop-icon')) {
     e.preventDefault();
     return;
@@ -1446,7 +1452,7 @@ function sortIcons(order) {
   const icons = Array.from(container.querySelectorAll('.desktop-icon'));
   icons.sort((a,b) => order==='az' ? a.querySelector('span').innerText.localeCompare(b.querySelector('span').innerText) : b.querySelector('span').innerText.localeCompare(a.querySelector('span').innerText));
   container.innerHTML = ''; icons.forEach(icon => container.appendChild(icon));
-  const positions = [16, 100, 184, 268, 352, 440, 524, 608];
+  const positions = [16, 104, 192, 280, 368, 456, 544, 632];
   icons.forEach((icon, idx) => {
     icon.style.left = '16px';
     icon.style.top = positions[idx % positions.length] + 'px';
@@ -1456,7 +1462,10 @@ function sortIcons(order) {
 function loginToDesktop() {
   const screen = document.getElementById('xp-login-screen');
   screen.classList.add('hidden');
-  setTimeout(() => screen.style.display = 'none', 600);
+  setTimeout(() => {
+    screen.style.display = 'none';
+    setTimeout(showXpBalloon, 800);
+  }, 600);
 }
 function showLoginScreen() {
   const screen = document.getElementById('xp-login-screen');
@@ -1489,8 +1498,9 @@ function getIconCell(icon) {
   return { col: Math.round((left-GRID_MARGIN_X)/GRID_W), row: Math.round((top-GRID_MARGIN_Y)/GRID_H) };
 }
 function isCellOccupied(col,row,exclude) {
+  const excludeList = Array.isArray(exclude) ? exclude : (exclude ? [exclude] : []);
   for (const icon of document.querySelectorAll('.desktop-icon')) {
-    if (icon===exclude) continue;
+    if (excludeList.includes(icon)) continue;
     const c = getIconCell(icon);
     if (c.col===col && c.row===row) return true;
   } return false;
@@ -1525,29 +1535,40 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
   return { col: Math.max(0,Math.min(tCol,bounds.maxCols)), row: Math.max(0,Math.min(tRow,bounds.maxRows)) };
 }
 
-// ===== DRAG DE ICONES (SEM SALVAR POSIÇÃO) =====
+// ===== DRAG DE ICONES (COM SUPORTE A GRUPO E CONTACT) =====
 (function initIconDrag() {
   let dragged = null, offX = 0, offY = 0, startTime = 0, startPos = { x: 0, y: 0 };
   let isDragging = false;
+  let isGroupDrag = false;
+  let groupIcons = [];
 
   document.querySelectorAll('.desktop-icon').forEach(icon => {
     icon.addEventListener('mousedown', function(e) {
       if (e.button !== 0) return;
-      
-      if (this.dataset.name === 'contact') {
-        document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected', 'active'));
-        return;
-      }
-      
+
       startTime = Date.now();
       startPos = { x: e.clientX, y: e.clientY };
       dragged = this;
       offX = e.clientX - this.offsetLeft;
       offY = e.clientY - this.offsetTop;
-      this.classList.add('active');
-      document.querySelectorAll('.desktop-icon').forEach(i => {
-        if (i !== this) i.classList.remove('selected', 'active');
-      });
+
+      const selectedIcons = Array.from(document.querySelectorAll('.desktop-icon.selected'));
+      if (this.classList.contains('selected') && selectedIcons.length > 1) {
+        isGroupDrag = true;
+        groupIcons = selectedIcons.map(el => ({
+          el,
+          offX: e.clientX - (parseInt(el.style.left) || el.offsetLeft),
+          offY: e.clientY - (parseInt(el.style.top) || el.offsetTop)
+        }));
+        this.classList.add('active');
+      } else {
+        isGroupDrag = false;
+        groupIcons = [];
+        this.classList.add('active');
+        document.querySelectorAll('.desktop-icon').forEach(i => {
+          if (i !== this) i.classList.remove('selected', 'active');
+        });
+      }
       e.preventDefault();
     });
   });
@@ -1559,28 +1580,37 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
     const dist = Math.sqrt(dx * dx + dy * dy);
     if (dist > 8 && !isDragging) {
       isDragging = true;
-      dragged.classList.add('dragging');
-      dragged.style.transition = 'none';
+      if (isGroupDrag) {
+        groupIcons.forEach(g => { g.el.classList.add('dragging'); g.el.style.transition = 'none'; });
+      } else {
+        dragged.classList.add('dragging');
+        dragged.style.transition = 'none';
+      }
     }
     if (isDragging) {
-      let nx = e.clientX - offX;
-      let ny = e.clientY - offY;
-      nx = Math.max(8, Math.min(nx, window.innerWidth - dragged.offsetWidth - 8));
-      ny = Math.max(8, Math.min(ny, window.innerHeight - dragged.offsetHeight - 38));
-      dragged.style.left = nx + 'px';
-      dragged.style.top = ny + 'px';
+      if (isGroupDrag) {
+        groupIcons.forEach(g => {
+          let nx = e.clientX - g.offX;
+          let ny = e.clientY - g.offY;
+          nx = Math.max(8, Math.min(nx, window.innerWidth - g.el.offsetWidth - 8));
+          ny = Math.max(8, Math.min(ny, window.innerHeight - g.el.offsetHeight - 38));
+          g.el.style.left = nx + 'px';
+          g.el.style.top = ny + 'px';
+        });
+      } else {
+        let nx = e.clientX - offX;
+        let ny = e.clientY - offY;
+        nx = Math.max(8, Math.min(nx, window.innerWidth - dragged.offsetWidth - 8));
+        ny = Math.max(8, Math.min(ny, window.innerHeight - dragged.offsetHeight - 38));
+        dragged.style.left = nx + 'px';
+        dragged.style.top = ny + 'px';
+      }
     }
   });
 
   document.addEventListener('mouseup', function(e) {
     if (!dragged) return;
-    
-    if (dragged.dataset.name === 'contact') {
-      dragged.classList.remove('dragging', 'active');
-      dragged = null;
-      return;
-    }
-    
+
     const dx = e.clientX - startPos.x;
     const dy = e.clientY - startPos.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
@@ -1588,26 +1618,46 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
 
     if (dist < 12 && dur < 500) {
       dragged.style.transition = '';
+      if (isGroupDrag) {
+        groupIcons.forEach(g => { g.el.style.transition = ''; g.el.classList.remove('dragging'); });
+        document.querySelectorAll('.desktop-icon').forEach(i => { if (i !== dragged) i.classList.remove('selected'); });
+      }
       const name = dragged.dataset.name;
       toggleWindow(name);
     } else if (isDragging) {
-      const curL = parseInt(dragged.style.left);
-      const curT = parseInt(dragged.style.top);
-      const snap = snapToGrid(curL, curT);
       const bounds = getGridBounds();
-      const free = findNearestFreeCell(snap.col, snap.row, dragged, bounds);
-      const fl = free.col * GRID_W + GRID_MARGIN_X;
-      const ft = free.row * GRID_H + GRID_MARGIN_Y;
-      dragged.style.transition = 'left 0.18s cubic-bezier(0.25,0.46,0.45,0.94), top 0.18s cubic-bezier(0.25,0.46,0.45,0.94)';
-      dragged.style.left = fl + 'px';
-      dragged.style.top = ft + 'px';
-      setTimeout(() => {
-        if (dragged) dragged.style.transition = '';
-      }, 200);
+      if (isGroupDrag) {
+        const groupEls = groupIcons.map(g => g.el);
+        groupIcons.forEach(g => {
+          const curL = parseInt(g.el.style.left);
+          const curT = parseInt(g.el.style.top);
+          const snap = snapToGrid(curL, curT);
+          const free = findNearestFreeCell(snap.col, snap.row, groupEls, bounds);
+          const fl = free.col * GRID_W + GRID_MARGIN_X;
+          const ft = free.row * GRID_H + GRID_MARGIN_Y;
+          g.el.style.transition = 'left 0.18s cubic-bezier(0.25,0.46,0.45,0.94), top 0.18s cubic-bezier(0.25,0.46,0.45,0.94)';
+          g.el.style.left = fl + 'px';
+          g.el.style.top = ft + 'px';
+          setTimeout(() => { g.el.style.transition = ''; g.el.classList.remove('dragging'); }, 200);
+        });
+      } else {
+        const curL = parseInt(dragged.style.left);
+        const curT = parseInt(dragged.style.top);
+        const snap = snapToGrid(curL, curT);
+        const free = findNearestFreeCell(snap.col, snap.row, dragged, bounds);
+        const fl = free.col * GRID_W + GRID_MARGIN_X;
+        const ft = free.row * GRID_H + GRID_MARGIN_Y;
+        dragged.style.transition = 'left 0.18s cubic-bezier(0.25,0.46,0.45,0.94), top 0.18s cubic-bezier(0.25,0.46,0.45,0.94)';
+        dragged.style.left = fl + 'px';
+        dragged.style.top = ft + 'px';
+        setTimeout(() => { if (dragged) dragged.style.transition = ''; }, 200);
+      }
     }
 
     dragged.classList.remove('dragging', 'active');
     isDragging = false;
+    isGroupDrag = false;
+    groupIcons = [];
     dragged = null;
   });
 })();
@@ -1691,6 +1741,7 @@ function closeWindow(name) {
   if (name==='snake' && window.__snake) window.__snake.stop();
   if (name==='minesweeper' && window.__minesweeper) window.__minesweeper.stop();
   if (name==='flappy' && window.__flappy) window.__flappy.stop();
+  if (name==='skills') resetSkillsState();
 
   let topName=null, topZ=-Infinity;
   openWindows.forEach(n => {
@@ -1894,7 +1945,6 @@ window.addEventListener('resize', () => {
   const b = document.getElementById('xp-balloon-container');
   if (b && b.style.display !== 'none') positionXpBalloon();
 });
-setTimeout(showXpBalloon, 2500);
 
 function adjustMsnPopupPosition() {
   const container = document.getElementById('msn-popup-container');
@@ -1923,6 +1973,7 @@ function showContactPopups() {
   const timeStr = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   
   function playMSNSound() {
+    if (isMuted) return;
     const audio = new Audio('msn-notification.mp3');
     audio.volume = 0.6;
     audio.play().catch(() => {});
@@ -2072,15 +2123,6 @@ window.addEventListener('resize', ()=>{ clampWindowsToViewport(); clampIconsToVi
 window.addEventListener('orientationchange', ()=>{ clampWindowsToViewport(); clampIconsToViewport(); });
 
 // ===== DOUBLE CLICK E BRING TO FRONT =====
-document.querySelectorAll('.desktop-icon').forEach(icon => {
-  icon.addEventListener('click', function(e) {
-    const name = this.dataset.name;
-    if (name === 'contact') {
-      document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected', 'active'));
-      showContactPopups();
-    }
-  });
-});
 document.querySelectorAll('.window').forEach(win => {
   win.addEventListener('mousedown', function() {
     this.style.zIndex=++zIndexCounter;
@@ -2267,6 +2309,13 @@ function initSkillsChart() {
     radarChartInstance.data.datasets[0].data = [100, 100, 95, 75, 100, 90];
     radarChartInstance.update();
   }
+}
+
+function resetSkillsState() {
+  skillsAnimated = false;
+  skillsChartAnimated = false;
+  if (radarChartInstance) { radarChartInstance.destroy(); radarChartInstance = null; }
+  renderSkillBars();
 }
 
 // ============================================================
