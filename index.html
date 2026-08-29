@@ -291,6 +291,7 @@
     gap: 12px;
     z-index: 9999;
     pointer-events: none;
+    transition: bottom 0.25s ease;
   }
   #msn-popup-container > * { pointer-events: auto; }
   .msn-popup {
@@ -560,6 +561,10 @@
     border-top: 1px solid #7baaf0;
     display: flex; align-items: center; padding: 0; gap: 4px;
     z-index: 1000; box-shadow: 0 -1px 3px rgba(0,0,0,0.2);
+    user-select: none; -webkit-user-select: none; -moz-user-select: none;
+  }
+  .start-menu, .desktop-icons, #context-menu, .msn-popup, .xp-balloon, .window-titlebar {
+    user-select: none; -webkit-user-select: none; -moz-user-select: none;
   }
   .start-btn {
     display: flex; align-items: center; justify-content: flex-start;
@@ -1557,8 +1562,8 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
         isGroupDrag = true;
         groupIcons = selectedIcons.map(el => ({
           el,
-          offX: e.clientX - (parseInt(el.style.left) || el.offsetLeft),
-          offY: e.clientY - (parseInt(el.style.top) || el.offsetTop)
+          startLeft: parseInt(el.style.left) || el.offsetLeft,
+          startTop: parseInt(el.style.top) || el.offsetTop
         }));
         this.classList.add('active');
       } else {
@@ -1589,13 +1594,20 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
     }
     if (isDragging) {
       if (isGroupDrag) {
+        let rawDx = e.clientX - startPos.x;
+        let rawDy = e.clientY - startPos.y;
+        let minDx = -Infinity, maxDx = Infinity, minDy = -Infinity, maxDy = Infinity;
         groupIcons.forEach(g => {
-          let nx = e.clientX - g.offX;
-          let ny = e.clientY - g.offY;
-          nx = Math.max(8, Math.min(nx, window.innerWidth - g.el.offsetWidth - 8));
-          ny = Math.max(8, Math.min(ny, window.innerHeight - g.el.offsetHeight - 38));
-          g.el.style.left = nx + 'px';
-          g.el.style.top = ny + 'px';
+          minDx = Math.max(minDx, 8 - g.startLeft);
+          maxDx = Math.min(maxDx, (window.innerWidth - g.el.offsetWidth - 8) - g.startLeft);
+          minDy = Math.max(minDy, 8 - g.startTop);
+          maxDy = Math.min(maxDy, (window.innerHeight - g.el.offsetHeight - 38) - g.startTop);
+        });
+        const dx = Math.max(minDx, Math.min(rawDx, maxDx));
+        const dy = Math.max(minDy, Math.min(rawDy, maxDy));
+        groupIcons.forEach(g => {
+          g.el.style.left = (g.startLeft + dx) + 'px';
+          g.el.style.top = (g.startTop + dy) + 'px';
         });
       } else {
         let nx = e.clientX - offX;
@@ -1926,6 +1938,7 @@ function showXpBalloon() {
   if (!b) return;
   b.style.display = 'block';
   positionXpBalloon();
+  adjustMsnPopupPosition();
   if (xpBalloonAutoCloseTimer) clearTimeout(xpBalloonAutoCloseTimer);
   xpBalloonAutoCloseTimer = setTimeout(closeXpBalloon, 10000);
 }
@@ -1934,12 +1947,13 @@ function closeXpBalloon() {
   if (!b) return;
   b.style.display = 'none';
   if (xpBalloonAutoCloseTimer) { clearTimeout(xpBalloonAutoCloseTimer); xpBalloonAutoCloseTimer = null; }
+  adjustMsnPopupPosition();
 }
 function toggleXpBalloon() {
   const b = document.getElementById('xp-balloon-container');
   if (!b) return;
   if (b.style.display === 'none') { showXpBalloon(); }
-  else { b.style.display = 'none'; }
+  else { b.style.display = 'none'; adjustMsnPopupPosition(); }
 }
 window.addEventListener('resize', () => {
   const b = document.getElementById('xp-balloon-container');
@@ -2128,6 +2142,21 @@ document.querySelectorAll('.window').forEach(win => {
     this.style.zIndex=++zIndexCounter;
     setActiveStates(this.id.replace('win-',''));
   });
+});
+
+// ===== EVITA SELEÇÃO DE TEXTO VAZAR PRA FORA DA JANELA/TASKBAR =====
+document.addEventListener('mouseup', function() {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || sel.rangeCount === 0) return;
+  const anchorEl = sel.anchorNode && (sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement);
+  const focusEl = sel.focusNode && (sel.focusNode.nodeType === 1 ? sel.focusNode : sel.focusNode.parentElement);
+  if (!anchorEl || !focusEl) return;
+  const anchorWin = anchorEl.closest ? anchorEl.closest('.window') : null;
+  const focusWin = focusEl.closest ? focusEl.closest('.window') : null;
+  // Se a seleção não começou e terminou dentro da MESMA janela, invalida (limpa) a seleção
+  if (!anchorWin || !focusWin || anchorWin !== focusWin) {
+    sel.removeAllRanges();
+  }
 });
 
 // ===== SELECTION BOX =====
@@ -3207,6 +3236,13 @@ document.addEventListener('click', function() {
 
   photo.addEventListener('mouseleave', function() {
     img.style.transform = 'scale(1) perspective(400px) rotateX(0deg) rotateY(0deg)';
+  });
+
+  photo.addEventListener('click', function() {
+    if (isMuted) return;
+    const punch = new Audio('punch.mp3');
+    punch.volume = 0.7;
+    punch.play().catch(() => {});
   });
 })();
 </script>
