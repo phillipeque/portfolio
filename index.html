@@ -2998,7 +2998,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
             pipe[0] + pipeWidth >= cTenth &&
             (pipe[1] > flyHeight || pipe[1] + pipeGap < flyHeight + size[1])) {
           die();
-          return;
+          break;
         }
 
         // Se o pipe saiu da tela, pontua e reposiciona
@@ -3036,7 +3036,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
       flyHeight = Math.min(flyHeight + flight, canvas.height - size[1]);
       if (flyHeight >= canvas.height - size[1]) {
         die();
-        return;
       }
     } else {
       if (!gameOver) {
