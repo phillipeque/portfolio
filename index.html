@@ -751,53 +751,6 @@
     margin-top: 20px; font-size: 13px;
   }
 
-  #xp-login-screen .xp-login-input {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    bottom: -24px;
-  }
-  #xp-login-screen .xp-login-input input {
-    padding: 0 0.4rem;
-    outline: none;
-    height: 40px; width: 200px;
-    background: #FFFFFF;
-    border: 0.5px solid #333333;
-    border-radius: 4px;
-    font-family: "Source Sans Pro", sans-serif;
-    font-size: 14px;
-  }
-  #xp-login-screen .xp-login-input .xp-login-green {
-    width: 40px; height: 40px;
-    background-color: #23B221;
-    border: 1px solid #fff;
-    box-shadow: inset 4px 2px 8px rgba(255, 255, 255, 0.6), inset -2px -3px 5px #267C08;
-    border-radius: 4px;
-    outline: none; cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 10px;
-  }
-  #xp-login-screen .xp-login-input .xp-login-green svg {
-    width: 20px; height: 20px;
-  }
-  #xp-login-screen .xp-login-input .xp-login-blue {
-    width: 40px; height: 40px;
-    background-color: #2266F5;
-    border: 1px solid #fff;
-    box-shadow: inset 4px 2px 8px rgba(255, 255, 255, 0.6), inset -2px -3px 5px #0844C3;
-    border-radius: 4px;
-    outline: none; cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  #xp-login-screen .xp-login-input .xp-login-blue svg {
-    width: 20px; height: 20px;
-  }
-
   #xp-login-screen .xp-login-footer {
     min-height: 12.5vh;
     width: 100%;
@@ -1021,11 +974,12 @@
 </head>
 <body>
 
-<!-- ===== TELA DE LOGIN (baseada em lucasgmelo/xp) ===== -->
+<!-- ===== TELA DE LOGIN ===== -->
 <div id="xp-login-screen">
   <div class="xp-login-header"></div>
   <div class="xp-login-main">
     <div class="xp-login-img">
+      <!-- Logo original do Windows XP -->
       <svg viewBox="0 0 280 110" xmlns="http://www.w3.org/2000/svg" style="max-width:260px;height:auto;display:block;margin-right:40px;">
         <g transform="translate(10,5)">
           <path d="M30,15 C45,5 55,25 70,15 C85,5 95,25 110,15 L110,45 C95,55 85,35 70,45 C55,55 45,35 30,45 Z" fill="#F25022"/>
@@ -1041,24 +995,12 @@
     </div>
     <div class="xp-login-line"></div>
     <div class="xp-login-users">
+      <!-- Usuário Phillipe (sem senha) -->
       <section class="xp-login-phillipe" onclick="loginToDesktop()">
         <div class="xp-login-icon"><img src="avatar_1.jpg" alt="Phillipe"></div>
         <div class="xp-login-user-info">
           <h3>Phillipe</h3>
-          <p>Type your password</p>
-          <div class="xp-login-input">
-            <input type="password" placeholder="">
-            <button class="xp-login-green" onclick="event.stopPropagation(); loginToDesktop();">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button class="xp-login-blue" onclick="event.stopPropagation(); alert('Hint: No password needed. Just click your name!');">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <text x="12" y="18" text-anchor="middle" fill="white" font-size="18" font-weight="bold" font-family="Arial">?</text>
-              </svg>
-            </button>
-          </div>
+          <p style="margin-top:20px; font-size:13px; font-family:'Verdana',sans-serif;">Click to log on</p>
         </div>
       </section>
     </div>
