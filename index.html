@@ -2903,8 +2903,10 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   img.onload = () => { imgLoaded = true; };
   img.onerror = () => { imgLoaded = false; };
 
-  // Configurações do jogo (do CodePen)
+  // Configurações do jogo
   let gamePlaying = false;
+  let gameOver = false;
+  let isRestarting = false;
   const gravity = 0.25;
   const speed = 1.9;
   const size = [51, 36];
@@ -2917,7 +2919,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
       currentScore,
       pipes = [];
 
-  // Pipe settings
   const pipeWidth = 78;
   const pipeGap = 270;
 
@@ -2931,7 +2932,7 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     const rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width || 360;
     canvas.height = rect.height || 400;
-    if (!gamePlaying) {
+    if (!gamePlaying && !gameOver) {
       flyHeight = (canvas.height / 2) - (size[1] / 2);
     }
   }
@@ -2941,6 +2942,12 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     flight = jump;
     flyHeight = (canvas.height / 2) - (size[1] / 2);
     pipes = Array(3).fill().map((a, i) => [canvas.width + (i * (pipeGap + pipeWidth)), pipeLoc()]);
+    gameOver = false;
+    gamePlaying = true;
+    isRestarting = false;
+    overlay.style.display = 'none';
+    scoreSpan.textContent = '0';
+    bestSpan.textContent = bestScore;
   }
 
   let animId = null;
@@ -2954,10 +2961,9 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     index++;
     const cTenth = getCTenth();
 
-    // Background parallax (do CodePen)
-    const bgOffset = (index * (speed / 2)) % canvas.width;
-
+    // Background
     if (imgLoaded) {
+      const bgOffset = (index * (speed / 2)) % canvas.width;
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height, -bgOffset + canvas.width, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height, -bgOffset, 0, canvas.width, canvas.height);
     } else {
@@ -2971,7 +2977,8 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 
     // Pipes
     if (gamePlaying) {
-      pipes.forEach(pipe => {
+      for (let i = 0; i < pipes.length; i++) {
+        const pipe = pipes[i];
         pipe[0] -= speed;
 
         if (imgLoaded) {
@@ -2986,86 +2993,55 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
           ctx.fillRect(pipe[0] - 4, pipe[1] + pipeGap, pipeWidth + 8, 16);
         }
 
-        // Score + new pipe
+        // Colisão
+        if (pipe[0] <= cTenth + size[0] &&
+            pipe[0] + pipeWidth >= cTenth &&
+            (pipe[1] > flyHeight || pipe[1] + pipeGap < flyHeight + size[1])) {
+          die();
+          return;
+        }
+
+        // Se o pipe saiu da tela, pontua e reposiciona
         if (pipe[0] <= -pipeWidth) {
           currentScore++;
           bestScore = Math.max(bestScore, currentScore);
           bestSpan.textContent = bestScore;
           scoreSpan.textContent = currentScore;
           playScoreSound();
-          pipes = [...pipes.slice(1), [pipes[pipes.length - 1][0] + pipeGap + pipeWidth, pipeLoc()]];
+          const lastPipe = pipes[pipes.length - 1];
+          pipes.splice(i, 1);
+          pipes.push([lastPipe[0] + pipeGap + pipeWidth, pipeLoc()]);
+          i--;
         }
-
-        // Collision (lógica original do CodePen)
-        if ([
-          pipe[0] <= cTenth + size[0],
-          pipe[0] + pipeWidth >= cTenth,
-          pipe[1] > flyHeight || pipe[1] + pipeGap < flyHeight + size[1]
-        ].every(elem => elem)) {
-          die();
-          return;
-        }
-      });
+      }
     }
 
-    // Draw bird
-    if (gamePlaying) {
-      if (imgLoaded) {
-        ctx.drawImage(img, 432, Math.floor((index % 9) / 3) * size[1], ...size, cTenth, flyHeight, ...size);
+    // Desenha o pássaro (apenas sprite, sem fallback genérico)
+    if (imgLoaded) {
+      const frame = Math.floor((index % 9) / 3) * size[1];
+      if (gamePlaying) {
+        ctx.drawImage(img, 432, frame, ...size, cTenth, flyHeight, ...size);
       } else {
-        ctx.save();
-        ctx.translate(cTenth + size[0] / 2, flyHeight + size[1] / 2);
-        const angle = Math.min(Math.max(flight * 0.05, -0.5), 0.5);
-        ctx.rotate(angle);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, size[0] / 2, size[1] / 2, 0, 0, Math.PI * 2);
-        ctx.fillStyle = '#FFD700';
-        ctx.fill();
-        ctx.strokeStyle = '#E6A800';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(8, -6, 4, 0, Math.PI * 2);
-        ctx.fillStyle = '#fff';
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(10, -7, 2, 0, Math.PI * 2);
-        ctx.fillStyle = '#000';
-        ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(14, 0);
-        ctx.lineTo(22, 3);
-        ctx.lineTo(14, 6);
-        ctx.closePath();
-        ctx.fillStyle = '#FF6600';
-        ctx.fill();
-        ctx.restore();
+        ctx.drawImage(img, 432, frame, ...size, (canvas.width / 2) - size[0] / 2, flyHeight, ...size);
       }
+    } else {
+      // Fallback simples: retângulo amarelo
+      ctx.fillStyle = '#FFD700';
+      ctx.fillRect(cTenth, flyHeight, size[0], size[1]);
+    }
+
+    // Física do pássaro
+    if (gamePlaying) {
       flight += gravity;
       flyHeight = Math.min(flyHeight + flight, canvas.height - size[1]);
-
-      // Hit ground
       if (flyHeight >= canvas.height - size[1]) {
         die();
         return;
       }
     } else {
-      // Tela de espera — pássaro no centro
-      if (imgLoaded) {
-        ctx.drawImage(img, 432, Math.floor((index % 9) / 3) * size[1], ...size, ((canvas.width / 2) - size[0] / 2), flyHeight, ...size);
-      } else {
-        ctx.save();
-        ctx.translate((canvas.width / 2), flyHeight + size[1] / 2);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, size[0] / 2, size[1] / 2, 0, 0, Math.PI * 2);
-        ctx.fillStyle = '#FFD700';
-        ctx.fill();
-        ctx.strokeStyle = '#E6A800';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        ctx.restore();
+      if (!gameOver) {
+        flyHeight = (canvas.height / 2) - (size[1] / 2);
       }
-      flyHeight = (canvas.height / 2) - (size[1] / 2);
     }
 
     scoreSpan.textContent = currentScore;
@@ -3075,7 +3051,9 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   }
 
   function die() {
+    if (gameOver) return;
     gamePlaying = false;
+    gameOver = true;
     playDieSound();
     localStorage.setItem('flappy-best', bestScore);
     overlayTitle.textContent = 'GAME OVER';
@@ -3085,20 +3063,28 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   }
 
   function flap() {
-    if (!gamePlaying) {
+    if (isRestarting) return;
+    if (gameOver) {
+      isRestarting = true;
       setup();
-      gamePlaying = true;
-      flight = jump;
-      overlay.style.display = 'none';
-      playFlapSound();
       if (!renderLoop) {
         renderLoop = true;
         render();
       }
-    } else {
+      return;
+    }
+    if (!gamePlaying) {
+      setup();
+      if (!renderLoop) {
+        renderLoop = true;
+        render();
+      }
       flight = jump;
       playFlapSound();
+      return;
     }
+    flight = jump;
+    playFlapSound();
   }
 
   function pauseGame() {
@@ -3112,11 +3098,11 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
   function stopGame() {
     renderLoop = false;
     gamePlaying = false;
+    gameOver = false;
     isPaused = false;
     if (animId) { cancelAnimationFrame(animId); animId = null; }
   }
 
-  // Sons
   function playFlapSound() {
     initAudio(); if (isMuted) return;
     const osc = audioCtx.createOscillator();
@@ -3142,7 +3128,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     osc.start(); osc.stop(audioCtx.currentTime + 0.08);
   }
 
-  // Eventos
   canvas.addEventListener('click', flap);
   canvas.addEventListener('touchstart', function(e) { e.preventDefault(); flap(); }, { passive: false });
   overlay.addEventListener('click', flap);
@@ -3157,15 +3142,14 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     }
   });
 
-  // Inicialização
   resizeCanvas();
   setup();
-  bestSpan.textContent = bestScore;
+  gamePlaying = false;
+  gameOver = false;
   overlayTitle.textContent = 'Flappy Bird';
   overlayScore.textContent = 'Best: ' + bestScore;
   overlay.style.display = 'flex';
   overlay.querySelector('.game-overlay-hint').textContent = 'Click or press space to play';
-
   renderLoop = true;
   render();
 
