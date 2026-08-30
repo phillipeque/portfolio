@@ -2925,18 +2925,23 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
       pipes = [];
 
   const pipeWidth = 78;
-  const pipeGap = 270;
+  let pipeGap = 200; // recalculado em resizeCanvas() de acordo com a altura da janela
 
   function getCTenth() { return canvas.width / 10; }
 
   function pipeLoc() {
-    return (Math.random() * ((canvas.height - (pipeGap + pipeWidth)) - pipeWidth)) + pipeWidth;
+    const margin = 40; // distância mínima da borda de cima/baixo do canvas
+    const minTop = margin;
+    const maxTop = canvas.height - pipeGap - margin;
+    if (maxTop <= minTop) return Math.max(margin, (canvas.height - pipeGap) / 2);
+    return minTop + Math.random() * (maxTop - minTop);
   }
 
   function resizeCanvas() {
     const rect = canvas.parentElement.getBoundingClientRect();
     canvas.width = rect.width || 360;
     canvas.height = rect.height || 400;
+    pipeGap = Math.max(140, Math.min(220, canvas.height * 0.42));
     if (!gamePlaying && !gameOver) {
       flyHeight = (canvas.height / 2) - (size[1] / 2);
     }
