@@ -3244,10 +3244,6 @@ document.addEventListener('click', function() {
     img.style.transform = 'scale(1) perspective(400px) rotateX(0deg) rotateY(0deg)';
   });
 
-  const punchAudio = new Audio('punch.mp3');
-  punchAudio.preload = 'auto';
-  punchAudio.volume = 0.7;
-
   photo.addEventListener('click', function() {
     if (isMuted) return;
     punchAudio.currentTime = 0;
