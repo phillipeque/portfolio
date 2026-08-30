@@ -1648,14 +1648,43 @@ function findNearestFreeCell(tCol,tRow,exclude,bounds) {
       const name = dragged.dataset.name;
       toggleWindow(name);
     } else if (isDragging) {
-      const bounds = getGridBounds();
+  const bounds = getGridBounds();
       if (isGroupDrag) {
         const groupEls = groupIcons.map(g => g.el);
+        const claimedCells = [];
+        function isCellFreeForGroup(col, row) {
+          if (isCellOccupied(col, row, groupEls)) return false;
+          return !claimedCells.some(c => c.col === col && c.row === row);
+        }
+        function findFreeCellForGroup(tCol, tRow) {
+          if (tCol>=0 && tCol<=bounds.maxCols && tRow>=0 && tRow<=bounds.maxRows && isCellFreeForGroup(tCol, tRow))
+            return { col: tCol, row: tRow };
+          for (let r=1; r<100; r++) {
+            for (let c=tCol-r; c<=tCol+r; c++) {
+              const rr = tRow-r;
+              if (c>=0 && c<=bounds.maxCols && rr>=0 && rr<=bounds.maxRows && isCellFreeForGroup(c, rr)) return {col:c, row:rr};
+            }
+            for (let rr=tRow-r+1; rr<=tRow+r; rr++) {
+              const c=tCol+r;
+              if (c>=0 && c<=bounds.maxCols && rr>=0 && rr<=bounds.maxRows && isCellFreeForGroup(c, rr)) return {col:c, row:rr};
+            }
+            for (let c=tCol+r-1; c>=tCol-r; c--) {
+              const rr=tRow+r;
+              if (c>=0 && c<=bounds.maxCols && rr>=0 && rr<=bounds.maxRows && isCellFreeForGroup(c, rr)) return {col:c, row:rr};
+            }
+            for (let rr=tRow+r-1; rr>tRow-r; rr--) {
+              const c=tCol-r;
+              if (c>=0 && c<=bounds.maxCols && rr>=0 && rr<=bounds.maxRows && isCellFreeForGroup(c, rr)) return {col:c, row:rr};
+            }
+          }
+          return { col: Math.max(0,Math.min(tCol,bounds.maxCols)), row: Math.max(0,Math.min(tRow,bounds.maxRows)) };
+        }
         groupIcons.forEach(g => {
           const curL = parseInt(g.el.style.left);
           const curT = parseInt(g.el.style.top);
           const snap = snapToGrid(curL, curT);
-          const free = findNearestFreeCell(snap.col, snap.row, groupEls, bounds);
+          const free = findFreeCellForGroup(snap.col, snap.row);
+          claimedCells.push(free);
           const fl = free.col * GRID_W + GRID_MARGIN_X;
           const ft = free.row * GRID_H + GRID_MARGIN_Y;
           g.el.style.transition = 'left 0.18s cubic-bezier(0.25,0.46,0.45,0.94), top 0.18s cubic-bezier(0.25,0.46,0.45,0.94)';
