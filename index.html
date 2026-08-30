@@ -2968,9 +2968,11 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
 
     // Background
     if (imgLoaded) {
+      const bgWidth = 432; // largura do bloco de fundo dentro do sprite
+      const bgHeight = img.naturalHeight; // altura real do sprite (inclui céu, prédios e grama)
       const bgOffset = (index * (speed / 2)) % canvas.width;
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height, -bgOffset + canvas.width, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height, -bgOffset, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, bgWidth, bgHeight, -bgOffset + canvas.width, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, bgWidth, bgHeight, -bgOffset, 0, canvas.width, canvas.height);
     } else {
       ctx.fillStyle = '#4a90d9';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
