@@ -977,6 +977,91 @@
   overflow-y: hidden !important;
   overflow-x: hidden !important;
 }
+
+/* ===== EXPERIENCE - TILES ESTILO WINDOWS 8 ===== */
+#win-experience .window-content {
+  padding: 20px !important;
+  overflow-y: auto !important;
+  background: #1a1a1a;
+  display: block !important; /* sobrescreve o flex center do placeholder antigo */
+}
+.win8-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 110px);
+  grid-auto-rows: 110px;
+  gap: 8px;
+}
+.win8-tile {
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  transform-origin: center center;
+  z-index: 1;
+  transition: transform 0.25s cubic-bezier(0.25,0.46,0.45,0.94),
+              opacity 0.25s ease,
+              box-shadow 0.25s ease;
+}
+.win8-tile img {
+  width: 55%;
+  height: 55%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  transition: transform 0.25s ease;
+}
+.win8-tile .tile-info {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease 0.05s, transform 0.25s ease 0.05s;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.78) 100%);
+  pointer-events: none;
+}
+.win8-tile .tile-info h4 {
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0 0 2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.win8-tile .tile-info p {
+  color: #e8e8e8;
+  font-size: 10px;
+  margin: 0 0 1px;
+}
+.win8-tile .tile-info span {
+  color: #c8c8c8;
+  font-size: 9px;
+}
+
+/* estado ativo (o tile em foco cresce) */
+.win8-tile.tile-expanded {
+  transform: scale(1.35);
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.win8-tile.tile-expanded img { transform: translateY(-8px) scale(0.85); }
+.win8-tile.tile-expanded .tile-info { opacity: 1; transform: translateY(0); }
+
+/* estado dos vizinhos (encolhem para dar espaço) */
+.win8-tile.tile-shrunk {
+  transform: scale(0.88);
+  opacity: 0.55;
+}
+
+@media (max-width: 768px) {
+  .win8-tiles-grid { grid-template-columns: repeat(auto-fill, 84px); grid-auto-rows: 84px; gap: 6px; }
+  .win8-tile.tile-expanded { transform: scale(1.25); }
+}
   
 </style>
 <base target="_blank">
@@ -1107,7 +1192,7 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE (PLACEHOLDER VAZIO) ===== -->
+<!-- ===== JANELA EXPERIENCE ===== -->
 <div class="window" id="win-experience" style="left: calc(50% - 300px); top: calc(50% - 200px); width: 600px; height: 400px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
@@ -1119,10 +1204,95 @@
       <div class="win-btn close" onclick="closeWindow('experience')"><svg width="11" height="11"><line x1="1.5" y1="1.5" x2="9.5" y2="9.5" stroke="#fff" stroke-width="2.5"/><line x1="9.5" y1="1.5" x2="1.5" y2="9.5" stroke="#fff" stroke-width="2.5"/></svg></div>
     </div>
   </div>
-  <div class="window-content" style="display:flex; align-items:center; justify-content:center; background:#ece9d8;">
-    <div style="font-size:24px; color:#0045b5; font-weight:bold; text-align:center;">
-      Experience<br>
-      <span style="font-size:14px; font-weight:normal; color:#606060;">(placeholder)</span>
+  <div class="window-content" style="padding:20px; overflow-y:auto; background:#1a1a1a;">
+    <!-- EDITE cargo/período de cada tile abaixo com suas informações reais -->
+    <div class="win8-tiles-grid" id="experience-tiles">
+
+      <div class="win8-tile" style="background:#2D89EF;">
+        <img src="logos/binance.png" alt="Binance">
+        <div class="tile-info"><h4>Binance</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#00ABA9;">
+        <img src="logos/arenagames.png" alt="Arena Games">
+        <div class="tile-info"><h4>Arena Games</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#339933;">
+        <img src="logos/beeos.png" alt="BeeOS">
+        <div class="tile-info"><h4>BeeOS</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#7FBA00;">
+        <img src="logos/bionic.png" alt="Bionic">
+        <div class="tile-info"><h4>Bionic</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#F09609;">
+        <img src="logos/coinracer.png" alt="CoinRacer">
+        <div class="tile-info"><h4>CoinRacer</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#FA6800;">
+        <img src="logos/coralapp.png" alt="Coral App">
+        <div class="tile-info"><h4>Coral App</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#E51400;">
+        <img src="logos/fortblockgames.png" alt="Fort Block Games">
+        <div class="tile-info"><h4>Fort Block Games</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#A20025;">
+        <img src="logos/lionshare.png" alt="LionShare">
+        <div class="tile-info"><h4>LionShare</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#E671B8;">
+        <img src="logos/pipe.png" alt="Pipe">
+        <div class="tile-info"><h4>Pipe</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#7E3FF2;">
+        <img src="logos/reaktor.png" alt="Reaktor">
+        <div class="tile-info"><h4>Reaktor</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#603CBA;">
+        <img src="logos/sheertopia.png" alt="Sheertopia">
+        <div class="tile-info"><h4>Sheertopia</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#1E7145;">
+        <img src="logos/solcade.png" alt="Solcade">
+        <div class="tile-info"><h4>Solcade</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#647687;">
+        <img src="logos/streamr.png" alt="Streamr">
+        <div class="tile-info"><h4>Streamr</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#825A2C;">
+        <img src="logos/tap.png" alt="Tap">
+        <div class="tile-info"><h4>Tap</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#6D8764;">
+        <img src="logos/vs1.png" alt="VS1">
+        <div class="tile-info"><h4>VS1</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#B91D47;">
+        <img src="logos/wicrypt.png" alt="Wicrypt">
+        <div class="tile-info"><h4>Wicrypt</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
+      <div class="win8-tile" style="background:#EE1111;">
+        <img src="logos/xend.png" alt="Xend Finance">
+        <div class="tile-info"><h4>Xend Finance</h4><p>Community Manager</p><span>20XX – 20XX</span></div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -3233,6 +3403,44 @@ function toggleMute() {
   else { btn.classList.remove('muted'); if(ov) ov.style.display='none'; }
 }
 
+// ===== EXPERIENCE - TILES ESTILO WINDOWS 8 (hover expande, vizinhos encolhem) =====
+(function initExperienceTiles() {
+  const grid = document.getElementById('experience-tiles');
+  if (!grid) return;
+  const tiles = Array.from(grid.querySelectorAll('.win8-tile'));
+  const isTouch = window.matchMedia('(hover: none)').matches;
+
+  function expand(tile) {
+    tiles.forEach(t => {
+      if (t === tile) { t.classList.add('tile-expanded'); t.classList.remove('tile-shrunk'); }
+      else { t.classList.remove('tile-expanded'); t.classList.add('tile-shrunk'); }
+    });
+  }
+  function reset() {
+    tiles.forEach(t => t.classList.remove('tile-expanded', 'tile-shrunk'));
+  }
+
+  tiles.forEach(tile => {
+    if (!isTouch) {
+      tile.addEventListener('mouseenter', () => expand(tile));
+    } else {
+      tile.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (tile.classList.contains('tile-expanded')) reset();
+        else expand(tile);
+      });
+    }
+  });
+
+  if (!isTouch) {
+    grid.addEventListener('mouseleave', reset);
+  } else {
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#experience-tiles')) reset();
+    });
+  }
+})();
+  
 // ============================================================
 //  INICIALIZAÇÃO FINAL
 // ============================================================
