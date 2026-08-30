@@ -3212,6 +3212,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const aboutWin = document.getElementById('win-about');
   if(aboutWin) {
+    const aboutContent = aboutWin.querySelector('.window-content');
+    if(aboutContent) aboutContent.style.overflowY = 'hidden';
     aboutWin.style.display = 'flex';
     openWindows.add('about');
     aboutWin.style.zIndex = ++zIndexCounter;
