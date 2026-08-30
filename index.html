@@ -3404,85 +3404,102 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INTERAÇÃO DE ARRASTE NO CARROSSEL (EXPERIENCE) — com eventos separados de mouse e touch
+//  INTERAÇÃO DE ARRASTE NO CARROSSEL (EXPERIENCE) — CORRIGIDA
 // ============================================================
 (function initCarouselDrag() {
-  const stage = document.getElementById('experience-stage');
-  const ring = document.getElementById('experience-ring');
-  if (!stage || !ring) return;
-
-  // Remove qualquer listener antigo substituindo o stage por um clone
-  const newStage = stage.cloneNode(true);
-  stage.parentNode.replaceChild(newStage, stage);
-  const newRing = document.getElementById('experience-ring');
-  const stageEl = newStage;
-  const ringEl = newRing;
+  const stageEl = document.getElementById('experience-stage');
+  const ringEl  = document.getElementById('experience-ring');
+  if (!stageEl || !ringEl) return;
 
   let isDragging = false;
   let startX = 0;
-  let currentAngle = 0;
   let startAngle = 0;
   let hasDragged = false;
   let isHovering = false;
+  let animPausedByDrag = false;
 
-  // Funções auxiliares
+  // Lê o ângulo REAL do elemento (incluindo animação CSS ativa)
   function getCurrentAngle() {
-    const transform = ringEl.style.transform;
-    if (!transform) return 0;
+    const style = window.getComputedStyle(ringEl);
+    const transform = style.transform || style.webkitTransform;
+    if (!transform || transform === 'none') return 0;
+
+    // Caso o browser devolva rotateY direto
     const match = transform.match(/rotateY\(([-\d.]+)deg\)/);
-    return match ? parseFloat(match[1]) : 0;
+    if (match) return parseFloat(match[1]);
+
+    // Caso devolva matrix3d (WebKit/Chrome costumam fazer isso)
+    const m3d = transform.match(/matrix3d\(([^)]+)\)/);
+    if (m3d) {
+      const vals = m3d[1].split(',').map(v => parseFloat(v.trim()));
+      // matrix3d(cos, 0, sin, 0, 0, 1, 0, 0, -sin, 0, cos, 0, 0, 0, 0, 1)
+      const sin = vals[2];
+      const cos = vals[0];
+      return Math.atan2(sin, cos) * (180 / Math.PI);
+    }
+
+    // Fallback matrix 2D
+    const m2d = transform.match(/matrix\(([^)]+)\)/);
+    if (m2d) {
+      const vals = m2d[1].split(',').map(v => parseFloat(v.trim()));
+      return Math.atan2(vals[1], vals[0]) * (180 / Math.PI);
+    }
+
+    return 0;
   }
 
   function setAngle(deg) {
     ringEl.style.transform = `rotateY(${deg}deg)`;
   }
 
-  function pauseCSSAnimation() {
-    ringEl.style.animationPlayState = 'paused';
+  // Pausa de verdade: tira a animação CSS e fixa o ângulo atual via inline
+  function pauseAnimation() {
     const angle = getCurrentAngle();
-    currentAngle = angle;
-    setAngle(angle);
+    startAngle = angle;
+    ringEl.style.animation = 'none';        // ← remove a animação CSS
+    setAngle(angle);                        // ← fixa o transform inline
     stageEl.classList.add('dragging');
+    animPausedByDrag = true;
   }
 
-  function resumeCSSAnimation() {
+  // Retoma a animação CSS a partir do ângulo onde parou
+  function resumeAnimation() {
     stageEl.classList.remove('dragging');
-    const duration = 55;
+    animPausedByDrag = false;
+
+    const duration = 55; // segundos (igual ao CSS)
     const angle = getCurrentAngle();
-    const normalizedAngle = ((angle % 360) + 360) % 360;
-    const progress = normalizedAngle / 360;
+    const normalized = ((angle % 360) + 360) % 360;
+    const progress = normalized / 360;
     const delay = -(duration * progress);
-    ringEl.style.transform = '';
-    ringEl.style.animationPlayState = 'running';
+
+    ringEl.style.animation = '';            // ← restaura a animação do CSS
     ringEl.style.animationDelay = delay + 's';
-    void ringEl.offsetWidth;
+    ringEl.style.animationPlayState = 'running';
+    void ringEl.offsetWidth;                  // força reflow
   }
 
-  // Hover
+  // Hover: só pausa visualmente, sem tirar a animação
   stageEl.addEventListener('mouseenter', () => {
     isHovering = true;
-    if (ringEl.style.animationPlayState !== 'paused') {
-      ringEl.style.animationPlayState = 'paused';
-    }
+    if (!animPausedByDrag) ringEl.style.animationPlayState = 'paused';
   });
+
   stageEl.addEventListener('mouseleave', () => {
     isHovering = false;
-    if (!isDragging) {
-      if (ringEl.style.animationPlayState === 'paused') {
-        ringEl.style.animationPlayState = 'running';
-        ringEl.style.animationDelay = '';
-      }
+    if (!isDragging && !animPausedByDrag) {
+      ringEl.style.animationPlayState = 'running';
+      ringEl.style.animationDelay = '';
     }
   });
 
-  // --- MOUSE EVENTS ---
+  // --- MOUSE ---
   stageEl.addEventListener('mousedown', (e) => {
     if (e.button !== 0) return;
     isDragging = true;
     hasDragged = false;
     startX = e.clientX;
-    pauseCSSAnimation();
-    startAngle = getCurrentAngle();
+    pauseAnimation();
     e.preventDefault();
   });
 
@@ -3490,66 +3507,52 @@ function toggleMute() {
     if (!isDragging) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > 5) hasDragged = true;
-    const deltaAngle = dx * 0.4;
-    const newAngle = startAngle + deltaAngle;
-    setAngle(newAngle);
+    setAngle(startAngle + dx * 0.4);
     e.preventDefault();
   });
 
-  document.addEventListener('mouseup', (e) => {
+  document.addEventListener('mouseup', () => {
     if (!isDragging) return;
     isDragging = false;
-    if (!hasDragged) {
-      if (!isHovering) resumeCSSAnimation();
-      else { ringEl.style.transform = ''; stageEl.classList.remove('dragging'); }
-      return;
+    if (!isHovering) resumeAnimation();
+    else {
+      stageEl.classList.remove('dragging');
+      animPausedByDrag = false;
+      ringEl.style.animationPlayState = 'paused';
     }
-    if (!isHovering) resumeCSSAnimation();
-    else { ringEl.style.transform = ''; stageEl.classList.remove('dragging'); }
   });
 
-  // --- TOUCH EVENTS ---
+  // --- TOUCH ---
   stageEl.addEventListener('touchstart', (e) => {
-    const touch = e.touches[0];
-    if (!touch) return;
+    const t = e.touches[0];
+    if (!t) return;
     isDragging = true;
     hasDragged = false;
-    startX = touch.clientX;
-    pauseCSSAnimation();
-    startAngle = getCurrentAngle();
+    startX = t.clientX;
+    pauseAnimation();
     e.preventDefault();
   }, { passive: false });
 
   document.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
-    const touch = e.touches[0];
-    if (!touch) return;
-    const dx = touch.clientX - startX;
+    const t = e.touches[0];
+    if (!t) return;
+    const dx = t.clientX - startX;
     if (Math.abs(dx) > 5) hasDragged = true;
-    const deltaAngle = dx * 0.4;
-    const newAngle = startAngle + deltaAngle;
-    setAngle(newAngle);
+    setAngle(startAngle + dx * 0.4);
     e.preventDefault();
   }, { passive: false });
 
-  document.addEventListener('touchend', (e) => {
+  document.addEventListener('touchend', () => {
     if (!isDragging) return;
     isDragging = false;
-    if (!hasDragged) {
-      if (!isHovering) resumeCSSAnimation();
-      else { ringEl.style.transform = ''; stageEl.classList.remove('dragging'); }
-      return;
+    if (!isHovering) resumeAnimation();
+    else {
+      stageEl.classList.remove('dragging');
+      animPausedByDrag = false;
+      ringEl.style.animationPlayState = 'paused';
     }
-    if (!isHovering) resumeCSSAnimation();
-    else { ringEl.style.transform = ''; stageEl.classList.remove('dragging'); }
   });
-
-  // Inicializar
-  ringEl.style.animationPlayState = 'running';
-  ringEl.style.animationDelay = '';
-  stageEl.classList.remove('dragging');
-
-  console.log('Carrossel Experience: arraste com mouse e touch funcionando perfeitamente.');
 })();
 
 // ============================================================
