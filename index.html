@@ -1726,9 +1726,13 @@ function updateTitlebarStates(activeName) {
 }
 
 // ===== ABRIR, FECHAR, MINIMIZAR, RESTAURAR =====
-function openWindow(name) {
+unction openWindow(name) {
   if (isNonWindowApp(name)) return;
   const win=document.getElementById('win-'+name);
+  if(name==='about') {
+    const content = win.querySelector('.window-content');
+    if(content) content.style.overflowY = 'hidden';
+  }
   let task=getTaskbarItem(name);
   if (minimizedWindows.has(name)) {
     minimizedWindows.delete(name);
