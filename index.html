@@ -2247,9 +2247,9 @@ const skillsData = [
   { name: "Telegram Management", percent: 95 },
   { name: "Team Leadership", percent: 100 },
   { name: "Conflict Resolution", percent: 100 },
-  { name: "Scam Prevention", percent: 100 },
+  { name: "Security & Anti-Scam Protocols", percent: 100 },
 
-  { section: "Languages & Localization" },
+  { section: "Communication & Languages" },
   { name: "Portuguese (Native)", percent: 100 },
   { name: "English (Fluent)", percent: 95 },
   { name: "Spanish (Fluent)", percent: 85 },
@@ -2257,10 +2257,11 @@ const skillsData = [
   { name: "Copywriting", percent: 95 },
 
   { section: "Tools & Technology" },
-  { name: "Web3 Knowledge", percent: 95 },
+  { name: "Blockchain Fundamentals", percent: 95 },
   { name: "Excel / Sheets", percent: 85 },
   { name: "Notion / Organization", percent: 90 },
-  { name: "Moderation Bots", percent: 100 },
+  { name: "Carl-bot / MEE6 / Collab.Land", percent: 100 },
+  { name: "Analytics & Community Metrics", percent: 100 },
 
   { section: "Strategy & Soft Skills" },
   { name: "Process Organization", percent: 100 },
@@ -2344,7 +2345,7 @@ function initSkillsChart() {
   radarChartInstance = new Chart(ctx, {
     type: 'radar',
     data: {
-      labels: ["Conflict Resolution", "Discord Management", "Telegram Management", "Social Media Management", "Team Leadership", "Web3 Knowledge"],
+      labels: ["Conflict Resolution", "Discord Management", "Telegram Management", "Social Media Management", "Team Leadership", "Blockchain Fundamentals"],
       datasets: [{
         label: 'Proficiency',
         data: [0, 0, 0, 0, 0, 0],
