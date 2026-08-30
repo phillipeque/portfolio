@@ -955,6 +955,14 @@
   overflow: hidden;
   background: #ece9d8;
   touch-action: none; /* impede scroll da página ao arrastar no mobile */
+  cursor: grab;
+  user-select: none;
+}
+.exp-carousel-stage.dragging {
+  cursor: grabbing;
+}
+.exp-carousel-stage.dragging .exp-carousel-ring {
+  animation-play-state: paused !important;
 }
 .exp-carousel-ring {
   position: relative;
@@ -964,9 +972,7 @@
   --radius: 640px;
   transform-style: preserve-3d;
   animation: expCarouselSpin 55s linear infinite;
-}
-.exp-carousel-stage.dragging .exp-carousel-ring {
-  animation-play-state: paused !important;
+  will-change: transform;
 }
 @keyframes expCarouselSpin {
   from { transform: rotateY(0deg); }
@@ -3398,18 +3404,17 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INTERAÇÃO DE ARRASTE NO CARROSSEL (EXPERIENCE) — com Pointer Events e sincronização suave
+//  INTERAÇÃO DE ARRASTE NO CARROSSEL (EXPERIENCE) — com eventos separados de mouse e touch
 // ============================================================
 (function initCarouselDrag() {
   const stage = document.getElementById('experience-stage');
   const ring = document.getElementById('experience-ring');
   if (!stage || !ring) return;
 
-  // Substitui o stage por um clone para remover listeners antigos (se houver)
+  // Remove qualquer listener antigo substituindo o stage por um clone
   const newStage = stage.cloneNode(true);
   stage.parentNode.replaceChild(newStage, stage);
   const newRing = document.getElementById('experience-ring');
-  // Agora usamos newStage e newRing
   const stageEl = newStage;
   const ringEl = newRing;
 
@@ -3420,7 +3425,7 @@ function toggleMute() {
   let hasDragged = false;
   let isHovering = false;
 
-  // Função para obter o ângulo atual do transform inline
+  // Funções auxiliares
   function getCurrentAngle() {
     const transform = ringEl.style.transform;
     if (!transform) return 0;
@@ -3432,7 +3437,6 @@ function toggleMute() {
     ringEl.style.transform = `rotateY(${deg}deg)`;
   }
 
-  // Pausar animação CSS e capturar ângulo
   function pauseCSSAnimation() {
     ringEl.style.animationPlayState = 'paused';
     const angle = getCurrentAngle();
@@ -3441,10 +3445,9 @@ function toggleMute() {
     stageEl.classList.add('dragging');
   }
 
-  // Retomar animação CSS com sincronização (animation-delay negativo)
   function resumeCSSAnimation() {
     stageEl.classList.remove('dragging');
-    const duration = 55; // segundos (mesmo valor da animação CSS)
+    const duration = 55;
     const angle = getCurrentAngle();
     const normalizedAngle = ((angle % 360) + 360) % 360;
     const progress = normalizedAngle / 360;
@@ -3452,85 +3455,101 @@ function toggleMute() {
     ringEl.style.transform = '';
     ringEl.style.animationPlayState = 'running';
     ringEl.style.animationDelay = delay + 's';
-    // Forçar reflow para aplicar o delay
     void ringEl.offsetWidth;
   }
 
-  // Gerenciar hover (pausar/retomar via CSS)
+  // Hover
   stageEl.addEventListener('mouseenter', () => {
     isHovering = true;
-    // Se a animação não estiver pausada, pausamos (o CSS já pausa via :hover, mas garantimos)
     if (ringEl.style.animationPlayState !== 'paused') {
       ringEl.style.animationPlayState = 'paused';
     }
   });
   stageEl.addEventListener('mouseleave', () => {
     isHovering = false;
-    // Se não estiver arrastando, retomamos a animação
     if (!isDragging) {
-      // Se estava pausada e não há transform inline, retomamos
       if (ringEl.style.animationPlayState === 'paused') {
         ringEl.style.animationPlayState = 'running';
-        // Se havia um delay, removemos para não atrapalhar
         ringEl.style.animationDelay = '';
       }
     }
   });
 
-  // Pointer events para arraste (suporte mouse e touch)
-  stageEl.addEventListener('pointerdown', (e) => {
-    if (e.button !== 0) return; // apenas botão esquerdo
+  // --- MOUSE EVENTS ---
+  stageEl.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return;
     isDragging = true;
     hasDragged = false;
     startX = e.clientX;
     pauseCSSAnimation();
     startAngle = getCurrentAngle();
-    stageEl.setPointerCapture(e.pointerId);
     e.preventDefault();
   });
 
-  document.addEventListener('pointermove', (e) => {
+  document.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     const dx = e.clientX - startX;
     if (Math.abs(dx) > 5) hasDragged = true;
-    const deltaAngle = dx * 0.5; // sensibilidade
+    const deltaAngle = dx * 0.4;
     const newAngle = startAngle + deltaAngle;
     setAngle(newAngle);
     e.preventDefault();
   });
 
-  document.addEventListener('pointerup', (e) => {
+  document.addEventListener('mouseup', (e) => {
     if (!isDragging) return;
     isDragging = false;
-    stageEl.releasePointerCapture(e.pointerId);
     if (!hasDragged) {
-      // Se não houve arraste significativo, apenas retomar
-      if (!isHovering) {
-        resumeCSSAnimation();
-      } else {
-        // Se estiver em hover, apenas remover transform inline e manter pausado
-        ringEl.style.transform = '';
-        stageEl.classList.remove('dragging');
-      }
+      if (!isHovering) resumeCSSAnimation();
+      else { ringEl.style.transform = ''; stageEl.classList.remove('dragging'); }
       return;
     }
-    // Se arrastou, sincronizar
-    if (!isHovering) {
-      resumeCSSAnimation();
-    } else {
-      // Mantém pausado, apenas remove transform inline
-      ringEl.style.transform = '';
-      stageEl.classList.remove('dragging');
-      // A animação CSS fica pausada devido ao hover
-    }
+    if (!isHovering) resumeCSSAnimation();
+    else { ringEl.style.transform = ''; stageEl.classList.remove('dragging'); }
   });
 
-  // Inicializar: garantir que a animação CSS esteja rodando
+  // --- TOUCH EVENTS ---
+  stageEl.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    isDragging = true;
+    hasDragged = false;
+    startX = touch.clientX;
+    pauseCSSAnimation();
+    startAngle = getCurrentAngle();
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    const dx = touch.clientX - startX;
+    if (Math.abs(dx) > 5) hasDragged = true;
+    const deltaAngle = dx * 0.4;
+    const newAngle = startAngle + deltaAngle;
+    setAngle(newAngle);
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    if (!hasDragged) {
+      if (!isHovering) resumeCSSAnimation();
+      else { ringEl.style.transform = ''; stageEl.classList.remove('dragging'); }
+      return;
+    }
+    if (!isHovering) resumeCSSAnimation();
+    else { ringEl.style.transform = ''; stageEl.classList.remove('dragging'); }
+  });
+
+  // Inicializar
   ringEl.style.animationPlayState = 'running';
   ringEl.style.animationDelay = '';
   stageEl.classList.remove('dragging');
 
-  console.log('Carrossel Experience: arraste e hover sincronizados com sucesso.');
+  console.log('Carrossel Experience: arraste com mouse e touch funcionando perfeitamente.');
 })();
 
 // ============================================================
