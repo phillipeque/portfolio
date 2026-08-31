@@ -70,7 +70,6 @@
             100% { background-position: 0 4px, 4px 0; }
         }
 
-        /* Área principal dentro da moldura */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -86,7 +85,6 @@
             text-align: center;
         }
 
-        /* FLASH / STATIC OVERLAY */
         #flash-overlay {
             position: absolute;
             top: 0;
@@ -194,7 +192,6 @@
             border-top: 2px solid #808080;
         }
 
-        /* Telas */
         .screen-container {
             display: none;
         }
@@ -290,7 +287,7 @@
             z-index: 9;
         }
 
-        /* ===== LAYOUT ABOUT ===== */
+        /* ===== LAYOUT ABOUT (com avatar) ===== */
         .about-layout {
             display: flex;
             gap: 16px;
@@ -375,12 +372,6 @@
             text-indent: 0;
         }
 
-        .bio-content p:last-child {
-            margin-bottom: 0;
-            color: #000000; /* mantém a cor padrão, removi o itálico */
-            font-style: normal;
-        }
-
         .bio-cursor {
             animation: blink 1s step-end infinite;
             color: #000080;
@@ -391,7 +382,112 @@
             50% { opacity: 0; }
         }
 
-        /* Scrollbar retrô para a bio */
+        /* ===== LAYOUT EMAIL (sem avatar, formulário centralizado) ===== */
+        .email-form-box {
+            background: #c0c0c0; /* mesmo fundo da janela */
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            padding: 12px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .form-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000000;
+        }
+
+        .email-form-box label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #000;
+            margin-top: 8px;
+            margin-bottom: 2px;
+        }
+
+        .email-form-box label:first-of-type {
+            margin-top: 0;
+        }
+
+        .email-form-box input,
+        .email-form-box textarea {
+            width: 100%;
+            padding: 4px 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            color: #000;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+
+        .email-form-box input:focus,
+        .email-form-box textarea:focus {
+            outline: none;
+            border-color: #000080 #808080 #808080 #000080;
+        }
+
+        .email-form-box textarea {
+            min-height: 80px;
+        }
+
+        .email-form-box .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+            gap: 8px;
+        }
+
+        .retro-btn {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 4px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
+            transition: all 0.05s linear;
+        }
+
+        .retro-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+        }
+
+        .retro-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #form-feedback {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            color: #000;
+            min-height: 20px;
+        }
+
         .bio-content::-webkit-scrollbar {
             width: 12px;
             background: #dfdfdf;
@@ -420,7 +516,6 @@
             .icon-grid.about-grid { display: flex; justify-content: center; align-items: center; }
             .icon-img { width: 48px; height: 48px; }
             .icon-label { font-size: 10px; }
-            /* Mobile: empilha avatar e bio */
             .about-layout {
                 flex-direction: column;
                 align-items: center;
@@ -432,6 +527,9 @@
                 max-height: 160px;
                 font-size: 12px;
             }
+            .email-form-box {
+                padding: 8px;
+            }
         }
     </style>
 <base target="_blank">
@@ -439,27 +537,19 @@
 <body>
     <div id="tv-container">
 
-        <!-- CANVAS DE FUNDO -->
         <canvas id="background-canvas"></canvas>
-
-        <!-- ESTÁTICA -->
         <div id="tv-static"></div>
 
-        <!-- ÁREA DENTRO DA MOLDURA -->
         <div id="tv-screen">
 
-            <!-- FLASH OVERLAY -->
             <div id="flash-overlay"></div>
 
-            <!-- JANELA RETRÔ -->
             <div class="retro-window">
 
-                <!-- TITLE BAR -->
                 <div class="window-titlebar">
                     <div class="window-title">PORTFOLIO</div>
                 </div>
 
-                <!-- CONTEÚDO -->
                 <div class="window-content">
 
                     <!-- TELA HOME -->
@@ -495,15 +585,12 @@
                     <!-- TELA ABOUT -->
                     <div id="screen-about" class="screen-container">
                         <div class="about-layout">
-                            <!-- Avatar -->
                             <div class="about-avatar-box">
                                 <div class="avatar-frame">
                                     <img src="pngs/avatar.png" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' fill='%23808080' stroke='%23000' stroke-width='2'/%3E%3Ctext x='60' y='70' text-anchor='middle' font-size='48' fill='%23000'%3E?%3C/text%3E%3C/svg%3E'" />
                                 </div>
                                 <span class="avatar-caption">PROFILE_PIC.PNG</span>
                             </div>
-
-                            <!-- Bio -->
                             <div class="about-bio-box">
                                 <div class="bio-titlebar">
                                     <span class="bio-title">README.TXT</span>
@@ -519,8 +606,38 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="icon-item" data-target="back">
+                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <span class="icon-label label-black">BACK</span>
+                            </div>
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                        </div>
+                    </div>
 
-                        <!-- Botão BACK -->
+                    <!-- TELA EMAIL (sem avatar) -->
+                    <div id="screen-email" class="screen-container">
+                        <div class="email-form-box">
+                            <div class="form-titlebar">
+                                <span class="form-title">CONTACT.TXT</span>
+                            </div>
+                            <form id="email-form">
+                                <label for="user-email">YOUR EMAIL</label>
+                                <input type="email" id="user-email" name="email" required placeholder="seu@email.com" />
+
+                                <label for="subject">SUBJECT</label>
+                                <input type="text" id="subject" name="subject" required placeholder="Assunto" />
+
+                                <label for="message">MESSAGE</label>
+                                <textarea id="message" name="message" required placeholder="Escreva sua mensagem..."></textarea>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="retro-btn" id="send-btn">SEND</button>
+                                </div>
+                                <div id="form-feedback"></div>
+                            </form>
+                        </div>
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                             <div class="icon-item" data-target="back">
@@ -533,21 +650,19 @@
 
                 </div>
 
-                <!-- FOOTER -->
                 <div class="window-footer">
                     <span>© 2026 PORTFOLIO</span>
                 </div>
             </div>
         </div>
 
-        <!-- SCANLINES E FRAME -->
         <div id="scanlines"></div>
         <div id="tv-frame"></div>
     </div>
 
     <script>
         // ============================================================
-        //  FUNDO
+        //  FUNDO (Canvas)
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -769,16 +884,25 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO COM TROCA DE CANAL
+        //  NAVEGAÇÃO COM TROCA DE CANAL + ENVIO DE EMAIL
         // ============================================================
         (function() {
             const homeScreen  = document.getElementById('screen-home');
             const aboutScreen = document.getElementById('screen-about');
+            const emailScreen = document.getElementById('screen-email');
             const flash       = document.getElementById('flash-overlay');
             const retroWindow = document.querySelector('.retro-window');
             let currentScreen = 'home';
             let transitioning = false;
 
+            // ---- CONFIGURAÇÃO DO FORMSPREE ----
+            // 1. Crie uma conta em https://formspree.io/
+            // 2. Crie um formulário e defina o e-mail de destino como phillipe@phillipe.online
+            // 3. Copie o ID do formulário e cole abaixo:
+            const FORMSPREE_ID = 'SEU_FORM_ID_AQUI'; // <--- SUBSTITUA AQUI
+            const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
+
+            // ---- EFEITOS DE FLASH E RUÍDO ----
             let noiseRAF = null;
             function startNoise() {
                 function tick() {
@@ -827,11 +951,14 @@
                 setTimeout(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
+                    emailScreen.classList.remove('active');
 
                     if (screen === 'home') {
                         homeScreen.classList.add('active');
                     } else if (screen === 'about') {
                         aboutScreen.classList.add('active');
+                    } else if (screen === 'email') {
+                        emailScreen.classList.add('active');
                     }
 
                     currentScreen = screen;
@@ -853,11 +980,14 @@
                 }, 780);
             }
 
+            // ---- CLIQUE NOS ÍCONES ----
             document.querySelectorAll('.icon-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     const target = this.dataset.target;
                     if (target === 'about') {
                         navigateTo('about');
+                    } else if (target === 'email') {
+                        navigateTo('email');
                     } else if (target === 'back') {
                         navigateTo('home');
                     } else {
@@ -866,6 +996,7 @@
                 });
             });
 
+            // ---- NAVEGAÇÃO POR TECLADO ----
             const items = document.querySelectorAll('#screen-home .icon-item');
             let currentIndex = 0;
 
@@ -878,10 +1009,19 @@
             document.addEventListener('keydown', function(e) {
                 const activeScreen = document.querySelector('.screen-container.active');
                 const isHome = activeScreen && activeScreen.id === 'screen-home';
+                const isEmail = activeScreen && activeScreen.id === 'screen-email';
+
+                if (isEmail) {
+                    // Permite navegação normal nos campos, mas Enter não deve acionar back
+                    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                        // Não faz nada para evitar conflitos
+                    }
+                    return;
+                }
 
                 if (!isHome) {
                     if (e.key === 'Enter') {
-                        const backBtn = document.querySelector('#screen-about .icon-item[data-target="back"]');
+                        const backBtn = document.querySelector('#screen-about .icon-item[data-target="back"], #screen-email .icon-item[data-target="back"]');
                         if (backBtn) backBtn.click();
                         e.preventDefault();
                     }
@@ -912,6 +1052,8 @@
                     const target = items[currentIndex].dataset.target;
                     if (target === 'about') {
                         navigateTo('about');
+                    } else if (target === 'email') {
+                        navigateTo('email');
                     } else {
                         alert('Navigating to: ' + target);
                     }
@@ -919,6 +1061,68 @@
             });
 
             updateActiveItem();
+
+            // ---- ENVIO DO FORMULÁRIO ----
+            const form = document.getElementById('email-form');
+            const feedback = document.getElementById('form-feedback');
+            const sendBtn = document.getElementById('send-btn');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const email = document.getElementById('user-email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                if (!email || !subject || !message) {
+                    feedback.textContent = '⚠️ Preencha todos os campos.';
+                    feedback.style.color = '#c41e3a';
+                    return;
+                }
+
+                if (!email.includes('@') || !email.includes('.')) {
+                    feedback.textContent = '⚠️ Insira um e-mail válido.';
+                    feedback.style.color = '#c41e3a';
+                    return;
+                }
+
+                sendBtn.disabled = true;
+                sendBtn.textContent = 'ENVIANDO...';
+                feedback.textContent = '';
+
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(FORMSPREE_URL, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        feedback.textContent = '✅ Mensagem enviada com sucesso!';
+                        feedback.style.color = '#2d5016';
+                        form.reset();
+                    } else {
+                        const data = await response.json();
+                        feedback.textContent = `❌ Erro: ${data.error || 'tente novamente mais tarde.'}`;
+                        feedback.style.color = '#c41e3a';
+                    }
+                } catch (error) {
+                    feedback.textContent = '❌ Erro de conexão. Verifique sua internet.';
+                    feedback.style.color = '#c41e3a';
+                }
+
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'SEND';
+            });
+
+            if (FORMSPREE_ID === 'SEU_FORM_ID_AQUI') {
+                console.warn('⚠️ Substitua o FORMSPREE_ID pelo seu ID do Formspree no script.');
+                feedback.textContent = '⚠️ Configure o Formspree (veja o console).';
+                feedback.style.color = '#c41e3a';
+            }
         })();
     </script>
 </body>
