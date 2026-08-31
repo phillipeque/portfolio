@@ -86,22 +86,36 @@
             text-align: center;
         }
 
-        /* FLASH OVERLAY - cobre toda a área dentro da moldura */
+        /* FLASH / STATIC OVERLAY - cobre toda a área dentro da moldura
+           enquanto o "canal" troca. A opacidade e o background-position
+           são controlados via JS por requestAnimationFrame (ver script),
+           não por @keyframes puro — estática real é aleatória frame a
+           frame; um loop CSS repetido fica visivelmente cíclico depois
+           de meio segundo. */
         #flash-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #000;
             z-index: 30;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.1s ease;
+            background-color: #000;
         }
-        #flash-overlay.active {
+        #flash-overlay.snap {
+            /* frame único e quase instantâneo de "corte" antes da neve,
+               como o relé do sintonizador trocando de canal */
             opacity: 1;
-            transition: opacity 0.05s ease;
+            transition: opacity 0.04s linear;
+        }
+        #flash-overlay.snowing {
+            opacity: 1;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px);
+            background-size: 3px 3px, 3px 3px, 6px 6px;
         }
 
         .retro-window {
@@ -118,6 +132,40 @@
             margin: 0 auto;
             color: #000;
             text-shadow: none;
+            overflow: hidden; /* clips the tear-glitch streaks while syncing */
+        }
+
+        /* Vertical hold slipping right after the picture comes back —
+           overshoots then settles, like a CRT re-locking sync. */
+        @keyframes verticalRoll {
+            0%   { transform: translateY(0); }
+            12%  { transform: translateY(-16px); }
+            28%  { transform: translateY(11px); }
+            45%  { transform: translateY(-7px); }
+            62%  { transform: translateY(4px); }
+            80%  { transform: translateY(-2px); }
+            100% { transform: translateY(0); }
+        }
+        .retro-window.rolling {
+            animation: verticalRoll 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        /* Short horizontal tear streaks, spawned dynamically by JS while
+           the picture is locking sync. */
+        .tear-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.55);
+            mix-blend-mode: difference;
+            pointer-events: none;
+            z-index: 25;
+            animation: tearShift 0.16s ease-out forwards;
+        }
+        @keyframes tearShift {
+            0%   { transform: translateX(0); opacity: 0.9; }
+            55%  { transform: translateX(var(--tear-offset, 30px)); opacity: 0.7; }
+            100% { transform: translateX(0); opacity: 0; }
         }
 
         .window-titlebar {
@@ -577,21 +625,66 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO COM FLASH (COBRE TUDO DENTRO DA MOLDURA)
+        //  NAVEGAÇÃO COM TROCA DE CANAL (snap -> neve -> roll/tear -> lock)
         // ============================================================
         (function() {
-            const homeScreen = document.getElementById('screen-home');
+            const homeScreen  = document.getElementById('screen-home');
             const aboutScreen = document.getElementById('screen-about');
-            const flash = document.getElementById('flash-overlay');
+            const flash       = document.getElementById('flash-overlay');
+            const retroWindow = document.querySelector('.retro-window');
             let currentScreen = 'home';
+            let transitioning = false;
+
+            // --- estática granulada, aleatória por frame (não é um loop CSS) ---
+            let noiseRAF = null;
+            function startNoise() {
+                function tick() {
+                    const bx1 = (Math.random() * 4).toFixed(1), by1 = (Math.random() * 4).toFixed(1);
+                    const bx2 = (Math.random() * 4).toFixed(1), by2 = (Math.random() * 4).toFixed(1);
+                    const bx3 = (Math.random() * 6).toFixed(1), by3 = (Math.random() * 6).toFixed(1);
+                    flash.style.backgroundPosition = `${bx1}px ${by1}px, ${bx2}px ${by2}px, ${bx3}px ${by3}px`;
+                    flash.style.opacity = (0.88 + Math.random() * 0.12).toFixed(2);
+                    noiseRAF = requestAnimationFrame(tick);
+                }
+                tick();
+            }
+            function stopNoise() {
+                if (noiseRAF) cancelAnimationFrame(noiseRAF);
+                noiseRAF = null;
+                flash.style.opacity = '';
+                flash.style.backgroundPosition = '';
+            }
+
+            // --- riscos de tearing horizontal, posição/duração aleatórias ---
+            function spawnTearLines(count) {
+                for (let i = 0; i < count; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'tear-line';
+                    line.style.top = (Math.random() * 100).toFixed(1) + '%';
+                    line.style.height = (2 + Math.random() * 6).toFixed(1) + 'px';
+                    const offset = (Math.random() * 35 + 15) * (Math.random() < 0.5 ? -1 : 1);
+                    line.style.setProperty('--tear-offset', offset.toFixed(0) + 'px');
+                    line.style.animationDelay = (Math.random() * 90).toFixed(0) + 'ms';
+                    retroWindow.appendChild(line);
+                    setTimeout(() => line.remove(), 400);
+                }
+            }
 
             function navigateTo(screen) {
-                if (screen === currentScreen) return;
+                if (screen === currentScreen || transitioning) return;
+                transitioning = true;
 
-                // Ativa o flash (tela preta)
-                flash.classList.add('active');
+                // 1) snap — corte quase instantâneo, como o relé do sintonizador
+                flash.classList.add('snap');
 
-                // Troca de tela após 150ms
+                // 2) neve — estática cobrindo tudo enquanto o "canal" troca
+                setTimeout(() => {
+                    flash.classList.remove('snap');
+                    flash.classList.add('snowing');
+                    startNoise();
+                }, 40);
+
+                // 3) troca o conteúdo por baixo da neve
                 setTimeout(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
@@ -603,12 +696,25 @@
                     }
 
                     currentScreen = screen;
+                }, 190);
 
-                    // Remove o flash após um pequeno delay
-                    setTimeout(() => {
-                        flash.classList.remove('active');
-                    }, 60);
-                }, 150);
+                // 4) a neve dissolve, revelando a imagem nova
+                setTimeout(() => {
+                    stopNoise();
+                    flash.classList.remove('snowing');
+                }, 260);
+
+                // 5) a imagem "trava o sync": rola verticalmente e ganha
+                //    alguns tears horizontais até estabilizar
+                setTimeout(() => {
+                    retroWindow.classList.add('rolling');
+                    spawnTearLines(4 + Math.floor(Math.random() * 2));
+                }, 270);
+
+                setTimeout(() => {
+                    retroWindow.classList.remove('rolling');
+                    transitioning = false;
+                }, 780);
             }
 
             // Clique nos ícones
@@ -620,6 +726,7 @@
                     } else if (target === 'back') {
                         navigateTo('home');
                     } else {
+                        // sections not built yet — same as before
                         alert('Navigating to: ' + target);
                     }
                 });
