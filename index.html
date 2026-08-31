@@ -70,7 +70,7 @@
             100% { background-position: 0 4px, 4px 0; }
         }
 
-        /* === CONTEÚDO (janela) - AJUSTADO === */
+        /* === CONTEÚDO (janela) - ALTURA AUMENTADA === */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -82,7 +82,7 @@
             justify-content: center;
             align-items: center;
             z-index: 2;
-            padding: 6% 22% 6% 22%; /* Lateral maior, vertical menor */
+            padding: 3% 22% 3% 22%; /* vertical reduzido para ganhar altura */
             text-align: center;
         }
 
@@ -95,8 +95,8 @@
                 inset -1px -1px 0 #000000,
                 4px 4px 0 rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 70%; /* Largura máxima reduzida */
-            margin: 0 auto;  /* Centraliza */
+            max-width: 70%;
+            margin: 0 auto;
             color: #000;
             text-shadow: none;
             position: relative;
@@ -122,7 +122,7 @@
         }
 
         .window-content {
-            padding: 16px; /* Um pouco menos para compensar a altura */
+            padding: 16px;
             background: #c0c0c0;
         }
 
@@ -221,9 +221,8 @@
             z-index: 9;
         }
 
-        /* Responsivo para mobile */
         @media (max-width: 768px) {
-            #tv-screen { padding: 8% 12% 8% 12%; } /* Mobile: menos lateral, mais conteúdo */
+            #tv-screen { padding: 4% 12% 4% 12%; } /* mobile com menos lateral */
             .retro-window { max-width: 90%; }
             .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .icon-img { width: 48px; height: 48px; }
