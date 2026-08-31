@@ -384,7 +384,7 @@
 
         /* ===== LAYOUT EMAIL (sem avatar, formulário centralizado) ===== */
         .email-form-box {
-            background: #c0c0c0; /* mesmo fundo da janela */
+            background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
@@ -445,7 +445,7 @@
         }
 
         .email-form-box textarea {
-            min-height: 80px;
+            min-height: 140px; /* aumentado de 80px */
         }
 
         .email-form-box .form-actions {
@@ -529,6 +529,9 @@
             }
             .email-form-box {
                 padding: 8px;
+            }
+            .email-form-box textarea {
+                min-height: 100px;
             }
         }
     </style>
@@ -624,13 +627,13 @@
                             </div>
                             <form id="email-form">
                                 <label for="user-email">YOUR EMAIL</label>
-                                <input type="email" id="user-email" name="email" required placeholder="seu@email.com" />
+                                <input type="email" id="user-email" name="email" required placeholder="your@email.com" />
 
                                 <label for="subject">SUBJECT</label>
-                                <input type="text" id="subject" name="subject" required placeholder="Assunto" />
+                                <input type="text" id="subject" name="subject" required placeholder="Subject" />
 
                                 <label for="message">MESSAGE</label>
-                                <textarea id="message" name="message" required placeholder="Escreva sua mensagem..."></textarea>
+                                <textarea id="message" name="message" required placeholder="Write your message..."></textarea>
 
                                 <div class="form-actions">
                                     <button type="submit" class="retro-btn" id="send-btn">SEND</button>
@@ -896,10 +899,7 @@
             let transitioning = false;
 
             // ---- CONFIGURAÇÃO DO FORMSPREE ----
-            // 1. Crie uma conta em https://formspree.io/
-            // 2. Crie um formulário e defina o e-mail de destino como phillipe@phillipe.online
-            // 3. Copie o ID do formulário e cole abaixo:
-            const FORMSPREE_ID = 'mrpgpbdb'; // <--- SUBSTITUA AQUI
+            const FORMSPREE_ID = 'mrpgpbdb';
             const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
 
             // ---- EFEITOS DE FLASH E RUÍDO ----
@@ -1012,9 +1012,8 @@
                 const isEmail = activeScreen && activeScreen.id === 'screen-email';
 
                 if (isEmail) {
-                    // Permite navegação normal nos campos, mas Enter não deve acionar back
                     if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-                        // Não faz nada para evitar conflitos
+                        // Do nothing to avoid conflicts
                     }
                     return;
                 }
@@ -1075,19 +1074,19 @@
                 const message = document.getElementById('message').value.trim();
 
                 if (!email || !subject || !message) {
-                    feedback.textContent = '⚠️ Preencha todos os campos.';
+                    feedback.textContent = 'Please fill in all fields.';
                     feedback.style.color = '#c41e3a';
                     return;
                 }
 
                 if (!email.includes('@') || !email.includes('.')) {
-                    feedback.textContent = '⚠️ Insira um e-mail válido.';
+                    feedback.textContent = 'Please enter a valid email address.';
                     feedback.style.color = '#c41e3a';
                     return;
                 }
 
                 sendBtn.disabled = true;
-                sendBtn.textContent = 'ENVIANDO...';
+                sendBtn.textContent = 'SENDING...';
                 feedback.textContent = '';
 
                 try {
@@ -1101,16 +1100,16 @@
                     });
 
                     if (response.ok) {
-                        feedback.textContent = '✅ Mensagem enviada com sucesso!';
+                        feedback.textContent = 'Message sent successfully!';
                         feedback.style.color = '#2d5016';
                         form.reset();
                     } else {
                         const data = await response.json();
-                        feedback.textContent = `❌ Erro: ${data.error || 'tente novamente mais tarde.'}`;
+                        feedback.textContent = `Error: ${data.error || 'please try again later.'}`;
                         feedback.style.color = '#c41e3a';
                     }
                 } catch (error) {
-                    feedback.textContent = '❌ Erro de conexão. Verifique sua internet.';
+                    feedback.textContent = 'Connection error. Please check your internet.';
                     feedback.style.color = '#c41e3a';
                 }
 
@@ -1118,9 +1117,11 @@
                 sendBtn.textContent = 'SEND';
             });
 
+            // Se o Formspree não estiver configurado (já está com seu ID)
+            // Mas mantemos um aviso caso algo dê errado
             if (FORMSPREE_ID === 'SEU_FORM_ID_AQUI') {
-                console.warn('⚠️ Substitua o FORMSPREE_ID pelo seu ID do Formspree no script.');
-                feedback.textContent = '⚠️ Configure o Formspree (veja o console).';
+                console.warn('⚠️ Replace FORMSPREE_ID with your actual Formspree ID.');
+                feedback.textContent = '⚠️ Configure Formspree (see console).';
                 feedback.style.color = '#c41e3a';
             }
         })();
