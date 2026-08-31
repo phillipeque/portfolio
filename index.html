@@ -936,7 +936,7 @@
   overflow-x: hidden !important;
 }
 
-/* ===== EXPERIENCE - CARROSSEL 3D ESTILO "ROLETA" ===== */
+/* ===== EXPERIENCE - CARROSSEL HORIZONTAL ===== */
 #win-experience .window-content {
   padding: 0 !important;
   overflow: hidden !important;
@@ -944,54 +944,50 @@
   display: flex !important;
   flex-direction: column;
 }
+
 .exp-carousel-stage {
   flex: 1;
   position: relative;
-  perspective: 2200px;
-  perspective-origin: 50% 50%;
   display: flex;
   align-items: center;
-  justify-content: center;
   overflow: hidden;
   background: #ece9d8;
-  touch-action: none; /* impede scroll da página ao arrastar no mobile */
+  touch-action: none;
   cursor: grab;
   user-select: none;
 }
+
 .exp-carousel-stage.dragging {
   cursor: grabbing;
 }
-.exp-carousel-stage.dragging .exp-carousel-ring {
-  animation-play-state: paused !important;
-}
+
 .exp-carousel-ring {
-  position: relative;
-  width: 240px;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: max-content;
   height: 300px;
-  --n: 17;
-  --radius: 640px;
-  transform-style: preserve-3d;
-  animation: expCarouselSpin 55s linear infinite;
+  transform: translate3d(0, -50%, 0);
   will-change: transform;
 }
-@keyframes expCarouselSpin {
-  from { transform: rotateY(0deg); }
-  to   { transform: rotateY(-360deg); }
-}
+
 .exp-carousel-card {
-  position: absolute;
-  top: 0; left: 0;
+  position: relative;
+  flex: 0 0 240px;
   width: 240px;
   height: 300px;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 26px rgba(0,0,0,0.45);
-  backface-visibility: hidden;
   display: flex;
   flex-direction: column;
-  transform: rotateY(calc(360deg / var(--n) * var(--index))) translateZ(var(--radius));
-  will-change: transform;
+  transform: none !important;
+  backface-visibility: visible;
 }
+
 .exp-carousel-card::after {
   content: "";
   position: absolute;
@@ -999,6 +995,7 @@
   background: linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,0.72) 100%);
   pointer-events: none;
 }
+
 .exp-card-header {
   position: relative;
   z-index: 1;
@@ -1007,6 +1004,7 @@
   gap: 10px;
   padding: 16px 18px 0;
 }
+
 .exp-card-header img {
   width: 38px;
   height: 38px;
@@ -1017,6 +1015,7 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.25);
   flex-shrink: 0;
 }
+
 .exp-card-header h3 {
   color: #fff;
   font-size: 15px;
@@ -1024,12 +1023,14 @@
   text-shadow: 0 1px 3px rgba(0,0,0,0.5);
   line-height: 1.2;
 }
+
 .exp-card-body {
   position: relative;
   z-index: 1;
   margin-top: auto;
   padding: 14px 18px 18px;
 }
+
 .exp-card-body p {
   color: #f5f5f5;
   font-size: 12px;
@@ -1040,6 +1041,7 @@
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Segoe UI', Tahoma, sans-serif;
 }
+
 .exp-carousel-hint {
   text-align: center;
   font-size: 11px;
@@ -1050,8 +1052,17 @@
 }
 
 @media (max-width: 768px) {
-  .exp-carousel-ring { width: 160px; height: 210px; --radius: 420px; }
-  .exp-carousel-card { width: 160px; height: 210px; }
+  .exp-carousel-ring {
+    gap: 12px;
+    height: 210px;
+  }
+
+  .exp-carousel-card {
+    flex-basis: 160px;
+    width: 160px;
+    height: 210px;
+  }
+
   .exp-card-header { padding: 12px 14px 0; gap: 8px; }
   .exp-card-header img { width: 30px; height: 30px; }
   .exp-card-header h3 { font-size: 12px; }
@@ -3404,163 +3415,142 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INTERAÇÃO DE ARRASTE NO CARROSSEL (EXPERIENCE) — CORRIGIDA
+//  INTERAÇÃO DO CARROSSEL HORIZONTAL (EXPERIENCE)
 // ============================================================
 (function initCarouselDrag() {
   const stageEl = document.getElementById('experience-stage');
   const ringEl  = document.getElementById('experience-ring');
   if (!stageEl || !ringEl) return;
 
+  const originalCards = Array.from(ringEl.querySelectorAll('.exp-carousel-card'));
+  if (!originalCards.length) return;
+
+  // Duplica a sequência para permitir um loop horizontal realmente contínuo.
+  originalCards.forEach(card => {
+    const clone = card.cloneNode(true);
+    clone.removeAttribute('style');
+    clone.style.background = card.style.background;
+    clone.dataset.clone = 'true';
+    ringEl.appendChild(clone);
+  });
+
   let isDragging = false;
   let startX = 0;
-  let startAngle = 0;
-  let hasDragged = false;
+  let startOffset = 0;
+  let offset = 0;
+  let cycleWidth = 0;
   let isHovering = false;
+  let lastTime = performance.now();
 
-  function getRadius() {
-    const radiusPx = parseFloat(getComputedStyle(ringEl).getPropertyValue('--radius'));
-    if (!isNaN(radiusPx) && radiusPx > 0) return radiusPx;
-    return window.innerWidth <= 768 ? 420 : 640;
+  const SPEED = 35; // pixels por segundo
+
+  function measureCycle() {
+    const first = ringEl.querySelector('.exp-carousel-card');
+    if (!first) return;
+
+    const style = getComputedStyle(ringEl);
+    const gap = parseFloat(style.columnGap || style.gap) || 0;
+    cycleWidth = (first.offsetWidth + gap) * originalCards.length;
   }
 
-  function getCurrentAngle() {
-    const style = window.getComputedStyle(ringEl);
-    const transform = style.transform || style.webkitTransform;
-    if (!transform || transform === 'none') return 0;
+  function normalizeOffset() {
+    if (!cycleWidth) return;
+    while (offset >= cycleWidth) offset -= cycleWidth;
+    while (offset <= -cycleWidth) offset += cycleWidth;
+  }
 
-    const match = transform.match(/rotateY\(([-\d.]+)deg\)/);
-    if (match) return parseFloat(match[1]);
+  function render() {
+    normalizeOffset();
+    ringEl.style.transform = `translate3d(${offset}px, -50%, 0)`;
+  }
 
-    const m3d = transform.match(/matrix3d\(([^)]+)\)/);
-    if (m3d) {
-      const vals = m3d[1].split(',').map(v => parseFloat(v.trim()));
-      const sin = vals[2];
-      const cos = vals[0];
-      return Math.atan2(sin, cos) * (180 / Math.PI);
+  function animationLoop(now) {
+    const dt = Math.min(now - lastTime, 50) / 1000;
+    lastTime = now;
+
+    // O carrossel continua andando sozinho, mas nunca enquanto o usuário arrasta.
+    if (!isDragging && !isHovering) {
+      offset += SPEED * dt;
+      render();
     }
 
-    const m2d = transform.match(/matrix\(([^)]+)\)/);
-    if (m2d) {
-      const vals = m2d[1].split(',').map(v => parseFloat(v.trim()));
-      return Math.atan2(vals[1], vals[0]) * (180 / Math.PI);
-    }
-    return 0;
+    requestAnimationFrame(animationLoop);
   }
 
-  function setAngle(deg) {
-    ringEl.style.transform = `rotateY(${deg}deg)`;
-  }
-
-  // Congela a animação CSS e fixa o ângulo atual via inline
-  function freezeAnimation() {
-    const angle = getCurrentAngle();
-    startAngle = angle;
-    ringEl.style.animation = 'none';
-    setAngle(angle);
+  function startDrag(clientX) {
+    measureCycle();
+    isDragging = true;
+    startX = clientX;
+    startOffset = offset;
     stageEl.classList.add('dragging');
+    lastTime = performance.now();
   }
 
-  // Retoma a animação CSS exatamente do ângulo onde parou
-  function unfreezeAnimation() {
+  function moveDrag(clientX, event) {
+    if (!isDragging) return;
+
+    offset = startOffset + (clientX - startX);
+    render();
+
+    if (event) event.preventDefault();
+  }
+
+  function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
     stageEl.classList.remove('dragging');
-    ringEl.style.animation = '';
-
-    const duration = 55;
-    const angle = getCurrentAngle();
-    const normalized = ((angle % 360) + 360) % 360;
-    const progress = normalized / 360;
-    const delay = -(duration * progress);
-
-    ringEl.style.animationDelay = delay + 's';
-    ringEl.style.animationPlayState = 'running';
-    void ringEl.offsetWidth;
+    normalizeOffset();
+    render();
   }
 
-  // Hover: pausa visualmente (só se não estiver arrastando)
   stageEl.addEventListener('mouseenter', () => {
     isHovering = true;
-    if (!isDragging) ringEl.style.animationPlayState = 'paused';
   });
 
   stageEl.addEventListener('mouseleave', () => {
     isHovering = false;
-    if (!isDragging) unfreezeAnimation();
   });
 
-  // --- MOUSE ---
-  stageEl.addEventListener('mousedown', (e) => {
+  stageEl.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
-    isDragging = true;
-    hasDragged = false;
-    startX = e.clientX;
-    freezeAnimation();
+    startDrag(e.clientX);
     e.preventDefault();
   });
 
-  document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    const dx = e.clientX - startX;
-    if (Math.abs(dx) > 3) hasDragged = true;
-
-    const radius = getRadius();
-    // 1:1 — o arco percorrido pelo card = pixels movidos pelo mouse
-    const deg = startAngle + (dx / radius) * (180 / Math.PI);
-    setAngle(deg);
-    e.preventDefault();
+  document.addEventListener('mousemove', e => {
+    moveDrag(e.clientX, e);
   });
 
-  document.addEventListener('mouseup', () => {
-    if (!isDragging) return;
-    isDragging = false;
+  document.addEventListener('mouseup', endDrag);
 
-    if (!isHovering) {
-      // Soltou fora do stage: retoma imediatamente
-      unfreezeAnimation();
-    } else {
-      // Soltou dentro do stage: restaura a animação CSS mas deixa pausada pelo hover
-      ringEl.style.animation = '';
-      ringEl.style.animationPlayState = 'paused';
-      stageEl.classList.remove('dragging');
-    }
-  });
-
-  // --- TOUCH ---
-  stageEl.addEventListener('touchstart', (e) => {
-    const t = e.touches[0];
-    if (!t) return;
-    isDragging = true;
-    hasDragged = false;
-    startX = t.clientX;
-    freezeAnimation();
+  stageEl.addEventListener('touchstart', e => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    startDrag(touch.clientX);
     e.preventDefault();
   }, { passive: false });
 
-  document.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    const t = e.touches[0];
-    if (!t) return;
-    const dx = t.clientX - startX;
-    if (Math.abs(dx) > 3) hasDragged = true;
-
-    const radius = getRadius();
-    const deg = startAngle + (dx / radius) * (180 / Math.PI);
-    setAngle(deg);
-    e.preventDefault();
+  document.addEventListener('touchmove', e => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    moveDrag(touch.clientX, e);
   }, { passive: false });
 
-  document.addEventListener('touchend', () => {
-    if (!isDragging) return;
-    isDragging = false;
-    unfreezeAnimation();
+  document.addEventListener('touchend', endDrag);
+  document.addEventListener('touchcancel', endDrag);
+
+  window.addEventListener('resize', () => {
+    measureCycle();
+    normalizeOffset();
+    render();
   });
 
-  // Segurança: se o mouse sair da janela do browser enquanto arrasta
-  document.documentElement.addEventListener('mouseleave', () => {
-    if (isDragging) {
-      isDragging = false;
-      isHovering = false;
-      unfreezeAnimation();
-    }
+  // Mede depois que as fontes/layout estiverem prontos.
+  requestAnimationFrame(() => {
+    measureCycle();
+    render();
+    lastTime = performance.now();
+    requestAnimationFrame(animationLoop);
   });
 })();
 
