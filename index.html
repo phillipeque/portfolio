@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meu Portfólio Retro</title>
     <style>
-        /* (todo o CSS permanece igual ao seu último código) */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         html, body {
             width: 100%;
             height: 100vh;
@@ -18,11 +18,27 @@
             overflow: hidden;
             font-family: 'Courier New', monospace;
         }
+
         #tv-container {
             position: relative;
             width: 100vw;
             height: 100vh;
         }
+
+        /* === CANVAS DE FUNDO (céu + nuvens) === */
+        #background-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;          /* atrás de tudo */
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        /* === ESTÁTICA (opcional, pode remover) === */
         #tv-static {
             position: absolute;
             top: 0;
@@ -32,27 +48,31 @@
             background: 
                 repeating-linear-gradient(
                     0deg,
-                    rgba(0,0,0,0.15) 0px,
-                    rgba(0,0,0,0.15) 1px,
+                    rgba(0,0,0,0.08) 0px,
+                    rgba(0,0,0,0.08) 1px,
                     transparent 1px,
-                    transparent 2px
+                    transparent 3px
                 ),
                 repeating-linear-gradient(
                     90deg,
-                    rgba(0,0,0,0.15) 0px,
-                    rgba(0,0,0,0.15) 1px,
+                    rgba(0,0,0,0.05) 0px,
+                    rgba(0,0,0,0.05) 1px,
                     transparent 1px,
-                    transparent 2px
+                    transparent 3px
                 );
             background-size: 100% 4px, 4px 100%;
             animation: staticMove 0.1s steps(2) infinite;
-            z-index: 0;
+            z-index: 1;           /* acima do fundo, abaixo da janela */
+            pointer-events: none;
         }
+
         @keyframes staticMove {
             0% { background-position: 0 0, 0 0; }
             50% { background-position: 0 2px, 2px 0; }
             100% { background-position: 0 4px, 4px 0; }
         }
+
+        /* === CONTEÚDO (janela) === */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -63,10 +83,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1;
+            z-index: 2;           /* acima da estática */
             padding: 12% 18% 15% 18%;
             text-align: center;
         }
+
         .retro-window {
             background: #c0c0c0;
             border: 2px solid;
@@ -81,6 +102,7 @@
             text-shadow: none;
             position: relative;
         }
+
         .window-titlebar {
             background: linear-gradient(90deg, #808080, #a0a0a0);
             padding: 4px 8px;
@@ -90,6 +112,7 @@
             border-bottom: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
         }
+
         .window-title {
             font-size: 14px;
             font-weight: bold;
@@ -98,16 +121,19 @@
             text-shadow: 1px 1px 0 #a0a0a0;
             margin-left: 4px;
         }
+
         .window-content {
             padding: 20px;
             background: #c0c0c0;
         }
+
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 10px;
         }
+
         .icon-item {
             display: flex;
             flex-direction: column;
@@ -117,14 +143,17 @@
             transition: all 0.15s;
             border: 1px solid transparent;
         }
+
         .icon-item:hover {
             background: rgba(0,0,0,0.1);
             border: 1px dotted #000;
         }
+
         .icon-item.active {
             background: rgba(0,0,0,0.15);
             border: 1px dotted #000;
         }
+
         .icon-img {
             width: 64px;
             height: 64px;
@@ -133,6 +162,7 @@
             margin-bottom: 8px;
             object-fit: contain;
         }
+
         .icon-label {
             font-size: 12px;
             font-weight: bold;
@@ -140,12 +170,14 @@
             text-align: center;
             line-height: 1.3;
         }
+
         .label-orange { color: #c45c26; }
         .label-black { color: #000; }
         .label-green { color: #2d5016; }
         .label-red { color: #c41e3a; }
         .label-blue { color: #1a3a5c; }
         .label-purple { color: #4a2d6b; }
+
         .window-footer {
             text-align: center;
             padding: 10px;
@@ -156,6 +188,8 @@
             background: #000;
             border-top: 2px solid #808080;
         }
+
+        /* === FRAME DA TV (sempre por cima) === */
         #tv-frame {
             position: absolute;
             top: 0;
@@ -169,21 +203,11 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             pointer-events: none;
-            z-index: 10;
+            z-index: 10;          /* máximo, acima de tudo */
         }
-        /* Caso a imagem do frame não exista, usa uma borda simulada */
-        #tv-frame::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 4px solid #333;
-            box-shadow: inset 0 0 0 2px #000, 0 0 0 2px #000;
-            pointer-events: none;
-            display: none; /* por padrão não mostra, mas se quiser ativar, mude para block */
-        }
+
+        /* === SCANLINES (opcional, acima do frame ou abaixo?) 
+             Vou deixar abaixo do frame para não atrapalhar a imagem. */
         #scanlines {
             position: absolute;
             top: 0;
@@ -198,8 +222,9 @@
                 rgba(0,0,0,0.15) 4px
             );
             pointer-events: none;
-            z-index: 20;
+            z-index: 9;           /* abaixo do frame, acima do conteúdo */
         }
+
         @media (max-width: 768px) {
             #tv-screen { padding: 10% 12% 12% 12%; }
             .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
@@ -210,8 +235,13 @@
 </head>
 <body>
     <div id="tv-container">
+        <!-- CANVAS PARA O FUNDO PIXELADO -->
+        <canvas id="background-canvas"></canvas>
+
+        <!-- ESTÁTICA (opcional) -->
         <div id="tv-static"></div>
 
+        <!-- JANELA DO MENU -->
         <div id="tv-screen">
             <div class="retro-window">
                 <div class="window-titlebar">
@@ -220,37 +250,32 @@
 
                 <div class="window-content">
                     <div class="icon-grid">
-                        <!-- ÍCONE SOBRE (SVG inline) -->
+                        <!-- ÍCONES (SVG inline) -->
                         <div class="icon-item active" data-target="sobre">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="SOBRE" />
                             <span class="icon-label label-orange">SOBRE</span>
                         </div>
 
-                        <!-- ÍCONE PROJETOS (SVG inline) -->
                         <div class="icon-item" data-target="projetos">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJETOS" />
                             <span class="icon-label label-black">PROJETOS</span>
                         </div>
 
-                        <!-- ÍCONE CONTATO (SVG inline) -->
                         <div class="icon-item" data-target="contato">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="CONTATO" />
                             <span class="icon-label label-green">CONTATO</span>
                         </div>
 
-                        <!-- ÍCONE GITHUB (SVG inline) -->
                         <div class="icon-item" data-target="github">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%3C%2F%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                             <span class="icon-label label-red">GITHUB</span>
                         </div>
 
-                        <!-- ÍCONE LINKEDIN (SVG inline) -->
                         <div class="icon-item" data-target="linkedin">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3Ein%3C/text%3E%3C/svg%3E" alt="LINKEDIN" />
                             <span class="icon-label label-blue">LINKEDIN</span>
                         </div>
 
-                        <!-- ÍCONE EMAIL (SVG inline) -->
                         <div class="icon-item" data-target="email">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="EMAIL" />
                             <span class="icon-label label-purple">EMAIL</span>
@@ -264,11 +289,145 @@
             </div>
         </div>
 
-        <div id="tv-frame"></div>
+        <!-- SCANLINES -->
         <div id="scanlines"></div>
+
+        <!-- FRAME DA TV (ACIMA DE TUDO) -->
+        <div id="tv-frame"></div>
     </div>
 
     <script>
+        // ============================================================
+        //  FUNDO PIXELADO COM NUVENS
+        // ============================================================
+        (function() {
+            const canvas = document.getElementById('background-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            const PIXEL_SIZE = 4; // tamanho do pixel (quanto menor, mais detalhe)
+
+            // Nuvens: array de objetos com posição e tamanho
+            let clouds = [];
+
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                width = rect.width;
+                height = rect.height;
+                canvas.width = width;
+                canvas.height = height;
+                // Ajusta o estilo para ocupar 100%
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                // Redimensiona as nuvens proporcionalmente
+                generateClouds();
+                draw();
+            }
+
+            function generateClouds() {
+                clouds = [];
+                const numClouds = 12 + Math.floor(Math.random() * 8);
+                for (let i = 0; i < numClouds; i++) {
+                    clouds.push({
+                        x: Math.random() * width * 1.5 - width * 0.25,
+                        y: Math.random() * height * 0.7 + height * 0.05,
+                        w: (50 + Math.random() * 120) * (width / 800),
+                        h: (20 + Math.random() * 40) * (width / 800),
+                        speed: (0.2 + Math.random() * 0.6) * (width / 800),
+                        opacity: 0.4 + Math.random() * 0.5
+                    });
+                }
+            }
+
+            // Desenha uma nuvem com pixels (blocos)
+            function drawCloud(ctx, cloud) {
+                const { x, y, w, h, opacity } = cloud;
+                const step = PIXEL_SIZE;
+                const cols = Math.floor(w / step);
+                const rows = Math.floor(h / step);
+
+                // Cria uma máscara de pixels para a nuvem (formato arredondado)
+                const mask = [];
+                for (let r = 0; r < rows; r++) {
+                    mask[r] = [];
+                    for (let c = 0; c < cols; c++) {
+                        // Posição relativa no retângulo (-1 a 1)
+                        const px = (c / cols) * 2 - 1;
+                        const py = (r / rows) * 2 - 1;
+                        // Distância do centro (elipse)
+                        const dist = Math.sqrt(px * px + py * py);
+                        // Probabilidade de ter pixel: mais alta no centro
+                        let prob = Math.max(0, 1 - dist * 1.2);
+                        // Adiciona ruído para bordas irregulares
+                        prob *= (0.7 + 0.3 * Math.sin(r * 1.7 + c * 0.9));
+                        mask[r][c] = Math.random() < prob;
+                    }
+                }
+
+                // Desenha os pixels da nuvem
+                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        if (mask[r][c]) {
+                            const px = Math.round(x + c * step);
+                            const py = Math.round(y + r * step);
+                            ctx.fillRect(px, py, step, step);
+                        }
+                    }
+                }
+            }
+
+            function drawSky() {
+                // Gradiente de céu (azul claro)
+                const grad = ctx.createLinearGradient(0, 0, 0, height);
+                grad.addColorStop(0, '#87CEEB');
+                grad.addColorStop(0.6, '#B0E0E6');
+                grad.addColorStop(1, '#F0F8FF');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, width, height);
+            }
+
+            function draw() {
+                // Limpa e desenha o céu
+                drawSky();
+
+                // Desenha cada nuvem
+                for (const cloud of clouds) {
+                    drawCloud(ctx, cloud);
+                }
+            }
+
+            function update() {
+                // Move as nuvens lentamente para a esquerda
+                for (const cloud of clouds) {
+                    cloud.x -= cloud.speed * 0.5; // velocidade ajustável
+                    // Se sair da tela pela esquerda, reaparece à direita
+                    if (cloud.x + cloud.w < -50) {
+                        cloud.x = width + Math.random() * 100;
+                        cloud.y = Math.random() * height * 0.7 + height * 0.05;
+                        cloud.w = (50 + Math.random() * 120) * (width / 800);
+                        cloud.h = (20 + Math.random() * 40) * (width / 800);
+                        cloud.speed = (0.2 + Math.random() * 0.6) * (width / 800);
+                        cloud.opacity = 0.4 + Math.random() * 0.5;
+                    }
+                }
+                draw();
+                requestAnimationFrame(update);
+            }
+
+            // Inicializa
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+            });
+
+            resizeCanvas();
+            update();
+
+            // Redesenha quando a janela for redimensionada (já tratado)
+        })();
+
+        // ============================================================
+        //  MENU INTERATIVO (igual ao anterior)
+        // ============================================================
         (function() {
             const items = document.querySelectorAll('.icon-item');
             let current = 0;
