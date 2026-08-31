@@ -14,7 +14,7 @@
         html, body {
             width: 100%;
             height: 100vh;
-            background: #000; /* fundo preto para combinar com a TV */
+            background: #000;
             overflow: hidden;
             font-family: 'Courier New', monospace;
         }
@@ -23,12 +23,9 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
-        /* CONTEÚDO (fundo e textos) */
+        /* CONTEÚDO */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -43,8 +40,7 @@
             color: #0f0;
             text-shadow: 0 0 10px #0f0;
             z-index: 1;
-            /* Ajuste o padding para que o conteúdo fique dentro da área útil da TV */
-            padding: 15% 20%; /* valores aproximados, ajuste conforme sua imagem */
+            padding: 15% 20%; /* ajuste conforme sua imagem */
         }
 
         #tv-screen h1 {
@@ -82,7 +78,7 @@
             letter-spacing: 2px;
         }
 
-        /* FRAME DA TV – com 'contain' para manter a proporção */
+        /* ⭐ FRAME – agora preenche a largura e ajusta altura automaticamente */
         #tv-frame {
             position: absolute;
             top: 0;
@@ -90,7 +86,7 @@
             width: 100%;
             height: 100%;
             background-image: url('pngs/tvframe.png');
-            background-size: contain;   /* ← mantém a proporção, sem cortar */
+            background-size: 100% auto;    /* ← PREENCHE A LARGURA, ALTURA PROPORCIONAL */
             background-repeat: no-repeat;
             background-position: center;
             image-rendering: pixelated;
@@ -120,12 +116,11 @@
         @media (max-width: 768px) {
             #tv-screen h1 { font-size: 2rem; }
             #tv-screen ul { font-size: 1.4rem; }
-            #tv-screen { padding: 10% 15%; } /* ajuste para mobile */
+            #tv-screen { padding: 10% 15%; }
         }
     </style>
 </head>
 <body>
-
     <div id="tv-container">
         <div id="tv-screen">
             <h1>▶ MEU PORTFÓLIO</h1>
@@ -184,6 +179,5 @@
             updateMenu();
         })();
     </script>
-
 </body>
 </html>
