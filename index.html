@@ -936,13 +936,19 @@
   overflow-x: hidden !important;
 }
 
-/* ===== EXPERIENCE - CARROSSEL HORIZONTAL ===== */
+/* ===== EXPERIENCE - CARROSSEL HORIZONTAL (MODIFICADO) ===== */
 #win-experience .window-content {
   padding: 0 !important;
   overflow: hidden !important;
   background: #ece9d8;
   display: flex !important;
   flex-direction: column;
+}
+
+/* Janela 50% maior */
+#win-experience {
+  width: 960px !important;   /* 640 * 1.5 */
+  height: 660px !important;  /* 440 * 1.5 */
 }
 
 .exp-carousel-stage {
@@ -967,18 +973,18 @@
   top: 50%;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px; /* um pouco mais de espaçamento */
   width: max-content;
-  height: 300px;
+  height: 450px; /* antes 300px, +50% */
   transform: translate3d(0, -50%, 0);
   will-change: transform;
 }
 
 .exp-carousel-card {
   position: relative;
-  flex: 0 0 240px;
-  width: 240px;
-  height: 300px;
+  flex: 0 0 360px;   /* antes 240px, +50% */
+  width: 360px;
+  height: 450px;     /* antes 300px, +50% */
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 26px rgba(0,0,0,0.45);
@@ -1001,13 +1007,13 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 18px 0;
+  gap: 12px;
+  padding: 20px 22px 0;
 }
 
 .exp-card-header img {
-  width: 38px;
-  height: 38px;
+  width: 48px;   /* antes 38px */
+  height: 48px;
   object-fit: contain;
   background: rgba(255,255,255,0.18);
   border-radius: 6px;
@@ -1018,22 +1024,31 @@
 
 .exp-card-header h3 {
   color: #fff;
-  font-size: 15px;
+  font-size: 20px;  /* antes 15px */
   font-weight: bold;
   text-shadow: 0 1px 3px rgba(0,0,0,0.5);
   line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.exp-card-role {
+  color: rgba(255,255,255,0.85);
+  font-size: 14px;   /* antes não existia */
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  margin-top: 2px;
 }
 
 .exp-card-body {
   position: relative;
   z-index: 1;
   margin-top: auto;
-  padding: 14px 18px 18px;
+  padding: 18px 22px 22px;
 }
 
 .exp-card-body p {
   color: #f5f5f5;
-  font-size: 12px;
+  font-size: 14px;   /* antes 12px */
   line-height: 1.5;
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);
   font-weight: 400;
@@ -1044,30 +1059,35 @@
 
 .exp-carousel-hint {
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;   /* antes 11px */
   color: #606060;
-  padding: 6px 0 8px;
+  padding: 8px 0 10px;
   background: #ece9d8;
   flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
+  /* Ajuste responsivo para telas menores */
+  #win-experience {
+    width: 95vw !important;
+    height: auto !important;
+    min-height: 60vh;
+  }
   .exp-carousel-ring {
-    gap: 12px;
-    height: 210px;
+    gap: 16px;
+    height: 280px;
   }
-
   .exp-carousel-card {
-    flex-basis: 160px;
-    width: 160px;
-    height: 210px;
+    flex-basis: 200px;
+    width: 200px;
+    height: 280px;
   }
-
-  .exp-card-header { padding: 12px 14px 0; gap: 8px; }
-  .exp-card-header img { width: 30px; height: 30px; }
-  .exp-card-header h3 { font-size: 12px; }
-  .exp-card-body { padding: 10px 14px 14px; }
-  .exp-card-body p { font-size: 11px; }
+  .exp-card-header { padding: 14px 16px 0; gap: 10px; }
+  .exp-card-header img { width: 36px; height: 36px; }
+  .exp-card-header h3 { font-size: 16px; }
+  .exp-card-role { font-size: 12px; }
+  .exp-card-body { padding: 12px 16px 16px; }
+  .exp-card-body p { font-size: 12px; }
 }
   
 </style>
@@ -1199,8 +1219,8 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE (CARROSSEL 3D) ===== -->
-<div class="window" id="win-experience" style="left: calc(50% - 320px); top: calc(50% - 220px); width: 640px; height: 440px;">
+<!-- ===== JANELA EXPERIENCE (CARROSSEL 3D - MODIFICADO) ===== -->
+<div class="window" id="win-experience" style="left: calc(50% - 480px); top: calc(50% - 330px);">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
       <img src="icons/icon-experience.png" alt="" style="width:16px;height:16px;">
@@ -1217,88 +1237,103 @@
 
         <div class="exp-carousel-card" style="--index:0; background:#2D89EF;">
           <div class="exp-card-header"><img src="logos/binance.png" alt=""><h3>Binance</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:1; background:#00ABA9;">
           <div class="exp-card-header"><img src="logos/arenagames.png" alt=""><h3>Arena Games</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:2; background:#339933;">
           <div class="exp-card-header"><img src="logos/beeos.png" alt=""><h3>BeeOS</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:3; background:#7FBA00;">
           <div class="exp-card-header"><img src="logos/bionic.png" alt=""><h3>Bionic</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:4; background:#F09609;">
           <div class="exp-card-header"><img src="logos/coinracer.png" alt=""><h3>Coinracer</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:5; background:#FA6800;">
           <div class="exp-card-header"><img src="logos/coralapp.png" alt=""><h3>CoralApp</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:6; background:#E51400;">
           <div class="exp-card-header"><img src="logos/fortblockgames.png" alt=""><h3>Fort Block Games</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:7; background:#A20025;">
           <div class="exp-card-header"><img src="logos/lionshare.png" alt=""><h3>Lion's Share Group</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:8; background:#E671B8;">
           <div class="exp-card-header"><img src="logos/pipe.png" alt=""><h3>PIPE</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:9; background:#7E3FF2;">
           <div class="exp-card-header"><img src="logos/reaktor.png" alt=""><h3>Reaktor</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:10; background:#603CBA;">
           <div class="exp-card-header"><img src="logos/sheertopia.png" alt=""><h3>Sheertopia</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:11; background:#1E7145;">
           <div class="exp-card-header"><img src="logos/solcade.png" alt=""><h3>Solcade</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:12; background:#647687;">
           <div class="exp-card-header"><img src="logos/streamr.png" alt=""><h3>Streamr</h3></div>
-          <div class="exp-card-body"><p>Streamr provides the real-time data infrastructure of the decentralised web (Web3). Streamr technology is a core service layer which implements a vendor-neutral, real-time publish/subscribe protocol for data transmission. The data travels via a global peer-to-peer network, which is scalable, robust and permissionless.
-
-The technology works in tandem with companion blockchains - currently Ethereum, Gnosis, and Polygon - which are used for identity, security, and payments.</p></div>
+          <div class="exp-card-role">Community Moderator</div>
+          <div class="exp-card-body"><p>Streamr provides the real-time data infrastructure of the decentralised web (Web3). Streamr technology is a core service layer which implements a vendor-neutral, real-time publish/subscribe protocol for data transmission. The data travels via a global peer-to-peer network, which is scalable, robust and permissionless.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:13; background:#825A2C;">
           <div class="exp-card-header"><img src="logos/tap.png" alt=""><h3>TAP</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:14; background:#6D8764;">
           <div class="exp-card-header"><img src="logos/vs1.png" alt=""><h3>VS1</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:15; background:#B91D47;">
           <div class="exp-card-header"><img src="logos/wicrypt.png" alt=""><h3>Wicrypt</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
         <div class="exp-carousel-card" style="--index:16; background:#EE1111;">
           <div class="exp-card-header"><img src="logos/xend.png" alt=""><h3>Xend Finance</h3></div>
+          <div class="exp-card-role">Community Moderator</div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
@@ -3415,7 +3450,7 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INTERAÇÃO DO CARROSSEL HORIZONTAL (EXPERIENCE)
+//  INTERAÇÃO DO CARROSSEL HORIZONTAL (EXPERIENCE) – MODIFICADO
 // ============================================================
 (function initCarouselDrag() {
   const stageEl = document.getElementById('experience-stage');
@@ -3425,14 +3460,20 @@ function toggleMute() {
   const originalCards = Array.from(ringEl.querySelectorAll('.exp-carousel-card'));
   if (!originalCards.length) return;
 
-  // Duplica a sequência para permitir um loop horizontal realmente contínuo.
-  originalCards.forEach(card => {
-    const clone = card.cloneNode(true);
-    clone.removeAttribute('style');
-    clone.style.background = card.style.background;
-    clone.dataset.clone = 'true';
-    ringEl.appendChild(clone);
-  });
+  // Duplica a sequência para criar 3 cópias completas (loop infinito)
+  // Remove clones existentes para evitar duplicação se o script rodar novamente
+  ringEl.querySelectorAll('.exp-carousel-card[data-clone="true"]').forEach(el => el.remove());
+
+  const cloneCount = 3; // 3 ciclos
+  for (let c = 1; c < cloneCount; c++) {
+    originalCards.forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.removeAttribute('style');
+      clone.style.background = card.style.background;
+      clone.dataset.clone = 'true';
+      ringEl.appendChild(clone);
+    });
+  }
 
   let isDragging = false;
   let startX = 0;
@@ -3442,7 +3483,7 @@ function toggleMute() {
   let isHovering = false;
   let lastTime = performance.now();
 
-  const SPEED = 35; // pixels por segundo
+  const SPEED = 45; // um pouco mais rápido (opcional)
 
   function measureCycle() {
     const first = ringEl.querySelector('.exp-carousel-card');
@@ -3450,13 +3491,16 @@ function toggleMute() {
 
     const style = getComputedStyle(ringEl);
     const gap = parseFloat(style.columnGap || style.gap) || 0;
-    cycleWidth = (first.offsetWidth + gap) * originalCards.length;
+    // A largura de um ciclo é a largura total dos cards originais (sem clones)
+    const cardWidth = first.offsetWidth + gap;
+    cycleWidth = cardWidth * originalCards.length;
   }
 
   function normalizeOffset() {
     if (!cycleWidth) return;
-    while (offset >= cycleWidth) offset -= cycleWidth;
-    while (offset <= -cycleWidth) offset += cycleWidth;
+    // Mantém o offset dentro do intervalo [-cycleWidth, 0] para rolar para a esquerda
+    while (offset < -cycleWidth) offset += cycleWidth;
+    while (offset > 0) offset -= cycleWidth;
   }
 
   function render() {
@@ -3468,9 +3512,8 @@ function toggleMute() {
     const dt = Math.min(now - lastTime, 50) / 1000;
     lastTime = now;
 
-    // O carrossel continua andando sozinho, mas nunca enquanto o usuário arrasta.
     if (!isDragging && !isHovering) {
-      offset += SPEED * dt;
+      offset -= SPEED * dt; // subtrai para mover para a esquerda
       render();
     }
 
@@ -3489,7 +3532,7 @@ function toggleMute() {
   function moveDrag(clientX, event) {
     if (!isDragging) return;
 
-    offset = startOffset + (clientX - startX);
+    offset = startOffset + (clientX - startX); // arrasto direto (sem inversão)
     render();
 
     if (event) event.preventDefault();
