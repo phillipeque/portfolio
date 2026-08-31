@@ -94,7 +94,7 @@
             width: 100%;
             height: 100%;
             background: #000;
-            z-index: 20;
+            z-index: 30;
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.1s ease;
@@ -234,7 +234,7 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             pointer-events: none;
-            z-index: 10;
+            z-index: 40; /* acima de tudo, inclusive do flash */
         }
 
         #scanlines {
@@ -297,7 +297,7 @@
                     <div id="screen-home" class="screen-container active">
                         <div class="icon-grid">
                             <div class="icon-item" data-target="about">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E→%3C/text%3E%3C/svg%3E" alt="ABOUT" />
+                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="ABOUT" />
                                 <span class="icon-label label-orange">ABOUT</span>
                             </div>
                             <div class="icon-item" data-target="projects">
@@ -328,9 +328,9 @@
                         <div class="icon-grid about-grid">
                             <!-- fantasma esquerdo -->
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            <!-- ícone BACK -->
+                            <!-- ícone BACK (seta para esquerda) -->
                             <div class="icon-item" data-target="back">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E%3C%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
                             <!-- fantasma direito -->
