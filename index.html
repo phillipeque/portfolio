@@ -82,7 +82,7 @@
             justify-content: center;
             align-items: center;
             z-index: 2;
-            padding: 1.5% 22% 1.5% 22%; /* vertical bem pequeno para aumentar altura */
+            padding: 0.5% 22% 0.5% 22%; /* vertical mínimo para ganhar altura */
             text-align: center;
         }
 
@@ -122,14 +122,14 @@
         }
 
         .window-content {
-            padding: 16px;
+            padding: 24px; /* aumentado para dar mais altura interna */
             background: #c0c0c0;
         }
 
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px; /* mais espaçamento vertical/horizontal */
             margin-bottom: 10px;
         }
 
@@ -138,7 +138,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            padding: 10px 5px;
+            padding: 12px 5px; /* mais padding vertical */
             transition: all 0.15s;
             border: 1px solid transparent;
         }
@@ -222,11 +222,12 @@
         }
 
         @media (max-width: 768px) {
-            #tv-screen { padding: 2% 12% 2% 12%; } /* mobile com menos lateral */
+            #tv-screen { padding: 1% 12% 1% 12%; }
             .retro-window { max-width: 90%; }
-            .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
             .icon-img { width: 48px; height: 48px; }
             .icon-label { font-size: 10px; }
+            .window-content { padding: 16px; }
         }
     </style>
 <base target="_blank">
@@ -281,7 +282,7 @@
 
     <script>
         // ============================================================
-        //  BACKGROUND (ultralight + 60fps)
+        //  BACKGROUND (ultralight + 60fps) - unchanged
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -503,7 +504,7 @@
         })();
 
         // ============================================================
-        //  INTERACTIVE MENU (translated alerts)
+        //  INTERACTIVE MENU (English)
         // ============================================================
         (function() {
             const items = document.querySelectorAll('.icon-item');
