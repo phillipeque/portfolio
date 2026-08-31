@@ -936,7 +936,7 @@
   overflow-x: hidden !important;
 }
 
-/* ===== EXPERIENCE - FAIXA PLANA (SEM 3D) ===== */
+/* ===== EXPERIENCE - CARROSSEL 3D ESTILO "ROLETA" ===== */
 #win-experience .window-content {
   padding: 0 !important;
   overflow: hidden !important;
@@ -947,8 +947,11 @@
 .exp-carousel-stage {
   flex: 1;
   position: relative;
+  perspective: 2200px;
+  perspective-origin: 50% 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
   background: #ece9d8;
   touch-action: none; /* impede scroll da página ao arrastar no mobile */
@@ -958,24 +961,36 @@
 .exp-carousel-stage.dragging {
   cursor: grabbing;
 }
+.exp-carousel-stage.dragging .exp-carousel-ring {
+  animation-play-state: paused !important;
+}
 .exp-carousel-ring {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 0 18px;
+  width: 240px;
+  height: 300px;
+  --n: 17;
+  --radius: 640px;
+  transform-style: preserve-3d;
+  animation: expCarouselSpin 55s linear infinite;
   will-change: transform;
 }
+@keyframes expCarouselSpin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(-360deg); }
+}
 .exp-carousel-card {
-  position: relative;
-  flex: 0 0 auto;
+  position: absolute;
+  top: 0; left: 0;
   width: 240px;
   height: 300px;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+  backface-visibility: hidden;
   display: flex;
   flex-direction: column;
+  transform: rotateY(calc(360deg / var(--n) * var(--index))) translateZ(var(--radius));
+  will-change: transform;
 }
 .exp-carousel-card::after {
   content: "";
@@ -1035,6 +1050,7 @@
 }
 
 @media (max-width: 768px) {
+  .exp-carousel-ring { width: 160px; height: 210px; --radius: 420px; }
   .exp-carousel-card { width: 160px; height: 210px; }
   .exp-card-header { padding: 12px 14px 0; gap: 8px; }
   .exp-card-header img { width: 30px; height: 30px; }
@@ -1172,7 +1188,7 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE (FAIXA PLANA) ===== -->
+<!-- ===== JANELA EXPERIENCE (CARROSSEL 3D) ===== -->
 <div class="window" id="win-experience" style="left: calc(50% - 320px); top: calc(50% - 220px); width: 640px; height: 440px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
@@ -1188,89 +1204,89 @@
     <div class="exp-carousel-stage" id="experience-stage">
       <div class="exp-carousel-ring" id="experience-ring">
 
-        <div class="exp-carousel-card" style="background:#2D89EF;">
+        <div class="exp-carousel-card" style="--index:0; background:#2D89EF;">
           <div class="exp-card-header"><img src="logos/binance.png" alt=""><h3>Binance</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#00ABA9;">
+        <div class="exp-carousel-card" style="--index:1; background:#00ABA9;">
           <div class="exp-card-header"><img src="logos/arenagames.png" alt=""><h3>Arena Games</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#339933;">
+        <div class="exp-carousel-card" style="--index:2; background:#339933;">
           <div class="exp-card-header"><img src="logos/beeos.png" alt=""><h3>BeeOS</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#7FBA00;">
+        <div class="exp-carousel-card" style="--index:3; background:#7FBA00;">
           <div class="exp-card-header"><img src="logos/bionic.png" alt=""><h3>Bionic</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#F09609;">
+        <div class="exp-carousel-card" style="--index:4; background:#F09609;">
           <div class="exp-card-header"><img src="logos/coinracer.png" alt=""><h3>Coinracer</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#FA6800;">
+        <div class="exp-carousel-card" style="--index:5; background:#FA6800;">
           <div class="exp-card-header"><img src="logos/coralapp.png" alt=""><h3>CoralApp</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#E51400;">
+        <div class="exp-carousel-card" style="--index:6; background:#E51400;">
           <div class="exp-card-header"><img src="logos/fortblockgames.png" alt=""><h3>Fort Block Games</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#A20025;">
+        <div class="exp-carousel-card" style="--index:7; background:#A20025;">
           <div class="exp-card-header"><img src="logos/lionshare.png" alt=""><h3>Lion's Share Group</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#E671B8;">
+        <div class="exp-carousel-card" style="--index:8; background:#E671B8;">
           <div class="exp-card-header"><img src="logos/pipe.png" alt=""><h3>PIPE</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#7E3FF2;">
+        <div class="exp-carousel-card" style="--index:9; background:#7E3FF2;">
           <div class="exp-card-header"><img src="logos/reaktor.png" alt=""><h3>Reaktor</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#603CBA;">
+        <div class="exp-carousel-card" style="--index:10; background:#603CBA;">
           <div class="exp-card-header"><img src="logos/sheertopia.png" alt=""><h3>Sheertopia</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#1E7145;">
+        <div class="exp-carousel-card" style="--index:11; background:#1E7145;">
           <div class="exp-card-header"><img src="logos/solcade.png" alt=""><h3>Solcade</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#647687;">
+        <div class="exp-carousel-card" style="--index:12; background:#647687;">
           <div class="exp-card-header"><img src="logos/streamr.png" alt=""><h3>Streamr</h3></div>
           <div class="exp-card-body"><p>Streamr provides the real-time data infrastructure of the decentralised web (Web3). Streamr technology is a core service layer which implements a vendor-neutral, real-time publish/subscribe protocol for data transmission. The data travels via a global peer-to-peer network, which is scalable, robust and permissionless.
 
 The technology works in tandem with companion blockchains - currently Ethereum, Gnosis, and Polygon - which are used for identity, security, and payments.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#825A2C;">
+        <div class="exp-carousel-card" style="--index:13; background:#825A2C;">
           <div class="exp-card-header"><img src="logos/tap.png" alt=""><h3>TAP</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#6D8764;">
+        <div class="exp-carousel-card" style="--index:14; background:#6D8764;">
           <div class="exp-card-header"><img src="logos/vs1.png" alt=""><h3>VS1</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#B91D47;">
+        <div class="exp-carousel-card" style="--index:15; background:#B91D47;">
           <div class="exp-card-header"><img src="logos/wicrypt.png" alt=""><h3>Wicrypt</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
 
-        <div class="exp-carousel-card" style="background:#EE1111;">
+        <div class="exp-carousel-card" style="--index:16; background:#EE1111;">
           <div class="exp-card-header"><img src="logos/xend.png" alt=""><h3>Xend Finance</h3></div>
           <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
         </div>
@@ -3388,59 +3404,164 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INTERAÇÃO DE ARRASTE NA FAIXA PLANA (EXPERIENCE) — LOOP INFINITO
+//  INTERAÇÃO DE ARRASTE NO CARROSSEL (EXPERIENCE) — CORRIGIDA
 // ============================================================
 (function initCarouselDrag() {
   const stageEl = document.getElementById('experience-stage');
   const ringEl  = document.getElementById('experience-ring');
   if (!stageEl || !ringEl) return;
 
-  // Duplica os cards para criar loop infinito contínuo
-  const originalCards = Array.from(ringEl.children);
-  originalCards.forEach(card => ringEl.appendChild(card.cloneNode(true)));
+  let isDragging = false;
+  let startX = 0;
+  let startAngle = 0;
+  let hasDragged = false;
+  let isHovering = false;
 
-  let setWidth = 0;
-  function measure() {
-    setWidth = 0;
-    for (let i = 0; i < originalCards.length; i++) setWidth += ringEl.children[i].offsetWidth;
-    const gap = parseFloat(getComputedStyle(ringEl).gap) || 0;
-    setWidth += gap * originalCards.length;
+  function getRadius() {
+    const radiusPx = parseFloat(getComputedStyle(ringEl).getPropertyValue('--radius'));
+    if (!isNaN(radiusPx) && radiusPx > 0) return radiusPx;
+    return window.innerWidth <= 768 ? 420 : 640;
   }
-  measure();
-  window.addEventListener('resize', measure);
 
-  let pos = 0;
-  const speed = 0.45;
-  let isDragging = false, isHovering = false, startX = 0, startPos = 0;
+  function getCurrentAngle() {
+    const style = window.getComputedStyle(ringEl);
+    const transform = style.transform || style.webkitTransform;
+    if (!transform || transform === 'none') return 0;
 
-  function applyTransform() { ringEl.style.transform = `translateX(${pos}px)`; }
-  function wrap() {
-    if (setWidth <= 0) return;
-    while (pos <= -setWidth) pos += setWidth;
-    while (pos > 0) pos -= setWidth;
+    const match = transform.match(/rotateY\(([-\d.]+)deg\)/);
+    if (match) return parseFloat(match[1]);
+
+    const m3d = transform.match(/matrix3d\(([^)]+)\)/);
+    if (m3d) {
+      const vals = m3d[1].split(',').map(v => parseFloat(v.trim()));
+      const sin = vals[2];
+      const cos = vals[0];
+      return Math.atan2(sin, cos) * (180 / Math.PI);
+    }
+
+    const m2d = transform.match(/matrix\(([^)]+)\)/);
+    if (m2d) {
+      const vals = m2d[1].split(',').map(v => parseFloat(v.trim()));
+      return Math.atan2(vals[1], vals[0]) * (180 / Math.PI);
+    }
+    return 0;
   }
-  function tick() {
-    if (!isDragging && !isHovering) { pos -= speed; wrap(); applyTransform(); }
-    requestAnimationFrame(tick);
+
+  function setAngle(deg) {
+    ringEl.style.transform = `rotateY(${deg}deg)`;
   }
-  requestAnimationFrame(tick);
 
-  stageEl.addEventListener('mouseenter', () => { isHovering = true; });
-  stageEl.addEventListener('mouseleave', () => { isHovering = false; });
+  // Congela a animação CSS e fixa o ângulo atual via inline
+  function freezeAnimation() {
+    const angle = getCurrentAngle();
+    startAngle = angle;
+    ringEl.style.animation = 'none';
+    setAngle(angle);
+    stageEl.classList.add('dragging');
+  }
 
-  function dragStart(x) { isDragging = true; startX = x; startPos = pos; stageEl.classList.add('dragging'); }
-  function dragMove(x) { if (!isDragging) return; pos = startPos + (x - startX); wrap(); applyTransform(); }
-  function dragEnd() { if (!isDragging) return; isDragging = false; stageEl.classList.remove('dragging'); }
+  // Retoma a animação CSS exatamente do ângulo onde parou
+  function unfreezeAnimation() {
+    stageEl.classList.remove('dragging');
+    ringEl.style.animation = '';
 
-  stageEl.addEventListener('mousedown', e => { if (e.button !== 0) return; dragStart(e.clientX); e.preventDefault(); });
-  document.addEventListener('mousemove', e => { if (isDragging) { dragMove(e.clientX); e.preventDefault(); } });
-  document.addEventListener('mouseup', dragEnd);
+    const duration = 55;
+    const angle = getCurrentAngle();
+    const normalized = ((angle % 360) + 360) % 360;
+    const progress = normalized / 360;
+    const delay = -(duration * progress);
 
-  stageEl.addEventListener('touchstart', e => { const t = e.touches[0]; if (!t) return; dragStart(t.clientX); e.preventDefault(); }, { passive: false });
-  document.addEventListener('touchmove', e => { if (!isDragging) return; const t = e.touches[0]; if (!t) return; dragMove(t.clientX); e.preventDefault(); }, { passive: false });
-  document.addEventListener('touchend', dragEnd);
+    ringEl.style.animationDelay = delay + 's';
+    ringEl.style.animationPlayState = 'running';
+    void ringEl.offsetWidth;
+  }
 
-  document.documentElement.addEventListener('mouseleave', () => { if (isDragging) dragEnd(); isHovering = false; });
+  // Hover: pausa visualmente (só se não estiver arrastando)
+  stageEl.addEventListener('mouseenter', () => {
+    isHovering = true;
+    if (!isDragging) ringEl.style.animationPlayState = 'paused';
+  });
+
+  stageEl.addEventListener('mouseleave', () => {
+    isHovering = false;
+    if (!isDragging) unfreezeAnimation();
+  });
+
+  // --- MOUSE ---
+  stageEl.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return;
+    isDragging = true;
+    hasDragged = false;
+    startX = e.clientX;
+    freezeAnimation();
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 3) hasDragged = true;
+
+    const radius = getRadius();
+    // 1:1 — o arco percorrido pelo card = pixels movidos pelo mouse
+    const deg = startAngle + (dx / radius) * (180 / Math.PI);
+    setAngle(deg);
+    e.preventDefault();
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isDragging) return;
+    isDragging = false;
+
+    if (!isHovering) {
+      // Soltou fora do stage: retoma imediatamente
+      unfreezeAnimation();
+    } else {
+      // Soltou dentro do stage: restaura a animação CSS mas deixa pausada pelo hover
+      ringEl.style.animation = '';
+      ringEl.style.animationPlayState = 'paused';
+      stageEl.classList.remove('dragging');
+    }
+  });
+
+  // --- TOUCH ---
+  stageEl.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    if (!t) return;
+    isDragging = true;
+    hasDragged = false;
+    startX = t.clientX;
+    freezeAnimation();
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const t = e.touches[0];
+    if (!t) return;
+    const dx = t.clientX - startX;
+    if (Math.abs(dx) > 3) hasDragged = true;
+
+    const radius = getRadius();
+    const deg = startAngle + (dx / radius) * (180 / Math.PI);
+    setAngle(deg);
+    e.preventDefault();
+  }, { passive: false });
+
+  document.addEventListener('touchend', () => {
+    if (!isDragging) return;
+    isDragging = false;
+    unfreezeAnimation();
+  });
+
+  // Segurança: se o mouse sair da janela do browser enquanto arrasta
+  document.documentElement.addEventListener('mouseleave', () => {
+    if (isDragging) {
+      isDragging = false;
+      isHovering = false;
+      unfreezeAnimation();
+    }
+  });
 })();
 
 // ============================================================
