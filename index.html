@@ -25,135 +25,237 @@
             height: 100vh;
         }
 
-        /* CONTEÚDO – fundo da TV */
+        /* === FUNDO COM EFEITO STATIC === */
+        #tv-static {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0,0,0,0.15) 0px,
+                    rgba(0,0,0,0.15) 1px,
+                    transparent 1px,
+                    transparent 2px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(0,0,0,0.15) 0px,
+                    rgba(0,0,0,0.15) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            background-size: 100% 4px, 4px 100%;
+            animation: staticMove 0.1s steps(2) infinite;
+            z-index: 0;
+        }
+
+        @keyframes staticMove {
+            0% { background-position: 0 0, 0 0; }
+            50% { background-position: 0 2px, 2px 0; }
+            100% { background-position: 0 4px, 4px 0; }
+        }
+
+        /* === CONTEÚDO – posicionado DENTRO da área da tela da TV === */
         #tv-screen {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #1a1a2e, #0a0a12);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
             z-index: 1;
             padding: 12% 18% 15% 18%;
+            text-align: center;
         }
 
-        /* ===== CARD CENTRAL (estilo AWGE) ===== */
-        .awge-card {
-            background: #2a2a2a;
-            border-radius: 20px;
+        /* === JANELA ESTILO AWGE === */
+        .retro-window {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: 
+                inset 1px 1px 0 #dfdfdf,
+                inset -1px -1px 0 #000000,
+                4px 4px 0 rgba(0,0,0,0.3);
             width: 100%;
             max-width: 700px;
-            padding: 0;
-            box-shadow: 0 0 30px rgba(0,255,0,0.1), inset 0 0 20px rgba(0,0,0,0.5);
-            border: 2px solid #3a3a3a;
+            color: #000;
+            text-shadow: none;
+            position: relative;
+        }
+
+        .window-titlebar {
+            background: linear-gradient(90deg, #808080, #a0a0a0);
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+
+        .window-icon {
+            width: 16px;
+            height: 16px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #0f0;
+        }
+
+        .window-title {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #000;
+            text-shadow: 1px 1px 0 #a0a0a0;
+        }
+
+        .window-content {
+            padding: 20px;
+            background: #c0c0c0;
+        }
+
+        /* === GRID DE ÍCONES === */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 5px;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+        }
+
+        .icon-item:hover {
+            background: rgba(0,0,0,0.1);
+            border: 1px dotted #000;
+        }
+
+        .icon-item.active {
+            background: rgba(0,0,0,0.15);
+            border: 1px dotted #000;
+        }
+
+        .icon-img {
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            margin-bottom: 8px;
+            object-fit: contain;
+        }
+
+        .icon-label {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* Cores dos labels */
+        .label-orange { color: #c45c26; }
+        .label-black { color: #000; }
+        .label-green { color: #2d5016; }
+        .label-red { color: #c41e3a; }
+        .label-blue { color: #1a3a5c; }
+        .label-purple { color: #4a2d6b; }
+
+        /* === WIDGET MEDIA (canto direito) === */
+        .media-widget {
+            grid-column: span 2;
+            background: #000;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            position: relative;
             overflow: hidden;
         }
 
-        /* BARRA SUPERIOR (cabeçalho do card) */
-        .awge-card-header {
-            background: #1a1a1a;
-            padding: 1.2rem 2rem;
-            border-bottom: 2px solid #3a3a3a;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .media-widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255,255,255,0.1) 0px,
+                rgba(255,255,255,0.1) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            animation: staticMove 0.08s steps(3) infinite;
+            pointer-events: none;
         }
 
-        .awge-card-header h1 {
-            color: #0f0;
-            font-size: 1.8rem;
-            letter-spacing: 6px;
-            font-weight: normal;
-            text-shadow: 0 0 10px #0f0;
+        .media-label {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0 #ff00ff, -2px -2px 0 #00ffff;
         }
 
-        .awge-card-header .header-icons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .awge-card-header .header-icons span {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #555;
-        }
-
-        .awge-card-header .header-icons span:nth-child(1) { background: #ff5f56; }
-        .awge-card-header .header-icons span:nth-child(2) { background: #ffbd2e; }
-        .awge-card-header .header-icons span:nth-child(3) { background: #27c93f; }
-
-        /* CORPO DO CARD (itens do menu) */
-        .awge-card-body {
-            padding: 2rem 2.5rem;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem 2rem;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.8rem 1rem;
-            border-radius: 8px;
-            cursor: default;
-            transition: all 0.2s;
-            border: 2px solid transparent;
-        }
-
-        .menu-item img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            background: #111;
-            border-radius: 6px;
-            padding: 4px;
-        }
-
-        .menu-item span {
-            color: #aaa;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
-
-        /* ÍTEM ATIVO */
-        .menu-item.active {
-            background: #1a1a1a;
-            border-color: #0f0;
-            box-shadow: 0 0 20px rgba(0,255,0,0.2);
-        }
-
-        .menu-item.active span {
-            color: #0f0;
-            text-shadow: 0 0 10px #0f0;
-        }
-
-        .menu-item.active img {
-            border-color: #0f0;
-            box-shadow: 0 0 15px #0f0;
-        }
-
-        /* RODAPÉ DO CARD (instrução) */
-        .awge-card-footer {
-            background: #1a1a1a;
-            padding: 0.8rem 2rem;
-            border-top: 2px solid #3a3a3a;
+        /* === FOOTER === */
+        .window-footer {
             text-align: center;
-            color: #555;
-            font-size: 0.8rem;
+            padding: 10px;
+            font-size: 10px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            letter-spacing: 2px;
+            background: #000;
+            border-top: 2px solid #808080;
+        }
+
+        .window-footer a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin: 2px 0;
+        }
+
+        .window-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* === SUBINFO === */
+        #subinfo {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
             letter-spacing: 2px;
         }
 
-        /* FRAME DA TV */
+        /* === MOLDURA TV === */
         #tv-frame {
             position: absolute;
             top: 0;
@@ -170,7 +272,7 @@
             z-index: 10;
         }
 
-        /* SCANLINES (opcional) */
+        /* === SCANLINES === */
         #scanlines {
             position: absolute;
             top: 0;
@@ -188,134 +290,120 @@
             z-index: 20;
         }
 
-        /* RESPONSIVO */
+        /* === RESPONSIVO === */
         @media (max-width: 768px) {
-            .awge-card-body {
-                grid-template-columns: 1fr;
-                padding: 1.5rem;
-            }
-            .awge-card-header h1 {
-                font-size: 1.4rem;
-            }
-            .menu-item span {
-                font-size: 1rem;
-            }
-            #tv-screen {
-                padding: 10% 12% 12% 12%;
-            }
-            .awge-card {
-                max-width: 100%;
-            }
+            #tv-screen { padding: 10% 12% 12% 12%; }
+            .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .media-widget { grid-column: span 2; }
+            .window-content { padding: 12px; }
+            .icon-img { width: 40px; height: 40px; }
+            .icon-label { font-size: 10px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
+        <div id="tv-static"></div>
+
         <div id="tv-screen">
-            <!-- CARD CENTRAL -->
-            <div class="awge-card">
-                <!-- CABEÇALHO -->
-                <div class="awge-card-header">
-                    <h1>PORTFOLIO</h1>
-                    <div class="header-icons">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+            <div class="retro-window">
+                <div class="window-titlebar">
+                    <div class="window-icon">▶</div>
+                    <div class="window-title">PORTFOLIO</div>
+                </div>
+
+                <div class="window-content">
+                    <div class="icon-grid">
+                        <!-- Linha 1 -->
+                        <div class="icon-item active" data-target="sobre">
+                            <img class="icon-img" src="icons/sobre.png" alt="SOBRE" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22><rect width=%2248%22 height=%2248%22 fill=%22%23c0c0c0%22 stroke=%22%23000%22 stroke-width=%222%22/><text x=%2224%22 y=%2230%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22%23000%22>?</text></svg>'" />
+                            <span class="icon-label label-orange">SOBRE</span>
+                        </div>
+
+                        <div class="icon-item" data-target="projetos">
+                            <img class="icon-img" src="icons/projetos.png" alt="PROJETOS" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22><rect width=%2248%22 height=%2248%22 fill=%22%23c0c0c0%22 stroke=%22%23000%22 stroke-width=%222%22/><text x=%2224%22 y=%2230%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22%23000%22>📁</text></svg>'" />
+                            <span class="icon-label label-black">PROJETOS</span>
+                        </div>
+
+                        <div class="media-widget">
+                            <span class="media-label">MEDIA</span>
+                        </div>
+
+                        <!-- Linha 2 -->
+                        <div class="icon-item" data-target="contato">
+                            <img class="icon-img" src="icons/contato.png" alt="CONTATO" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22><rect width=%2248%22 height=%2248%22 fill=%22%23c0c0c0%22 stroke=%22%23000%22 stroke-width=%222%22/><text x=%2224%22 y=%2230%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22%23000%22>@</text></svg>'" />
+                            <span class="icon-label label-green">CONTATO</span>
+                        </div>
+
+                        <div class="icon-item" data-target="github">
+                            <img class="icon-img" src="icons/github.png" alt="GITHUB" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22><rect width=%2248%22 height=%2248%22 fill=%22%23c0c0c0%22 stroke=%22%23000%22 stroke-width=%222%22/><text x=%2224%22 y=%2230%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22%23000%22>&lt;/&gt;</text></svg>'" />
+                            <span class="icon-label label-red">GITHUB</span>
+                        </div>
+
+                        <div class="icon-item" data-target="linkedin">
+                            <img class="icon-img" src="icons/linkedin.png" alt="LINKEDIN" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22><rect width=%2248%22 height=%2248%22 fill=%22%23c0c0c0%22 stroke=%22%23000%22 stroke-width=%222%22/><text x=%2224%22 y=%2230%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22%23000%22>in</text></svg>'" />
+                            <span class="icon-label label-blue">LINKEDIN</span>
+                        </div>
+
+                        <div class="icon-item" data-target="email">
+                            <img class="icon-img" src="icons/email.png" alt="EMAIL" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22><rect width=%2248%22 height=%2248%22 fill=%22%23c0c0c0%22 stroke=%22%23000%22 stroke-width=%222%22/><text x=%2224%22 y=%2230%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22%23000%22>✉</text></svg>'" />
+                            <span class="icon-label label-purple">EMAIL</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- CORPO (MENU) -->
-                <div class="awge-card-body" id="menu-body">
-                    <div class="menu-item" data-target="sobre">
-                        <img src="pngs/icone-sobre.png" alt="Sobre" />
-                        <span>SOBRE</span>
-                    </div>
-                    <div class="menu-item" data-target="projetos">
-                        <img src="pngs/icone-projetos.png" alt="Projetos" />
-                        <span>PROJETOS</span>
-                    </div>
-                    <div class="menu-item" data-target="habilidades">
-                        <img src="pngs/icone-habilidades.png" alt="Habilidades" />
-                        <span>HABILIDADES</span>
-                    </div>
-                    <div class="menu-item" data-target="contato">
-                        <img src="pngs/icone-contato.png" alt="Contato" />
-                        <span>CONTATO</span>
-                    </div>
-                    <div class="menu-item" data-target="blog">
-                        <img src="pngs/icone-blog.png" alt="Blog" />
-                        <span>BLOG</span>
-                    </div>
-                    <div class="menu-item" data-target="depoimentos">
-                        <img src="pngs/icone-depoimentos.png" alt="Depoimentos" />
-                        <span>DEPOIMENTOS</span>
-                    </div>
+                <div class="window-footer">
+                    <span>© 2026 PORTFOLIO</span>
                 </div>
-
-                <!-- RODAPÉ -->
-                <div class="awge-card-footer">← → ↑ ↓ · ENTER</div>
             </div>
+
+            <div class="sub" id="subinfo">▶ SOBRE — Use ↑↓←→ e ENTER</div>
         </div>
 
         <div id="tv-frame"></div>
-        <!-- <div id="scanlines"></div> -->
+        <div id="scanlines"></div>
     </div>
 
     <script>
         (function() {
-            const items = document.querySelectorAll('.menu-item');
-            const total = items.length;
+            const items = document.querySelectorAll('.icon-item');
             let current = 0;
 
             function updateMenu() {
                 items.forEach((item, index) => {
                     item.classList.toggle('active', index === current);
                 });
+                const target = items[current].getAttribute('data-target');
+                document.getElementById('subinfo').textContent = '▶ ' + target.toUpperCase() + ' — Use ↑↓←→ e ENTER';
             }
 
-            // Navegação por setas (grade 2 colunas)
             document.addEventListener('keydown', function(e) {
-                const cols = 2;
-                let row = Math.floor(current / cols);
-                let col = current % cols;
+                const cols = window.innerWidth <= 768 ? 2 : 4;
 
-                if (e.key === 'ArrowRight') {
+                if (e.key === 'ArrowDown') {
                     e.preventDefault();
-                    if (col < cols - 1 && current + 1 < total) {
-                        current++;
-                    } else if (current + 1 < total) {
-                        current++;
-                    }
-                } else if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    if (col > 0) {
-                        current--;
-                    } else if (current - 1 >= 0) {
-                        current--;
-                    }
-                } else if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    if (current + cols < total) {
-                        current += cols;
-                    } else {
-                        current = total - 1;
-                    }
+                    current = (current + cols) % items.length;
+                    updateMenu();
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
-                    if (current - cols >= 0) {
-                        current -= cols;
-                    } else {
-                        current = 0;
-                    }
+                    current = (current - cols + items.length) % items.length;
+                    updateMenu();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    current = (current + 1) % items.length;
+                    updateMenu();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    current = (current - 1 + items.length) % items.length;
+                    updateMenu();
                 } else if (e.key === 'Enter') {
                     e.preventDefault();
                     const target = items[current].getAttribute('data-target');
                     alert('Navegando para: ' + target);
                 }
-                updateMenu();
             });
 
-            // Clique e duplo clique
             items.forEach((item, index) => {
                 item.addEventListener('click', function() {
                     current = index;
