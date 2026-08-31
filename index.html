@@ -86,36 +86,42 @@
             text-align: center;
         }
 
-        /* FLASH / STATIC OVERLAY - cobre toda a área dentro da moldura
-           enquanto o "canal" troca. A opacidade e o background-position
-           são controlados via JS por requestAnimationFrame (ver script),
-           não por @keyframes puro — estática real é aleatória frame a
-           frame; um loop CSS repetido fica visivelmente cíclico depois
-           de meio segundo. */
-        #flash-overlay {
+        /* CURTAIN EFFECT - the picture collapses to a line, like a CRT
+           powering off: two black bars close in from the top and bottom
+           edges, meet at the center, then reopen on the new screen.
+           Heights/timings are driven directly from JS (see script) so
+           closing can accelerate and opening can decelerate independently. */
+        #curtain-top, #curtain-bottom {
             position: absolute;
-            top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 0;
+            background: #000;
             z-index: 30;
             pointer-events: none;
+        }
+        #curtain-top { top: 0; }
+        #curtain-bottom { bottom: 0; }
+
+        /* Bright implosion line that flashes for an instant right as the
+           two curtains meet — the little "pop" a real CRT gives off. */
+        #curtain-flash {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 2px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7);
             opacity: 0;
-            background-color: #000;
+            z-index: 31;
+            pointer-events: none;
+            transition: opacity 0.16s ease-out;
         }
-        #flash-overlay.snap {
-            /* frame único e quase instantâneo de "corte" antes da neve,
-               como o relé do sintonizador trocando de canal */
+        #curtain-flash.active {
             opacity: 1;
-            transition: opacity 0.04s linear;
-        }
-        #flash-overlay.snowing {
-            opacity: 1;
-            background-image:
-                repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 2px),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px, transparent 1px, transparent 2px),
-                repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px);
-            background-size: 3px 3px, 3px 3px, 6px 6px;
+            transition: opacity 0.02s linear;
         }
 
         .retro-window {
@@ -326,8 +332,10 @@
         <!-- ÁREA DENTRO DA MOLDURA -->
         <div id="tv-screen">
 
-            <!-- FLASH OVERLAY (cobre toda a área dentro da moldura) -->
-            <div id="flash-overlay"></div>
+            <!-- CURTAIN EFFECT (top/bottom bars + implosion flash) -->
+            <div id="curtain-top"></div>
+            <div id="curtain-bottom"></div>
+            <div id="curtain-flash"></div>
 
             <!-- JANELA RETRÔ -->
             <div class="retro-window">
@@ -625,34 +633,36 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO COM TROCA DE CANAL (snap -> neve -> roll/tear -> lock)
+        //  NAVEGAÇÃO COM TROCA DE CANAL (curtain close -> swap -> curtain
+        //  open -> roll/tear settle)
         // ============================================================
         (function() {
             const homeScreen  = document.getElementById('screen-home');
             const aboutScreen = document.getElementById('screen-about');
-            const flash       = document.getElementById('flash-overlay');
+            const curtainTop    = document.getElementById('curtain-top');
+            const curtainBottom = document.getElementById('curtain-bottom');
+            const curtainFlash  = document.getElementById('curtain-flash');
             const retroWindow = document.querySelector('.retro-window');
             let currentScreen = 'home';
             let transitioning = false;
 
-            // --- estática granulada, aleatória por frame (não é um loop CSS) ---
-            let noiseRAF = null;
-            function startNoise() {
-                function tick() {
-                    const bx1 = (Math.random() * 4).toFixed(1), by1 = (Math.random() * 4).toFixed(1);
-                    const bx2 = (Math.random() * 4).toFixed(1), by2 = (Math.random() * 4).toFixed(1);
-                    const bx3 = (Math.random() * 6).toFixed(1), by3 = (Math.random() * 6).toFixed(1);
-                    flash.style.backgroundPosition = `${bx1}px ${by1}px, ${bx2}px ${by2}px, ${bx3}px ${by3}px`;
-                    flash.style.opacity = (0.88 + Math.random() * 0.12).toFixed(2);
-                    noiseRAF = requestAnimationFrame(tick);
-                }
-                tick();
+            // Closing accelerates (ease-in) like a CRT collapsing; opening
+            // decelerates (ease-out) like the picture "blooming" back out.
+            // Each direction gets its own transition so the timing feels
+            // asymmetric, the way a real tube does.
+            function closeCurtains(duration) {
+                const t = `height ${duration}ms cubic-bezier(0.55, 0, 1, 0.45)`;
+                curtainTop.style.transition = t;
+                curtainBottom.style.transition = t;
+                curtainTop.style.height = '50%';
+                curtainBottom.style.height = '50%';
             }
-            function stopNoise() {
-                if (noiseRAF) cancelAnimationFrame(noiseRAF);
-                noiseRAF = null;
-                flash.style.opacity = '';
-                flash.style.backgroundPosition = '';
+            function openCurtains(duration) {
+                const t = `height ${duration}ms cubic-bezier(0, 0.55, 0.45, 1)`;
+                curtainTop.style.transition = t;
+                curtainBottom.style.transition = t;
+                curtainTop.style.height = '0%';
+                curtainBottom.style.height = '0%';
             }
 
             // --- riscos de tearing horizontal, posição/duração aleatórias ---
@@ -674,47 +684,43 @@
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
 
-                // 1) snap — corte quase instantâneo, como o relé do sintonizador
-                flash.classList.add('snap');
+                // 1) curtains close — top and bottom bars race toward
+                //    the center, compressing the picture into a line
+                closeCurtains(220);
 
-                // 2) neve — estática cobrindo tudo enquanto o "canal" troca
+                // 2) right as they meet: bright implosion flash + swap
+                //    the actual content underneath, fully hidden
                 setTimeout(() => {
-                    flash.classList.remove('snap');
-                    flash.classList.add('snowing');
-                    startNoise();
-                }, 40);
+                    curtainFlash.classList.add('active');
+                    setTimeout(() => curtainFlash.classList.remove('active'), 40);
 
-                // 3) troca o conteúdo por baixo da neve
-                setTimeout(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
-
                     if (screen === 'home') {
                         homeScreen.classList.add('active');
                     } else if (screen === 'about') {
                         aboutScreen.classList.add('active');
                     }
-
                     currentScreen = screen;
-                }, 190);
+                }, 220);
 
-                // 4) a neve dissolve, revelando a imagem nova
+                // 3) brief hold on black, like an old set taking a beat
+                //    before the new channel's picture blooms back in
                 setTimeout(() => {
-                    stopNoise();
-                    flash.classList.remove('snowing');
-                }, 260);
+                    openCurtains(260);
+                }, 300);
 
-                // 5) a imagem "trava o sync": rola verticalmente e ganha
-                //    alguns tears horizontais até estabilizar
+                // 4) once the picture is back, it "locks sync": a quick
+                //    vertical roll plus a couple of tear-line glitches
                 setTimeout(() => {
                     retroWindow.classList.add('rolling');
                     spawnTearLines(4 + Math.floor(Math.random() * 2));
-                }, 270);
+                }, 560);
 
                 setTimeout(() => {
                     retroWindow.classList.remove('rolling');
                     transitioning = false;
-                }, 780);
+                }, 1060);
             }
 
             // Clique nos ícones
