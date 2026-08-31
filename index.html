@@ -43,7 +43,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 repeating-linear-gradient(
                     0deg,
                     rgba(0,0,0,0.08) 0px,
@@ -70,7 +70,7 @@
             100% { background-position: 0 4px, 4px 0; }
         }
 
-        /* Área principal dentro da moldura */
+        /* === CONTENT (window) === */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -82,54 +82,15 @@
             justify-content: center;
             align-items: center;
             z-index: 2;
-            padding: 1.5% 22% 1.5% 22%;
+            padding: 6% 22% 6% 22%;
             text-align: center;
         }
 
-        /* CURTAIN EFFECT - the picture collapses to a line, like a CRT
-           powering off: two black bars close in from the top and bottom
-           edges, meet at the center, then reopen on the new screen.
-           Heights/timings are driven directly from JS (see script) so
-           closing can accelerate and opening can decelerate independently. */
-        #curtain-top, #curtain-bottom {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 0;
-            background: #000;
-            z-index: 30;
-            pointer-events: none;
-        }
-        #curtain-top { top: 0; }
-        #curtain-bottom { bottom: 0; }
-
-        /* Bright implosion line that flashes for an instant right as the
-           two curtains meet — the little "pop" a real CRT gives off. */
-        #curtain-flash {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 100%;
-            height: 2px;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7);
-            opacity: 0;
-            z-index: 31;
-            pointer-events: none;
-            transition: opacity 0.16s ease-out;
-        }
-        #curtain-flash.active {
-            opacity: 1;
-            transition: opacity 0.02s linear;
-        }
-
         .retro-window {
-            position: relative;
             background: #c0c0c0;
             border: 2px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: 
+            box-shadow:
                 inset 1px 1px 0 #dfdfdf,
                 inset -1px -1px 0 #000000,
                 4px 4px 0 rgba(0,0,0,0.3);
@@ -138,40 +99,7 @@
             margin: 0 auto;
             color: #000;
             text-shadow: none;
-            overflow: hidden; /* clips the tear-glitch streaks while syncing */
-        }
-
-        /* Vertical hold slipping right after the picture comes back —
-           overshoots then settles, like a CRT re-locking sync. */
-        @keyframes verticalRoll {
-            0%   { transform: translateY(0); }
-            12%  { transform: translateY(-16px); }
-            28%  { transform: translateY(11px); }
-            45%  { transform: translateY(-7px); }
-            62%  { transform: translateY(4px); }
-            80%  { transform: translateY(-2px); }
-            100% { transform: translateY(0); }
-        }
-        .retro-window.rolling {
-            animation: verticalRoll 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
-        }
-
-        /* Short horizontal tear streaks, spawned dynamically by JS while
-           the picture is locking sync. */
-        .tear-line {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.55);
-            mix-blend-mode: difference;
-            pointer-events: none;
-            z-index: 25;
-            animation: tearShift 0.16s ease-out forwards;
-        }
-        @keyframes tearShift {
-            0%   { transform: translateX(0); opacity: 0.9; }
-            55%  { transform: translateX(var(--tear-offset, 30px)); opacity: 0.7; }
-            100% { transform: translateX(0); opacity: 0; }
+            position: relative;
         }
 
         .window-titlebar {
@@ -196,27 +124,6 @@
         .window-content {
             padding: 16px;
             background: #c0c0c0;
-            min-height: 180px;
-            position: relative;
-        }
-
-        .window-footer {
-            text-align: center;
-            padding: 10px;
-            font-size: 10px;
-            color: #fff;
-            text-shadow: 1px 1px 0 #000;
-            letter-spacing: 2px;
-            background: #000;
-            border-top: 2px solid #808080;
-        }
-
-        /* Telas */
-        .screen-container {
-            display: none;
-        }
-        .screen-container.active {
-            display: block;
         }
 
         .icon-grid {
@@ -224,11 +131,6 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 10px;
-        }
-        /* Para a tela ABOUT: usamos o mesmo grid, mas com itens laterais invisíveis */
-        .icon-grid .ghost {
-            visibility: hidden;
-            pointer-events: none;
         }
 
         .icon-item {
@@ -239,6 +141,11 @@
             padding: 10px 5px;
             transition: all 0.15s;
             border: 1px solid transparent;
+        }
+
+        .icon-item.invisible {
+            visibility: hidden;
+            pointer-events: none;
         }
 
         .icon-item:hover {
@@ -274,6 +181,18 @@
         .label-red { color: #c41e3a; }
         .label-blue { color: #1a3a5c; }
         .label-purple { color: #4a2d6b; }
+        .label-gray { color: #444; }
+
+        .window-footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 10px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            letter-spacing: 2px;
+            background: #000;
+            border-top: 2px solid #808080;
+        }
 
         #tv-frame {
             position: absolute;
@@ -288,7 +207,7 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             pointer-events: none;
-            z-index: 40; /* acima de tudo, inclusive do flash */
+            z-index: 10;
         }
 
         #scanlines {
@@ -308,110 +227,124 @@
             z-index: 9;
         }
 
+        /* === CHANNEL-CHANGE TRANSITION ===
+           Sits above the content but below the scanlines/frame, so the
+           bezel stays put and the scanline pattern still reads over the
+           noise, like a real CRT glass surface flickering. */
+        #channel-transition {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 8;
+            opacity: 0;
+            pointer-events: none;
+            background-color: #000;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0px, rgba(255,255,255,0.18) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(45deg, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 2px, transparent 2px, transparent 4px);
+            background-size: 3px 3px, 3px 3px, 6px 6px;
+            transition: opacity 0.12s linear;
+        }
+
+        #channel-transition.active {
+            opacity: 1;
+            animation: staticFlicker 0.06s steps(2) infinite;
+        }
+
+        @keyframes staticFlicker {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            50% { background-position: 2px 1px, -1px 2px, 3px -2px; }
+            100% { background-position: -2px 3px, 1px -1px, -3px 2px; }
+        }
+
+        .retro-window.glitching {
+            animation: channelGlitch 0.22s steps(3);
+        }
+
+        @keyframes channelGlitch {
+            0%   { transform: translateX(0); filter: none; }
+            20%  { transform: translateX(-6px); filter: hue-rotate(20deg); }
+            40%  { transform: translateX(5px); filter: hue-rotate(-15deg); }
+            60%  { transform: translateX(-3px); filter: none; }
+            80%  { transform: translateX(2px); }
+            100% { transform: translateX(0); filter: none; }
+        }
+
+        /* === BOOT SEQUENCE ===
+           Covers the entire TV (including bezel) so the whole set feels
+           like it's powering on: black -> white flash -> static -> reveal. */
+        #boot-sequence {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: #000;
+            pointer-events: none;
+        }
+
+        #boot-sequence.boot-flash {
+            background: #fff;
+        }
+
+        #boot-sequence.boot-noise {
+            background-color: #000;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0px, rgba(255,255,255,0.18) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px);
+            background-size: 3px 3px, 3px 3px, 6px 6px;
+            animation: staticFlicker 0.07s steps(2) infinite;
+        }
+
+        #boot-sequence.boot-fade {
+            opacity: 0;
+            transition: opacity 0.55s ease-out;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            #tv-screen { padding: 2% 12% 2% 12%; }
+            #tv-screen { padding: 8% 12% 8% 12%; }
             .retro-window { max-width: 90%; }
             .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            /* Em mobile, a tela ABOUT também deve ter 2 colunas, mas com o item centralizado? Vamos ajustar */
-            .icon-grid .ghost { display: none; } /* esconde os fantasmas no mobile */
-            .icon-grid.about-grid { display: flex; justify-content: center; align-items: center; }
             .icon-img { width: 48px; height: 48px; }
             .icon-label { font-size: 10px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
-
-        <!-- CANVAS DE FUNDO -->
         <canvas id="background-canvas"></canvas>
-
-        <!-- ESTÁTICA -->
         <div id="tv-static"></div>
 
-        <!-- ÁREA DENTRO DA MOLDURA -->
         <div id="tv-screen">
-
-            <!-- CURTAIN EFFECT (top/bottom bars + implosion flash) -->
-            <div id="curtain-top"></div>
-            <div id="curtain-bottom"></div>
-            <div id="curtain-flash"></div>
-
-            <!-- JANELA RETRÔ -->
-            <div class="retro-window">
-
-                <!-- TITLE BAR -->
+            <div class="retro-window" id="retro-window">
                 <div class="window-titlebar">
-                    <div class="window-title">PORTFOLIO</div>
+                    <div class="window-title" id="window-title">PORTFOLIO</div>
                 </div>
-
-                <!-- CONTEÚDO -->
-                <div class="window-content">
-
-                    <!-- TELA HOME -->
-                    <div id="screen-home" class="screen-container active">
-                        <div class="icon-grid">
-                            <div class="icon-item" data-target="about">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="ABOUT" />
-                                <span class="icon-label label-orange">ABOUT</span>
-                            </div>
-                            <div class="icon-item" data-target="projects">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
-                                <span class="icon-label label-black">PROJECTS</span>
-                            </div>
-                            <div class="icon-item" data-target="contact">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="CONTACT" />
-                                <span class="icon-label label-green">CONTACT</span>
-                            </div>
-                            <!-- ÍCONE DO GITHUB CORRIGIDO -->
-                            <div class="icon-item" data-target="github">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
-                                <span class="icon-label label-red">GITHUB</span>
-                            </div>
-                            <div class="icon-item" data-target="linkedin">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3Ein%3C/text%3E%3C/svg%3E" alt="LINKEDIN" />
-                                <span class="icon-label label-blue">LINKEDIN</span>
-                            </div>
-                            <div class="icon-item" data-target="email">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="EMAIL" />
-                                <span class="icon-label label-purple">EMAIL</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TELA ABOUT (apenas BACK, mesmo grid com fantasmas) -->
-                    <div id="screen-about" class="screen-container">
-                        <div class="icon-grid about-grid">
-                            <!-- fantasma esquerdo -->
-                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            <!-- ícone BACK (seta para esquerda) -->
-                            <div class="icon-item" data-target="back">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
-                                <span class="icon-label label-black">BACK</span>
-                            </div>
-                            <!-- fantasma direito -->
-                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                        </div>
-                        <!-- Sem texto extra -->
-                    </div>
-
+                <div class="window-content" id="window-content">
+                    <!-- injected by JS: main menu / about menu -->
                 </div>
-
-                <!-- FOOTER -->
                 <div class="window-footer">
                     <span>© 2026 PORTFOLIO</span>
                 </div>
             </div>
         </div>
 
-        <!-- SCANLINES E FRAME -->
+        <div id="channel-transition"></div>
         <div id="scanlines"></div>
         <div id="tv-frame"></div>
+        <div id="boot-sequence"></div>
     </div>
 
     <script>
         // ============================================================
-        //  FUNDO (INALTERADO)
+        //  ULTRALIGHT BACKGROUND @ 60 FPS + SMALLER TOP CLOUDS
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -472,6 +405,7 @@
                 }
             }
 
+            // Layers with reduced top clouds
             const layers = [
                 { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08, 0.20], scale: [1.8, 2.8], opacity: [0.30, 0.45] },
                 { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20, 0.40], scale: [1.3, 2.0], opacity: [0.45, 0.65] },
@@ -633,166 +567,190 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO COM TROCA DE CANAL (curtain close -> swap -> curtain
-        //  open -> roll/tear settle)
+        //  MENU SCREENS (main menu + about submenu) + CHANNEL TRANSITION
         // ============================================================
         (function() {
-            const homeScreen  = document.getElementById('screen-home');
-            const aboutScreen = document.getElementById('screen-about');
-            const curtainTop    = document.getElementById('curtain-top');
-            const curtainBottom = document.getElementById('curtain-bottom');
-            const curtainFlash  = document.getElementById('curtain-flash');
-            const retroWindow = document.querySelector('.retro-window');
-            let currentScreen = 'home';
+            const ICON_PLACEHOLDER = '?';
+
+            function iconSvg(glyph) {
+                return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E" + glyph + "%3C/text%3E%3C/svg%3E";
+            }
+
+            // --- Screen templates -------------------------------------------------
+            const mainMenuHTML = `
+                <div class="icon-grid">
+                    <div class="icon-item" data-target="about">
+                        <img class="icon-img" src="${iconSvg('%3F')}" alt="ABOUT" />
+                        <span class="icon-label label-orange">ABOUT</span>
+                    </div>
+                    <div class="icon-item" data-target="projects">
+                        <img class="icon-img" src="${iconSvg('%F0%9F%93%81')}" alt="PROJECTS" />
+                        <span class="icon-label label-black">PROJECTS</span>
+                    </div>
+                    <div class="icon-item" data-target="contact">
+                        <img class="icon-img" src="${iconSvg('%40')}" alt="CONTACT" />
+                        <span class="icon-label label-green">CONTACT</span>
+                    </div>
+                    <div class="icon-item" data-target="github">
+                        <img class="icon-img" src="${iconSvg('%26lt%3B%2F%26gt%3B')}" alt="GITHUB" />
+                        <span class="icon-label label-red">GITHUB</span>
+                    </div>
+                    <div class="icon-item" data-target="linkedin">
+                        <img class="icon-img" src="${iconSvg('in')}" alt="LINKEDIN" />
+                        <span class="icon-label label-blue">LINKEDIN</span>
+                    </div>
+                    <div class="icon-item" data-target="email">
+                        <img class="icon-img" src="${iconSvg('%E2%9C%89')}" alt="EMAIL" />
+                        <span class="icon-label label-purple">EMAIL</span>
+                    </div>
+                </div>
+            `;
+
+            // Same 3x2 grid footprint as the main menu (empty invisible slots)
+            // so the window renders at the exact same size on this screen too.
+            const aboutMenuHTML = `
+                <div class="icon-grid">
+                    <div class="icon-item invisible"></div>
+                    <div class="icon-item" data-target="back">
+                        <img class="icon-img" src="${iconSvg('%E2%86%90')}" alt="BACK" />
+                        <span class="icon-label label-gray">BACK</span>
+                    </div>
+                    <div class="icon-item invisible"></div>
+                    <div class="icon-item invisible"></div>
+                    <div class="icon-item invisible"></div>
+                    <div class="icon-item invisible"></div>
+                </div>
+            `;
+
+            const SCREENS = {
+                main:  { title: 'PORTFOLIO',         html: mainMenuHTML },
+                about: { title: 'PORTFOLIO / ABOUT',  html: aboutMenuHTML },
+            };
+
+            const windowEl   = document.getElementById('retro-window');
+            const titleEl    = document.getElementById('window-title');
+            const contentEl  = document.getElementById('window-content');
+            const transition = document.getElementById('channel-transition');
+
+            let screenState = 'main';
+            let items = [];
+            let current = 0;
             let transitioning = false;
 
-            // Closing accelerates (ease-in) like a CRT collapsing; opening
-            // decelerates (ease-out) like the picture "blooming" back out.
-            // Each direction gets its own transition so the timing feels
-            // asymmetric, the way a real tube does.
-            function closeCurtains(duration) {
-                const t = `height ${duration}ms cubic-bezier(0.55, 0, 1, 0.45)`;
-                curtainTop.style.transition = t;
-                curtainBottom.style.transition = t;
-                curtainTop.style.height = '50%';
-                curtainBottom.style.height = '50%';
-            }
-            function openCurtains(duration) {
-                const t = `height ${duration}ms cubic-bezier(0, 0.55, 0.45, 1)`;
-                curtainTop.style.transition = t;
-                curtainBottom.style.transition = t;
-                curtainTop.style.height = '0%';
-                curtainBottom.style.height = '0%';
+            function renderScreen(name) {
+                const screen = SCREENS[name];
+                screenState = name;
+                titleEl.textContent = screen.title;
+                contentEl.innerHTML = screen.html;
+                bindItems();
             }
 
-            // --- riscos de tearing horizontal, posição/duração aleatórias ---
-            function spawnTearLines(count) {
-                for (let i = 0; i < count; i++) {
-                    const line = document.createElement('div');
-                    line.className = 'tear-line';
-                    line.style.top = (Math.random() * 100).toFixed(1) + '%';
-                    line.style.height = (2 + Math.random() * 6).toFixed(1) + 'px';
-                    const offset = (Math.random() * 35 + 15) * (Math.random() < 0.5 ? -1 : 1);
-                    line.style.setProperty('--tear-offset', offset.toFixed(0) + 'px');
-                    line.style.animationDelay = (Math.random() * 90).toFixed(0) + 'ms';
-                    retroWindow.appendChild(line);
-                    setTimeout(() => line.remove(), 400);
-                }
+            function bindItems() {
+                items = Array.from(document.querySelectorAll('.icon-item:not(.invisible)'));
+                current = 0;
+                updateSelection();
+
+                items.forEach((item, index) => {
+                    item.addEventListener('click', function() {
+                        current = index;
+                        updateSelection();
+                    });
+                    item.addEventListener('dblclick', function() {
+                        activate(item.getAttribute('data-target'));
+                    });
+                });
             }
 
-            function navigateTo(screen) {
-                if (screen === currentScreen || transitioning) return;
+            function updateSelection() {
+                items.forEach((item, index) => {
+                    item.classList.toggle('active', index === current);
+                });
+            }
+
+            // Simulates changing the channel: brief static + glitch flash,
+            // content swaps mid-flicker, then the picture "tunes back in".
+            function changeChannel(callback) {
+                if (transitioning) return;
                 transitioning = true;
 
-                // 1) curtains close — top and bottom bars race toward
-                //    the center, compressing the picture into a line
-                closeCurtains(220);
-
-                // 2) right as they meet: bright implosion flash + swap
-                //    the actual content underneath, fully hidden
-                setTimeout(() => {
-                    curtainFlash.classList.add('active');
-                    setTimeout(() => curtainFlash.classList.remove('active'), 40);
-
-                    homeScreen.classList.remove('active');
-                    aboutScreen.classList.remove('active');
-                    if (screen === 'home') {
-                        homeScreen.classList.add('active');
-                    } else if (screen === 'about') {
-                        aboutScreen.classList.add('active');
-                    }
-                    currentScreen = screen;
-                }, 220);
-
-                // 3) brief hold on black, like an old set taking a beat
-                //    before the new channel's picture blooms back in
-                setTimeout(() => {
-                    openCurtains(260);
-                }, 300);
-
-                // 4) once the picture is back, it "locks sync": a quick
-                //    vertical roll plus a couple of tear-line glitches
-                setTimeout(() => {
-                    retroWindow.classList.add('rolling');
-                    spawnTearLines(4 + Math.floor(Math.random() * 2));
-                }, 560);
+                transition.classList.add('active');
+                windowEl.classList.add('glitching');
 
                 setTimeout(() => {
-                    retroWindow.classList.remove('rolling');
+                    callback();
+                }, 180);
+
+                setTimeout(() => {
+                    transition.classList.remove('active');
+                }, 240);
+
+                setTimeout(() => {
+                    windowEl.classList.remove('glitching');
                     transitioning = false;
-                }, 1060);
+                }, 420);
             }
 
-            // Clique nos ícones
-            document.querySelectorAll('.icon-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    const target = this.dataset.target;
-                    if (target === 'about') {
-                        navigateTo('about');
-                    } else if (target === 'back') {
-                        navigateTo('home');
-                    } else {
-                        // sections not built yet — same as before
-                        alert('Navigating to: ' + target);
-                    }
-                });
-            });
+            function activate(target) {
+                if (transitioning) return;
 
-            // Teclado: suporte para navegação na HOME e Enter na ABOUT
-            const items = document.querySelectorAll('#screen-home .icon-item');
-            let currentIndex = 0;
-
-            function updateActiveItem() {
-                items.forEach((item, idx) => {
-                    item.classList.toggle('active', idx === currentIndex);
-                });
+                if (target === 'about') {
+                    changeChannel(() => renderScreen('about'));
+                } else if (target === 'back') {
+                    changeChannel(() => renderScreen('main'));
+                } else {
+                    // Sections not built yet — still fine to preview the
+                    // channel-change feel; swap this for real content later.
+                    changeChannel(() => renderScreen(screenState));
+                    alert('Navigating to: ' + target);
+                }
             }
 
             document.addEventListener('keydown', function(e) {
-                const activeScreen = document.querySelector('.screen-container.active');
-                const isHome = activeScreen && activeScreen.id === 'screen-home';
-
-                if (!isHome) {
-                    // Na tela ABOUT, apenas o Enter no BACK
-                    if (e.key === 'Enter') {
-                        const backBtn = document.querySelector('#screen-about .icon-item[data-target="back"]');
-                        if (backBtn) backBtn.click();
-                        e.preventDefault();
-                    }
-                    return;
-                }
-
+                if (transitioning || items.length === 0) return;
                 const cols = window.innerWidth <= 768 ? 2 : 3;
                 const total = items.length;
 
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
-                    currentIndex = (currentIndex + cols) % total;
-                    updateActiveItem();
+                    current = (current + cols) % total;
+                    updateSelection();
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
-                    currentIndex = (currentIndex - cols + total) % total;
-                    updateActiveItem();
+                    current = (current - cols + total) % total;
+                    updateSelection();
                 } else if (e.key === 'ArrowRight') {
                     e.preventDefault();
-                    currentIndex = (currentIndex + 1) % total;
-                    updateActiveItem();
+                    current = (current + 1) % total;
+                    updateSelection();
                 } else if (e.key === 'ArrowLeft') {
                     e.preventDefault();
-                    currentIndex = (currentIndex - 1 + total) % total;
-                    updateActiveItem();
+                    current = (current - 1 + total) % total;
+                    updateSelection();
                 } else if (e.key === 'Enter') {
                     e.preventDefault();
-                    const target = items[currentIndex].dataset.target;
-                    if (target === 'about') {
-                        navigateTo('about');
-                    } else {
-                        alert('Navigating to: ' + target);
-                    }
+                    activate(items[current].getAttribute('data-target'));
                 }
             });
 
-            updateActiveItem();
+            renderScreen('main');
+
+            // ============================================================
+            //  BOOT SEQUENCE
+            //  black screen -> white flash -> static -> fade into the set
+            // ============================================================
+            const boot = document.getElementById('boot-sequence');
+
+            function runBootSequence() {
+                setTimeout(() => boot.classList.add('boot-flash'), 120);
+                setTimeout(() => {
+                    boot.classList.remove('boot-flash');
+                    boot.classList.add('boot-noise');
+                }, 220);
+                setTimeout(() => boot.classList.add('boot-fade'), 750);
+                setTimeout(() => boot.remove(), 1350);
+            }
+
+            runBootSequence();
         })();
     </script>
 </body>
