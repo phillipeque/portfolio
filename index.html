@@ -936,7 +936,7 @@
   overflow-x: hidden !important;
 }
 
-/* ===== EXPERIENCE - CARROSSEL HORIZONTAL (CORRIGIDO - SEM VÃOS) ===== */
+/* ===== EXPERIENCE - CARROSSEL HORIZONTAL (v2: tema XP + navegação) ===== */
 #win-experience .window-content {
   padding: 0 !important;
   overflow: hidden !important;
@@ -947,7 +947,7 @@
 
 #win-experience {
   width: 960px !important;
-  height: 510px !important; /* título 30px + card 450px + rodapé ~30px */
+  height: 540px !important; /* +30px pra caber dots/setas */
 }
 
 .exp-carousel-stage {
@@ -962,9 +962,7 @@
   user-select: none;
 }
 
-.exp-carousel-stage.dragging {
-  cursor: grabbing;
-}
+.exp-carousel-stage.dragging { cursor: grabbing; }
 
 .exp-carousel-ring {
   position: absolute;
@@ -972,33 +970,50 @@
   top: 50%;
   display: flex;
   align-items: center;
-  gap: 0;          /* sem espaçamento entre os cards */
+  gap: 0;
   width: max-content;
   height: 450px;
   transform: translate3d(0, -50%, 0);
   will-change: transform;
 }
 
+/* ---- Card: agora com bisel + brilho + gradiente duotone ---- */
 .exp-carousel-card {
   position: relative;
   flex: 0 0 360px;
   width: 360px;
   height: 450px;
-  border-radius: 0;      /* remove arredondamento para ficar colado */
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: none;      /* remove sombra para não criar separação visual */
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,0.28),
+    inset -2px -2px 0 rgba(0,0,0,0.35);
+  border-right: 1px solid rgba(0,0,0,0.25);
   display: flex;
   flex-direction: column;
   padding: 0;
+  background-blend-mode: multiply;
 }
 
-/* Opcional: adicionar uma linha divisória fina se quiser, mas mantive sem */
+/* brilho "glass" no topo, estilo titlebar do XP */
+.exp-carousel-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 46%;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.38) 0%,
+    rgba(255,255,255,0.10) 45%,
+    rgba(255,255,255,0) 100%);
+  pointer-events: none;
+}
 
+/* sombra escura embaixo pra legibilidade do texto */
 .exp-carousel-card::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,0.72) 100%);
+  background: linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(0,0,0,0.75) 100%);
   pointer-events: none;
 }
 
@@ -1008,7 +1023,7 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 4px 22px 0;   /* reduzido ao máximo para colar no topo */
+  padding: 10px 22px 0;
 }
 
 .exp-card-header img {
@@ -1030,6 +1045,23 @@
   margin: 0;
 }
 
+/* badge de categoria */
+.exp-card-badge {
+  align-self: flex-start;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 10px;
+  padding: 2px 9px;
+  margin-bottom: 4px;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.4);
+}
+
 .exp-card-title-group h3 {
   color: #fff;
   font-size: 20px;
@@ -1045,15 +1077,44 @@
   font-size: 14px;
   font-weight: 400;
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-  margin: 0;
+  margin: 2px 0 0;
   padding: 0;
   text-align: left;
+}
+
+/* período (placeholder de datas) */
+.exp-card-period {
+  align-self: flex-start;
+  font-size: 11px;
+  color: rgba(255,255,255,0.9);
+  background: rgba(0,0,0,0.32);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 3px;
+  padding: 2px 8px;
+  margin-top: 6px;
+}
+
+/* selo "Featured" no canto do card */
+.exp-card-featured-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  background: linear-gradient(180deg, #ffe38a, #ffb100);
+  color: #402d00;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  padding: 3px 9px;
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.45);
 }
 
 .exp-card-details {
   position: relative;
   z-index: 1;
-  padding: 4px 22px 12px; /* reduzido para aproximar a lista */
+  padding: 6px 22px 12px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1068,11 +1129,7 @@
   margin-bottom: 2px;
 }
 
-.exp-details-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.exp-details-list { list-style: none; padding: 0; margin: 0; }
 
 .exp-details-list li {
   color: #f5f5f5;
@@ -1092,21 +1149,88 @@
   font-size: 16px;
 }
 
+/* ---- Setas de navegação, estilo botão XP ---- */
+.exp-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #16305e;
+  background: linear-gradient(180deg, #ffffff, #d8d4c4);
+  border: 1px solid #7f9db9;
+  border-radius: 50%;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.9);
+  cursor: pointer;
+  user-select: none;
+}
+.exp-nav-arrow:hover { background: linear-gradient(180deg, #f0f8ff, #cfe4fb); border-color: #5a8ac9; }
+.exp-nav-arrow:active { box-shadow: inset 1px 1px 3px rgba(0,0,0,0.3); }
+.exp-nav-prev { left: 10px; }
+.exp-nav-next { right: 10px; }
+
+/* ---- Dots de posição ---- */
+.exp-carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 0 2px;
+  background: #ece9d8;
+  flex-shrink: 0;
+}
+.exp-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cac6b8;
+  border: 1px solid #9a968a;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+}
+.exp-dot:hover { transform: scale(1.2); }
+.exp-dot.active { background: #0058e6; border-color: #0045b5; }
+
 .exp-carousel-hint {
   text-align: center;
   font-size: 12px;
   color: #606060;
-  padding: 8px 0 10px;
+  padding: 4px 0 8px;
   background: #ece9d8;
   flex-shrink: 0;
 }
 
+/* região invisível pra leitor de tela anunciar o card atual */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media (max-width: 768px) {
-  #win-experience {
-    width: 95vw !important;
-    height: auto !important;
-    min-height: 60vh;
-  }
+  #win-experience { width: 95vw !important; height: auto !important; min-height: 62vh; }
+  .exp-carousel-ring { gap: 0; height: 280px; }
+  .exp-carousel-card { flex-basis: 200px; width: 200px; height: 280px; border-radius: 0; }
+  .exp-card-header { padding: 6px 16px 0; gap: 10px; }
+  .exp-card-header img { width: 36px; height: 36px; }
+  .exp-card-title-group h3 { font-size: 16px; }
+  .exp-card-role { font-size: 12px; }
+  .exp-card-badge { font-size: 9px; padding: 1px 7px; }
+  .exp-card-period { font-size: 10px; }
+  .exp-card-details { padding: 4px 16px 10px; }
+  .exp-details-title { font-size: 11px; }
+  .exp-details-list li { font-size: 11px; padding-left: 14px; }
+  .exp-nav-arrow { width: 28px; height: 28px; font-size: 12px; }
+}
   .exp-carousel-ring {
     gap: 0;
     height: 280px;
@@ -1253,8 +1377,8 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE (CARROSSEL 3D - CORRIGIDO, SEM VÃOS) ===== -->
-<div class="window" id="win-experience" style="left: calc(50% - 480px); top: calc(50% - 255px);">
+<!-- ===== JANELA EXPERIENCE (CARROSSEL - TEMA XP + NAVEGAÇÃO) ===== -->
+<div class="window" id="win-experience" style="left: calc(50% - 480px); top: calc(50% - 270px);">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
       <img src="icons/icon-experience.png" alt="" style="width:16px;height:16px;">
@@ -1267,15 +1391,21 @@
   </div>
   <div class="window-content">
     <div class="exp-carousel-stage" id="experience-stage">
-      <div class="exp-carousel-ring" id="experience-ring">
+      <div class="exp-nav-arrow exp-nav-prev" onclick="expCarouselNav(-1)" role="button" aria-label="Experiência anterior">&#9664;</div>
+      <div class="exp-nav-arrow exp-nav-next" onclick="expCarouselNav(1)" role="button" aria-label="Próxima experiência">&#9654;</div>
+
+      <div class="exp-carousel-ring" id="experience-ring" role="listbox" aria-label="Lista de experiências profissionais">
 
         <!-- Card 0 -->
-        <div class="exp-carousel-card" style="background:#2D89EF;">
+        <div class="exp-carousel-card" data-index="0" role="option" aria-label="Binance – Binance Angel" style="background:#2D89EF;">
+          <div class="exp-card-featured-badge">Featured</div>
           <div class="exp-card-header">
             <img src="logos/binance.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Binance</h3>
               <div class="exp-card-role">Binance Angel</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1289,12 +1419,14 @@
         </div>
 
         <!-- Card 1 -->
-        <div class="exp-carousel-card" style="background:#00ABA9;">
+        <div class="exp-carousel-card" data-index="1" role="option" aria-label="Arena Games – Community Builder and Manager" style="background:#00ABA9;">
           <div class="exp-card-header">
             <img src="logos/arenagames.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Arena Games</h3>
               <div class="exp-card-role">Community Builder and Manager</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1308,12 +1440,14 @@
         </div>
 
         <!-- Card 2 -->
-        <div class="exp-carousel-card" style="background:#339933;">
+        <div class="exp-carousel-card" data-index="2" role="option" aria-label="BeeOS – Community and Collaborations Manager" style="background:#339933;">
           <div class="exp-card-header">
             <img src="logos/beeos.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>BeeOS</h3>
               <div class="exp-card-role">Community and Collaborations Manager</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1327,12 +1461,14 @@
         </div>
 
         <!-- Card 3 -->
-        <div class="exp-carousel-card" style="background:#7FBA00;">
+        <div class="exp-carousel-card" data-index="3" role="option" aria-label="Bionic – Community Moderator" style="background:#7FBA00;">
           <div class="exp-card-header">
             <img src="logos/bionic.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Bionic</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1346,12 +1482,14 @@
         </div>
 
         <!-- Card 4 -->
-        <div class="exp-carousel-card" style="background:#F09609;">
+        <div class="exp-carousel-card" data-index="4" role="option" aria-label="Coinracer – Head Mod" style="background:#F09609;">
           <div class="exp-card-header">
             <img src="logos/coinracer.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Coinracer</h3>
               <div class="exp-card-role">Head Mod</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1365,12 +1503,14 @@
         </div>
 
         <!-- Card 5 -->
-        <div class="exp-carousel-card" style="background:#FA6800;">
+        <div class="exp-carousel-card" data-index="5" role="option" aria-label="CoralApp – Community Moderator" style="background:#FA6800;">
           <div class="exp-card-header">
             <img src="logos/coralapp.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>CoralApp</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1384,12 +1524,14 @@
         </div>
 
         <!-- Card 6 -->
-        <div class="exp-carousel-card" style="background:#E51400;">
+        <div class="exp-carousel-card" data-index="6" role="option" aria-label="Fort Block Games – Community Moderator" style="background:#E51400;">
           <div class="exp-card-header">
             <img src="logos/fortblockgames.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Fort Block Games</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1403,12 +1545,14 @@
         </div>
 
         <!-- Card 7 -->
-        <div class="exp-carousel-card" style="background:#A20025;">
+        <div class="exp-carousel-card" data-index="7" role="option" aria-label="Lion's Share Group – Community Moderator" style="background:#A20025;">
           <div class="exp-card-header">
             <img src="logos/lionshare.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Lion's Share Group</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1422,12 +1566,14 @@
         </div>
 
         <!-- Card 8 -->
-        <div class="exp-carousel-card" style="background:#E671B8;">
+        <div class="exp-carousel-card" data-index="8" role="option" aria-label="PIPE – Community Moderator" style="background:#E671B8;">
           <div class="exp-card-header">
             <img src="logos/pipe.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>PIPE</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1441,12 +1587,14 @@
         </div>
 
         <!-- Card 9 -->
-        <div class="exp-carousel-card" style="background:#7E3FF2;">
+        <div class="exp-carousel-card" data-index="9" role="option" aria-label="Reaktor – Community Moderator" style="background:#7E3FF2;">
           <div class="exp-card-header">
             <img src="logos/reaktor.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Reaktor</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1460,12 +1608,14 @@
         </div>
 
         <!-- Card 10 -->
-        <div class="exp-carousel-card" style="background:#603CBA;">
+        <div class="exp-carousel-card" data-index="10" role="option" aria-label="Sheertopia – Community Moderator" style="background:#603CBA;">
           <div class="exp-card-header">
             <img src="logos/sheertopia.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Sheertopia</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1479,12 +1629,14 @@
         </div>
 
         <!-- Card 11 -->
-        <div class="exp-carousel-card" style="background:#1E7145;">
+        <div class="exp-carousel-card" data-index="11" role="option" aria-label="Solcade – Community Moderator" style="background:#1E7145;">
           <div class="exp-card-header">
             <img src="logos/solcade.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Solcade</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1498,12 +1650,14 @@
         </div>
 
         <!-- Card 12 -->
-        <div class="exp-carousel-card" style="background:#647687;">
+        <div class="exp-carousel-card" data-index="12" role="option" aria-label="Streamr – Community Moderator" style="background:#647687;">
           <div class="exp-card-header">
             <img src="logos/streamr.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Streamr</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1517,12 +1671,14 @@
         </div>
 
         <!-- Card 13 -->
-        <div class="exp-carousel-card" style="background:#825A2C;">
+        <div class="exp-carousel-card" data-index="13" role="option" aria-label="TAP – Community Moderator" style="background:#825A2C;">
           <div class="exp-card-header">
             <img src="logos/tap.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>TAP</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1536,12 +1692,14 @@
         </div>
 
         <!-- Card 14 -->
-        <div class="exp-carousel-card" style="background:#6D8764;">
+        <div class="exp-carousel-card" data-index="14" role="option" aria-label="VS1 – Community Manager" style="background:#6D8764;">
           <div class="exp-card-header">
             <img src="logos/vs1.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>VS1</h3>
               <div class="exp-card-role">Community Manager</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1555,12 +1713,14 @@
         </div>
 
         <!-- Card 15 -->
-        <div class="exp-carousel-card" style="background:#B91D47;">
+        <div class="exp-carousel-card" data-index="15" role="option" aria-label="Wicrypt – Community Moderator" style="background:#B91D47;">
           <div class="exp-card-header">
             <img src="logos/wicrypt.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Wicrypt</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1574,12 +1734,14 @@
         </div>
 
         <!-- Card 16 -->
-        <div class="exp-carousel-card" style="background:#EE1111;">
+        <div class="exp-carousel-card" data-index="16" role="option" aria-label="Xend Finance – Community Moderator" style="background:#EE1111;">
           <div class="exp-card-header">
             <img src="logos/xend.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>Xend Finance</h3>
               <div class="exp-card-role">Community Moderator</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1593,12 +1755,14 @@
         </div>
 
         <!-- Card 17 -->
-        <div class="exp-carousel-card" style="background:#F4A460;">
+        <div class="exp-carousel-card" data-index="17" role="option" aria-label="PiratePets – LATAM Ambassador" style="background:#F4A460;">
           <div class="exp-card-header">
             <img src="logos/piratepets.png" alt="">
             <div class="exp-card-title-group">
+              <span class="exp-card-badge">CATEGORIA</span>
               <h3>PiratePets</h3>
               <div class="exp-card-role">LATAM Ambassador</div>
+              <span class="exp-card-period">MM/AAAA – MM/AAAA</span>
             </div>
           </div>
           <div class="exp-card-details">
@@ -1613,7 +1777,10 @@
 
       </div>
     </div>
-    <div class="exp-carousel-hint">Swipe sideways or hover your mouse to pause</div>
+
+    <div class="exp-carousel-dots" id="experience-dots"></div>
+    <div class="exp-carousel-hint">Drag, use the arrow keys, or tap a card • hover over it to pause</div>
+    <div id="experience-live" class="visually-hidden" aria-live="polite"></div>
   </div>
 </div>
 
@@ -3716,15 +3883,20 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INTERAÇÃO DO CARROSSEL HORIZONTAL (EXPERIENCE) – CORRIGIDO
+//  INTERAÇÃO DO CARROSSEL HORIZONTAL (EXPERIENCE) – v2
+//  drag, setas, dots, snap-to-card, pausa em touch, teclado
 // ============================================================
+let expCarouselNav = function(){}; // será sobrescrita abaixo
 (function initCarouselDrag() {
   const stageEl = document.getElementById('experience-stage');
   const ringEl  = document.getElementById('experience-ring');
+  const dotsEl  = document.getElementById('experience-dots');
+  const liveEl  = document.getElementById('experience-live');
   if (!stageEl || !ringEl) return;
 
   const originalCards = Array.from(ringEl.querySelectorAll('.exp-carousel-card:not([data-clone])'));
   if (!originalCards.length) return;
+  const CARD_COUNT = originalCards.length;
 
   // Remove clones antigos e recria
   ringEl.querySelectorAll('.exp-carousel-card[data-clone]').forEach(el => el.remove());
@@ -3733,40 +3905,57 @@ function toggleMute() {
   for (let c = 1; c < cloneCount; c++) {
     originalCards.forEach(card => {
       const clone = card.cloneNode(true);
+      const bg = card.style.background;
       clone.removeAttribute('style');
-      clone.style.background = card.style.background;
+      clone.style.background = bg;
       clone.dataset.clone = 'true';
+      clone.setAttribute('aria-hidden', 'true');
       ringEl.appendChild(clone);
     });
   }
 
+  // Monta os dots
+  const dots = [];
+  if (dotsEl) {
+    dotsEl.innerHTML = '';
+    originalCards.forEach((card, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'exp-dot';
+      dot.setAttribute('role', 'button');
+      dot.setAttribute('aria-label', 'Ir para experiência ' + (i + 1));
+      dot.addEventListener('click', () => { manualPause(); snapToIndex(i); });
+      dotsEl.appendChild(dot);
+      dots.push(dot);
+    });
+  }
+
   let isDragging = false;
-  let startX = 0;
+  let startX = 0, startY = 0;
   let startOffset = 0;
   let offset = 0;
   let cycleWidth = 0;
+  let cardWidth = 360;
   let isHovering = false;
   let lastTime = performance.now();
+  let currentIndex = 0;
+
+  let touchPausedUntil = 0;
+  let manualPaused = false;
+
+  let isAnimating = false;
+  let animStart = 0, animFrom = 0, animTo = 0, animDur = 420;
 
   const SPEED = 45;
+  const RESUME_DELAY = 3000; // ms após soltar o toque antes de voltar a rolar sozinho
+
+  function getCardWidth() {
+    const first = ringEl.querySelector('.exp-carousel-card');
+    return first ? first.offsetWidth : 360;
+  }
 
   function measureCycle() {
-    const totalWidth = ringEl.scrollWidth;
-    const totalCards = ringEl.querySelectorAll('.exp-carousel-card').length;
-    const cycleCards = originalCards.length;
-    if (totalCards > 0 && cycleCards > 0) {
-      const clones = totalCards / cycleCards;
-      if (clones > 1) {
-        cycleWidth = totalWidth / clones;
-      } else {
-        // fallback
-        const first = ringEl.querySelector('.exp-carousel-card');
-        if (!first) return;
-        const style = getComputedStyle(ringEl);
-        const gap = parseFloat(style.columnGap || style.gap) || 0;
-        cycleWidth = (first.offsetWidth + gap) * cycleCards;
-      }
-    }
+    cardWidth = getCardWidth();
+    cycleWidth = cardWidth * CARD_COUNT;
   }
 
   function normalizeOffset() {
@@ -3778,13 +3967,65 @@ function toggleMute() {
   function render() {
     normalizeOffset();
     ringEl.style.transform = `translate3d(${offset}px, -50%, 0)`;
+    updateActiveIndex();
+  }
+
+  function updateActiveIndex() {
+    if (!cardWidth) return;
+    const stageWidth = stageEl.clientWidth;
+    // posição do centro do stage relativa ao início do ciclo
+    const centerPos = (-offset + stageWidth / 2);
+    let idx = Math.round((centerPos - cardWidth / 2) / cardWidth) % CARD_COUNT;
+    if (idx < 0) idx += CARD_COUNT;
+    if (idx !== currentIndex) {
+      currentIndex = idx;
+      dots.forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+      const card = originalCards[currentIndex];
+      if (liveEl && card) liveEl.textContent = card.getAttribute('aria-label') || '';
+    }
+  }
+
+  function manualPause() {
+    manualPaused = true;
+    touchPausedUntil = performance.now() + RESUME_DELAY;
+  }
+
+  function snapToIndex(i) {
+    measureCycle();
+    const stageWidth = stageEl.clientWidth;
+    let target = stageWidth / 2 - i * cardWidth - cardWidth / 2;
+    if (cycleWidth) {
+      while (target - offset > cycleWidth / 2) target -= cycleWidth;
+      while (offset - target > cycleWidth / 2) target += cycleWidth;
+    }
+    animateTo(target);
+  }
+
+  function animateTo(target) {
+    isAnimating = true;
+    animStart = performance.now();
+    animFrom = offset;
+    animTo = target;
+  }
+
+  function stepAnimation(now) {
+    const p = Math.min((now - animStart) / animDur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    offset = animFrom + (animTo - animFrom) * ease;
+    render();
+    if (p >= 1) {
+      isAnimating = false;
+      touchPausedUntil = now + RESUME_DELAY;
+    }
   }
 
   function animationLoop(now) {
     const dt = Math.min(now - lastTime, 50) / 1000;
     lastTime = now;
 
-    if (!isDragging && !isHovering) {
+    if (isAnimating) {
+      stepAnimation(now);
+    } else if (!isDragging && !isHovering && !manualPaused && now > touchPausedUntil) {
       offset -= SPEED * dt;
       render();
     }
@@ -3792,60 +4033,94 @@ function toggleMute() {
     requestAnimationFrame(animationLoop);
   }
 
-  function startDrag(clientX) {
+  function startDrag(clientX, clientY) {
     measureCycle();
     isDragging = true;
     startX = clientX;
+    startY = clientY;
     startOffset = offset;
     stageEl.classList.add('dragging');
     lastTime = performance.now();
   }
 
-  function moveDrag(clientX, event) {
+  function moveDrag(clientX) {
     if (!isDragging) return;
     offset = startOffset + (clientX - startX);
     render();
-    if (event) event.preventDefault();
   }
 
-  function endDrag() {
+  function endDrag(clientX, clientY, targetEl) {
     if (!isDragging) return;
     isDragging = false;
     stageEl.classList.remove('dragging');
+
+    const dist = Math.hypot((clientX ?? startX) - startX, (clientY ?? startY) - startY);
+    if (dist < 10 && targetEl) {
+      // foi um toque/clique, não um arraste: centraliza o card clicado
+      const cardEl = targetEl.closest('.exp-carousel-card');
+      if (cardEl && cardEl.dataset.index !== undefined) {
+        snapToIndex(parseInt(cardEl.dataset.index, 10));
+        touchPausedUntil = performance.now() + RESUME_DELAY;
+        return;
+      }
+    }
+
     normalizeOffset();
     render();
+    touchPausedUntil = performance.now() + RESUME_DELAY;
   }
 
+  // ---- Mouse ----
   stageEl.addEventListener('mouseenter', () => { isHovering = true; });
   stageEl.addEventListener('mouseleave', () => { isHovering = false; });
 
   stageEl.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
-    startDrag(e.clientX);
+    startDrag(e.clientX, e.clientY);
     e.preventDefault();
   });
+  document.addEventListener('mousemove', e => { if (isDragging) moveDrag(e.clientX); });
+  document.addEventListener('mouseup', e => { endDrag(e.clientX, e.clientY, e.target); });
 
-  document.addEventListener('mousemove', e => {
-    moveDrag(e.clientX, e);
-  });
-
-  document.addEventListener('mouseup', endDrag);
-
+  // ---- Touch (pausa no touchstart, retoma alguns segundos após soltar) ----
   stageEl.addEventListener('touchstart', e => {
     const touch = e.touches[0];
     if (!touch) return;
-    startDrag(touch.clientX);
-    e.preventDefault();
-  }, { passive: false });
+    startDrag(touch.clientX, touch.clientY);
+    touchPausedUntil = Infinity; // trava o auto-scroll enquanto o dedo está na tela
+  }, { passive: true });
 
   document.addEventListener('touchmove', e => {
     const touch = e.touches[0];
-    if (!touch) return;
-    moveDrag(touch.clientX, e);
-  }, { passive: false });
+    if (!touch || !isDragging) return;
+    moveDrag(touch.clientX);
+  }, { passive: true });
 
-  document.addEventListener('touchend', endDrag);
-  document.addEventListener('touchcancel', endDrag);
+  document.addEventListener('touchend', e => {
+    const touch = e.changedTouches[0];
+    endDrag(touch ? touch.clientX : undefined, touch ? touch.clientY : undefined, touch ? document.elementFromPoint(touch.clientX, touch.clientY) : null);
+  });
+  document.addEventListener('touchcancel', () => { endDrag(); });
+
+  // ---- Setas ----
+  expCarouselNav = function(dir) {
+    manualPaused = false;
+    let next = currentIndex + dir;
+    next = ((next % CARD_COUNT) + CARD_COUNT) % CARD_COUNT;
+    snapToIndex(next);
+  };
+
+  // ---- Teclado (setas navegam, espaço pausa/retoma) ----
+  document.addEventListener('keydown', e => {
+    if (!isWindowActive('experience')) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); expCarouselNav(-1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); expCarouselNav(1); }
+    else if (e.key === ' ') {
+      e.preventDefault();
+      manualPaused = !manualPaused;
+      if (!manualPaused) touchPausedUntil = 0;
+    }
+  });
 
   window.addEventListener('resize', () => {
     measureCycle();
