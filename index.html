@@ -25,7 +25,6 @@
             height: 100vh;
         }
 
-        /* === CANVAS DE FUNDO (céu + nuvens) === */
         #background-canvas {
             position: absolute;
             top: 0;
@@ -38,7 +37,6 @@
             image-rendering: crisp-edges;
         }
 
-        /* === ESTÁTICA === */
         #tv-static {
             position: absolute;
             top: 0;
@@ -72,7 +70,6 @@
             100% { background-position: 0 4px, 4px 0; }
         }
 
-        /* === CONTEÚDO (janela) === */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -189,7 +186,6 @@
             border-top: 2px solid #808080;
         }
 
-        /* === FRAME DA TV === */
         #tv-frame {
             position: absolute;
             top: 0;
@@ -206,7 +202,6 @@
             z-index: 10;
         }
 
-        /* === SCANLINES === */
         #scanlines {
             position: absolute;
             top: 0;
@@ -235,75 +230,61 @@
 </head>
 <body>
     <div id="tv-container">
-        <!-- CANVAS PARA O FUNDO PIXELADO -->
         <canvas id="background-canvas"></canvas>
-
-        <!-- ESTÁTICA -->
         <div id="tv-static"></div>
 
-        <!-- JANELA DO MENU -->
         <div id="tv-screen">
             <div class="retro-window">
                 <div class="window-titlebar">
                     <div class="window-title">PORTFOLIO</div>
                 </div>
-
                 <div class="window-content">
                     <div class="icon-grid">
                         <div class="icon-item active" data-target="sobre">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="SOBRE" />
                             <span class="icon-label label-orange">SOBRE</span>
                         </div>
-
                         <div class="icon-item" data-target="projetos">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJETOS" />
                             <span class="icon-label label-black">PROJETOS</span>
                         </div>
-
                         <div class="icon-item" data-target="contato">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="CONTATO" />
                             <span class="icon-label label-green">CONTATO</span>
                         </div>
-
                         <div class="icon-item" data-target="github">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%3C/%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                             <span class="icon-label label-red">GITHUB</span>
                         </div>
-
                         <div class="icon-item" data-target="linkedin">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3Ein%3C/text%3E%3C/svg%3E" alt="LINKEDIN" />
                             <span class="icon-label label-blue">LINKEDIN</span>
                         </div>
-
                         <div class="icon-item" data-target="email">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="EMAIL" />
                             <span class="icon-label label-purple">EMAIL</span>
                         </div>
                     </div>
                 </div>
-
                 <div class="window-footer">
                     <span>© 2026 PORTFOLIO</span>
                 </div>
             </div>
         </div>
 
-        <!-- SCANLINES -->
         <div id="scanlines"></div>
-
-        <!-- FRAME DA TV -->
         <div id="tv-frame"></div>
     </div>
 
     <script>
         // ============================================================
-        //  FUNDO PIXELADO 8-BIT COM NUVENS EM PARALLAX (OTIMIZADO)
+        //  FUNDO ULTRALEVRE (PIXEL=8, 6 nuvens, 3 puffs, 30fps)
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
             let W, H, mouseX = 0.5, mouseY = 0.5;
-            const PIXEL = 4;
+            const PIXEL = 8; // resolução bem baixa
 
             function resize() {
                 const rect = canvas.parentElement.getBoundingClientRect();
@@ -358,12 +339,11 @@
                 }
             }
 
-            // ===== CAMADAS DE NUVENS (REDUZIDAS, MAS BEM DISTRIBUÍDAS) =====
+            // ===== APENAS 6 NUVENS (3 camadas com 2 cada) =====
             const layers = [
-                { count: 3,  speed: 0.04, parallax: 0.02, yRange: [0.05, 0.22], scale: [2.2, 3.5], opacity: [0.25, 0.40] },
-                { count: 3,  speed: 0.10, parallax: 0.05, yRange: [0.12, 0.35], scale: [1.6, 2.4], opacity: [0.40, 0.60] },
-                { count: 2,  speed: 0.22, parallax: 0.10, yRange: [0.28, 0.52], scale: [1.0, 1.8], opacity: [0.55, 0.75] },
-                { count: 2,  speed: 0.40, parallax: 0.18, yRange: [0.45, 0.72], scale: [0.7, 1.2], opacity: [0.70, 0.95] },
+                { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08, 0.20], scale: [2.5, 4.0], opacity: [0.30, 0.45] },
+                { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20, 0.40], scale: [1.8, 2.8], opacity: [0.45, 0.65] },
+                { count: 2, speed: 0.30, parallax: 0.14, yRange: [0.40, 0.65], scale: [1.0, 1.8], opacity: [0.60, 0.85] },
             ];
 
             let clouds = [];
@@ -375,17 +355,15 @@
                     x: Math.random() * W * 1.5 - W * 0.25,
                     y: H * (l.yRange[0] + Math.random() * (l.yRange[1] - l.yRange[0])),
                     scale: l.scale[0] + Math.random() * (l.scale[1] - l.scale[0]),
-                    speed: l.speed * (0.7 + Math.random() * 0.6),
+                    speed: l.speed * (0.8 + Math.random() * 0.4),
                     opacity: l.opacity[0] + Math.random() * (l.opacity[1] - l.opacity[0]),
                     width: 40 + Math.random() * 30,
                     height: 12 + Math.random() * 10,
-                    // APENAS 5 BOLHAS (antes eram 8) – a forma continua arredondada
+                    // APENAS 3 BOLHAS por nuvem
                     puffs: [
                         { dx: 0,    dy: 0,    r: 0.55 },
-                        { dx: -0.35, dy: 0.08, r: 0.40 },
-                        { dx: 0.35,  dy: 0.05, r: 0.42 },
-                        { dx: -0.15, dy: -0.18, r: 0.35 },
-                        { dx: 0.18,  dy: -0.15, r: 0.32 },
+                        { dx: -0.30, dy: 0.08, r: 0.40 },
+                        { dx: 0.30,  dy: 0.05, r: 0.42 },
                     ],
                 };
             }
@@ -404,19 +382,14 @@
                 const w = c.width * c.scale * (W / 250);
                 const h = c.height * c.scale * (W / 250);
 
-                // Sombra das bolhas (camada inferior)
                 c.puffs.forEach(p => {
                     const r = p.r * h * 1.8;
                     pixelCircle(px + p.dx * w, py + p.dy * h + h * 0.08, r, PALETTE.cloudShad, c.opacity * 0.3);
                 });
-
-                // Bolhas principais
                 c.puffs.forEach(p => {
                     const r = p.r * h * 1.6;
                     pixelCircle(px + p.dx * w, py + p.dy * h, r, PALETTE.cloud, c.opacity);
                 });
-
-                // Realces (parte superior das bolhas)
                 c.puffs.forEach(p => {
                     if (p.dy < 0) {
                         const r = p.r * h * 1.1;
@@ -425,7 +398,6 @@
                 });
             }
 
-            // ===== NOVO drawSky com GRADIENTE nativo (bem mais rápido) =====
             function drawSky() {
                 const grad = ctx.createLinearGradient(0, 0, 0, H);
                 grad.addColorStop(0,   rgb(PALETTE.skyTop));
@@ -447,21 +419,20 @@
                     const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
                     pixelCircle(sunX, sunY, r, PALETTE.sunEdge, Math.max(0, alpha));
                 }
-
                 pixelCircle(sunX, sunY, sunR, PALETTE.sunCore, 0.95);
                 pixelCircle(sunX, sunY, sunR * 0.7, PALETTE.sunEdge, 0.7);
             }
 
+            // APENAS 3 PÁSSAROS
             let birds = [];
             function initBirds() {
                 birds = [];
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 3; i++) {
                     birds.push({
                         x: Math.random() * W,
                         y: H * (0.15 + Math.random() * 0.25),
-                        speed: 0.08 + Math.random() * 0.12,
+                        speed: 0.06 + Math.random() * 0.08,
                         wingPhase: Math.random() * Math.PI * 2,
-                        size: 2 + Math.floor(Math.random() * 3),
                     });
                 }
             }
@@ -471,16 +442,16 @@
                 const by = b.y + (mouseY - 0.5) * H * 0.01;
                 const wing = Math.sin(Date.now() * 0.003 + b.wingPhase) > 0 ? 1 : 0;
 
-                ctx.fillStyle = rgb(PALETTE.bird, 0.5);
-                block(bx, by, PALETTE.bird, 0.5);
-                block(bx - 1, by, PALETTE.bird, 0.5);
-                block(bx + 1, by, PALETTE.bird, 0.5);
+                ctx.fillStyle = rgb(PALETTE.bird, 0.4);
+                block(bx, by, PALETTE.bird, 0.4);
+                block(bx - 1, by, PALETTE.bird, 0.4);
+                block(bx + 1, by, PALETTE.bird, 0.4);
                 if (wing) {
-                    block(bx - 2, by - 1, PALETTE.bird, 0.5);
-                    block(bx + 2, by - 1, PALETTE.bird, 0.5);
+                    block(bx - 2, by - 1, PALETTE.bird, 0.4);
+                    block(bx + 2, by - 1, PALETTE.bird, 0.4);
                 } else {
-                    block(bx - 2, by + 1, PALETTE.bird, 0.5);
-                    block(bx + 2, by + 1, PALETTE.bird, 0.5);
+                    block(bx - 2, by + 1, PALETTE.bird, 0.4);
+                    block(bx + 2, by + 1, PALETTE.bird, 0.4);
                 }
             }
 
@@ -497,11 +468,8 @@
             function draw() {
                 drawSky();
                 drawSun();
-
-                // Ordena por camada para efeito de profundidade
                 const sorted = [...clouds].sort((a, b) => a.layer - b.layer);
                 sorted.forEach(c => drawCloud(c));
-
                 birds.forEach(b => drawBird(b));
             }
 
@@ -514,12 +482,13 @@
                         c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
                         c.scale = layers[c.layer].scale[0] + Math.random() * (layers[c.layer].scale[1] - layers[c.layer].scale[0]);
                         c.opacity = layers[c.layer].opacity[0] + Math.random() * (layers[c.layer].opacity[1] - layers[c.layer].opacity[0]);
-                        c.speed = layers[c.layer].speed * (0.7 + Math.random() * 0.6);
+                        c.speed = layers[c.layer].speed * (0.8 + Math.random() * 0.4);
                     }
                 });
                 updateBirds();
                 draw();
-                requestAnimationFrame(update);
+                // ===== RODANDO A 30 FPS (em vez de 60) =====
+                setTimeout(() => requestAnimationFrame(update), 33);
             }
 
             window.addEventListener('resize', () => {
@@ -535,7 +504,7 @@
         })();
 
         // ============================================================
-        //  MENU INTERATIVO (sem alterações)
+        //  MENU INTERATIVO (inalterado)
         // ============================================================
         (function() {
             const items = document.querySelectorAll('.icon-item');
