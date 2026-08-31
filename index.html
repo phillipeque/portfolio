@@ -297,7 +297,7 @@
 
     <script>
         // ============================================================
-        //  FUNDO PIXELADO 8-BIT COM NUVENS EM PARALLAX
+        //  FUNDO PIXELADO 8-BIT COM NUVENS EM PARALLAX (OTIMIZADO)
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -358,11 +358,12 @@
                 }
             }
 
+            // ===== CAMADAS DE NUVENS (REDUZIDAS, MAS BEM DISTRIBUÍDAS) =====
             const layers = [
-                { count: 7,  speed: 0.04, parallax: 0.02, yRange: [0.05, 0.22], scale: [2.0, 3.2], opacity: [0.20, 0.35] },
-                { count: 6,  speed: 0.10, parallax: 0.05, yRange: [0.12, 0.35], scale: [1.4, 2.2], opacity: [0.35, 0.55] },
-                { count: 5,  speed: 0.22, parallax: 0.10, yRange: [0.28, 0.52], scale: [1.0, 1.6], opacity: [0.50, 0.70] },
-                { count: 4,  speed: 0.40, parallax: 0.18, yRange: [0.45, 0.72], scale: [0.6, 1.1], opacity: [0.65, 0.90] },
+                { count: 3,  speed: 0.04, parallax: 0.02, yRange: [0.05, 0.22], scale: [2.2, 3.5], opacity: [0.25, 0.40] },
+                { count: 3,  speed: 0.10, parallax: 0.05, yRange: [0.12, 0.35], scale: [1.6, 2.4], opacity: [0.40, 0.60] },
+                { count: 2,  speed: 0.22, parallax: 0.10, yRange: [0.28, 0.52], scale: [1.0, 1.8], opacity: [0.55, 0.75] },
+                { count: 2,  speed: 0.40, parallax: 0.18, yRange: [0.45, 0.72], scale: [0.7, 1.2], opacity: [0.70, 0.95] },
             ];
 
             let clouds = [];
@@ -378,15 +379,13 @@
                     opacity: l.opacity[0] + Math.random() * (l.opacity[1] - l.opacity[0]),
                     width: 40 + Math.random() * 30,
                     height: 12 + Math.random() * 10,
+                    // APENAS 5 BOLHAS (antes eram 8) – a forma continua arredondada
                     puffs: [
                         { dx: 0,    dy: 0,    r: 0.55 },
                         { dx: -0.35, dy: 0.08, r: 0.40 },
                         { dx: 0.35,  dy: 0.05, r: 0.42 },
                         { dx: -0.15, dy: -0.18, r: 0.35 },
                         { dx: 0.18,  dy: -0.15, r: 0.32 },
-                        { dx: 0.0,   dy: -0.25, r: 0.28 },
-                        { dx: -0.45, dy: 0.15, r: 0.25 },
-                        { dx: 0.45,  dy: 0.12, r: 0.27 },
                     ],
                 };
             }
@@ -405,16 +404,19 @@
                 const w = c.width * c.scale * (W / 250);
                 const h = c.height * c.scale * (W / 250);
 
+                // Sombra das bolhas (camada inferior)
                 c.puffs.forEach(p => {
                     const r = p.r * h * 1.8;
                     pixelCircle(px + p.dx * w, py + p.dy * h + h * 0.08, r, PALETTE.cloudShad, c.opacity * 0.3);
                 });
 
+                // Bolhas principais
                 c.puffs.forEach(p => {
                     const r = p.r * h * 1.6;
                     pixelCircle(px + p.dx * w, py + p.dy * h, r, PALETTE.cloud, c.opacity);
                 });
 
+                // Realces (parte superior das bolhas)
                 c.puffs.forEach(p => {
                     if (p.dy < 0) {
                         const r = p.r * h * 1.1;
@@ -423,50 +425,17 @@
                 });
             }
 
+            // ===== NOVO drawSky com GRADIENTE nativo (bem mais rápido) =====
             function drawSky() {
-                for (let y = 0; y < H; y++) {
-                    const t = y / H;
-                    let col;
-                    if (t < 0.25) {
-                        const k = t / 0.25;
-                        col = [
-                            PALETTE.skyTop[0] + (PALETTE.skyMid1[0] - PALETTE.skyTop[0]) * k,
-                            PALETTE.skyTop[1] + (PALETTE.skyMid1[1] - PALETTE.skyTop[1]) * k,
-                            PALETTE.skyTop[2] + (PALETTE.skyMid1[2] - PALETTE.skyTop[2]) * k,
-                        ];
-                    } else if (t < 0.50) {
-                        const k = (t - 0.25) / 0.25;
-                        col = [
-                            PALETTE.skyMid1[0] + (PALETTE.skyMid2[0] - PALETTE.skyMid1[0]) * k,
-                            PALETTE.skyMid1[1] + (PALETTE.skyMid2[1] - PALETTE.skyMid1[1]) * k,
-                            PALETTE.skyMid1[2] + (PALETTE.skyMid2[2] - PALETTE.skyMid1[2]) * k,
-                        ];
-                    } else if (t < 0.75) {
-                        const k = (t - 0.50) / 0.25;
-                        col = [
-                            PALETTE.skyMid2[0] + (PALETTE.skyLight[0] - PALETTE.skyMid2[0]) * k,
-                            PALETTE.skyMid2[1] + (PALETTE.skyLight[1] - PALETTE.skyMid2[1]) * k,
-                            PALETTE.skyMid2[2] + (PALETTE.skyLight[2] - PALETTE.skyMid2[2]) * k,
-                        ];
-                    } else if (t < 0.92) {
-                        const k = (t - 0.75) / 0.17;
-                        col = [
-                            PALETTE.skyLight[0] + (PALETTE.skyNear[0] - PALETTE.skyLight[0]) * k,
-                            PALETTE.skyLight[1] + (PALETTE.skyNear[1] - PALETTE.skyLight[1]) * k,
-                            PALETTE.skyLight[2] + (PALETTE.skyNear[2] - PALETTE.skyLight[2]) * k,
-                        ];
-                    } else {
-                        const k = (t - 0.92) / 0.08;
-                        col = [
-                            PALETTE.skyNear[0] + (PALETTE.skyHoriz[0] - PALETTE.skyNear[0]) * k,
-                            PALETTE.skyNear[1] + (PALETTE.skyHoriz[1] - PALETTE.skyNear[1]) * k,
-                            PALETTE.skyNear[2] + (PALETTE.skyHoriz[2] - PALETTE.skyNear[2]) * k,
-                        ];
-                    }
-                    col = col.map(v => Math.round(v));
-                    ctx.fillStyle = rgb(col);
-                    ctx.fillRect(0, y, W, 1);
-                }
+                const grad = ctx.createLinearGradient(0, 0, 0, H);
+                grad.addColorStop(0,   rgb(PALETTE.skyTop));
+                grad.addColorStop(0.25, rgb(PALETTE.skyMid1));
+                grad.addColorStop(0.50, rgb(PALETTE.skyMid2));
+                grad.addColorStop(0.75, rgb(PALETTE.skyLight));
+                grad.addColorStop(0.92, rgb(PALETTE.skyNear));
+                grad.addColorStop(1,   rgb(PALETTE.skyHoriz));
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, W, H);
             }
 
             function drawSun() {
@@ -529,6 +498,7 @@
                 drawSky();
                 drawSun();
 
+                // Ordena por camada para efeito de profundidade
                 const sorted = [...clouds].sort((a, b) => a.layer - b.layer);
                 sorted.forEach(c => drawCloud(c));
 
@@ -565,7 +535,7 @@
         })();
 
         // ============================================================
-        //  MENU INTERATIVO
+        //  MENU INTERATIVO (sem alterações)
         // ============================================================
         (function() {
             const items = document.querySelectorAll('.icon-item');
