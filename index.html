@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meu Portfólio Retro</title>
+    <title>My Retro Portfolio</title>
     <style>
         * {
             margin: 0;
@@ -43,7 +43,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 repeating-linear-gradient(
                     0deg,
                     rgba(0,0,0,0.08) 0px,
@@ -70,7 +70,7 @@
             100% { background-position: 0 4px, 4px 0; }
         }
 
-        /* === CONTEÚDO (janela) - ALTURA AUMENTADA === */
+        /* === CONTENT (window) === */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -82,7 +82,7 @@
             justify-content: center;
             align-items: center;
             z-index: 2;
-            padding: 3% 22% 3% 22%; /* vertical reduzido para ganhar altura */
+            padding: 6% 22% 6% 22%;
             text-align: center;
         }
 
@@ -90,7 +90,7 @@
             background: #c0c0c0;
             border: 2px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: 
+            box-shadow:
                 inset 1px 1px 0 #dfdfdf,
                 inset -1px -1px 0 #000000,
                 4px 4px 0 rgba(0,0,0,0.3);
@@ -143,6 +143,11 @@
             border: 1px solid transparent;
         }
 
+        .icon-item.invisible {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
         .icon-item:hover {
             background: rgba(0,0,0,0.1);
             border: 1px dotted #000;
@@ -176,6 +181,7 @@
         .label-red { color: #c41e3a; }
         .label-blue { color: #1a3a5c; }
         .label-purple { color: #4a2d6b; }
+        .label-gray { color: #444; }
 
         .window-footer {
             text-align: center;
@@ -221,8 +227,88 @@
             z-index: 9;
         }
 
+        /* === CHANNEL-CHANGE TRANSITION ===
+           Sits above the content but below the scanlines/frame, so the
+           bezel stays put and the scanline pattern still reads over the
+           noise, like a real CRT glass surface flickering. */
+        #channel-transition {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 8;
+            opacity: 0;
+            pointer-events: none;
+            background-color: #000;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0px, rgba(255,255,255,0.18) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(45deg, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 2px, transparent 2px, transparent 4px);
+            background-size: 3px 3px, 3px 3px, 6px 6px;
+            transition: opacity 0.12s linear;
+        }
+
+        #channel-transition.active {
+            opacity: 1;
+            animation: staticFlicker 0.06s steps(2) infinite;
+        }
+
+        @keyframes staticFlicker {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            50% { background-position: 2px 1px, -1px 2px, 3px -2px; }
+            100% { background-position: -2px 3px, 1px -1px, -3px 2px; }
+        }
+
+        .retro-window.glitching {
+            animation: channelGlitch 0.22s steps(3);
+        }
+
+        @keyframes channelGlitch {
+            0%   { transform: translateX(0); filter: none; }
+            20%  { transform: translateX(-6px); filter: hue-rotate(20deg); }
+            40%  { transform: translateX(5px); filter: hue-rotate(-15deg); }
+            60%  { transform: translateX(-3px); filter: none; }
+            80%  { transform: translateX(2px); }
+            100% { transform: translateX(0); filter: none; }
+        }
+
+        /* === BOOT SEQUENCE ===
+           Covers the entire TV (including bezel) so the whole set feels
+           like it's powering on: black -> white flash -> static -> reveal. */
+        #boot-sequence {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: #000;
+            pointer-events: none;
+        }
+
+        #boot-sequence.boot-flash {
+            background: #fff;
+        }
+
+        #boot-sequence.boot-noise {
+            background-color: #000;
+            background-image:
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0px, rgba(255,255,255,0.18) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 2px),
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px);
+            background-size: 3px 3px, 3px 3px, 6px 6px;
+            animation: staticFlicker 0.07s steps(2) infinite;
+        }
+
+        #boot-sequence.boot-fade {
+            opacity: 0;
+            transition: opacity 0.55s ease-out;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            #tv-screen { padding: 4% 12% 4% 12%; } /* mobile com menos lateral */
+            #tv-screen { padding: 8% 12% 8% 12%; }
             .retro-window { max-width: 90%; }
             .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .icon-img { width: 48px; height: 48px; }
@@ -237,37 +323,12 @@
         <div id="tv-static"></div>
 
         <div id="tv-screen">
-            <div class="retro-window">
+            <div class="retro-window" id="retro-window">
                 <div class="window-titlebar">
-                    <div class="window-title">PORTFOLIO</div>
+                    <div class="window-title" id="window-title">PORTFOLIO</div>
                 </div>
-                <div class="window-content">
-                    <div class="icon-grid">
-                        <div class="icon-item active" data-target="sobre">
-                            <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="SOBRE" />
-                            <span class="icon-label label-orange">SOBRE</span>
-                        </div>
-                        <div class="icon-item" data-target="projetos">
-                            <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJETOS" />
-                            <span class="icon-label label-black">PROJETOS</span>
-                        </div>
-                        <div class="icon-item" data-target="contato">
-                            <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="CONTATO" />
-                            <span class="icon-label label-green">CONTATO</span>
-                        </div>
-                        <div class="icon-item" data-target="github">
-                            <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%3C/%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
-                            <span class="icon-label label-red">GITHUB</span>
-                        </div>
-                        <div class="icon-item" data-target="linkedin">
-                            <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3Ein%3C/text%3E%3C/svg%3E" alt="LINKEDIN" />
-                            <span class="icon-label label-blue">LINKEDIN</span>
-                        </div>
-                        <div class="icon-item" data-target="email">
-                            <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="EMAIL" />
-                            <span class="icon-label label-purple">EMAIL</span>
-                        </div>
-                    </div>
+                <div class="window-content" id="window-content">
+                    <!-- injected by JS: main menu / about menu -->
                 </div>
                 <div class="window-footer">
                     <span>© 2026 PORTFOLIO</span>
@@ -275,13 +336,15 @@
             </div>
         </div>
 
+        <div id="channel-transition"></div>
         <div id="scanlines"></div>
         <div id="tv-frame"></div>
+        <div id="boot-sequence"></div>
     </div>
 
     <script>
         // ============================================================
-        //  FUNDO ULTRALEVRE + 60 FPS + NUVENS DO TOPO MENORES
+        //  ULTRALIGHT BACKGROUND @ 60 FPS + SMALLER TOP CLOUDS
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -342,7 +405,7 @@
                 }
             }
 
-            // Camadas com nuvens do topo reduzidas
+            // Layers with reduced top clouds
             const layers = [
                 { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08, 0.20], scale: [1.8, 2.8], opacity: [0.30, 0.45] },
                 { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20, 0.40], scale: [1.3, 2.0], opacity: [0.45, 0.65] },
@@ -504,57 +567,190 @@
         })();
 
         // ============================================================
-        //  MENU INTERATIVO
+        //  MENU SCREENS (main menu + about submenu) + CHANNEL TRANSITION
         // ============================================================
         (function() {
-            const items = document.querySelectorAll('.icon-item');
-            let current = 0;
+            const ICON_PLACEHOLDER = '?';
 
-            function updateMenu() {
+            function iconSvg(glyph) {
+                return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E" + glyph + "%3C/text%3E%3C/svg%3E";
+            }
+
+            // --- Screen templates -------------------------------------------------
+            const mainMenuHTML = `
+                <div class="icon-grid">
+                    <div class="icon-item" data-target="about">
+                        <img class="icon-img" src="${iconSvg('%3F')}" alt="ABOUT" />
+                        <span class="icon-label label-orange">ABOUT</span>
+                    </div>
+                    <div class="icon-item" data-target="projects">
+                        <img class="icon-img" src="${iconSvg('%F0%9F%93%81')}" alt="PROJECTS" />
+                        <span class="icon-label label-black">PROJECTS</span>
+                    </div>
+                    <div class="icon-item" data-target="contact">
+                        <img class="icon-img" src="${iconSvg('%40')}" alt="CONTACT" />
+                        <span class="icon-label label-green">CONTACT</span>
+                    </div>
+                    <div class="icon-item" data-target="github">
+                        <img class="icon-img" src="${iconSvg('%26lt%3B%2F%26gt%3B')}" alt="GITHUB" />
+                        <span class="icon-label label-red">GITHUB</span>
+                    </div>
+                    <div class="icon-item" data-target="linkedin">
+                        <img class="icon-img" src="${iconSvg('in')}" alt="LINKEDIN" />
+                        <span class="icon-label label-blue">LINKEDIN</span>
+                    </div>
+                    <div class="icon-item" data-target="email">
+                        <img class="icon-img" src="${iconSvg('%E2%9C%89')}" alt="EMAIL" />
+                        <span class="icon-label label-purple">EMAIL</span>
+                    </div>
+                </div>
+            `;
+
+            // Same 3x2 grid footprint as the main menu (empty invisible slots)
+            // so the window renders at the exact same size on this screen too.
+            const aboutMenuHTML = `
+                <div class="icon-grid">
+                    <div class="icon-item invisible"></div>
+                    <div class="icon-item" data-target="back">
+                        <img class="icon-img" src="${iconSvg('%E2%86%90')}" alt="BACK" />
+                        <span class="icon-label label-gray">BACK</span>
+                    </div>
+                    <div class="icon-item invisible"></div>
+                    <div class="icon-item invisible"></div>
+                    <div class="icon-item invisible"></div>
+                    <div class="icon-item invisible"></div>
+                </div>
+            `;
+
+            const SCREENS = {
+                main:  { title: 'PORTFOLIO',         html: mainMenuHTML },
+                about: { title: 'PORTFOLIO / ABOUT',  html: aboutMenuHTML },
+            };
+
+            const windowEl   = document.getElementById('retro-window');
+            const titleEl    = document.getElementById('window-title');
+            const contentEl  = document.getElementById('window-content');
+            const transition = document.getElementById('channel-transition');
+
+            let screenState = 'main';
+            let items = [];
+            let current = 0;
+            let transitioning = false;
+
+            function renderScreen(name) {
+                const screen = SCREENS[name];
+                screenState = name;
+                titleEl.textContent = screen.title;
+                contentEl.innerHTML = screen.html;
+                bindItems();
+            }
+
+            function bindItems() {
+                items = Array.from(document.querySelectorAll('.icon-item:not(.invisible)'));
+                current = 0;
+                updateSelection();
+
+                items.forEach((item, index) => {
+                    item.addEventListener('click', function() {
+                        current = index;
+                        updateSelection();
+                    });
+                    item.addEventListener('dblclick', function() {
+                        activate(item.getAttribute('data-target'));
+                    });
+                });
+            }
+
+            function updateSelection() {
                 items.forEach((item, index) => {
                     item.classList.toggle('active', index === current);
                 });
             }
 
+            // Simulates changing the channel: brief static + glitch flash,
+            // content swaps mid-flicker, then the picture "tunes back in".
+            function changeChannel(callback) {
+                if (transitioning) return;
+                transitioning = true;
+
+                transition.classList.add('active');
+                windowEl.classList.add('glitching');
+
+                setTimeout(() => {
+                    callback();
+                }, 180);
+
+                setTimeout(() => {
+                    transition.classList.remove('active');
+                }, 240);
+
+                setTimeout(() => {
+                    windowEl.classList.remove('glitching');
+                    transitioning = false;
+                }, 420);
+            }
+
+            function activate(target) {
+                if (transitioning) return;
+
+                if (target === 'about') {
+                    changeChannel(() => renderScreen('about'));
+                } else if (target === 'back') {
+                    changeChannel(() => renderScreen('main'));
+                } else {
+                    // Sections not built yet — still fine to preview the
+                    // channel-change feel; swap this for real content later.
+                    changeChannel(() => renderScreen(screenState));
+                    alert('Navigating to: ' + target);
+                }
+            }
+
             document.addEventListener('keydown', function(e) {
+                if (transitioning || items.length === 0) return;
                 const cols = window.innerWidth <= 768 ? 2 : 3;
                 const total = items.length;
 
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
                     current = (current + cols) % total;
-                    updateMenu();
+                    updateSelection();
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
                     current = (current - cols + total) % total;
-                    updateMenu();
+                    updateSelection();
                 } else if (e.key === 'ArrowRight') {
                     e.preventDefault();
                     current = (current + 1) % total;
-                    updateMenu();
+                    updateSelection();
                 } else if (e.key === 'ArrowLeft') {
                     e.preventDefault();
                     current = (current - 1 + total) % total;
-                    updateMenu();
+                    updateSelection();
                 } else if (e.key === 'Enter') {
                     e.preventDefault();
-                    const target = items[current].getAttribute('data-target');
-                    alert('Navegando para: ' + target);
+                    activate(items[current].getAttribute('data-target'));
                 }
             });
 
-            items.forEach((item, index) => {
-                item.addEventListener('click', function() {
-                    current = index;
-                    updateMenu();
-                });
-                item.addEventListener('dblclick', function() {
-                    const target = item.getAttribute('data-target');
-                    alert('Navegando para: ' + target);
-                });
-            });
+            renderScreen('main');
 
-            updateMenu();
+            // ============================================================
+            //  BOOT SEQUENCE
+            //  black screen -> white flash -> static -> fade into the set
+            // ============================================================
+            const boot = document.getElementById('boot-sequence');
+
+            function runBootSequence() {
+                setTimeout(() => boot.classList.add('boot-flash'), 120);
+                setTimeout(() => {
+                    boot.classList.remove('boot-flash');
+                    boot.classList.add('boot-noise');
+                }, 220);
+                setTimeout(() => boot.classList.add('boot-fade'), 750);
+                setTimeout(() => boot.remove(), 1350);
+            }
+
+            runBootSequence();
         })();
     </script>
 </body>
