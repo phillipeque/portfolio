@@ -25,7 +25,7 @@
             height: 100vh;
         }
 
-        /* CONTEÚDO – posicionado DENTRO da área da tela da TV */
+        /* CONTEÚDO – centralizado com grade */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -40,47 +40,83 @@
             color: #0f0;
             text-shadow: 0 0 10px #0f0;
             z-index: 1;
-            /* Ajuste fino: padding percentual pra ficar dentro da tela preta da TV */
             padding: 12% 18% 15% 18%;
             text-align: center;
         }
 
+        /* TÍTULO "PORTFOLIO" */
         #tv-screen h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            letter-spacing: 4px;
+            font-size: 3.5rem;
+            letter-spacing: 6px;
+            margin-bottom: 3rem;
             border-bottom: 2px solid #0f0;
             padding-bottom: 0.5rem;
+            font-weight: normal;
         }
 
-        #tv-screen ul {
-            list-style: none;
-            font-size: 1.8rem;
-            line-height: 2.8;
-            text-align: center;
+        /* GRADE DE ÍCONES */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem 4rem;
+            max-width: 700px;
+            width: 100%;
         }
 
-        #tv-screen ul li {
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             cursor: default;
             transition: all 0.2s;
-            padding: 0 1rem;
+            padding: 0.5rem;
         }
 
-        #tv-screen ul li.active {
+        .icon-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            background: #111;
+            border-radius: 8px;
+            padding: 8px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .icon-item span {
+            margin-top: 0.6rem;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0;
+        }
+
+        /* ÍTEM ATIVO (foco) */
+        .icon-item.active img {
+            border-color: #0f0;
+            box-shadow: 0 0 25px #0f0;
+            background: #0f0;
+        }
+
+        .icon-item.active span {
             color: #000;
             background: #0f0;
+            padding: 0 8px;
             text-shadow: none;
-            box-shadow: 0 0 20px #0f0;
         }
 
-        #tv-screen .sub {
-            margin-top: 2rem;
-            font-size: 1rem;
-            opacity: 0.6;
+        /* SUBTEXTO (instrução) */
+        .sub {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.5;
             letter-spacing: 2px;
         }
 
-        /* FRAME – 100% 100% preenche a tela INTEIRA, igual o AWGE */
+        /* FRAME */
         #tv-frame {
             position: absolute;
             top: 0;
@@ -88,7 +124,7 @@
             width: 100%;
             height: 100%;
             background-image: url('pngs/tvframe.png');
-            background-size: 100% 100%;    /* ← MUDANÇA PRINCIPAL: estica pra caber */
+            background-size: 100% 100%;
             background-repeat: no-repeat;
             background-position: center;
             image-rendering: pixelated;
@@ -97,7 +133,7 @@
             z-index: 10;
         }
 
-        /* SCANLINES */
+        /* SCANLINES (opcional) */
         #scanlines {
             position: absolute;
             top: 0;
@@ -116,22 +152,62 @@
         }
 
         @media (max-width: 768px) {
-            #tv-screen h1 { font-size: 2rem; }
-            #tv-screen ul { font-size: 1.4rem; }
-            #tv-screen { padding: 10% 12% 12% 12%; }
+            .icon-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem 1.5rem;
+            }
+            .icon-item img {
+                width: 50px;
+                height: 50px;
+            }
+            .icon-item span {
+                font-size: 0.9rem;
+            }
+            #tv-screen h1 {
+                font-size: 2.5rem;
+                margin-bottom: 2rem;
+            }
+            #tv-screen {
+                padding: 10% 12% 12% 12%;
+            }
         }
     </style>
 </head>
 <body>
     <div id="tv-container">
         <div id="tv-screen">
-            <h1>▶ MEU PORTFÓLIO</h1>
-            <ul id="menu">
-                <li class="active" data-target="sobre">SOBRE</li>
-                <li data-target="projetos">PROJETOS</li>
-                <li data-target="contato">CONTATO</li>
-            </ul>
-            <div class="sub" id="subinfo">Use ↑↓ e ENTER</div>
+            <!-- TÍTULO -->
+            <h1>PORTFOLIO</h1>
+
+            <!-- GRADE DE ÍCONES -->
+            <div class="icon-grid" id="icon-grid">
+                <div class="icon-item" data-target="sobre">
+                    <img src="pngs/icone-sobre.png" alt="Sobre" />
+                    <span>SOBRE</span>
+                </div>
+                <div class="icon-item" data-target="projetos">
+                    <img src="pngs/icone-projetos.png" alt="Projetos" />
+                    <span>PROJETOS</span>
+                </div>
+                <div class="icon-item" data-target="habilidades">
+                    <img src="pngs/icone-habilidades.png" alt="Habilidades" />
+                    <span>HABILIDADES</span>
+                </div>
+                <div class="icon-item" data-target="contato">
+                    <img src="pngs/icone-contato.png" alt="Contato" />
+                    <span>CONTATO</span>
+                </div>
+                <div class="icon-item" data-target="blog">
+                    <img src="pngs/icone-blog.png" alt="Blog" />
+                    <span>BLOG</span>
+                </div>
+                <div class="icon-item" data-target="depoimentos">
+                    <img src="pngs/icone-depoimentos.png" alt="Depoimentos" />
+                    <span>DEPOIMENTOS</span>
+                </div>
+            </div>
+
+            <div class="sub">← → ↑ ↓ &nbsp;·&nbsp; ENTER</div>
         </div>
 
         <div id="tv-frame"></div>
@@ -140,40 +216,69 @@
 
     <script>
         (function() {
-            const items = document.querySelectorAll('#menu li');
+            const items = document.querySelectorAll('.icon-item');
+            const total = items.length;
             let current = 0;
 
             function updateMenu() {
-                items.forEach((li, index) => {
-                    li.classList.toggle('active', index === current);
+                items.forEach((item, index) => {
+                    item.classList.toggle('active', index === current);
                 });
-                const target = items[current].getAttribute('data-target');
-                document.getElementById('subinfo').textContent = '▶ ' + target.toUpperCase();
             }
 
+            // Navegação por setas (grade 3 colunas)
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+                const cols = 3;
+                let row = Math.floor(current / cols);
+                let col = current % cols;
+
+                if (e.key === 'ArrowRight') {
                     e.preventDefault();
-                    current = (current + 1) % items.length;
-                    updateMenu();
-                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                    if (col < cols - 1 && current + 1 < total) {
+                        current++;
+                    } else {
+                        // vai para o próximo da linha, ou fica
+                        if (current + 1 < total) current++;
+                    }
+                } else if (e.key === 'ArrowLeft') {
                     e.preventDefault();
-                    current = (current - 1 + items.length) % items.length;
-                    updateMenu();
+                    if (col > 0) {
+                        current--;
+                    } else {
+                        // vai para o final da linha anterior, ou fica
+                        if (current - 1 >= 0) current--;
+                    }
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (current + cols < total) {
+                        current += cols;
+                    } else {
+                        // vai para o último disponível
+                        current = total - 1;
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (current - cols >= 0) {
+                        current -= cols;
+                    } else {
+                        current = 0;
+                    }
                 } else if (e.key === 'Enter') {
                     e.preventDefault();
                     const target = items[current].getAttribute('data-target');
                     alert('Navegando para: ' + target);
                 }
+                updateMenu();
             });
 
-            items.forEach((li, index) => {
-                li.addEventListener('click', function() {
+            // Clique também ativa e duplo clique dispara ação
+            items.forEach((item, index) => {
+                item.addEventListener('click', function() {
                     current = index;
                     updateMenu();
                 });
-                li.addEventListener('dblclick', function() {
-                    const target = li.getAttribute('data-target');
+                item.addEventListener('dblclick', function() {
+                    const target = item.getAttribute('data-target');
                     alert('Navegando para: ' + target);
                 });
             });
