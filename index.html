@@ -1,185 +1,291 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meu Portfólio Retro</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        /* ⭐ AGORA USA 100% EM VEZ DE 100vh */
-        html, body {
-            width: 100%;
-            height: 100%;      /* ← mudança aqui */
-            background: #000;
-            overflow: hidden;
-            font-family: 'Courier New', monospace;
-        }
+```
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        #tv-container {
-            position: relative;
-            width: 100%;
-            height: 100%;      /* ← mudança aqui */
-        }
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+        font-family: 'Courier New', monospace;
+    }
 
-        /* CONTEÚDO */
-        #tv-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #1a1a2e, #0a0a12);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #0f0;
-            text-shadow: 0 0 10px #0f0;
-            z-index: 1;
-            padding: 18% 22%;   /* ajuste conforme necessário */
-            text-align: center;
-        }
+    /* CONTAINER PRINCIPAL */
+    #tv-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
 
+    /* CONTEÚDO DA TV */
+    #tv-screen {
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background: radial-gradient(
+            circle at center,
+            #1a1a2e,
+            #0a0a12
+        );
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        color: #0f0;
+        text-shadow: 0 0 10px #0f0;
+
+        z-index: 1;
+
+        padding: 18% 22%;
+        text-align: center;
+    }
+
+    #tv-screen h1 {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        letter-spacing: 4px;
+
+        border-bottom: 2px solid #0f0;
+        padding-bottom: 0.5rem;
+    }
+
+    #tv-screen ul {
+        list-style: none;
+        font-size: 1.8rem;
+        line-height: 2.8;
+        text-align: center;
+    }
+
+    #tv-screen ul li {
+        cursor: default;
+        transition: all 0.2s;
+        padding: 0 1rem;
+    }
+
+    #tv-screen ul li.active {
+        color: #000;
+        background: #0f0;
+        text-shadow: none;
+        box-shadow: 0 0 20px #0f0;
+    }
+
+    #tv-screen .sub {
+        margin-top: 2rem;
+        font-size: 1rem;
+        opacity: 0.6;
+        letter-spacing: 2px;
+    }
+
+    /* MOLDURA DO MONITOR */
+    #tv-frame {
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background-image: url('pngs/tvframe.png');
+
+        /*
+         * A moldura ocupa toda a tela.
+         * 'cover' mantém a proporção original do PNG
+         * enquanto garante que toda a área seja preenchida.
+         */
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+
+        pointer-events: none;
+        z-index: 10;
+    }
+
+    /* SCANLINES */
+    #scanlines {
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0) 0px,
+            rgba(0, 0, 0, 0) 3px,
+            rgba(0, 0, 0, 0.15) 3px,
+            rgba(0, 0, 0, 0.15) 4px
+        );
+
+        pointer-events: none;
+        z-index: 20;
+    }
+
+    /* RESPONSIVO */
+    @media (max-width: 768px) {
         #tv-screen h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            letter-spacing: 4px;
-            border-bottom: 2px solid #0f0;
-            padding-bottom: 0.5rem;
+            font-size: 2rem;
         }
 
         #tv-screen ul {
-            list-style: none;
-            font-size: 1.8rem;
-            line-height: 2.8;
-            text-align: center;
+            font-size: 1.4rem;
         }
 
-        #tv-screen ul li {
-            cursor: default;
-            transition: all 0.2s;
-            padding: 0 1rem;
+        #tv-screen {
+            padding: 12% 15%;
         }
+    }
+</style>
+```
 
-        #tv-screen ul li.active {
-            color: #000;
-            background: #0f0;
-            text-shadow: none;
-            box-shadow: 0 0 20px #0f0;
-        }
-
-        #tv-screen .sub {
-            margin-top: 2rem;
-            font-size: 1rem;
-            opacity: 0.6;
-            letter-spacing: 2px;
-        }
-
-        /* FRAME */
-        #tv-frame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('pngs/tvframe.png');
-            background-size: 100% auto;   /* ou contain, como preferir */
-            background-repeat: no-repeat;
-            background-position: center;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        /* SCANLINES (opcional) */
-        #scanlines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                to bottom,
-                rgba(0,0,0,0) 0px,
-                rgba(0,0,0,0) 3px,
-                rgba(0,0,0,0.15) 3px,
-                rgba(0,0,0,0.15) 4px
-            );
-            pointer-events: none;
-            z-index: 20;
-        }
-
-        @media (max-width: 768px) {
-            #tv-screen h1 { font-size: 2rem; }
-            #tv-screen ul { font-size: 1.4rem; }
-            #tv-screen { padding: 12% 15%; }
-        }
-    </style>
 </head>
+
 <body>
-    <div id="tv-container">
-        <div id="tv-screen">
-            <h1>▶ MEU PORTFÓLIO</h1>
-            <ul id="menu">
-                <li class="active" data-target="sobre">SOBRE</li>
-                <li data-target="projetos">PROJETOS</li>
-                <li data-target="contato">CONTATO</li>
-            </ul>
-            <div class="sub" id="subinfo">Use ↑↓ e ENTER</div>
+
+```
+<div id="tv-container">
+
+    <!-- CONTEÚDO -->
+    <div id="tv-screen">
+
+        <h1>▶ MEU PORTFÓLIO</h1>
+
+        <ul id="menu">
+            <li class="active" data-target="sobre">SOBRE</li>
+            <li data-target="projetos">PROJETOS</li>
+            <li data-target="contato">CONTATO</li>
+        </ul>
+
+        <div class="sub" id="subinfo">
+            Use ↑↓ e ENTER
         </div>
 
-        <div id="tv-frame"></div>
-        <!-- <div id="scanlines"></div> -->
     </div>
 
-    <script>
-        (function() {
-            const items = document.querySelectorAll('#menu li');
-            let current = 0;
+    <!-- MOLDURA -->
+    <div id="tv-frame"></div>
 
-            function updateMenu() {
-                items.forEach((li, index) => {
-                    li.classList.toggle('active', index === current);
-                });
-                const target = items[current].getAttribute('data-target');
-                document.getElementById('subinfo').textContent = '▶ ' + target.toUpperCase();
-            }
+    <!-- SCANLINES -->
+    <!--
+    <div id="scanlines"></div>
+    -->
 
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    current = (current + 1) % items.length;
-                    updateMenu();
-                } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    current = (current - 1 + items.length) % items.length;
-                    updateMenu();
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const target = items[current].getAttribute('data-target');
-                    alert('Navegando para: ' + target);
-                }
-            });
+</div>
+
+<script>
+    (function () {
+
+        const items = document.querySelectorAll('#menu li');
+
+        let current = 0;
+
+        function updateMenu() {
 
             items.forEach((li, index) => {
-                li.addEventListener('click', function() {
-                    current = index;
-                    updateMenu();
-                });
-                li.addEventListener('dblclick', function() {
-                    const target = li.getAttribute('data-target');
-                    alert('Navegando para: ' + target);
-                });
+                li.classList.toggle(
+                    'active',
+                    index === current
+                );
             });
 
-            updateMenu();
-        })();
-    </script>
+            const target =
+                items[current].getAttribute('data-target');
+
+            document.getElementById('subinfo').textContent =
+                '▶ ' + target.toUpperCase();
+        }
+
+        /* CONTROLE PELO TECLADO */
+        document.addEventListener('keydown', function (e) {
+
+            if (
+                e.key === 'ArrowDown' ||
+                e.key === 'ArrowRight'
+            ) {
+
+                e.preventDefault();
+
+                current =
+                    (current + 1) % items.length;
+
+                updateMenu();
+
+            } else if (
+                e.key === 'ArrowUp' ||
+                e.key === 'ArrowLeft'
+            ) {
+
+                e.preventDefault();
+
+                current =
+                    (current - 1 + items.length) %
+                    items.length;
+
+                updateMenu();
+
+            } else if (e.key === 'Enter') {
+
+                e.preventDefault();
+
+                const target =
+                    items[current].getAttribute('data-target');
+
+                alert(
+                    'Navegando para: ' + target
+                );
+            }
+
+        });
+
+        /* CLIQUE */
+        items.forEach((li, index) => {
+
+            li.addEventListener('click', function () {
+
+                current = index;
+
+                updateMenu();
+
+            });
+
+            li.addEventListener('dblclick', function () {
+
+                const target =
+                    li.getAttribute('data-target');
+
+                alert(
+                    'Navegando para: ' + target
+                );
+
+            });
+
+        });
+
+        updateMenu();
+
+    })();
+</script>
+```
+
 </body>
 </html>
