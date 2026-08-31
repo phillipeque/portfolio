@@ -3416,35 +3416,34 @@ function toggleMute() {
   let startAngle = 0;
   let hasDragged = false;
   let isHovering = false;
-  let animPausedByDrag = false;
 
-  // Lê o ângulo REAL do elemento (incluindo animação CSS ativa)
+  function getRadius() {
+    const radiusPx = parseFloat(getComputedStyle(ringEl).getPropertyValue('--radius'));
+    if (!isNaN(radiusPx) && radiusPx > 0) return radiusPx;
+    return window.innerWidth <= 768 ? 420 : 640;
+  }
+
   function getCurrentAngle() {
     const style = window.getComputedStyle(ringEl);
     const transform = style.transform || style.webkitTransform;
     if (!transform || transform === 'none') return 0;
 
-    // Caso o browser devolva rotateY direto
     const match = transform.match(/rotateY\(([-\d.]+)deg\)/);
     if (match) return parseFloat(match[1]);
 
-    // Caso devolva matrix3d (WebKit/Chrome costumam fazer isso)
     const m3d = transform.match(/matrix3d\(([^)]+)\)/);
     if (m3d) {
       const vals = m3d[1].split(',').map(v => parseFloat(v.trim()));
-      // matrix3d(cos, 0, sin, 0, 0, 1, 0, 0, -sin, 0, cos, 0, 0, 0, 0, 1)
       const sin = vals[2];
       const cos = vals[0];
       return Math.atan2(sin, cos) * (180 / Math.PI);
     }
 
-    // Fallback matrix 2D
     const m2d = transform.match(/matrix\(([^)]+)\)/);
     if (m2d) {
       const vals = m2d[1].split(',').map(v => parseFloat(v.trim()));
       return Math.atan2(vals[1], vals[0]) * (180 / Math.PI);
     }
-
     return 0;
   }
 
@@ -3452,45 +3451,40 @@ function toggleMute() {
     ringEl.style.transform = `rotateY(${deg}deg)`;
   }
 
-  // Pausa de verdade: tira a animação CSS e fixa o ângulo atual via inline
-  function pauseAnimation() {
+  // Congela a animação CSS e fixa o ângulo atual via inline
+  function freezeAnimation() {
     const angle = getCurrentAngle();
     startAngle = angle;
-    ringEl.style.animation = 'none';        // ← remove a animação CSS
-    setAngle(angle);                        // ← fixa o transform inline
+    ringEl.style.animation = 'none';
+    setAngle(angle);
     stageEl.classList.add('dragging');
-    animPausedByDrag = true;
   }
 
-  // Retoma a animação CSS a partir do ângulo onde parou
-  function resumeAnimation() {
+  // Retoma a animação CSS exatamente do ângulo onde parou
+  function unfreezeAnimation() {
     stageEl.classList.remove('dragging');
-    animPausedByDrag = false;
+    ringEl.style.animation = '';
 
-    const duration = 55; // segundos (igual ao CSS)
+    const duration = 55;
     const angle = getCurrentAngle();
     const normalized = ((angle % 360) + 360) % 360;
     const progress = normalized / 360;
     const delay = -(duration * progress);
 
-    ringEl.style.animation = '';            // ← restaura a animação do CSS
     ringEl.style.animationDelay = delay + 's';
     ringEl.style.animationPlayState = 'running';
-    void ringEl.offsetWidth;                  // força reflow
+    void ringEl.offsetWidth;
   }
 
-  // Hover: só pausa visualmente, sem tirar a animação
+  // Hover: pausa visualmente (só se não estiver arrastando)
   stageEl.addEventListener('mouseenter', () => {
     isHovering = true;
-    if (!animPausedByDrag) ringEl.style.animationPlayState = 'paused';
+    if (!isDragging) ringEl.style.animationPlayState = 'paused';
   });
 
   stageEl.addEventListener('mouseleave', () => {
     isHovering = false;
-    if (!isDragging && !animPausedByDrag) {
-      ringEl.style.animationPlayState = 'running';
-      ringEl.style.animationDelay = '';
-    }
+    if (!isDragging) unfreezeAnimation();
   });
 
   // --- MOUSE ---
@@ -3499,26 +3493,34 @@ function toggleMute() {
     isDragging = true;
     hasDragged = false;
     startX = e.clientX;
-    pauseAnimation();
+    freezeAnimation();
     e.preventDefault();
   });
 
   document.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     const dx = e.clientX - startX;
-    if (Math.abs(dx) > 5) hasDragged = true;
-    setAngle(startAngle + dx * 0.4);
+    if (Math.abs(dx) > 3) hasDragged = true;
+
+    const radius = getRadius();
+    // 1:1 — o arco percorrido pelo card = pixels movidos pelo mouse
+    const deg = startAngle + (dx / radius) * (180 / Math.PI);
+    setAngle(deg);
     e.preventDefault();
   });
 
   document.addEventListener('mouseup', () => {
     if (!isDragging) return;
     isDragging = false;
-    if (!isHovering) resumeAnimation();
-    else {
-      stageEl.classList.remove('dragging');
-      animPausedByDrag = false;
+
+    if (!isHovering) {
+      // Soltou fora do stage: retoma imediatamente
+      unfreezeAnimation();
+    } else {
+      // Soltou dentro do stage: restaura a animação CSS mas deixa pausada pelo hover
+      ringEl.style.animation = '';
       ringEl.style.animationPlayState = 'paused';
+      stageEl.classList.remove('dragging');
     }
   });
 
@@ -3529,7 +3531,7 @@ function toggleMute() {
     isDragging = true;
     hasDragged = false;
     startX = t.clientX;
-    pauseAnimation();
+    freezeAnimation();
     e.preventDefault();
   }, { passive: false });
 
@@ -3538,19 +3540,26 @@ function toggleMute() {
     const t = e.touches[0];
     if (!t) return;
     const dx = t.clientX - startX;
-    if (Math.abs(dx) > 5) hasDragged = true;
-    setAngle(startAngle + dx * 0.4);
+    if (Math.abs(dx) > 3) hasDragged = true;
+
+    const radius = getRadius();
+    const deg = startAngle + (dx / radius) * (180 / Math.PI);
+    setAngle(deg);
     e.preventDefault();
   }, { passive: false });
 
   document.addEventListener('touchend', () => {
     if (!isDragging) return;
     isDragging = false;
-    if (!isHovering) resumeAnimation();
-    else {
-      stageEl.classList.remove('dragging');
-      animPausedByDrag = false;
-      ringEl.style.animationPlayState = 'paused';
+    unfreezeAnimation();
+  });
+
+  // Segurança: se o mouse sair da janela do browser enquanto arrasta
+  document.documentElement.addEventListener('mouseleave', () => {
+    if (isDragging) {
+      isDragging = false;
+      isHovering = false;
+      unfreezeAnimation();
     }
   });
 })();
