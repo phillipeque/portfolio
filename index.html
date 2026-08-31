@@ -992,6 +992,7 @@
   flex-direction: column;
   transform: none !important;
   backface-visibility: visible;
+  padding: 0;
 }
 
 .exp-carousel-card::after {
@@ -1033,28 +1034,55 @@
 
 .exp-card-role {
   color: rgba(255,255,255,0.85);
-  font-size: 14px;   /* antes não existia */
+  font-size: 14px;
   font-weight: 400;
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-  margin-top: 2px;
-}
-
-.exp-card-body {
+  padding: 0 22px;
+  margin-top: 4px;
   position: relative;
   z-index: 1;
-  margin-top: auto;
-  padding: 18px 22px 22px;
 }
 
-.exp-card-body p {
+.exp-card-details {
+  position: relative;
+  z-index: 1;
+  padding: 12px 22px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.exp-details-title {
+  color: rgba(255,255,255,0.9);
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  margin-bottom: 6px;
+}
+
+.exp-details-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.exp-details-list li {
   color: #f5f5f5;
-  font-size: 14px;   /* antes 12px */
+  font-size: 13px;
   line-height: 1.5;
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+  padding-left: 18px;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.exp-details-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #fff;
+  font-size: 16px;
 }
 
 .exp-carousel-hint {
@@ -1085,9 +1113,10 @@
   .exp-card-header { padding: 14px 16px 0; gap: 10px; }
   .exp-card-header img { width: 36px; height: 36px; }
   .exp-card-header h3 { font-size: 16px; }
-  .exp-card-role { font-size: 12px; }
-  .exp-card-body { padding: 12px 16px 16px; }
-  .exp-card-body p { font-size: 12px; }
+  .exp-card-role { font-size: 12px; padding: 0 16px; }
+  .exp-card-details { padding: 8px 16px 14px; }
+  .exp-details-title { font-size: 11px; }
+  .exp-details-list li { font-size: 11px; padding-left: 14px; }
 }
   
 </style>
@@ -1235,106 +1264,242 @@
     <div class="exp-carousel-stage" id="experience-stage">
       <div class="exp-carousel-ring" id="experience-ring">
 
-        <div class="exp-carousel-card" style="--index:0; background:#2D89EF;">
+        <!-- Card 0 -->
+        <div class="exp-carousel-card" style="background:#2D89EF;">
           <div class="exp-card-header"><img src="logos/binance.png" alt=""><h3>Binance</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Moderei canais com mais de 50k membros</li>
+              <li>Criei sistemas de verificação anti-scam</li>
+              <li>Desenvolvi relatórios semanais de métricas</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:1; background:#00ABA9;">
+        <!-- Card 1 -->
+        <div class="exp-carousel-card" style="background:#00ABA9;">
           <div class="exp-card-header"><img src="logos/arenagames.png" alt=""><h3>Arena Games</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Gerenciei eventos comunitários semanais</li>
+              <li>Mediei conflitos entre membros</li>
+              <li>Produzi tutoriais e guias para novos jogadores</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:2; background:#339933;">
+        <!-- Card 2 -->
+        <div class="exp-carousel-card" style="background:#339933;">
           <div class="exp-card-header"><img src="logos/beeos.png" alt=""><h3>BeeOS</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Moderei discussões técnicas no Discord</li>
+              <li>Organizei AMAs com a equipe</li>
+              <li>Mapeei feedback da comunidade</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:3; background:#7FBA00;">
+        <!-- Card 3 -->
+        <div class="exp-carousel-card" style="background:#7FBA00;">
           <div class="exp-card-header"><img src="logos/bionic.png" alt=""><h3>Bionic</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Implantei sistema de tickets de suporte</li>
+              <li>Criei canais de anúncios e FAQs</li>
+              <li>Treinei novos moderadores</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:4; background:#F09609;">
+        <!-- Card 4 -->
+        <div class="exp-carousel-card" style="background:#F09609;">
           <div class="exp-card-header"><img src="logos/coinracer.png" alt=""><h3>Coinracer</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Organizei torneios comunitários</li>
+              <li>Mediei disputas em canais de trading</li>
+              <li>Produzi relatórios de engajamento</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:5; background:#FA6800;">
+        <!-- Card 5 -->
+        <div class="exp-carousel-card" style="background:#FA6800;">
           <div class="exp-card-header"><img src="logos/coralapp.png" alt=""><h3>CoralApp</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Administrei grupos no Telegram</li>
+              <li>Criei bots de verificação</li>
+              <li>Elaborei campanhas de onboarding</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:6; background:#E51400;">
+        <!-- Card 6 -->
+        <div class="exp-carousel-card" style="background:#E51400;">
           <div class="exp-card-header"><img src="logos/fortblockgames.png" alt=""><h3>Fort Block Games</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Moderei canais de jogos e NFT</li>
+              <li>Realizei sorteios e giveaways</li>
+              <li>Coletei feedback para desenvolvimento</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:7; background:#A20025;">
+        <!-- Card 7 -->
+        <div class="exp-carousel-card" style="background:#A20025;">
           <div class="exp-card-header"><img src="logos/lionshare.png" alt=""><h3>Lion's Share Group</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Gerenciei comunidade de investidores</li>
+              <li>Criei conteúdo educativo</li>
+              <li>Moderei debates sobre estratégias</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:8; background:#E671B8;">
+        <!-- Card 8 -->
+        <div class="exp-carousel-card" style="background:#E671B8;">
           <div class="exp-card-header"><img src="logos/pipe.png" alt=""><h3>PIPE</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Moderei canais de desenvolvimento</li>
+              <li>Organizei sprints comunitários</li>
+              <li>Documentei dúvidas frequentes</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:9; background:#7E3FF2;">
+        <!-- Card 9 -->
+        <div class="exp-carousel-card" style="background:#7E3FF2;">
           <div class="exp-card-header"><img src="logos/reaktor.png" alt=""><h3>Reaktor</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Mediei discussões técnicas</li>
+              <li>Produzi newsletters semanais</li>
+              <li>Mapeei roadmap da comunidade</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:10; background:#603CBA;">
+        <!-- Card 10 -->
+        <div class="exp-carousel-card" style="background:#603CBA;">
           <div class="exp-card-header"><img src="logos/sheertopia.png" alt=""><h3>Sheertopia</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Moderei canais de metaverso</li>
+              <li>Organizei eventos imersivos</li>
+              <li>Criei guias para novos membros</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:11; background:#1E7145;">
+        <!-- Card 11 -->
+        <div class="exp-carousel-card" style="background:#1E7145;">
           <div class="exp-card-header"><img src="logos/solcade.png" alt=""><h3>Solcade</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Gerenciei comunidade de jogos</li>
+              <li>Produzi relatórios de moderação</li>
+              <li>Mediei conflitos em canais públicos</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:12; background:#647687;">
+        <!-- Card 12 -->
+        <div class="exp-carousel-card" style="background:#647687;">
           <div class="exp-card-header"><img src="logos/streamr.png" alt=""><h3>Streamr</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Streamr provides the real-time data infrastructure of the decentralised web (Web3). Streamr technology is a core service layer which implements a vendor-neutral, real-time publish/subscribe protocol for data transmission. The data travels via a global peer-to-peer network, which is scalable, robust and permissionless.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Moderei canais de desenvolvimento</li>
+              <li>Organizei AMAs com a equipe</li>
+              <li>Criei tutoriais para novos usuários</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:13; background:#825A2C;">
+        <!-- Card 13 -->
+        <div class="exp-carousel-card" style="background:#825A2C;">
           <div class="exp-card-header"><img src="logos/tap.png" alt=""><h3>TAP</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Administrei grupos de pagamentos</li>
+              <li>Mediei dúvidas sobre criptomoedas</li>
+              <li>Produzi conteúdo educativo</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:14; background:#6D8764;">
+        <!-- Card 14 -->
+        <div class="exp-carousel-card" style="background:#6D8764;">
           <div class="exp-card-header"><img src="logos/vs1.png" alt=""><h3>VS1</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Moderei canais de jogos</li>
+              <li>Organizei torneios e premiações</li>
+              <li>Mapeei feedback da comunidade</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:15; background:#B91D47;">
+        <!-- Card 15 -->
+        <div class="exp-carousel-card" style="background:#B91D47;">
           <div class="exp-card-header"><img src="logos/wicrypt.png" alt=""><h3>Wicrypt</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Gerenciei comunidade de tecnologia</li>
+              <li>Produzi documentação colaborativa</li>
+              <li>Mediei discussões técnicas</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="exp-carousel-card" style="--index:16; background:#EE1111;">
+        <!-- Card 16 -->
+        <div class="exp-carousel-card" style="background:#EE1111;">
           <div class="exp-card-header"><img src="logos/xend.png" alt=""><h3>Xend Finance</h3></div>
           <div class="exp-card-role">Community Moderator</div>
-          <div class="exp-card-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">o que eu fiz:</div>
+            <ul class="exp-details-list">
+              <li>Moderei canais de DeFi</li>
+              <li>Organizei webinars e workshops</li>
+              <li>Criei materiais de onboarding</li>
+            </ul>
+          </div>
         </div>
 
       </div>
