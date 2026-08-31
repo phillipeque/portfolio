@@ -25,7 +25,6 @@
             height: 100vh;
         }
 
-        /* Fundo (canvas) */
         #background-canvas {
             position: absolute;
             top: 0;
@@ -38,7 +37,6 @@
             image-rendering: crisp-edges;
         }
 
-        /* Estática */
         #tv-static {
             position: absolute;
             top: 0;
@@ -72,7 +70,6 @@
             100% { background-position: 0 4px, 4px 0; }
         }
 
-        /* === CONTEÚDO (janela) === */
         #tv-screen {
             position: absolute;
             top: 0;
@@ -89,6 +86,7 @@
         }
 
         .retro-window {
+            position: relative; /* para o flash absoluto */
             background: #c0c0c0;
             border: 2px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
@@ -101,7 +99,6 @@
             margin: 0 auto;
             color: #000;
             text-shadow: none;
-            position: relative;
         }
 
         .window-titlebar {
@@ -126,30 +123,45 @@
         .window-content {
             padding: 16px;
             background: #c0c0c0;
-            position: relative;
-            min-height: 200px; /* para não quebrar durante transição */
+            min-height: 180px;
+            position: relative; /* para o flash absoluto dentro do .window-content? Não, vamos colocar o flash no .retro-window */
         }
 
-        /* Containers de tela */
+        .window-footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 10px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            letter-spacing: 2px;
+            background: #000;
+            border-top: 2px solid #808080;
+        }
+
+        /* Telas */
         .screen-container {
             display: none;
-            animation: none;
         }
         .screen-container.active {
             display: block;
         }
 
-        /* Grade de ícones */
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin-bottom: 10px;
         }
-        .icon-grid.single {
-            grid-template-columns: 1fr;
-            max-width: 200px;
-            margin: 0 auto;
+        /* Para a tela ABOUT: usamos o mesmo grid, mas apenas um item centralizado */
+        .icon-grid.center-single {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 10px;
+        }
+        .icon-grid.center-single .icon-item {
+            flex: 0 0 auto;
         }
 
         .icon-item {
@@ -196,18 +208,7 @@
         .label-blue { color: #1a3a5c; }
         .label-purple { color: #4a2d6b; }
 
-        .window-footer {
-            text-align: center;
-            padding: 10px;
-            font-size: 10px;
-            color: #fff;
-            text-shadow: 1px 1px 0 #000;
-            letter-spacing: 2px;
-            background: #000;
-            border-top: 2px solid #808080;
-        }
-
-        /* Overlay de flash */
+        /* FLASH OVERLAY - cobre toda a janela (menos a moldura) */
         #flash-overlay {
             position: absolute;
             top: 0;
@@ -218,7 +219,7 @@
             z-index: 20;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.15s ease;
+            transition: opacity 0.1s ease;
             border-radius: inherit;
         }
         #flash-overlay.active {
@@ -226,7 +227,6 @@
             transition: opacity 0.05s ease;
         }
 
-        /* Moldura da TV */
         #tv-frame {
             position: absolute;
             top: 0;
@@ -243,7 +243,6 @@
             z-index: 10;
         }
 
-        /* Scanlines */
         #scanlines {
             position: absolute;
             top: 0;
@@ -265,7 +264,7 @@
             #tv-screen { padding: 2% 12% 2% 12%; }
             .retro-window { max-width: 90%; }
             .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .icon-grid.single { grid-template-columns: 1fr; }
+            .icon-grid.center-single { display: flex; }
             .icon-img { width: 48px; height: 48px; }
             .icon-label { font-size: 10px; }
         }
@@ -285,16 +284,18 @@
         <div id="tv-screen">
             <div class="retro-window">
 
+                <!-- FLASH OVERLAY (cobre tudo dentro da janela) -->
+                <div id="flash-overlay"></div>
+
                 <!-- TITLE BAR -->
                 <div class="window-titlebar">
                     <div class="window-title">PORTFOLIO</div>
                 </div>
 
-                <!-- CONTEÚDO COM OVERLAY DE FLASH -->
-                <div class="window-content" style="position: relative; overflow: hidden;">
-                    <div id="flash-overlay"></div>
+                <!-- CONTEÚDO -->
+                <div class="window-content">
 
-                    <!-- TELA HOME (menu principal) -->
+                    <!-- TELA HOME -->
                     <div id="screen-home" class="screen-container active">
                         <div class="icon-grid">
                             <div class="icon-item" data-target="about">
@@ -326,16 +327,13 @@
 
                     <!-- TELA ABOUT (apenas BACK) -->
                     <div id="screen-about" class="screen-container">
-                        <div class="icon-grid single">
+                        <div class="icon-grid center-single">
                             <div class="icon-item" data-target="back">
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E%3C%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
                         </div>
-                        <!-- Conteúdo extra do ABOUT (opcional) -->
-                        <div style="text-align: center; margin-top: 10px; font-size: 14px; color: #000; letter-spacing: 1px;">
-                            <p>Hi, I'm a retro developer.<br>This is my about page.</p>
-                        </div>
+                        <!-- Sem texto extra para manter o tamanho igual -->
                     </div>
 
                 </div>
@@ -354,7 +352,7 @@
 
     <script>
         // ============================================================
-        //  FUNDO (INALTERADO - ultraleve + 60fps)
+        //  FUNDO (INALTERADO)
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -576,7 +574,7 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO COM EFEITO DE FLASH
+        //  NAVEGAÇÃO COM FLASH (COBRE TODA A JANELA)
         // ============================================================
         (function() {
             const homeScreen = document.getElementById('screen-home');
@@ -584,20 +582,17 @@
             const flash = document.getElementById('flash-overlay');
             let currentScreen = 'home';
 
-            // Função que troca de tela com flash
             function navigateTo(screen) {
                 if (screen === currentScreen) return;
 
-                // Ativa o flash (preto)
+                // Ativa o flash (tela preta)
                 flash.classList.add('active');
 
-                // Após 150ms, troca o conteúdo e desativa o flash
+                // Troca de tela após 150ms
                 setTimeout(() => {
-                    // Esconde todas as telas
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
 
-                    // Mostra a tela desejada
                     if (screen === 'home') {
                         homeScreen.classList.add('active');
                     } else if (screen === 'about') {
@@ -606,14 +601,14 @@
 
                     currentScreen = screen;
 
-                    // Remove o flash após um pequeno delay (para dar tempo de renderizar)
+                    // Remove o flash após um pequeno delay
                     setTimeout(() => {
                         flash.classList.remove('active');
-                    }, 50);
+                    }, 60);
                 }, 150);
             }
 
-            // Event listeners para os ícones (clique simples)
+            // Clique nos ícones
             document.querySelectorAll('.icon-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     const target = this.dataset.target;
@@ -622,17 +617,13 @@
                     } else if (target === 'back') {
                         navigateTo('home');
                     } else {
-                        // Para outros ícones (futuro) - apenas alerta por enquanto
                         alert('Navigating to: ' + target);
                     }
                 });
             });
 
-            // Teclado (setas + Enter) - adaptado para navegação entre telas
-            // Aqui mantemos o comportamento original, mas desativamos para a tela ABOUT (só tem um ícone)
-            // Como é um único ícone, não faz sentido navegar com setas.
-            // Deixamos apenas o Enter para clicar no ícone ativo.
-            const items = document.querySelectorAll('.icon-item');
+            // Teclado: suporte para navegação na HOME e Enter na ABOUT
+            const items = document.querySelectorAll('#screen-home .icon-item');
             let currentIndex = 0;
 
             function updateActiveItem() {
@@ -641,13 +632,12 @@
                 });
             }
 
-            // Só ativa se a tela atual for home (para evitar confusão)
             document.addEventListener('keydown', function(e) {
                 const activeScreen = document.querySelector('.screen-container.active');
                 const isHome = activeScreen && activeScreen.id === 'screen-home';
 
                 if (!isHome) {
-                    // Na tela ABOUT, só o Enter funciona
+                    // Na tela ABOUT, apenas o Enter no BACK
                     if (e.key === 'Enter') {
                         const backBtn = document.querySelector('#screen-about .icon-item');
                         if (backBtn) backBtn.click();
@@ -686,7 +676,6 @@
                 }
             });
 
-            // Inicializa com o primeiro item ativo
             updateActiveItem();
         })();
     </script>
