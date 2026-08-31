@@ -32,13 +32,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;          /* atrás de tudo */
+            z-index: 0;
             display: block;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
         }
 
-        /* === ESTÁTICA (opcional, pode remover) === */
+        /* === ESTÁTICA === */
         #tv-static {
             position: absolute;
             top: 0;
@@ -62,7 +62,7 @@
                 );
             background-size: 100% 4px, 4px 100%;
             animation: staticMove 0.1s steps(2) infinite;
-            z-index: 1;           /* acima do fundo, abaixo da janela */
+            z-index: 1;
             pointer-events: none;
         }
 
@@ -83,7 +83,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 2;           /* acima da estática */
+            z-index: 2;
             padding: 12% 18% 15% 18%;
             text-align: center;
         }
@@ -189,7 +189,7 @@
             border-top: 2px solid #808080;
         }
 
-        /* === FRAME DA TV (sempre por cima) === */
+        /* === FRAME DA TV === */
         #tv-frame {
             position: absolute;
             top: 0;
@@ -203,11 +203,10 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             pointer-events: none;
-            z-index: 10;          /* máximo, acima de tudo */
+            z-index: 10;
         }
 
-        /* === SCANLINES (opcional, acima do frame ou abaixo?) 
-             Vou deixar abaixo do frame para não atrapalhar a imagem. */
+        /* === SCANLINES === */
         #scanlines {
             position: absolute;
             top: 0;
@@ -222,7 +221,7 @@
                 rgba(0,0,0,0.15) 4px
             );
             pointer-events: none;
-            z-index: 9;           /* abaixo do frame, acima do conteúdo */
+            z-index: 9;
         }
 
         @media (max-width: 768px) {
@@ -232,13 +231,14 @@
             .icon-label { font-size: 10px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
         <!-- CANVAS PARA O FUNDO PIXELADO -->
         <canvas id="background-canvas"></canvas>
 
-        <!-- ESTÁTICA (opcional) -->
+        <!-- ESTÁTICA -->
         <div id="tv-static"></div>
 
         <!-- JANELA DO MENU -->
@@ -250,7 +250,6 @@
 
                 <div class="window-content">
                     <div class="icon-grid">
-                        <!-- ÍCONES (SVG inline) -->
                         <div class="icon-item active" data-target="sobre">
                             <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="SOBRE" />
                             <span class="icon-label label-orange">SOBRE</span>
@@ -267,7 +266,7 @@
                         </div>
 
                         <div class="icon-item" data-target="github">
-                            <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%3C%2F%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
+                            <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%3C/%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                             <span class="icon-label label-red">GITHUB</span>
                         </div>
 
@@ -292,141 +291,281 @@
         <!-- SCANLINES -->
         <div id="scanlines"></div>
 
-        <!-- FRAME DA TV (ACIMA DE TUDO) -->
+        <!-- FRAME DA TV -->
         <div id="tv-frame"></div>
     </div>
 
     <script>
         // ============================================================
-        //  FUNDO PIXELADO COM NUVENS
+        //  FUNDO PIXELADO 8-BIT COM NUVENS EM PARALLAX
         // ============================================================
-        (function() {
+        (function(){
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
-            let width, height;
-            const PIXEL_SIZE = 4; // tamanho do pixel (quanto menor, mais detalhe)
+            let W, H, mouseX = 0.5, mouseY = 0.5;
+            const PIXEL = 4;
 
-            // Nuvens: array de objetos com posição e tamanho
-            let clouds = [];
-
-            function resizeCanvas() {
+            function resize() {
                 const rect = canvas.parentElement.getBoundingClientRect();
-                width = rect.width;
-                height = rect.height;
-                canvas.width = width;
-                canvas.height = height;
-                // Ajusta o estilo para ocupar 100%
-                canvas.style.width = '100%';
-                canvas.style.height = '100%';
-                // Redimensiona as nuvens proporcionalmente
-                generateClouds();
-                draw();
+                W = Math.ceil(rect.width / PIXEL);
+                H = Math.ceil(rect.height / PIXEL);
+                canvas.width = W;
+                canvas.height = H;
             }
 
-            function generateClouds() {
-                clouds = [];
-                const numClouds = 12 + Math.floor(Math.random() * 8);
-                for (let i = 0; i < numClouds; i++) {
-                    clouds.push({
-                        x: Math.random() * width * 1.5 - width * 0.25,
-                        y: Math.random() * height * 0.7 + height * 0.05,
-                        w: (50 + Math.random() * 120) * (width / 800),
-                        h: (20 + Math.random() * 40) * (width / 800),
-                        speed: (0.2 + Math.random() * 0.6) * (width / 800),
-                        opacity: 0.4 + Math.random() * 0.5
-                    });
-                }
+            canvas.parentElement.addEventListener('mousemove', e => {
+                const rect = canvas.getBoundingClientRect();
+                mouseX = (e.clientX - rect.left) / rect.width;
+                mouseY = (e.clientY - rect.top) / rect.height;
+            });
+
+            const PALETTE = {
+                skyTop:    [26,  58,  107],
+                skyMid1:   [45,  90,  160],
+                skyMid2:   [74,  144, 217],
+                skyLight:  [135, 206, 235],
+                skyNear:   [200, 230, 245],
+                skyHoriz:  [232, 244, 252],
+                sunCore:   [255, 252, 240],
+                sunEdge:   [255, 248, 220],
+                cloud:     [255, 255, 255],
+                cloudShad: [180, 200, 220],
+                bird:      [40,  60,  90],
+            };
+
+            function rgb(arr, a=1) {
+                return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`;
             }
 
-            // Desenha uma nuvem com pixels (blocos)
-            function drawCloud(ctx, cloud) {
-                const { x, y, w, h, opacity } = cloud;
-                const step = PIXEL_SIZE;
-                const cols = Math.floor(w / step);
-                const rows = Math.floor(h / step);
+            function block(x, y, color, alpha=1) {
+                const fx = Math.floor(x);
+                const fy = Math.floor(y);
+                if (fx < 0 || fx >= W || fy < 0 || fy >= H) return;
+                ctx.fillStyle = typeof color === 'string' ? color : rgb(color, alpha);
+                ctx.fillRect(fx, fy, 1, 1);
+            }
 
-                // Cria uma máscara de pixels para a nuvem (formato arredondado)
-                const mask = [];
-                for (let r = 0; r < rows; r++) {
-                    mask[r] = [];
-                    for (let c = 0; c < cols; c++) {
-                        // Posição relativa no retângulo (-1 a 1)
-                        const px = (c / cols) * 2 - 1;
-                        const py = (r / rows) * 2 - 1;
-                        // Distância do centro (elipse)
-                        const dist = Math.sqrt(px * px + py * py);
-                        // Probabilidade de ter pixel: mais alta no centro
-                        let prob = Math.max(0, 1 - dist * 1.2);
-                        // Adiciona ruído para bordas irregulares
-                        prob *= (0.7 + 0.3 * Math.sin(r * 1.7 + c * 0.9));
-                        mask[r][c] = Math.random() < prob;
-                    }
-                }
-
-                // Desenha os pixels da nuvem
-                ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-                for (let r = 0; r < rows; r++) {
-                    for (let c = 0; c < cols; c++) {
-                        if (mask[r][c]) {
-                            const px = Math.round(x + c * step);
-                            const py = Math.round(y + r * step);
-                            ctx.fillRect(px, py, step, step);
+            function pixelCircle(cx, cy, r, color, alpha=1) {
+                const r2 = r * r;
+                for (let y = Math.floor(cy - r); y <= Math.ceil(cy + r); y++) {
+                    for (let x = Math.floor(cx - r); x <= Math.ceil(cx + r); x++) {
+                        const dx = x - cx;
+                        const dy = y - cy;
+                        if (dx*dx + dy*dy <= r2) {
+                            block(x, y, color, alpha);
                         }
                     }
                 }
             }
 
+            const layers = [
+                { count: 7,  speed: 0.04, parallax: 0.02, yRange: [0.05, 0.22], scale: [2.0, 3.2], opacity: [0.20, 0.35] },
+                { count: 6,  speed: 0.10, parallax: 0.05, yRange: [0.12, 0.35], scale: [1.4, 2.2], opacity: [0.35, 0.55] },
+                { count: 5,  speed: 0.22, parallax: 0.10, yRange: [0.28, 0.52], scale: [1.0, 1.6], opacity: [0.50, 0.70] },
+                { count: 4,  speed: 0.40, parallax: 0.18, yRange: [0.45, 0.72], scale: [0.6, 1.1], opacity: [0.65, 0.90] },
+            ];
+
+            let clouds = [];
+
+            function createCloud(layer) {
+                const l = layers[layer];
+                return {
+                    layer,
+                    x: Math.random() * W * 1.5 - W * 0.25,
+                    y: H * (l.yRange[0] + Math.random() * (l.yRange[1] - l.yRange[0])),
+                    scale: l.scale[0] + Math.random() * (l.scale[1] - l.scale[0]),
+                    speed: l.speed * (0.7 + Math.random() * 0.6),
+                    opacity: l.opacity[0] + Math.random() * (l.opacity[1] - l.opacity[0]),
+                    width: 40 + Math.random() * 30,
+                    height: 12 + Math.random() * 10,
+                    puffs: [
+                        { dx: 0,    dy: 0,    r: 0.55 },
+                        { dx: -0.35, dy: 0.08, r: 0.40 },
+                        { dx: 0.35,  dy: 0.05, r: 0.42 },
+                        { dx: -0.15, dy: -0.18, r: 0.35 },
+                        { dx: 0.18,  dy: -0.15, r: 0.32 },
+                        { dx: 0.0,   dy: -0.25, r: 0.28 },
+                        { dx: -0.45, dy: 0.15, r: 0.25 },
+                        { dx: 0.45,  dy: 0.12, r: 0.27 },
+                    ],
+                };
+            }
+
+            function initClouds() {
+                clouds = [];
+                layers.forEach((l, li) => {
+                    for (let i = 0; i < l.count; i++) clouds.push(createCloud(li));
+                });
+            }
+
+            function drawCloud(c) {
+                const l = layers[c.layer];
+                const px = c.x + (mouseX - 0.5) * W * l.parallax;
+                const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
+                const w = c.width * c.scale * (W / 250);
+                const h = c.height * c.scale * (W / 250);
+
+                c.puffs.forEach(p => {
+                    const r = p.r * h * 1.8;
+                    pixelCircle(px + p.dx * w, py + p.dy * h + h * 0.08, r, PALETTE.cloudShad, c.opacity * 0.3);
+                });
+
+                c.puffs.forEach(p => {
+                    const r = p.r * h * 1.6;
+                    pixelCircle(px + p.dx * w, py + p.dy * h, r, PALETTE.cloud, c.opacity);
+                });
+
+                c.puffs.forEach(p => {
+                    if (p.dy < 0) {
+                        const r = p.r * h * 1.1;
+                        pixelCircle(px + p.dx * w, py + p.dy * h - r * 0.15, r * 0.7, PALETTE.cloud, c.opacity * 0.5);
+                    }
+                });
+            }
+
             function drawSky() {
-                // Gradiente de céu (azul claro)
-                const grad = ctx.createLinearGradient(0, 0, 0, height);
-                grad.addColorStop(0, '#87CEEB');
-                grad.addColorStop(0.6, '#B0E0E6');
-                grad.addColorStop(1, '#F0F8FF');
-                ctx.fillStyle = grad;
-                ctx.fillRect(0, 0, width, height);
+                for (let y = 0; y < H; y++) {
+                    const t = y / H;
+                    let col;
+                    if (t < 0.25) {
+                        const k = t / 0.25;
+                        col = [
+                            PALETTE.skyTop[0] + (PALETTE.skyMid1[0] - PALETTE.skyTop[0]) * k,
+                            PALETTE.skyTop[1] + (PALETTE.skyMid1[1] - PALETTE.skyTop[1]) * k,
+                            PALETTE.skyTop[2] + (PALETTE.skyMid1[2] - PALETTE.skyTop[2]) * k,
+                        ];
+                    } else if (t < 0.50) {
+                        const k = (t - 0.25) / 0.25;
+                        col = [
+                            PALETTE.skyMid1[0] + (PALETTE.skyMid2[0] - PALETTE.skyMid1[0]) * k,
+                            PALETTE.skyMid1[1] + (PALETTE.skyMid2[1] - PALETTE.skyMid1[1]) * k,
+                            PALETTE.skyMid1[2] + (PALETTE.skyMid2[2] - PALETTE.skyMid1[2]) * k,
+                        ];
+                    } else if (t < 0.75) {
+                        const k = (t - 0.50) / 0.25;
+                        col = [
+                            PALETTE.skyMid2[0] + (PALETTE.skyLight[0] - PALETTE.skyMid2[0]) * k,
+                            PALETTE.skyMid2[1] + (PALETTE.skyLight[1] - PALETTE.skyMid2[1]) * k,
+                            PALETTE.skyMid2[2] + (PALETTE.skyLight[2] - PALETTE.skyMid2[2]) * k,
+                        ];
+                    } else if (t < 0.92) {
+                        const k = (t - 0.75) / 0.17;
+                        col = [
+                            PALETTE.skyLight[0] + (PALETTE.skyNear[0] - PALETTE.skyLight[0]) * k,
+                            PALETTE.skyLight[1] + (PALETTE.skyNear[1] - PALETTE.skyLight[1]) * k,
+                            PALETTE.skyLight[2] + (PALETTE.skyNear[2] - PALETTE.skyLight[2]) * k,
+                        ];
+                    } else {
+                        const k = (t - 0.92) / 0.08;
+                        col = [
+                            PALETTE.skyNear[0] + (PALETTE.skyHoriz[0] - PALETTE.skyNear[0]) * k,
+                            PALETTE.skyNear[1] + (PALETTE.skyHoriz[1] - PALETTE.skyNear[1]) * k,
+                            PALETTE.skyNear[2] + (PALETTE.skyHoriz[2] - PALETTE.skyNear[2]) * k,
+                        ];
+                    }
+                    col = col.map(v => Math.round(v));
+                    ctx.fillStyle = rgb(col);
+                    ctx.fillRect(0, y, W, 1);
+                }
+            }
+
+            function drawSun() {
+                const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
+                const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
+                const sunR = Math.min(W, H) * 0.06;
+
+                for (let r = sunR * 3; r >= sunR; r -= 2) {
+                    const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
+                    pixelCircle(sunX, sunY, r, PALETTE.sunEdge, Math.max(0, alpha));
+                }
+
+                pixelCircle(sunX, sunY, sunR, PALETTE.sunCore, 0.95);
+                pixelCircle(sunX, sunY, sunR * 0.7, PALETTE.sunEdge, 0.7);
+            }
+
+            let birds = [];
+            function initBirds() {
+                birds = [];
+                for (let i = 0; i < 5; i++) {
+                    birds.push({
+                        x: Math.random() * W,
+                        y: H * (0.15 + Math.random() * 0.25),
+                        speed: 0.08 + Math.random() * 0.12,
+                        wingPhase: Math.random() * Math.PI * 2,
+                        size: 2 + Math.floor(Math.random() * 3),
+                    });
+                }
+            }
+
+            function drawBird(b) {
+                const bx = b.x + (mouseX - 0.5) * W * 0.01;
+                const by = b.y + (mouseY - 0.5) * H * 0.01;
+                const wing = Math.sin(Date.now() * 0.003 + b.wingPhase) > 0 ? 1 : 0;
+
+                ctx.fillStyle = rgb(PALETTE.bird, 0.5);
+                block(bx, by, PALETTE.bird, 0.5);
+                block(bx - 1, by, PALETTE.bird, 0.5);
+                block(bx + 1, by, PALETTE.bird, 0.5);
+                if (wing) {
+                    block(bx - 2, by - 1, PALETTE.bird, 0.5);
+                    block(bx + 2, by - 1, PALETTE.bird, 0.5);
+                } else {
+                    block(bx - 2, by + 1, PALETTE.bird, 0.5);
+                    block(bx + 2, by + 1, PALETTE.bird, 0.5);
+                }
+            }
+
+            function updateBirds() {
+                birds.forEach(b => {
+                    b.x -= b.speed;
+                    if (b.x < -5) {
+                        b.x = W + 5;
+                        b.y = H * (0.15 + Math.random() * 0.25);
+                    }
+                });
             }
 
             function draw() {
-                // Limpa e desenha o céu
                 drawSky();
+                drawSun();
 
-                // Desenha cada nuvem
-                for (const cloud of clouds) {
-                    drawCloud(ctx, cloud);
-                }
+                const sorted = [...clouds].sort((a, b) => a.layer - b.layer);
+                sorted.forEach(c => drawCloud(c));
+
+                birds.forEach(b => drawBird(b));
             }
 
             function update() {
-                // Move as nuvens lentamente para a esquerda
-                for (const cloud of clouds) {
-                    cloud.x -= cloud.speed * 0.5; // velocidade ajustável
-                    // Se sair da tela pela esquerda, reaparece à direita
-                    if (cloud.x + cloud.w < -50) {
-                        cloud.x = width + Math.random() * 100;
-                        cloud.y = Math.random() * height * 0.7 + height * 0.05;
-                        cloud.w = (50 + Math.random() * 120) * (width / 800);
-                        cloud.h = (20 + Math.random() * 40) * (width / 800);
-                        cloud.speed = (0.2 + Math.random() * 0.6) * (width / 800);
-                        cloud.opacity = 0.4 + Math.random() * 0.5;
+                clouds.forEach(c => {
+                    c.x -= c.speed;
+                    const w = c.width * c.scale * (W / 250);
+                    if (c.x + w < -20) {
+                        c.x = W + 10 + Math.random() * 50;
+                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
+                        c.scale = layers[c.layer].scale[0] + Math.random() * (layers[c.layer].scale[1] - layers[c.layer].scale[0]);
+                        c.opacity = layers[c.layer].opacity[0] + Math.random() * (layers[c.layer].opacity[1] - layers[c.layer].opacity[0]);
+                        c.speed = layers[c.layer].speed * (0.7 + Math.random() * 0.6);
                     }
-                }
+                });
+                updateBirds();
                 draw();
                 requestAnimationFrame(update);
             }
 
-            // Inicializa
             window.addEventListener('resize', () => {
-                resizeCanvas();
+                resize();
+                initClouds();
+                initBirds();
             });
 
-            resizeCanvas();
+            resize();
+            initClouds();
+            initBirds();
             update();
-
-            // Redesenha quando a janela for redimensionada (já tratado)
         })();
 
         // ============================================================
-        //  MENU INTERATIVO (igual ao anterior)
+        //  MENU INTERATIVO
         // ============================================================
         (function() {
             const items = document.querySelectorAll('.icon-item');
