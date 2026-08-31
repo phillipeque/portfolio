@@ -936,7 +936,7 @@
   overflow-x: hidden !important;
 }
 
-/* ===== EXPERIENCE - CARROSSEL HORIZONTAL (CORRIGIDO) ===== */
+/* ===== EXPERIENCE - CARROSSEL HORIZONTAL (CORRIGIDO - SEM VÃOS) ===== */
 #win-experience .window-content {
   padding: 0 !important;
   overflow: hidden !important;
@@ -947,7 +947,7 @@
 
 #win-experience {
   width: 960px !important;
-  height: 660px !important;
+  height: 510px !important; /* título 30px + card 450px + rodapé ~30px */
 }
 
 .exp-carousel-stage {
@@ -972,7 +972,7 @@
   top: 50%;
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 0;          /* sem espaçamento entre os cards */
   width: max-content;
   height: 450px;
   transform: translate3d(0, -50%, 0);
@@ -984,13 +984,15 @@
   flex: 0 0 360px;
   width: 360px;
   height: 450px;
-  border-radius: 8px;
+  border-radius: 0;      /* remove arredondamento para ficar colado */
   overflow: hidden;
-  box-shadow: 0 10px 26px rgba(0,0,0,0.45);
+  box-shadow: none;      /* remove sombra para não criar separação visual */
   display: flex;
   flex-direction: column;
   padding: 0;
 }
+
+/* Opcional: adicionar uma linha divisória fina se quiser, mas mantive sem */
 
 .exp-carousel-card::after {
   content: "";
@@ -1006,7 +1008,7 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 20px 22px 0;
+  padding: 4px 22px 0;   /* reduzido ao máximo para colar no topo */
 }
 
 .exp-card-header img {
@@ -1051,7 +1053,7 @@
 .exp-card-details {
   position: relative;
   z-index: 1;
-  padding: 8px 22px 18px;
+  padding: 4px 22px 12px; /* reduzido para aproximar a lista */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1063,7 +1065,7 @@
   font-size: 13px;
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .exp-details-list {
@@ -1079,7 +1081,7 @@
   text-shadow: 0 1px 2px rgba(0,0,0,0.6);
   padding-left: 18px;
   position: relative;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .exp-details-list li::before {
@@ -1106,19 +1108,20 @@
     min-height: 60vh;
   }
   .exp-carousel-ring {
-    gap: 16px;
+    gap: 0;
     height: 280px;
   }
   .exp-carousel-card {
     flex-basis: 200px;
     width: 200px;
     height: 280px;
+    border-radius: 0;
   }
-  .exp-card-header { padding: 14px 16px 0; gap: 10px; }
+  .exp-card-header { padding: 4px 16px 0; gap: 10px; }
   .exp-card-header img { width: 36px; height: 36px; }
   .exp-card-title-group h3 { font-size: 16px; }
   .exp-card-role { font-size: 12px; }
-  .exp-card-details { padding: 8px 16px 14px; }
+  .exp-card-details { padding: 4px 16px 10px; }
   .exp-details-title { font-size: 11px; }
   .exp-details-list li { font-size: 11px; padding-left: 14px; }
 }
@@ -1250,8 +1253,8 @@
   </div>
 </div>
 
-<!-- ===== JANELA EXPERIENCE (CARROSSEL 3D - CORRIGIDO) ===== -->
-<div class="window" id="win-experience" style="left: calc(50% - 480px); top: calc(50% - 330px);">
+<!-- ===== JANELA EXPERIENCE (CARROSSEL 3D - CORRIGIDO, SEM VÃOS) ===== -->
+<div class="window" id="win-experience" style="left: calc(50% - 480px); top: calc(50% - 255px);">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-experience')">
     <div class="window-title">
       <img src="icons/icon-experience.png" alt="" style="width:16px;height:16px;">
@@ -1589,7 +1592,7 @@
           </div>
         </div>
 
-        <!-- NOVO CARD 17: PiratePets -->
+        <!-- Card 17 -->
         <div class="exp-carousel-card" style="background:#F4A460;">
           <div class="exp-card-header">
             <img src="logos/piratepets.png" alt="">
