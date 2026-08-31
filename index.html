@@ -936,7 +936,7 @@
   overflow-x: hidden !important;
 }
 
-/* ===== EXPERIENCE - CARROSSEL HORIZONTAL (MODIFICADO) ===== */
+/* ===== EXPERIENCE - CARROSSEL HORIZONTAL (CORRIGIDO) ===== */
 #win-experience .window-content {
   padding: 0 !important;
   overflow: hidden !important;
@@ -945,10 +945,9 @@
   flex-direction: column;
 }
 
-/* Janela 50% maior */
 #win-experience {
-  width: 960px !important;   /* 640 * 1.5 */
-  height: 660px !important;  /* 440 * 1.5 */
+  width: 960px !important;
+  height: 660px !important;
 }
 
 .exp-carousel-stage {
@@ -973,25 +972,23 @@
   top: 50%;
   display: flex;
   align-items: center;
-  gap: 24px; /* um pouco mais de espaçamento */
+  gap: 24px;
   width: max-content;
-  height: 450px; /* antes 300px, +50% */
+  height: 450px;
   transform: translate3d(0, -50%, 0);
   will-change: transform;
 }
 
 .exp-carousel-card {
   position: relative;
-  flex: 0 0 360px;   /* antes 240px, +50% */
+  flex: 0 0 360px;
   width: 360px;
-  height: 450px;     /* antes 300px, +50% */
+  height: 450px;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 26px rgba(0,0,0,0.45);
   display: flex;
   flex-direction: column;
-  transform: none !important;
-  backface-visibility: visible;
   padding: 0;
 }
 
@@ -1007,13 +1004,13 @@
   position: relative;
   z-index: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 20px 22px 0;
 }
 
 .exp-card-header img {
-  width: 48px;   /* antes 38px */
+  width: 48px;
   height: 48px;
   object-fit: contain;
   background: rgba(255,255,255,0.18);
@@ -1023,30 +1020,38 @@
   flex-shrink: 0;
 }
 
-.exp-card-header h3 {
+.exp-card-title-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 0;
+  margin: 0;
+}
+
+.exp-card-title-group h3 {
   color: #fff;
-  font-size: 20px;  /* antes 15px */
+  font-size: 20px;
   font-weight: bold;
   text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  margin: 0;
+  padding: 0;
   line-height: 1.2;
-  margin-bottom: 2px;
 }
 
 .exp-card-role {
-  color: rgba(255,255,255,0.85);
+  color: rgba(255,255,255,0.9);
   font-size: 14px;
   font-weight: 400;
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-  padding: 0 22px;
-  margin-top: 4px;
-  position: relative;
-  z-index: 1;
+  margin: 0;
+  padding: 0;
+  text-align: left;
 }
 
 .exp-card-details {
   position: relative;
   z-index: 1;
-  padding: 12px 22px 18px;
+  padding: 8px 22px 18px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1054,11 +1059,11 @@
 }
 
 .exp-details-title {
-  color: rgba(255,255,255,0.9);
+  color: #fff;
   font-size: 13px;
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .exp-details-list {
@@ -1087,7 +1092,7 @@
 
 .exp-carousel-hint {
   text-align: center;
-  font-size: 12px;   /* antes 11px */
+  font-size: 12px;
   color: #606060;
   padding: 8px 0 10px;
   background: #ece9d8;
@@ -1095,7 +1100,6 @@
 }
 
 @media (max-width: 768px) {
-  /* Ajuste responsivo para telas menores */
   #win-experience {
     width: 95vw !important;
     height: auto !important;
@@ -1112,8 +1116,8 @@
   }
   .exp-card-header { padding: 14px 16px 0; gap: 10px; }
   .exp-card-header img { width: 36px; height: 36px; }
-  .exp-card-header h3 { font-size: 16px; }
-  .exp-card-role { font-size: 12px; padding: 0 16px; }
+  .exp-card-title-group h3 { font-size: 16px; }
+  .exp-card-role { font-size: 12px; }
   .exp-card-details { padding: 8px 16px 14px; }
   .exp-details-title { font-size: 11px; }
   .exp-details-list li { font-size: 11px; padding-left: 14px; }
@@ -1129,7 +1133,6 @@
   <div class="xp-login-header"></div>
   <div class="xp-login-main">
     <div class="xp-login-img">
-      <!-- Logo original (imagem) -->
       <img src="icons/xp-logo.png" alt="Windows XP Logo" class="xp-logo-img">
       <h1>To begin, click your user name</h1>
     </div>
@@ -1145,7 +1148,6 @@
     </div>
   </div>
   <div class="xp-login-footer">
-    <!-- Botão "Turn off computer" original com imagem -->
     <div class="xp-login-btn" onclick="alert('Computer is shutting down...')">
       <img src="icons/turnoff.png" alt="Turn Off" style="width: 28px; height: 28px;">
       <span>Turn off computer</span>
@@ -1587,11 +1589,31 @@
           </div>
         </div>
 
+        <!-- NOVO CARD 17: PiratePets -->
+        <div class="exp-carousel-card" style="background:#F4A460;">
+          <div class="exp-card-header">
+            <img src="logos/piratepets.png" alt="">
+            <div class="exp-card-title-group">
+              <h3>PiratePets</h3>
+              <div class="exp-card-role">Ambassador</div>
+            </div>
+          </div>
+          <div class="exp-card-details">
+            <div class="exp-details-title">What I did:</div>
+            <ul class="exp-details-list">
+              <li>Represented the project at key events</li>
+              <li>Grew the community through strategic outreach</li>
+              <li>Created engaging content for social media</li>
+            </ul>
+          </div>
+        </div>
+
       </div>
     </div>
     <div class="exp-carousel-hint">Swipe sideways or hover your mouse to pause</div>
   </div>
 </div>
+
 <!-- ===== JANELA PAINT ===== -->
 <div class="window" id="win-paint" style="left: calc(50% - 380px); top: calc(50% - 300px); width: 760px; height: 600px; min-width: 400px; min-height: 300px;">
   <div class="window-titlebar" onmousedown="startDrag(event, 'win-paint')">
@@ -2662,7 +2684,6 @@ document.addEventListener('mouseup', function() {
   if (!anchorEl || !focusEl) return;
   const anchorWin = anchorEl.closest ? anchorEl.closest('.window') : null;
   const focusWin = focusEl.closest ? focusEl.closest('.window') : null;
-  // Se a seleção não começou e terminou dentro da MESMA janela, invalida (limpa) a seleção
   if (!anchorWin || !focusWin || anchorWin !== focusWin) {
     sel.removeAllRanges();
   }
@@ -3429,12 +3450,12 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
       pipes = [];
 
   const pipeWidth = 78;
-  let pipeGap = 200; // recalculado em resizeCanvas() de acordo com a altura da janela
+  let pipeGap = 200;
 
   function getCTenth() { return canvas.width / 10; }
 
   function pipeLoc() {
-    const margin = 40; // distância mínima da borda de cima/baixo do canvas
+    const margin = 40;
     const minTop = margin;
     const maxTop = canvas.height - pipeGap - margin;
     if (maxTop <= minTop) return Math.max(margin, (canvas.height - pipeGap) / 2);
@@ -3475,10 +3496,9 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
     index++;
     const cTenth = getCTenth();
 
-    // Background
     if (imgLoaded) {
-      const bgWidth = 432; // largura do bloco de fundo dentro do sprite
-      const bgHeight = img.naturalHeight; // altura real do sprite (inclui céu, prédios e grama)
+      const bgWidth = 432;
+      const bgHeight = img.naturalHeight;
       const bgOffset = (index * (speed / 2)) % canvas.width;
       ctx.drawImage(img, 0, 0, bgWidth, bgHeight, -bgOffset + canvas.width, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, bgWidth, bgHeight, -bgOffset, 0, canvas.width, canvas.height);
@@ -3491,7 +3511,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
       ctx.fillRect(0, canvas.height - 20, canvas.width, 8);
     }
 
-    // Pipes
     if (gamePlaying) {
       for (let i = 0; i < pipes.length; i++) {
         const pipe = pipes[i];
@@ -3509,7 +3528,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
           ctx.fillRect(pipe[0] - 4, pipe[1] + pipeGap, pipeWidth + 8, 16);
         }
 
-        // Colisão
         if (pipe[0] <= cTenth + size[0] &&
             pipe[0] + pipeWidth >= cTenth &&
             (pipe[1] > flyHeight || pipe[1] + pipeGap < flyHeight + size[1])) {
@@ -3517,7 +3535,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
           break;
         }
 
-        // Se o pipe saiu da tela, pontua e reposiciona
         if (pipe[0] <= -pipeWidth) {
           currentScore++;
           bestScore = Math.max(bestScore, currentScore);
@@ -3532,7 +3549,6 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
       }
     }
 
-    // Desenha o pássaro (apenas sprite, sem fallback genérico)
     if (imgLoaded) {
       const frame = Math.floor((index % 9) / 3) * size[1];
       if (gamePlaying) {
@@ -3541,12 +3557,10 @@ function notepadAbout() { alert('Notepad\nVersion 1.0\n\nWindows XP Style Portfo
         ctx.drawImage(img, 432, frame, ...size, (canvas.width / 2) - size[0] / 2, flyHeight, ...size);
       }
     } else {
-      // Fallback simples: retângulo amarelo
       ctx.fillStyle = '#FFD700';
       ctx.fillRect(cTenth, flyHeight, size[0], size[1]);
     }
 
-    // Física do pássaro
     if (gamePlaying) {
       flight += gravity;
       flyHeight = Math.min(flyHeight + flight, canvas.height - size[1]);
@@ -3699,21 +3713,20 @@ function toggleMute() {
 }
 
 // ============================================================
-//  INTERAÇÃO DO CARROSSEL HORIZONTAL (EXPERIENCE) – MODIFICADO
+//  INTERAÇÃO DO CARROSSEL HORIZONTAL (EXPERIENCE) – CORRIGIDO
 // ============================================================
 (function initCarouselDrag() {
   const stageEl = document.getElementById('experience-stage');
   const ringEl  = document.getElementById('experience-ring');
   if (!stageEl || !ringEl) return;
 
-  const originalCards = Array.from(ringEl.querySelectorAll('.exp-carousel-card'));
+  const originalCards = Array.from(ringEl.querySelectorAll('.exp-carousel-card:not([data-clone])'));
   if (!originalCards.length) return;
 
-  // Duplica a sequência para criar 3 cópias completas (loop infinito)
-  // Remove clones existentes para evitar duplicação se o script rodar novamente
-  ringEl.querySelectorAll('.exp-carousel-card[data-clone="true"]').forEach(el => el.remove());
+  // Remove clones antigos e recria
+  ringEl.querySelectorAll('.exp-carousel-card[data-clone]').forEach(el => el.remove());
 
-  const cloneCount = 3; // 3 ciclos
+  const cloneCount = 3;
   for (let c = 1; c < cloneCount; c++) {
     originalCards.forEach(card => {
       const clone = card.cloneNode(true);
@@ -3732,22 +3745,29 @@ function toggleMute() {
   let isHovering = false;
   let lastTime = performance.now();
 
-  const SPEED = 45; // um pouco mais rápido (opcional)
+  const SPEED = 45;
 
   function measureCycle() {
-    const first = ringEl.querySelector('.exp-carousel-card');
-    if (!first) return;
-
-    const style = getComputedStyle(ringEl);
-    const gap = parseFloat(style.columnGap || style.gap) || 0;
-    // A largura de um ciclo é a largura total dos cards originais (sem clones)
-    const cardWidth = first.offsetWidth + gap;
-    cycleWidth = cardWidth * originalCards.length;
+    const totalWidth = ringEl.scrollWidth;
+    const totalCards = ringEl.querySelectorAll('.exp-carousel-card').length;
+    const cycleCards = originalCards.length;
+    if (totalCards > 0 && cycleCards > 0) {
+      const clones = totalCards / cycleCards;
+      if (clones > 1) {
+        cycleWidth = totalWidth / clones;
+      } else {
+        // fallback
+        const first = ringEl.querySelector('.exp-carousel-card');
+        if (!first) return;
+        const style = getComputedStyle(ringEl);
+        const gap = parseFloat(style.columnGap || style.gap) || 0;
+        cycleWidth = (first.offsetWidth + gap) * cycleCards;
+      }
+    }
   }
 
   function normalizeOffset() {
     if (!cycleWidth) return;
-    // Mantém o offset dentro do intervalo [-cycleWidth, 0] para rolar para a esquerda
     while (offset < -cycleWidth) offset += cycleWidth;
     while (offset > 0) offset -= cycleWidth;
   }
@@ -3762,7 +3782,7 @@ function toggleMute() {
     lastTime = now;
 
     if (!isDragging && !isHovering) {
-      offset -= SPEED * dt; // subtrai para mover para a esquerda
+      offset -= SPEED * dt;
       render();
     }
 
@@ -3780,10 +3800,8 @@ function toggleMute() {
 
   function moveDrag(clientX, event) {
     if (!isDragging) return;
-
-    offset = startOffset + (clientX - startX); // arrasto direto (sem inversão)
+    offset = startOffset + (clientX - startX);
     render();
-
     if (event) event.preventDefault();
   }
 
@@ -3795,13 +3813,8 @@ function toggleMute() {
     render();
   }
 
-  stageEl.addEventListener('mouseenter', () => {
-    isHovering = true;
-  });
-
-  stageEl.addEventListener('mouseleave', () => {
-    isHovering = false;
-  });
+  stageEl.addEventListener('mouseenter', () => { isHovering = true; });
+  stageEl.addEventListener('mouseleave', () => { isHovering = false; });
 
   stageEl.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
@@ -3837,7 +3850,6 @@ function toggleMute() {
     render();
   });
 
-  // Mede depois que as fontes/layout estiverem prontos.
   requestAnimationFrame(() => {
     measureCycle();
     render();
