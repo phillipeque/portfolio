@@ -278,13 +278,13 @@
 
     <script>
         // ============================================================
-        //  FUNDO ULTRALEVRE (PIXEL=8, 6 nuvens, 3 puffs, 30fps)
+        //  FUNDO ULTRALEVRE + 60 FPS (FLUIDO E OTIMIZADO)
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
             let W, H, mouseX = 0.5, mouseY = 0.5;
-            const PIXEL = 8; // resolução bem baixa
+            const PIXEL = 8; // resolução baixa = leve
 
             function resize() {
                 const rect = canvas.parentElement.getBoundingClientRect();
@@ -339,7 +339,7 @@
                 }
             }
 
-            // ===== APENAS 6 NUVENS (3 camadas com 2 cada) =====
+            // APENAS 6 NUVENS
             const layers = [
                 { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08, 0.20], scale: [2.5, 4.0], opacity: [0.30, 0.45] },
                 { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20, 0.40], scale: [1.8, 2.8], opacity: [0.45, 0.65] },
@@ -487,8 +487,8 @@
                 });
                 updateBirds();
                 draw();
-                // ===== RODANDO A 30 FPS (em vez de 60) =====
-                setTimeout(() => requestAnimationFrame(update), 33);
+                // ===== VOLTANDO PARA 60 FPS (requestAnimationFrame puro) =====
+                requestAnimationFrame(update);
             }
 
             window.addEventListener('resize', () => {
