@@ -86,12 +86,7 @@
             text-align: center;
         }
 
-        /* FLASH / STATIC OVERLAY - cobre toda a área dentro da moldura
-           enquanto o "canal" troca. A opacidade e o background-position
-           são controlados via JS por requestAnimationFrame (ver script),
-           não por @keyframes puro — estática real é aleatória frame a
-           frame; um loop CSS repetido fica visivelmente cíclico depois
-           de meio segundo. */
+        /* FLASH / STATIC OVERLAY */
         #flash-overlay {
             position: absolute;
             top: 0;
@@ -104,8 +99,6 @@
             background-color: #000;
         }
         #flash-overlay.snap {
-            /* frame único e quase instantâneo de "corte" antes da neve,
-               como o relé do sintonizador trocando de canal */
             opacity: 1;
             transition: opacity 0.04s linear;
         }
@@ -132,11 +125,9 @@
             margin: 0 auto;
             color: #000;
             text-shadow: none;
-            overflow: hidden; /* clips the tear-glitch streaks while syncing */
+            overflow: hidden;
         }
 
-        /* Vertical hold slipping right after the picture comes back —
-           overshoots then settles, like a CRT re-locking sync. */
         @keyframes verticalRoll {
             0%   { transform: translateY(0); }
             12%  { transform: translateY(-16px); }
@@ -150,8 +141,6 @@
             animation: verticalRoll 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
         }
 
-        /* Short horizontal tear streaks, spawned dynamically by JS while
-           the picture is locking sync. */
         .tear-line {
             position: absolute;
             left: 0;
@@ -219,7 +208,6 @@
             gap: 20px;
             margin-bottom: 10px;
         }
-        /* Para a tela ABOUT: usamos o mesmo grid, mas com itens laterais invisíveis */
         .icon-grid .ghost {
             visibility: hidden;
             pointer-events: none;
@@ -282,7 +270,7 @@
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             pointer-events: none;
-            z-index: 40; /* acima de tudo, inclusive do flash */
+            z-index: 40;
         }
 
         #scanlines {
@@ -302,17 +290,151 @@
             z-index: 9;
         }
 
+        /* ===== LAYOUT ABOUT ===== */
+        .about-layout {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .about-avatar-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .avatar-frame {
+            width: 120px;
+            height: 120px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            padding: 4px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .avatar-caption {
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #000;
+            text-shadow: 1px 1px 0 #a0a0a0;
+        }
+
+        .about-bio-box {
+            flex: 1;
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            overflow: hidden;
+        }
+
+        .bio-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        .bio-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000000;
+        }
+
+        .bio-content {
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #000000;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .bio-content p {
+            margin-bottom: 10px;
+            text-indent: 0;
+        }
+
+        .bio-content p:last-child {
+            margin-bottom: 0;
+            color: #808080;
+            font-style: italic;
+        }
+
+        .bio-cursor {
+            animation: blink 1s step-end infinite;
+            color: #000080;
+            font-weight: bold;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Scrollbar retrô para a bio */
+        .bio-content::-webkit-scrollbar {
+            width: 12px;
+            background: #dfdfdf;
+        }
+        .bio-content::-webkit-scrollbar-track {
+            background: #dfdfdf;
+            border-left: 1px solid #808080;
+        }
+        .bio-content::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .bio-content::-webkit-scrollbar-button {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            height: 12px;
+        }
+
         @media (max-width: 768px) {
             #tv-screen { padding: 2% 12% 2% 12%; }
             .retro-window { max-width: 90%; }
             .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            /* Em mobile, a tela ABOUT também deve ter 2 colunas, mas com o item centralizado? Vamos ajustar */
-            .icon-grid .ghost { display: none; } /* esconde os fantasmas no mobile */
+            .icon-grid .ghost { display: none; }
             .icon-grid.about-grid { display: flex; justify-content: center; align-items: center; }
             .icon-img { width: 48px; height: 48px; }
             .icon-label { font-size: 10px; }
+            /* Mobile: empilha avatar e bio */
+            .about-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+            .about-bio-box {
+                width: 100%;
+            }
+            .bio-content {
+                max-height: 160px;
+                font-size: 12px;
+            }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -326,7 +448,7 @@
         <!-- ÁREA DENTRO DA MOLDURA -->
         <div id="tv-screen">
 
-            <!-- FLASH OVERLAY (cobre toda a área dentro da moldura) -->
+            <!-- FLASH OVERLAY -->
             <div id="flash-overlay"></div>
 
             <!-- JANELA RETRÔ -->
@@ -355,7 +477,6 @@
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="CONTACT" />
                                 <span class="icon-label label-green">CONTACT</span>
                             </div>
-                            <!-- ÍCONE DO GITHUB CORRIGIDO -->
                             <div class="icon-item" data-target="github">
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                                 <span class="icon-label label-red">GITHUB</span>
@@ -371,20 +492,50 @@
                         </div>
                     </div>
 
-                    <!-- TELA ABOUT (apenas BACK, mesmo grid com fantasmas) -->
+                    <!-- TELA ABOUT -->
                     <div id="screen-about" class="screen-container">
-                        <div class="icon-grid about-grid">
-                            <!-- fantasma esquerdo -->
+                        <div class="about-layout">
+                            <!-- Avatar -->
+                            <div class="about-avatar-box">
+                                <div class="avatar-frame">
+                                    <img src="pngs/avatar.png" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' fill='%23808080' stroke='%23000' stroke-width='2'/%3E%3Ctext x='60' y='70' text-anchor='middle' font-size='48' fill='%23000'%3E?%3C/text%3E%3C/svg%3E'" />
+                                </div>
+                                <span class="avatar-caption">PROFILE_PIC.PNG</span>
+                            </div>
+
+                            <!-- Bio -->
+                            <div class="about-bio-box">
+                                <div class="bio-titlebar">
+                                    <span class="bio-title">README.TXT</span>
+                                </div>
+                                <div class="bio-content">
+                                    <p>
+                                        <span class="bio-cursor">_</span>
+                                        Olá! Sou um desenvolvedor apaixonado por tecnologia, design retrô e experiências interativas.
+                                        Este portfólio é uma homenagem às interfaces dos anos 90, quando cada pixel importava
+                                        e a internet ainda tinha aquele cheirinho de novidade.
+                                    </p>
+                                    <p>
+                                        Atualmente trabalho com desenvolvimento web, explorando desde animações em Canvas
+                                        até arquiteturas modernas. Adoro transformar ideias criativas em código funcional
+                                        e acredito que a estética importa tanto quanto a lógica.
+                                    </p>
+                                    <p>
+                                        [ Edite este texto no HTML para adicionar sua própria bio! ]
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botão BACK -->
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            <!-- ícone BACK (seta para esquerda) -->
                             <div class="icon-item" data-target="back">
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
-                            <!-- fantasma direito -->
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
-                        <!-- Sem texto extra -->
                     </div>
 
                 </div>
@@ -403,7 +554,7 @@
 
     <script>
         // ============================================================
-        //  FUNDO (INALTERADO)
+        //  FUNDO
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -625,7 +776,7 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO COM TROCA DE CANAL (snap -> neve -> roll/tear -> lock)
+        //  NAVEGAÇÃO COM TROCA DE CANAL
         // ============================================================
         (function() {
             const homeScreen  = document.getElementById('screen-home');
@@ -635,7 +786,6 @@
             let currentScreen = 'home';
             let transitioning = false;
 
-            // --- estática granulada, aleatória por frame (não é um loop CSS) ---
             let noiseRAF = null;
             function startNoise() {
                 function tick() {
@@ -655,7 +805,6 @@
                 flash.style.backgroundPosition = '';
             }
 
-            // --- riscos de tearing horizontal, posição/duração aleatórias ---
             function spawnTearLines(count) {
                 for (let i = 0; i < count; i++) {
                     const line = document.createElement('div');
@@ -674,17 +823,14 @@
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
 
-                // 1) snap — corte quase instantâneo, como o relé do sintonizador
                 flash.classList.add('snap');
 
-                // 2) neve — estática cobrindo tudo enquanto o "canal" troca
                 setTimeout(() => {
                     flash.classList.remove('snap');
                     flash.classList.add('snowing');
                     startNoise();
                 }, 40);
 
-                // 3) troca o conteúdo por baixo da neve
                 setTimeout(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
@@ -698,14 +844,11 @@
                     currentScreen = screen;
                 }, 190);
 
-                // 4) a neve dissolve, revelando a imagem nova
                 setTimeout(() => {
                     stopNoise();
                     flash.classList.remove('snowing');
                 }, 260);
 
-                // 5) a imagem "trava o sync": rola verticalmente e ganha
-                //    alguns tears horizontais até estabilizar
                 setTimeout(() => {
                     retroWindow.classList.add('rolling');
                     spawnTearLines(4 + Math.floor(Math.random() * 2));
@@ -717,7 +860,6 @@
                 }, 780);
             }
 
-            // Clique nos ícones
             document.querySelectorAll('.icon-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     const target = this.dataset.target;
@@ -726,13 +868,11 @@
                     } else if (target === 'back') {
                         navigateTo('home');
                     } else {
-                        // sections not built yet — same as before
                         alert('Navigating to: ' + target);
                     }
                 });
             });
 
-            // Teclado: suporte para navegação na HOME e Enter na ABOUT
             const items = document.querySelectorAll('#screen-home .icon-item');
             let currentIndex = 0;
 
@@ -747,7 +887,6 @@
                 const isHome = activeScreen && activeScreen.id === 'screen-home';
 
                 if (!isHome) {
-                    // Na tela ABOUT, apenas o Enter no BACK
                     if (e.key === 'Enter') {
                         const backBtn = document.querySelector('#screen-about .icon-item[data-target="back"]');
                         if (backBtn) backBtn.click();
