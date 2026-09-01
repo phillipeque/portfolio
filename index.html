@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Retro Portfolio</title>
     <style>
+        /* ===== RESET E BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -43,7 +44,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 repeating-linear-gradient(
                     0deg,
                     rgba(0,0,0,0.08) 0px,
@@ -81,10 +82,63 @@
             justify-content: center;
             align-items: center;
             z-index: 2;
-            padding: 0.8% 8% 0.8% 8%; /* reduzido para aproveitar mais espaço */
+            padding: 1.5% 22% 1.5% 22%;
             text-align: center;
+            transition: padding 0.3s ease;
         }
 
+        /* ===== MODO PROJECTS – janela mais larga e baixa ===== */
+        body.projects-mode #tv-screen {
+            padding: 0.5% 8% 0.5% 8%;
+        }
+
+        body.projects-mode .retro-window {
+            max-width: 92%;
+        }
+
+        body.projects-mode .window-content {
+            max-height: none;
+            overflow-y: hidden;
+            padding: 12px 16px;
+        }
+
+        body.projects-mode .explorer-icons-area {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px 12px;
+            padding: 16px 12px 12px;
+        }
+
+        body.projects-mode .explorer-item-icon {
+            width: 80px;
+            height: 80px;
+        }
+
+        body.projects-mode .explorer-item-name {
+            font-size: 14px;
+        }
+
+        body.projects-mode .explorer-item-role {
+            font-size: 13px;
+        }
+
+        body.projects-mode .explorer-item-duration {
+            font-size: 13px;
+        }
+
+        body.projects-mode .explorer-item {
+            padding: 8px 6px 10px;
+        }
+
+        body.projects-mode .explorer-toolbar {
+            padding: 3px 6px;
+        }
+
+        body.projects-mode .explorer-statusbar {
+            font-size: 11px;
+            padding: 2px 8px;
+        }
+
+        /* ===== FLASH E TEAR LINES ===== */
         #flash-overlay {
             position: absolute;
             top: 0;
@@ -109,23 +163,23 @@
             background-size: 3px 3px, 3px 3px, 6px 6px;
         }
 
+        /* ===== JANELA PRINCIPAL ===== */
         .retro-window {
             position: relative;
             background: #c0c0c0;
             border: 2px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: 
+            box-shadow:
                 inset 1px 1px 0 #dfdfdf,
                 inset -1px -1px 0 #000000,
                 4px 4px 0 rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 88%; /* mais larga */
+            max-width: 70%;
             margin: 0 auto;
             color: #000;
             text-shadow: none;
             overflow: hidden;
-            /* altura fixa para evitar scroll, mas pode crescer conforme conteúdo */
-            max-height: 92vh;
+            transition: max-width 0.3s ease;
         }
 
         @keyframes verticalRoll {
@@ -177,16 +231,38 @@
         }
 
         .window-content {
-            padding: 12px 16px; /* reduzido */
+            padding: 16px;
             background: #c0c0c0;
-            min-height: 160px;
+            min-height: 180px;
             position: relative;
-            /* removido max-height e overflow para não scrollar */
+            max-height: 70vh;
+            overflow-y: auto;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .window-content::-webkit-scrollbar {
+            width: 12px;
+            background: #dfdfdf;
+        }
+        .window-content::-webkit-scrollbar-track {
+            background: #dfdfdf;
+            border-left: 1px solid #808080;
+        }
+        .window-content::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .window-content::-webkit-scrollbar-button {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            height: 12px;
         }
 
         .window-footer {
             text-align: center;
-            padding: 6px 10px;
+            padding: 10px;
             font-size: 10px;
             color: #fff;
             text-shadow: 1px 1px 0 #000;
@@ -195,6 +271,7 @@
             border-top: 2px solid #808080;
         }
 
+        /* ===== TELAS ===== */
         .screen-container {
             display: none;
         }
@@ -202,6 +279,7 @@
             display: block;
         }
 
+        /* ===== ÍCONES DO MENU ===== */
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -252,6 +330,7 @@
         .label-blue { color: #1a3a5c; }
         .label-purple { color: #4a2d6b; }
 
+        /* ===== MOLDURE E SCANLINES ===== */
         #tv-frame {
             position: absolute;
             top: 0;
@@ -285,7 +364,7 @@
             z-index: 9;
         }
 
-        /* ===== LAYOUT ABOUT ===== */
+        /* ===== ABOUT ===== */
         .about-layout {
             display: flex;
             gap: 16px;
@@ -302,8 +381,8 @@
         }
 
         .avatar-frame {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
@@ -355,18 +434,18 @@
         }
 
         .bio-content {
-            padding: 10px 12px;
+            padding: 12px;
             font-family: 'Courier New', monospace;
-            font-size: 12px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.6;
             color: #000000;
             text-align: left;
-            max-height: 160px;
+            max-height: 200px;
             overflow-y: auto;
         }
 
         .bio-content p {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-indent: 0;
         }
 
@@ -380,7 +459,7 @@
             50% { opacity: 0; }
         }
 
-        /* ===== LAYOUT EMAIL ===== */
+        /* ===== EMAIL ===== */
         .email-form-box {
             background: #c0c0c0;
             border: 2px solid;
@@ -416,7 +495,7 @@
             font-weight: bold;
             letter-spacing: 1px;
             color: #000;
-            margin-top: 6px;
+            margin-top: 8px;
             margin-bottom: 2px;
         }
 
@@ -446,13 +525,13 @@
         }
 
         .email-form-box textarea {
-            min-height: 100px;
+            min-height: 140px;
         }
 
         .email-form-box .form-actions {
             display: flex;
             justify-content: flex-end;
-            margin-top: 10px;
+            margin-top: 12px;
             gap: 8px;
         }
 
@@ -490,7 +569,7 @@
         }
 
         .bio-content::-webkit-scrollbar {
-            width: 10px;
+            width: 12px;
             background: #dfdfdf;
         }
         .bio-content::-webkit-scrollbar-track {
@@ -509,7 +588,7 @@
             height: 12px;
         }
 
-        /* ===== PROJECTS: file-explorer window ===== */
+        /* ===== PROJECTS – estilo base ===== */
         .explorer-window {
             margin-bottom: 4px;
         }
@@ -521,7 +600,7 @@
             background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
-            padding: 3px 6px;
+            padding: 4px 6px;
         }
 
         .explorer-toolbar-btn {
@@ -561,8 +640,8 @@
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 2px 8px;
-            font-size: 11px;
+            padding: 3px 8px;
+            font-size: 12px;
             font-weight: bold;
             letter-spacing: 1px;
             color: #000;
@@ -581,47 +660,47 @@
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 16px 10px 12px;
+            padding: 22px 12px 18px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-            gap: 12px 8px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px 6px;
         }
 
         .explorer-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 4px 2px 6px;
+            padding: 6px 4px 8px;
             cursor: pointer;
             user-select: none;
             border: 1px dotted transparent;
         }
 
         .explorer-item-icon {
-            width: 80px;  /* +25% de 64px */
-            height: 80px;
-            margin-bottom: 4px;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 6px;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             object-fit: contain;
         }
 
         .explorer-item-name {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             letter-spacing: 0.5px;
             color: #000;
             text-align: center;
-            line-height: 1.2;
-            padding: 1px 2px;
+            line-height: 1.3;
+            padding: 1px 3px;
         }
 
         .explorer-item-role {
             font-size: 10px;
             color: #555;
             text-align: center;
-            margin-top: 2px;
-            line-height: 1.2;
+            margin-top: 4px;
+            line-height: 1.3;
         }
 
         .explorer-item-duration {
@@ -629,8 +708,8 @@
             font-weight: bold;
             color: #000080;
             text-align: center;
-            margin-top: 0;
-            line-height: 1.2;
+            margin-top: 1px;
+            line-height: 1.3;
         }
 
         .explorer-item:hover,
@@ -652,8 +731,8 @@
             background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
-            padding: 2px 8px;
-            margin-top: 2px;
+            padding: 3px 8px;
+            margin-top: 4px;
             font-size: 10px;
             letter-spacing: 0.5px;
             color: #000;
@@ -665,13 +744,13 @@
             padding: 1px 8px;
         }
 
-        /* ===== PROJECTS: detail view ===== */
+        /* ===== DETAIL VIEW ===== */
         .explorer-detail {
             background: #ffffff;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 14px;
+            padding: 16px;
             text-align: left;
         }
 
@@ -679,14 +758,14 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
             border-bottom: 1px solid #c0c0c0;
         }
 
         .detail-icon {
-            width: 80px;
-            height: 80px;
+            width: 64px;
+            height: 64px;
             flex-shrink: 0;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
@@ -694,7 +773,7 @@
         }
 
         .detail-name {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             letter-spacing: 1px;
             color: #000;
@@ -703,19 +782,19 @@
         .detail-category {
             font-size: 10px;
             color: #555;
-            margin-top: 2px;
+            margin-top: 3px;
             letter-spacing: 0.5px;
         }
 
         .detail-fields {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .detail-field {
             display: flex;
             gap: 10px;
             font-size: 12px;
-            padding: 3px 0;
+            padding: 4px 0;
         }
 
         .detail-field-label {
@@ -732,12 +811,12 @@
 
         .detail-description {
             font-size: 12px;
-            line-height: 1.5;
+            line-height: 1.6;
             color: #333;
-            padding: 8px 10px;
+            padding: 10px 12px;
             background: #f4f4f4;
             border: 1px solid #c0c0c0;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .detail-link-row {
@@ -745,9 +824,32 @@
             min-height: 24px;
         }
 
+        /* ===== RESPONSIVO ===== */
         @media (max-width: 768px) {
-            #tv-screen { padding: 1% 5% 1% 5%; }
-            .retro-window { max-width: 96%; }
+            body.projects-mode #tv-screen {
+                padding: 1% 4% 1% 4%;
+            }
+            body.projects-mode .retro-window {
+                max-width: 98%;
+            }
+            body.projects-mode .explorer-icons-area {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px 6px;
+            }
+            body.projects-mode .explorer-item-icon {
+                width: 64px;
+                height: 64px;
+            }
+            body.projects-mode .explorer-item-name {
+                font-size: 12px;
+            }
+            body.projects-mode .explorer-item-role,
+            body.projects-mode .explorer-item-duration {
+                font-size: 11px;
+            }
+
+            #tv-screen { padding: 2% 12% 2% 12%; }
+            .retro-window { max-width: 90%; }
             .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .icon-grid .ghost { display: none; }
             .icon-grid.about-grid { display: flex; justify-content: center; align-items: center; }
@@ -761,24 +863,23 @@
                 width: 100%;
             }
             .bio-content {
-                max-height: 140px;
-                font-size: 11px;
+                max-height: 160px;
+                font-size: 12px;
             }
             .email-form-content {
                 padding: 8px;
             }
             .email-form-box textarea {
-                min-height: 80px;
+                min-height: 100px;
             }
-            /* PROJECTS responsive */
             .explorer-icons-area {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px 4px;
-                padding: 12px 6px;
+                gap: 18px 4px;
+                padding: 16px 6px;
             }
             .explorer-item-icon {
-                width: 64px;
-                height: 64px;
+                width: 48px;
+                height: 48px;
             }
             .explorer-item-name {
                 font-size: 10px;
@@ -878,7 +979,7 @@
                         </div>
                     </div>
 
-                    <!-- TELA PROJECTS (file explorer) -->
+                    <!-- TELA PROJECTS -->
                     <div id="screen-projects" class="screen-container">
                         <div class="explorer-window">
                             <div class="explorer-toolbar">
@@ -889,7 +990,7 @@
                                 </div>
                             </div>
                             <div class="explorer-icons-area" id="projects-icons-area">
-                                <!-- Projects injected by JS -->
+                                <!-- Injetado via JS -->
                             </div>
                             <div class="explorer-detail" id="projects-detail" style="display:none;">
                                 <div class="detail-header">
@@ -913,12 +1014,12 @@
                                 <div class="detail-link-row" id="detail-link-row"></div>
                             </div>
                             <div class="explorer-statusbar">
-                                <span id="projects-count">17 object(s)</span>
+                                <span id="projects-count">16 object(s)</span>
                                 <span id="projects-selected">Double-click to open</span>
                             </div>
                         </div>
 
-                        <div class="icon-grid about-grid" style="margin-top: 12px;">
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                             <div class="icon-item" data-target="back">
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
@@ -952,7 +1053,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="icon-grid about-grid" style="margin-top: 12px;">
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                             <div class="icon-item" data-target="back">
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
@@ -1198,7 +1299,7 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO COM TROCA DE CANAL + ENVIO DE EMAIL
+        //  NAVEGAÇÃO + PROJECTS + EMAIL
         // ============================================================
         (function() {
             const homeScreen     = document.getElementById('screen-home');
@@ -1207,6 +1308,7 @@
             const emailScreen    = document.getElementById('screen-email');
             const flash          = document.getElementById('flash-overlay');
             const retroWindow    = document.querySelector('.retro-window');
+            const body           = document.body;
             let currentScreen    = 'home';
             let transitioning    = false;
 
@@ -1250,6 +1352,11 @@
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
 
+                // Remove modo projects ao sair
+                if (screen !== 'projects') {
+                    body.classList.remove('projects-mode');
+                }
+
                 flash.classList.add('snap');
 
                 setTimeout(() => {
@@ -1270,6 +1377,7 @@
                         aboutScreen.classList.add('active');
                     } else if (screen === 'projects') {
                         projectsScreen.classList.add('active');
+                        body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
                     } else if (screen === 'email') {
                         emailScreen.classList.add('active');
@@ -1311,9 +1419,9 @@
                 });
             });
 
-            // ========================================================
-            //  PROJECTS: array com 17 projetos e mapeamento de GIFs
-            // ========================================================
+            // ============================================================
+            //  PROJECTS – 16 projetos (removidos Solcade e Pirate Pets)
+            // ============================================================
             const PROJECTS = [
                 { name: 'CoralApp',        role: 'Community Manager', duration: '2024 – now',  category: 'Web3',        description: 'Descrição do projeto CoralApp.', url: '', gif: 'coralapp.gif' },
                 { name: 'Binance',         role: 'Moderator',         duration: '2023 – 2024', category: 'Exchange',     description: 'Descrição do projeto Binance.', url: '', gif: 'binance.gif' },
@@ -1328,10 +1436,9 @@
                 { name: 'PIPE',            role: 'Community Builder', duration: '2024',        category: 'Infra',        description: 'Descrição do projeto PIPE.', url: '', gif: 'pipe.gif' },
                 { name: 'TAP',             role: 'Moderator',         duration: '2022',        category: 'Payments',     description: 'Descrição do projeto TAP.', url: '', gif: 'tap.gif' },
                 { name: 'Sheertopia',      role: 'Community Lead',    duration: '2023 – now',  category: 'Metaverse',    description: 'Descrição do projeto Sheertopia.', url: '', gif: 'sheertopia.gif' },
-                { name: 'Solcade',         role: 'Moderator',         duration: '2021 – 2022', category: 'Blockchain',   description: 'Descrição do projeto Solcade.', url: '', gif: 'solcade.gif' },
                 { name: "Lion's Share Group", role: 'Community Manager', duration: '2024',      category: 'Media',        description: 'Descrição do projeto Lion\'s Share Group.', url: '', gif: 'lionssharegroup.gif' },
                 { name: 'Coinracer',       role: 'Community Builder', duration: '2023',        category: 'Gaming',       description: 'Descrição do projeto Coinracer.', url: '', gif: 'coinracer.gif' },
-                { name: 'VS1',             role: 'Founder',           duration: '2022 – now',  category: 'Platform',     description: 'Descrição do projeto VS1.', url: '', gif: 'vs1.gif' },
+                { name: 'VS1',             role: 'Founder',           duration: '2022 – now',  category: 'Platform',     description: 'Descrição do projeto VS1.', url: '', gif: 'vs1.gif' }
             ];
 
             const iconsArea = document.getElementById('projects-icons-area');
@@ -1447,9 +1554,9 @@
                 }
             }
 
-            // ========================================================
+            // ============================================================
             //  FORMULÁRIO DE EMAIL
-            // ========================================================
+            // ============================================================
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
             const sendBtn = document.getElementById('send-btn');
