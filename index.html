@@ -198,6 +198,11 @@
             display: block !important;
         }
 
+        /* ===== ESCONDER A BARRA DE FERRAMENTAS NO MODO DETALHE ===== */
+        body.detail-mode .explorer-toolbar {
+            display: none !important;
+        }
+
         /* ===== FLASH E TEAR LINES ===== */
         #flash-overlay {
             position: absolute;
@@ -1426,16 +1431,8 @@
                 }
             }
 
-            function navigateTo(screen) {
-                if (screen === currentScreen || transitioning) return;
-                transitioning = true;
-
-                // Remove modes ao sair
-                if (screen !== 'projects') {
-                    body.classList.remove('projects-mode', 'detail-mode');
-                }
-
-                // Aplica rolling e flash em todas as navegações
+            // Função genérica para efeito de transição com flash + rolling
+            function triggerTransition(callback) {
                 retroWindow.classList.add('rolling');
                 flash.classList.add('snap');
 
@@ -1446,6 +1443,27 @@
                 }, 40);
 
                 setTimeout(() => {
+                    stopNoise();
+                    flash.classList.remove('snowing');
+                }, 260);
+
+                setTimeout(() => {
+                    retroWindow.classList.remove('rolling');
+                    spawnTearLines(4 + Math.floor(Math.random() * 2));
+                    if (callback) callback();
+                }, 500);
+            }
+
+            function navigateTo(screen) {
+                if (screen === currentScreen || transitioning) return;
+                transitioning = true;
+
+                // Remove modes ao sair
+                if (screen !== 'projects') {
+                    body.classList.remove('projects-mode', 'detail-mode');
+                }
+
+                triggerTransition(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
                     projectsScreen.classList.remove('active');
@@ -1464,18 +1482,8 @@
                     }
 
                     currentScreen = screen;
-                }, 190);
-
-                setTimeout(() => {
-                    stopNoise();
-                    flash.classList.remove('snowing');
-                }, 260);
-
-                setTimeout(() => {
-                    retroWindow.classList.remove('rolling');
-                    spawnTearLines(4 + Math.floor(Math.random() * 2));
                     transitioning = false;
-                }, 500);
+                });
             }
 
             // ============================================================
@@ -1516,66 +1524,68 @@
                 if (projectsSelected) projectsSelected.textContent = 'Double-click to open';
                 isDetailOpen = false;
                 body.classList.remove('detail-mode');
-                // Garantir que o modo projects permaneça
                 if (currentScreen === 'projects') body.classList.add('projects-mode');
             }
 
             function showProjectDetail(project) {
-                // Efeito rolling
-                retroWindow.classList.add('rolling');
-                setTimeout(() => retroWindow.classList.remove('rolling'), 500);
-
                 // Abre URL se existir
                 if (project.url) {
                     window.open(project.url, '_blank');
                 }
 
-                // Esconde a lista, mostra o detalhe
-                if (iconsArea) iconsArea.style.display = 'none';
-                if (detailView) detailView.style.display = 'block';
-                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
+                // Efeito de transição (flash + rolling) para abrir o detalhe
+                triggerTransition(() => {
+                    // Esconde a lista, mostra o detalhe
+                    if (iconsArea) iconsArea.style.display = 'none';
+                    if (detailView) detailView.style.display = 'block';
+                    if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
 
-                document.getElementById('detail-icon').src = 'logos/' + project.gif;
-                document.getElementById('detail-name').textContent = project.name;
-                document.getElementById('detail-category').textContent = project.category;
-                document.getElementById('detail-role').textContent = project.role;
-                document.getElementById('detail-duration').textContent = project.duration;
-                document.getElementById('detail-description').textContent = project.description;
+                    document.getElementById('detail-icon').src = 'logos/' + project.gif;
+                    document.getElementById('detail-name').textContent = project.name;
+                    document.getElementById('detail-category').textContent = project.category;
+                    document.getElementById('detail-role').textContent = project.role;
+                    document.getElementById('detail-duration').textContent = project.duration;
+                    document.getElementById('detail-description').textContent = project.description;
 
-                const linkRow = document.getElementById('detail-link-row');
-                linkRow.innerHTML = '';
-                if (project.url) {
-                    const linkBtn = document.createElement('button');
-                    linkBtn.type = 'button';
-                    linkBtn.className = 'retro-btn';
-                    linkBtn.textContent = 'OPEN LINK ↗';
-                    linkBtn.addEventListener('click', function() {
-                        window.open(project.url, '_blank');
-                    });
-                    linkRow.appendChild(linkBtn);
-                }
+                    const linkRow = document.getElementById('detail-link-row');
+                    linkRow.innerHTML = '';
+                    if (project.url) {
+                        const linkBtn = document.createElement('button');
+                        linkBtn.type = 'button';
+                        linkBtn.className = 'retro-btn';
+                        linkBtn.textContent = 'OPEN LINK ↗';
+                        linkBtn.addEventListener('click', function() {
+                            window.open(project.url, '_blank');
+                        });
+                        linkRow.appendChild(linkBtn);
+                    }
 
-                if (projectsCount) projectsCount.textContent = '1 object(s)';
-                if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
-                isDetailOpen = true;
-                // Aplica o modo detalhe (compacto, estilo EMAIL)
-                body.classList.add('detail-mode');
-                // Remove projects-mode para que a janela fique no tamanho normal (70%)
-                body.classList.remove('projects-mode');
+                    if (projectsCount) projectsCount.textContent = '1 object(s)';
+                    if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
+                    isDetailOpen = true;
+                    // Aplica o modo detalhe (compacto, estilo EMAIL)
+                    body.classList.add('detail-mode');
+                    // Remove projects-mode para que a janela fique no tamanho normal (70%)
+                    body.classList.remove('projects-mode');
+                });
             }
 
             function closeProjectDetail(animate = true) {
                 if (!isDetailOpen) return;
+                // Efeito de transição para voltar à lista
                 if (animate) {
-                    retroWindow.classList.add('rolling');
-                    setTimeout(() => retroWindow.classList.remove('rolling'), 500);
+                    triggerTransition(() => {
+                        body.classList.remove('detail-mode');
+                        body.classList.add('projects-mode');
+                        showProjectsList();
+                        if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
+                    });
+                } else {
+                    body.classList.remove('detail-mode');
+                    body.classList.add('projects-mode');
+                    showProjectsList();
+                    if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
                 }
-                // Restaura a lista e o modo projects
-                body.classList.remove('detail-mode');
-                body.classList.add('projects-mode');
-                showProjectsList();
-                // Atualiza o endereço
-                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
             }
 
             // ============================================================
