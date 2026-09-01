@@ -84,7 +84,7 @@
             z-index: 2;
             padding: 1.5% 22% 1.5% 22%;
             text-align: center;
-            transition: padding 0.3s ease;
+            transition: padding 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         /* ===== MODO PROJECTS – janela mais larga e baixa ===== */
@@ -94,12 +94,14 @@
 
         body.projects-mode .retro-window {
             max-width: 92%;
+            transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         body.projects-mode .window-content {
             max-height: none;
             overflow-y: hidden;
             padding: 10px 14px 8px;
+            transition: max-height 0.4s ease, padding 0.4s ease;
         }
 
         body.projects-mode .explorer-icons-area {
@@ -139,39 +141,61 @@
         }
 
         /* ===== DETALHE COMPACTO (estilo EMAIL) ===== */
-        body.projects-mode .explorer-detail {
+        body.detail-mode #tv-screen {
+            padding: 1.5% 22% 1.5% 22%; /* mesmo padding do EMAIL */
+        }
+
+        body.detail-mode .retro-window {
+            max-width: 70%; /* mesmo que o normal */
+        }
+
+        body.detail-mode .window-content {
+            max-height: none;
+            overflow-y: hidden;
+            padding: 12px 16px;
+        }
+
+        body.detail-mode .explorer-detail {
             padding: 12px 14px;
-            max-width: 80%;
+            max-width: 90%;
             margin: 0 auto;
         }
 
-        body.projects-mode .detail-icon {
+        body.detail-mode .detail-icon {
             width: 56px;
             height: 56px;
         }
 
-        body.projects-mode .detail-name {
+        body.detail-mode .detail-name {
             font-size: 14px;
         }
 
-        body.projects-mode .detail-category {
+        body.detail-mode .detail-category {
             font-size: 10px;
         }
 
-        body.projects-mode .detail-field {
+        body.detail-mode .detail-field {
             font-size: 11px;
             padding: 3px 0;
         }
 
-        body.projects-mode .detail-description {
+        body.detail-mode .detail-description {
             font-size: 11px;
             padding: 8px 10px;
             margin-bottom: 10px;
         }
 
-        body.projects-mode .explorer-detail .detail-header {
+        body.detail-mode .explorer-detail .detail-header {
             padding-bottom: 8px;
             margin-bottom: 8px;
+        }
+
+        body.detail-mode .explorer-icons-area {
+            display: none !important;
+        }
+
+        body.detail-mode .explorer-detail {
+            display: block !important;
         }
 
         /* ===== FLASH E TEAR LINES ===== */
@@ -215,7 +239,7 @@
             color: #000;
             text-shadow: none;
             overflow: hidden;
-            transition: max-width 0.3s ease;
+            transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes verticalRoll {
@@ -273,7 +297,7 @@
             position: relative;
             max-height: 70vh;
             overflow-y: auto;
-            transition: max-height 0.3s ease, padding 0.3s ease;
+            transition: max-height 0.4s ease, padding 0.4s ease, overflow 0.3s ease;
         }
 
         .window-content::-webkit-scrollbar {
@@ -651,10 +675,10 @@
             box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
             font-size: 12px;
             font-weight: bold;
-            color: #a0a0a0; /* sempre desabilitado visualmente */
+            color: #a0a0a0;
             flex-shrink: 0;
             user-select: none;
-            cursor: default; /* não clicável */
+            cursor: default;
         }
 
         .explorer-toolbar-btn.disabled {
@@ -695,6 +719,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 22px 6px;
+            transition: all 0.3s ease;
         }
 
         .explorer-item {
@@ -705,6 +730,15 @@
             cursor: pointer;
             user-select: none;
             border: 1px dotted transparent;
+            transition: transform 0.15s ease;
+        }
+
+        .explorer-item:hover {
+            transform: scale(1.02);
+        }
+
+        .explorer-item:active {
+            transform: scale(0.96);
         }
 
         .explorer-item-icon {
@@ -785,6 +819,7 @@
             text-align: left;
             max-width: 100%;
             margin: 0 auto;
+            transition: all 0.3s ease;
         }
 
         .detail-header {
@@ -880,7 +915,13 @@
             body.projects-mode .explorer-item-duration {
                 font-size: 11px;
             }
-            body.projects-mode .explorer-detail {
+            body.detail-mode .retro-window {
+                max-width: 95%;
+            }
+            body.detail-mode #tv-screen {
+                padding: 1% 4% 1% 4%;
+            }
+            body.detail-mode .explorer-detail {
                 max-width: 100%;
                 padding: 10px;
             }
@@ -1020,7 +1061,6 @@
                     <div id="screen-projects" class="screen-container">
                         <div class="explorer-window">
                             <div class="explorer-toolbar">
-                                <!-- Botões permanentemente desabilitados -->
                                 <div class="explorer-toolbar-btn disabled">◄</div>
                                 <div class="explorer-toolbar-btn disabled">▲</div>
                                 <div class="explorer-address">
@@ -1390,13 +1430,13 @@
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
 
-                // Remove modo projects ao sair
+                // Remove modes ao sair
                 if (screen !== 'projects') {
-                    body.classList.remove('projects-mode');
-                    // Garantir que o detalhe esteja fechado ao sair
-                    if (typeof closeProjectDetail === 'function') closeProjectDetail(false);
+                    body.classList.remove('projects-mode', 'detail-mode');
                 }
 
+                // Aplica rolling e flash em todas as navegações
+                retroWindow.classList.add('rolling');
                 flash.classList.add('snap');
 
                 setTimeout(() => {
@@ -1432,18 +1472,14 @@
                 }, 260);
 
                 setTimeout(() => {
-                    retroWindow.classList.add('rolling');
-                    spawnTearLines(4 + Math.floor(Math.random() * 2));
-                }, 270);
-
-                setTimeout(() => {
                     retroWindow.classList.remove('rolling');
+                    spawnTearLines(4 + Math.floor(Math.random() * 2));
                     transitioning = false;
-                }, 780);
+                }, 500);
             }
 
             // ============================================================
-            //  PROJECTS – 16 projetos (removidos Solcade e Pirate Pets)
+            //  PROJECTS – 16 projetos
             // ============================================================
             const PROJECTS = [
                 { name: 'CoralApp',        role: 'Community Manager', duration: '2024 – now',  category: 'Web3',        description: 'Descrição do projeto CoralApp.', url: '', gif: 'coralapp.gif' },
@@ -1470,7 +1506,6 @@
             const projectsCount = document.getElementById('projects-count');
             const projectsSelected = document.getElementById('projects-selected');
 
-            // Estado do detalhe
             let isDetailOpen = false;
 
             function showProjectsList() {
@@ -1480,20 +1515,22 @@
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
                 if (projectsSelected) projectsSelected.textContent = 'Double-click to open';
                 isDetailOpen = false;
-                // Atualizar o texto do botão BACK (se estiver na tela projects)
-                updateBackButtonLabel();
+                body.classList.remove('detail-mode');
+                // Garantir que o modo projects permaneça
+                if (currentScreen === 'projects') body.classList.add('projects-mode');
             }
 
             function showProjectDetail(project) {
-                // Efeito de abertura (rolling)
+                // Efeito rolling
                 retroWindow.classList.add('rolling');
                 setTimeout(() => retroWindow.classList.remove('rolling'), 500);
 
-                // Se houver URL, abrir em nova aba
+                // Abre URL se existir
                 if (project.url) {
                     window.open(project.url, '_blank');
                 }
 
+                // Esconde a lista, mostra o detalhe
                 if (iconsArea) iconsArea.style.display = 'none';
                 if (detailView) detailView.style.display = 'block';
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
@@ -1521,7 +1558,10 @@
                 if (projectsCount) projectsCount.textContent = '1 object(s)';
                 if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
                 isDetailOpen = true;
-                updateBackButtonLabel();
+                // Aplica o modo detalhe (compacto, estilo EMAIL)
+                body.classList.add('detail-mode');
+                // Remove projects-mode para que a janela fique no tamanho normal (70%)
+                body.classList.remove('projects-mode');
             }
 
             function closeProjectDetail(animate = true) {
@@ -1530,17 +1570,12 @@
                     retroWindow.classList.add('rolling');
                     setTimeout(() => retroWindow.classList.remove('rolling'), 500);
                 }
+                // Restaura a lista e o modo projects
+                body.classList.remove('detail-mode');
+                body.classList.add('projects-mode');
                 showProjectsList();
-            }
-
-            // Função para atualizar o texto/label do botão BACK (já existe, mas podemos mudar o texto)
-            function updateBackButtonLabel() {
-                const backItems = document.querySelectorAll('#screen-projects .icon-item[data-target="back"]');
-                const label = backItems[0]?.querySelector('.icon-label');
-                if (label) {
-                    label.textContent = isDetailOpen ? 'BACK' : 'BACK';
-                    // Não muda o texto, mas o comportamento será alterado no clique
-                }
+                // Atualiza o endereço
+                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
             }
 
             // ============================================================
@@ -1683,7 +1718,7 @@
                 feedback.style.color = '#c41e3a';
             }
 
-            // Inicializar com a lista visível
+            // Inicializar
             showProjectsList();
         })();
     </script>
