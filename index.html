@@ -76,19 +76,19 @@
             padding: 0.5% 8% 0.5% 8%;
         }
         body.projects-mode .retro-window {
-            max-width: 68%;
+            max-width: 61%;
             transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         body.projects-mode .window-content {
             max-height: none;
             overflow-y: hidden;
-            padding: 10px 4px 8px;
+            padding: 10px 2px 8px;
             transition: max-height 0.4s ease, padding 0.4s ease;
         }
         body.projects-mode .explorer-icons-area {
             grid-template-columns: repeat(4, 1fr);
-            gap: 16px 2px;
-            padding: 12px 2px 10px;
+            gap: 14px 1px;
+            padding: 12px 1px 10px;
         }
         body.projects-mode .explorer-item-icon {
             width: 68px;
@@ -1816,7 +1816,7 @@
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
                     } else {
-                        alert('Navigating to: ' + target);
+                        // No alert for unassigned icons; do nothing
                     }
                 });
             });
