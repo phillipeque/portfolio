@@ -138,34 +138,83 @@
             padding: 2px 8px;
         }
 
+        /* ===== DETALHE DO PROJETO – estilo compacto (similar ao EMAIL) ===== */
         body.projects-mode .explorer-detail {
-            padding: 12px;
+            padding: 12px 14px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        body.projects-mode .detail-header {
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+            gap: 10px;
         }
 
         body.projects-mode .detail-icon {
-            width: 56px;
-            height: 56px;
+            width: 48px;
+            height: 48px;
         }
 
         body.projects-mode .detail-name {
             font-size: 14px;
         }
 
+        body.projects-mode .detail-category {
+            font-size: 9px;
+        }
+
         body.projects-mode .detail-field {
             font-size: 11px;
+            padding: 2px 0;
+        }
+
+        body.projects-mode .detail-field-label {
+            width: 70px;
         }
 
         body.projects-mode .detail-description {
             font-size: 11px;
-            padding: 8px 10px;
-        }
-
-        body.projects-mode .explorer-detail .detail-header {
-            padding-bottom: 8px;
+            padding: 6px 8px;
             margin-bottom: 8px;
         }
 
-        /* ===== FLASH E TEAR LINES ===== */
+        body.projects-mode .detail-link-row {
+            min-height: 20px;
+        }
+
+        body.projects-mode .detail-link-row .retro-btn {
+            padding: 2px 12px;
+            font-size: 11px;
+        }
+
+        /* ===== BOTÃO BACK dentro do detalhe ===== */
+        .detail-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 2px 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
+            margin-bottom: 8px;
+        }
+        .detail-back-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+        }
+        body.projects-mode .detail-back-btn {
+            font-size: 11px;
+            padding: 1px 10px;
+        }
+
+        /* ===== FLASH E TEAR LINES (já existentes) ===== */
         #flash-overlay {
             position: absolute;
             top: 0;
@@ -642,15 +691,17 @@
             box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
             font-size: 12px;
             font-weight: bold;
-            color: #000;
+            color: #a0a0a0; /* sempre desabilitado visualmente */
             flex-shrink: 0;
             user-select: none;
-            cursor: pointer;
+            cursor: default;
+            opacity: 0.6;
         }
 
         .explorer-toolbar-btn.disabled {
             color: #a0a0a0;
             cursor: default;
+            opacity: 0.6;
         }
 
         .explorer-toolbar-btn:not(.disabled):active {
@@ -1016,10 +1067,13 @@
                                     <span id="projects-address-text">📁 C:\PORTFOLIO\PROJECTS\</span>
                                 </div>
                             </div>
+                            <!-- LISTA DE PROJETOS -->
                             <div class="explorer-icons-area" id="projects-icons-area">
                                 <!-- Injetado via JS -->
                             </div>
+                            <!-- DETALHE DO PROJETO (compacto) -->
                             <div class="explorer-detail" id="projects-detail" style="display:none;">
+                                <button class="detail-back-btn" id="detail-back-btn">← BACK</button>
                                 <div class="detail-header">
                                     <img class="detail-icon" id="detail-icon" src="" alt="" />
                                     <div>
@@ -1326,7 +1380,7 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO + PROJECTS + EMAIL
+        //  NAVEGAÇÃO PRINCIPAL + PROJECTS (com transições internas)
         // ============================================================
         (function() {
             const homeScreen     = document.getElementById('screen-home');
@@ -1339,9 +1393,26 @@
             let currentScreen    = 'home';
             let transitioning    = false;
 
+            // Elementos do Projects
+            const iconsArea      = document.getElementById('projects-icons-area');
+            const detailView     = document.getElementById('projects-detail');
+            const addressText    = document.getElementById('projects-address-text');
+            const projectsCount  = document.getElementById('projects-count');
+            const projectsSelected = document.getElementById('projects-selected');
+            const projectsBackBtn = document.getElementById('projects-back-btn');
+            const projectsUpBtn   = document.getElementById('projects-up-btn');
+            const detailBackBtn   = document.getElementById('detail-back-btn');
+
+            // Desabilitar permanentemente os botões da barra de ferramentas
+            if (projectsBackBtn) projectsBackBtn.classList.add('disabled');
+            if (projectsUpBtn) projectsUpBtn.classList.add('disabled');
+            // Remover qualquer evento que possa ter sido atribuído (caso exista)
+            // Não adicionamos listeners para eles.
+
             const FORMSPREE_ID = 'mrpgpbdb';
             const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
 
+            // ===== Efeitos de transição (flash, ruído, tears) =====
             let noiseRAF = null;
             function startNoise() {
                 function tick() {
@@ -1375,17 +1446,9 @@
                 }
             }
 
-            function navigateTo(screen) {
-                if (screen === currentScreen || transitioning) return;
-                transitioning = true;
-
-                // Remove modo projects ao sair
-                if (screen !== 'projects') {
-                    body.classList.remove('projects-mode');
-                }
-
+            // Função que aplica o efeito de transição (flash, ruído, rolling)
+            function applyTransition(callback) {
                 flash.classList.add('snap');
-
                 setTimeout(() => {
                     flash.classList.remove('snap');
                     flash.classList.add('snowing');
@@ -1393,24 +1456,7 @@
                 }, 40);
 
                 setTimeout(() => {
-                    homeScreen.classList.remove('active');
-                    aboutScreen.classList.remove('active');
-                    projectsScreen.classList.remove('active');
-                    emailScreen.classList.remove('active');
-
-                    if (screen === 'home') {
-                        homeScreen.classList.add('active');
-                    } else if (screen === 'about') {
-                        aboutScreen.classList.add('active');
-                    } else if (screen === 'projects') {
-                        projectsScreen.classList.add('active');
-                        body.classList.add('projects-mode');
-                        if (typeof showProjectsList === 'function') showProjectsList();
-                    } else if (screen === 'email') {
-                        emailScreen.classList.add('active');
-                    }
-
-                    currentScreen = screen;
+                    callback();
                 }, 190);
 
                 setTimeout(() => {
@@ -1425,30 +1471,102 @@
 
                 setTimeout(() => {
                     retroWindow.classList.remove('rolling');
-                    transitioning = false;
                 }, 780);
             }
 
-            document.querySelectorAll('.icon-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    const target = this.dataset.target;
-                    if (target === 'about') {
-                        navigateTo('about');
-                    } else if (target === 'projects') {
-                        navigateTo('projects');
-                    } else if (target === 'email') {
-                        navigateTo('email');
-                    } else if (target === 'back') {
-                        navigateTo('home');
-                    } else {
-                        alert('Navigating to: ' + target);
-                    }
-                });
-            });
+            // ===== Navegação entre telas principais =====
+            function navigateTo(screen) {
+                if (screen === currentScreen || transitioning) return;
+                transitioning = true;
 
-            // ============================================================
-            //  PROJECTS – 16 projetos (removidos Solcade e Pirate Pets)
-            // ============================================================
+                if (screen !== 'projects') {
+                    body.classList.remove('projects-mode');
+                }
+
+                applyTransition(() => {
+                    homeScreen.classList.remove('active');
+                    aboutScreen.classList.remove('active');
+                    projectsScreen.classList.remove('active');
+                    emailScreen.classList.remove('active');
+
+                    if (screen === 'home') {
+                        homeScreen.classList.add('active');
+                    } else if (screen === 'about') {
+                        aboutScreen.classList.add('active');
+                    } else if (screen === 'projects') {
+                        projectsScreen.classList.add('active');
+                        body.classList.add('projects-mode');
+                        showProjectsList(); // garante que a lista seja exibida
+                    } else if (screen === 'email') {
+                        emailScreen.classList.add('active');
+                    }
+
+                    currentScreen = screen;
+                    transitioning = false;
+                });
+            }
+
+            // ===== Controle interno do Projects (lista ↔ detalhe) =====
+            function showProjectsList() {
+                iconsArea.style.display = 'grid';
+                detailView.style.display = 'none';
+                addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
+                projectsCount.textContent = PROJECTS.length + ' object(s)';
+                projectsSelected.textContent = 'Double-click to open';
+            }
+
+            // Variável para guardar o projeto atual em detalhe (para o BACK)
+            let currentProject = null;
+
+            function openProjectDetail(project) {
+                if (transitioning) return;
+                transitioning = true;
+
+                currentProject = project;
+
+                applyTransition(() => {
+                    // Esconde lista, mostra detalhe
+                    iconsArea.style.display = 'none';
+                    detailView.style.display = 'block';
+                    addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
+
+                    document.getElementById('detail-icon').src = 'logos/' + project.gif;
+                    document.getElementById('detail-name').textContent = project.name;
+                    document.getElementById('detail-category').textContent = project.category;
+                    document.getElementById('detail-role').textContent = project.role;
+                    document.getElementById('detail-duration').textContent = project.duration;
+                    document.getElementById('detail-description').textContent = project.description;
+
+                    const linkRow = document.getElementById('detail-link-row');
+                    linkRow.innerHTML = '';
+                    if (project.url) {
+                        const linkBtn = document.createElement('button');
+                        linkBtn.type = 'button';
+                        linkBtn.className = 'retro-btn';
+                        linkBtn.textContent = 'OPEN LINK ↗';
+                        linkBtn.addEventListener('click', function() {
+                            window.open(project.url, '_blank');
+                        });
+                        linkRow.appendChild(linkBtn);
+                    }
+
+                    projectsCount.textContent = '1 object(s)';
+                    projectsSelected.textContent = project.name + ' — ' + project.category;
+                    transitioning = false;
+                });
+            }
+
+            function closeProjectDetail() {
+                if (transitioning) return;
+                transitioning = true;
+
+                applyTransition(() => {
+                    showProjectsList();
+                    transitioning = false;
+                });
+            }
+
+            // ===== Configuração dos projetos =====
             const PROJECTS = [
                 { name: 'CoralApp',        role: 'Community Manager', duration: '2024 – now',  category: 'Web3',        description: 'Descrição do projeto CoralApp.', url: '', gif: 'coralapp.gif' },
                 { name: 'Binance',         role: 'Moderator',         duration: '2023 – 2024', category: 'Exchange',     description: 'Descrição do projeto Binance.', url: '', gif: 'binance.gif' },
@@ -1468,76 +1586,11 @@
                 { name: 'VS1',             role: 'Founder',           duration: '2022 – now',  category: 'Platform',     description: 'Descrição do projeto VS1.', url: '', gif: 'vs1.gif' }
             ];
 
-            const iconsArea = document.getElementById('projects-icons-area');
-            const detailView = document.getElementById('projects-detail');
-            const addressText = document.getElementById('projects-address-text');
-            const projectsCount = document.getElementById('projects-count');
-            const projectsSelected = document.getElementById('projects-selected');
-            const projectsBackBtn = document.getElementById('projects-back-btn');
-            const projectsUpBtn = document.getElementById('projects-up-btn');
-
-            function setProjectsToolbarEnabled(enabled) {
-                [projectsBackBtn, projectsUpBtn].forEach(btn => {
-                    if (!btn) return;
-                    btn.classList.toggle('disabled', !enabled);
-                });
-            }
-
-            function showProjectsList() {
-                if (iconsArea) iconsArea.style.display = 'grid';
-                if (detailView) detailView.style.display = 'none';
-                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
-                if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
-                if (projectsSelected) projectsSelected.textContent = 'Double-click to open';
-                setProjectsToolbarEnabled(false);
-            }
-
-            function showProjectDetail(project) {
-                if (iconsArea) iconsArea.style.display = 'none';
-                if (detailView) detailView.style.display = 'block';
-                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
-
-                document.getElementById('detail-icon').src = 'logos/' + project.gif;
-                document.getElementById('detail-name').textContent = project.name;
-                document.getElementById('detail-category').textContent = project.category;
-                document.getElementById('detail-role').textContent = project.role;
-                document.getElementById('detail-duration').textContent = project.duration;
-                document.getElementById('detail-description').textContent = project.description;
-
-                const linkRow = document.getElementById('detail-link-row');
-                linkRow.innerHTML = '';
-                if (project.url) {
-                    const linkBtn = document.createElement('button');
-                    linkBtn.type = 'button';
-                    linkBtn.className = 'retro-btn';
-                    linkBtn.textContent = 'OPEN LINK ↗';
-                    linkBtn.addEventListener('click', function() {
-                        window.open(project.url, '_blank');
-                    });
-                    linkRow.appendChild(linkBtn);
-                }
-
-                if (projectsCount) projectsCount.textContent = '1 object(s)';
-                if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
-                setProjectsToolbarEnabled(true);
-            }
-
-            if (projectsBackBtn) {
-                projectsBackBtn.addEventListener('click', function() {
-                    if (!projectsBackBtn.classList.contains('disabled')) showProjectsList();
-                });
-            }
-            if (projectsUpBtn) {
-                projectsUpBtn.addEventListener('click', function() {
-                    if (!projectsUpBtn.classList.contains('disabled')) showProjectsList();
-                });
-            }
-
+            // ===== Inicializar a lista de projetos =====
             if (iconsArea) {
                 PROJECTS.forEach((project) => {
                     const item = document.createElement('div');
                     item.className = 'explorer-item';
-                    item.dataset.company = project.name.toLowerCase();
                     item.tabIndex = 0;
                     item.title = project.category;
 
@@ -1565,7 +1618,7 @@
                     iconsArea.appendChild(item);
 
                     item.addEventListener('click', function() {
-                        showProjectDetail(project);
+                        openProjectDetail(project);
                     });
 
                     item.addEventListener('keydown', function(e) {
@@ -1576,10 +1629,38 @@
                     });
                 });
 
-                if (projectsCount) {
-                    projectsCount.textContent = PROJECTS.length + ' object(s)';
-                }
+                projectsCount.textContent = PROJECTS.length + ' object(s)';
             }
+
+            // ===== Evento do botão BACK no detalhe =====
+            if (detailBackBtn) {
+                detailBackBtn.addEventListener('click', function() {
+                    closeProjectDetail();
+                });
+            }
+
+            // ===== Navegação do menu principal =====
+            document.querySelectorAll('.icon-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    const target = this.dataset.target;
+                    if (target === 'about') {
+                        navigateTo('about');
+                    } else if (target === 'projects') {
+                        navigateTo('projects');
+                    } else if (target === 'email') {
+                        navigateTo('email');
+                    } else if (target === 'back') {
+                        // Se estiver no detalhe de um projeto, fecha o detalhe, senão volta para home
+                        if (currentScreen === 'projects' && detailView.style.display !== 'none') {
+                            closeProjectDetail();
+                        } else {
+                            navigateTo('home');
+                        }
+                    } else {
+                        alert('Navigating to: ' + target);
+                    }
+                });
+            });
 
             // ============================================================
             //  FORMULÁRIO DE EMAIL
