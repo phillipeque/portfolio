@@ -528,32 +528,32 @@
             height: 12px;
         }
 
-        /* ===== NOVO CSS PARA PROJECTS ===== */
+        /* ===== NOVO CSS PARA PROJECTS (CLEAN) ===== */
         .projects-header {
-            margin-bottom: 12px;
+            margin-bottom: 20px;
             text-align: left;
         }
 
         .projects-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 3px 6px;
+            background: none; /* remove fundo azul */
+            padding: 0;
+            border: none;
+            box-shadow: none;
             display: inline-block;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: 1px 1px 0 #000;
         }
 
         .projects-title {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #000000;
+            letter-spacing: 2px;
+            color: #000;
+            text-shadow: none;
+            text-transform: uppercase;
         }
 
         .projects-subtitle {
             font-size: 10px;
-            color: #000;
+            color: #555;
             margin-top: 4px;
             letter-spacing: 1px;
             text-align: left;
@@ -563,65 +563,35 @@
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .project-card {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000,
-                2px 2px 0 rgba(0, 0, 0, 0.3);
+            background: #f0f0f0; /* fundo mais claro */
+            border: 1px solid #808080;
+            box-shadow: none;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.1s linear;
+            transition: all 0.15s ease;
             user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 8px;
         }
 
         .project-card:hover {
-            border-color: #808080 #ffffff #ffffff #808080;
-            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf,
-                2px 2px 0 rgba(0, 0, 0, 0.3);
-            transform: translateY(1px);
-        }
-
-        .project-card:active {
-            transform: translateY(2px);
-            box-shadow: inset 2px 2px 0 #000000;
-        }
-
-        .project-card-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 3px 4px;
-            font-size: 8px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #fff;
-            text-shadow: 1px 1px 0 #000;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            text-align: center;
-            text-transform: uppercase;
-            border-bottom: 1px solid #000;
-        }
-
-        .project-card-body {
-            padding: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 60px;
-            background: #c0c0c0;
+            background: #ffffff;
+            border-color: #000080;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
 
         .project-card-logo {
             width: 48px;
             height: 48px;
-            border: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            border-radius: 8px; /* cantos arredondados */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -629,14 +599,26 @@
             font-weight: bold;
             font-size: 20px;
             color: #fff;
-            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000;
-            text-transform: uppercase;
-            transition: transform 0.1s linear;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+            margin-bottom: 10px;
+            transition: transform 0.15s ease;
         }
 
         .project-card:hover .project-card-logo {
-            transform: scale(1.05);
-            filter: brightness(1.15);
+            transform: scale(1.1);
+        }
+
+        .project-card-name {
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #000;
+            text-align: center;
+            text-transform: uppercase;
+            width: 100%;
+            border-top: 1px solid #ccc;
+            padding-top: 6px;
+            margin-top: 6px;
         }
 
         @media (max-width: 768px) {
@@ -668,17 +650,13 @@
             .projects-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .project-card-body {
-                height: 50px;
-                padding: 6px;
-            }
             .project-card-logo {
-                width: 36px;
-                height: 36px;
-                font-size: 14px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
             }
-            .project-card-titlebar {
-                font-size: 7px;
+            .project-card-name {
+                font-size: 9px;
             }
         }
     </style>
@@ -765,112 +743,80 @@
                         </div>
                     </div>
 
-                    <!-- TELA PROJECTS -->
+                    <!-- TELA PROJECTS (CLEAN) -->
                     <div id="screen-projects" class="screen-container">
                         <div class="projects-header">
                             <div class="projects-titlebar">
-                                <span class="projects-title">COMPANIES.DAT</span>
+                                <span class="projects-title">PROJECTS</span>
                             </div>
-                            <div class="projects-subtitle">// CLIQUE PARA EXPLORAR</div>
+                            <div class="projects-subtitle">// Clique para explorar</div>
                         </div>
 
                         <div class="projects-grid">
                             <!-- 16 empresas placeholder -->
                             <div class="project-card" data-company="nexacore">
-                                <div class="project-card-titlebar">NEXACORE</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#000080;">N</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#000080;">N</div>
+                                <div class="project-card-name">NEXACORE</div>
                             </div>
                             <div class="project-card" data-company="orbital">
-                                <div class="project-card-titlebar">ORBITAL LABS</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#1a1a2e;">O</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#1a1a2e;">O</div>
+                                <div class="project-card-name">ORBITAL</div>
                             </div>
                             <div class="project-card" data-company="pixelforge">
-                                <div class="project-card-titlebar">PIXELFORGE</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#800000;">P</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#800000;">P</div>
+                                <div class="project-card-name">PIXELFORGE</div>
                             </div>
                             <div class="project-card" data-company="ironclad">
-                                <div class="project-card-titlebar">IRONCLAD</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#4a4a4a;">I</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#4a4a4a;">I</div>
+                                <div class="project-card-name">IRONCLAD</div>
                             </div>
                             <div class="project-card" data-company="monolith">
-                                <div class="project-card-titlebar">MONOLITH</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#2d5016;">M</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#2d5016;">M</div>
+                                <div class="project-card-name">MONOLITH</div>
                             </div>
                             <div class="project-card" data-company="quantum">
-                                <div class="project-card-titlebar">QUANTUM</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#000;">Q</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#000;">Q</div>
+                                <div class="project-card-name">QUANTUM</div>
                             </div>
                             <div class="project-card" data-company="stellar">
-                                <div class="project-card-titlebar">STELLAR</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#800080;">S</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#800080;">S</div>
+                                <div class="project-card-name">STELLAR</div>
                             </div>
                             <div class="project-card" data-company="vertex">
-                                <div class="project-card-titlebar">VERTEX</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#008080;">V</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#008080;">V</div>
+                                <div class="project-card-name">VERTEX</div>
                             </div>
                             <div class="project-card" data-company="beacon">
-                                <div class="project-card-titlebar">BEACON</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#1a3a5c;">B</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#1a3a5c;">B</div>
+                                <div class="project-card-name">BEACON</div>
                             </div>
                             <div class="project-card" data-company="foundry">
-                                <div class="project-card-titlebar">FOUNDRY</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#c45c26;">F</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#c45c26;">F</div>
+                                <div class="project-card-name">FOUNDRY</div>
                             </div>
                             <div class="project-card" data-company="nova">
-                                <div class="project-card-titlebar">NOVA</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#c41e3a;">N</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#c41e3a;">N</div>
+                                <div class="project-card-name">NOVA</div>
                             </div>
                             <div class="project-card" data-company="titan">
-                                <div class="project-card-titlebar">TITAN</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#4a2d6b;">T</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#4a2d6b;">T</div>
+                                <div class="project-card-name">TITAN</div>
                             </div>
                             <div class="project-card" data-company="zephyr">
-                                <div class="project-card-titlebar">ZEPHYR</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#006400;">Z</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#006400;">Z</div>
+                                <div class="project-card-name">ZEPHYR</div>
                             </div>
                             <div class="project-card" data-company="onyx">
-                                <div class="project-card-titlebar">ONYX</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#000;">O</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#000;">O</div>
+                                <div class="project-card-name">ONYX</div>
                             </div>
                             <div class="project-card" data-company="phoenix">
-                                <div class="project-card-titlebar">PHOENIX</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#ff4500;">P</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#ff4500;">P</div>
+                                <div class="project-card-name">PHOENIX</div>
                             </div>
                             <div class="project-card" data-company="gravity">
-                                <div class="project-card-titlebar">GRAVITY</div>
-                                <div class="project-card-body">
-                                    <div class="project-card-logo" style="background:#191970;">G</div>
-                                </div>
+                                <div class="project-card-logo" style="background:#191970;">G</div>
+                                <div class="project-card-name">GRAVITY</div>
                             </div>
                         </div>
 
