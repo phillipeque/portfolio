@@ -1329,7 +1329,7 @@
             function drawBird(b) {
                 const bx = b.x + (mouseX - 0.5) * W * 0.01;
                 const by = b.y + (mouseY - 0.5) * H * 0.01;
-                const wing = Math.sin(globalTime * 0.05 + b.wingPhase) > 0;
+                const wing = Math.sin(globalTime * 0.025 + b.wingPhase) > 0;
                 ctx.fillStyle = `rgba(${PALETTE.bird.join(',')},0.4)`;
                 ctx.fillRect(Math.floor(bx), Math.floor(by), 1, 1);
                 ctx.fillRect(Math.floor(bx - 1), Math.floor(by), 1, 1);
@@ -1384,7 +1384,7 @@
 
             function loop() {
                 update();
-                setTimeout(loop, 33);
+                setTimeout(loop, 16);
             }
 
             window.addEventListener('resize', () => {
