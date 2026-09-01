@@ -1160,10 +1160,7 @@
 
     <script>
         // ============================================================
-        //  FUNDO (Canvas)
-        // ============================================================
-        // ============================================================
-        //  FUNDO (Canvas) — OTIMIZADO v2
+        //  FUNDO (Canvas) — OTIMIZADO v3
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -1172,6 +1169,7 @@
             const PIXEL = 8;
             let skyGradient = null;
             let globalTime = 0;
+            let sunImg = null;
 
             function resize() {
                 const rect = canvas.parentElement.getBoundingClientRect();
@@ -1187,6 +1185,7 @@
                 skyGradient.addColorStop(0.92,'rgb(200,230,245)');
                 skyGradient.addColorStop(1,   'rgb(232,244,252)');
                 initClouds();
+                initSun();
             }
 
             window.addEventListener('mousemove', e => {
@@ -1206,7 +1205,6 @@
                 return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`;
             }
 
-            // Desenha círculo pixelado (sem anti-alias) no canvas offscreen
             function pixelCircleOffscreen(x, cx, cy, r, colorStr) {
                 const r2 = r * r;
                 x.fillStyle = colorStr;
@@ -1221,6 +1219,33 @@
                 }
             }
 
+            // ===== SOL OFFSCREEN (visual idêntico ao original) =====
+            function initSun() {
+                const sunR = Math.min(W, H) * 0.06;
+                const outerR = Math.ceil(sunR * 3);
+                const pad = 4; // margem extra para segurança
+                const size = (outerR + pad) * 2;
+                const c = document.createElement('canvas');
+                c.width = size;
+                c.height = size;
+                const x = c.getContext('2d');
+                const cx = size / 2;
+                const cy = size / 2;
+
+                // Halo externo: círculos concêntricos com alpha decrescente
+                for (let r = outerR; r >= sunR; r -= 2) {
+                    const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
+                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.sunEdge, Math.max(0, alpha)));
+                }
+                // Núcleo
+                pixelCircleOffscreen(x, cx, cy, sunR, rgb(PALETTE.sunCore, 0.95));
+                // Inner glow
+                pixelCircleOffscreen(x, cx, cy, sunR * 0.7, rgb(PALETTE.sunEdge, 0.7));
+
+                sunImg = { canvas: c, pad: outerR + pad, sunR: sunR };
+            }
+
+            // ===== NUVENS OFFSCREEN =====
             function createCloudCanvas(baseW, baseH, opacity) {
                 const maxR = 0.55 * baseH * 1.8;
                 const pad = Math.ceil(maxR) + 2;
@@ -1238,27 +1263,24 @@
                     { dx: 0.80, dy: 0.55, r: 0.42 },
                 ];
 
-                // Sombra
+                x.fillStyle = `rgba(180,200,220,${opacity * 0.3})`;
                 puffs.forEach(p => {
-                    const cx = pad + p.dx * baseW;
-                    const cy = pad + p.dy * baseH + baseH * 0.08;
-                    const r = p.r * baseH * 1.8;
-                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloudShad, opacity * 0.3));
+                    x.beginPath();
+                    x.arc(pad + p.dx * baseW, pad + p.dy * baseH + baseH * 0.08, p.r * baseH * 1.8, 0, Math.PI * 2);
+                    x.fill();
                 });
-                // Cor base
+                x.fillStyle = `rgba(255,255,255,${opacity})`;
                 puffs.forEach(p => {
-                    const cx = pad + p.dx * baseW;
-                    const cy = pad + p.dy * baseH;
-                    const r = p.r * baseH * 1.6;
-                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity));
+                    x.beginPath();
+                    x.arc(pad + p.dx * baseW, pad + p.dy * baseH, p.r * baseH * 1.6, 0, Math.PI * 2);
+                    x.fill();
                 });
-                // Highlight
+                x.fillStyle = `rgba(255,255,255,${opacity * 0.5})`;
                 puffs.forEach(p => {
                     if (p.dy < 0.6) {
-                        const cx = pad + p.dx * baseW;
-                        const cy = pad + p.dy * baseH - baseH * 0.05;
-                        const r = p.r * baseH * 1.1 * 0.7;
-                        pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity * 0.5));
+                        x.beginPath();
+                        x.arc(pad + p.dx * baseW, pad + p.dy * baseH - baseH * 0.05, p.r * baseH * 1.1 * 0.7, 0, Math.PI * 2);
+                        x.fill();
                     }
                 });
                 return { canvas: c, pad: pad };
@@ -1289,24 +1311,6 @@
                         });
                     }
                 });
-            }
-
-            function drawSun() {
-                const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
-                const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
-                const sunR = Math.min(W, H) * 0.06;
-                ctx.save();
-                ctx.shadowColor = 'rgba(255,248,220,0.35)';
-                ctx.shadowBlur = sunR * 2.5;
-                ctx.fillStyle = `rgb(${PALETTE.sunCore.join(',')})`;
-                ctx.beginPath();
-                ctx.arc(sunX, sunY, sunR, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-                ctx.fillStyle = `rgb(${PALETTE.sunEdge.join(',')})`;
-                ctx.beginPath();
-                ctx.arc(sunX, sunY, sunR * 0.7, 0, Math.PI * 2);
-                ctx.fill();
             }
 
             let birds = [];
@@ -1342,13 +1346,22 @@
             function draw() {
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, W, H);
-                drawSun();
+
+                // Sol (offscreen)
+                if (sunImg) {
+                    const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
+                    const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
+                    ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad));
+                }
+
+                // Nuvens (offscreen)
                 clouds.forEach(c => {
                     const l = layers[c.layer];
                     const px = c.x + (mouseX - 0.5) * W * l.parallax;
                     const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
                     ctx.drawImage(c.img.canvas, Math.floor(px - c.w/2 - c.img.pad), Math.floor(py - c.h/2 - c.img.pad));
                 });
+
                 birds.forEach(b => drawBird(b));
             }
 
