@@ -380,45 +380,43 @@
         }
 
         /* ===== LAYOUT EMAIL (sem avatar, formulário centralizado) ===== */
-        .email-form-box {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 12px;
-            text-align: left;
-            width: 100%;
-        }
+.email-form-box {
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #808080 #ffffff #ffffff #808080;
+    box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+    /* REMOVIDO: padding: 12px; */
+    text-align: left;
+    width: 100%;
+    overflow: hidden; /* igual o about-bio-box */
+}
 
-        .form-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 3px 6px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+.form-titlebar {
+    background: linear-gradient(90deg, #000080, #1084d0);
+    padding: 3px 6px;
+    display: flex;
+    align-items: center;
+    /* margin-bottom: 10px; REMOVIDO — agora o padding do form-content que cuida do espaço */
+}
 
-        .form-title {
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #000000;
-        }
+/* NOVO: envolve só o conteúdo do form */
+.email-form-content {
+    padding: 12px;
+}
 
-        .email-form-box label {
-            display: block;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #000;
-            margin-top: 8px;
-            margin-bottom: 2px;
-        }
+.email-form-box label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #000;
+    margin-top: 8px;
+    margin-bottom: 2px;
+}
 
-        .email-form-box label:first-of-type {
-            margin-top: 0;
-        }
+.email-form-box label:first-of-type {
+    margin-top: 0;
+}
 
         .email-form-box input,
         .email-form-box textarea {
@@ -618,10 +616,16 @@
 
                     <!-- TELA EMAIL (sem avatar) -->
                     <div id="screen-email" class="screen-container">
-                        <div class="email-form-box">
-                            <div class="form-titlebar">
-                                <span class="form-title">CONTACT.TXT</span>
-                            </div>
+<div class="email-form-box">
+    <div class="form-titlebar">
+        <span class="form-title">CONTACT.TXT</span>
+    </div>
+    <div class="email-form-content">  <!-- NOVO -->
+        <form id="email-form">
+            ...
+        </form>
+    </div>
+</div>
                             <form id="email-form">
                                 <label for="user-email">YOUR EMAIL</label>
                                 <input type="email" id="user-email" name="email" required placeholder="your@email.com" />
