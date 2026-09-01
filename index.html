@@ -343,7 +343,7 @@
             display: block;
         }
 
-        /* ===== ÍCONES DO MENU ===== */
+        /* ===== ÍCONES DO MENU – sem cursor na área toda ===== */
         .icon-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -359,15 +359,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            cursor: pointer;
             padding: 10px 5px;
-            border: 1px solid transparent;
-        }
-
-        .icon-item:hover,
-        .icon-item.active {
-            background: transparent;
-            border: 1px solid transparent;
+            /* sem cursor: pointer; aqui, só a imagem terá */
         }
 
         .icon-img {
@@ -377,6 +370,7 @@
             image-rendering: crisp-edges;
             margin-bottom: 8px;
             object-fit: contain;
+            cursor: pointer; /* apenas a imagem é clicável */
         }
 
         .icon-label {
@@ -385,6 +379,7 @@
             letter-spacing: 1px;
             text-align: center;
             line-height: 1.3;
+            user-select: none;
         }
 
         .label-orange { color: #c45c26; }
@@ -523,7 +518,7 @@
             50% { opacity: 0; }
         }
 
-        /* ===== CONTACT (antigo EMAIL) ===== */
+        /* ===== CONTACT ===== */
         .contact-form-box {
             background: #c0c0c0;
             border: 2px solid;
@@ -1001,28 +996,28 @@
                     <!-- TELA HOME -->
                     <div id="screen-home" class="screen-container active">
                         <div class="icon-grid">
-                            <div class="icon-item" data-target="about">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="ABOUT" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="about" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="ABOUT" />
                                 <span class="icon-label label-orange">ABOUT</span>
                             </div>
-                            <div class="icon-item" data-target="projects">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
-                            <div class="icon-item" data-target="contact">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="contact" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
                                 <span class="icon-label label-green">SOCIALS</span>
                             </div>
-                            <div class="icon-item" data-target="github">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                                 <span class="icon-label label-red">GITHUB</span>
                             </div>
-                            <div class="icon-item" data-target="linkedin">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3Ein%3C/text%3E%3C/svg%3E" alt="LINKEDIN" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="linkedin" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3Ein%3C/text%3E%3C/svg%3E" alt="LINKEDIN" />
                                 <span class="icon-label label-blue">LINKEDIN</span>
                             </div>
-                            <div class="icon-item" data-target="email">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
                                 <span class="icon-label label-purple">CONTACT</span>
                             </div>
                         </div>
@@ -1054,8 +1049,8 @@
                         </div>
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            <div class="icon-item" data-target="back">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
@@ -1104,15 +1099,15 @@
 
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            <div class="icon-item" data-target="back">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
                     </div>
 
-                    <!-- TELA CONTACT (antigo EMAIL) -->
+                    <!-- TELA CONTACT -->
                     <div id="screen-email" class="screen-container">
                         <div class="contact-form-box">
                             <div class="form-titlebar">
@@ -1138,8 +1133,8 @@
                         </div>
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            <div class="icon-item" data-target="back">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
@@ -1323,7 +1318,6 @@
             function drawBird(b) {
                 const bx = b.x + (mouseX - 0.5) * W * 0.01;
                 const by = b.y + (mouseY - 0.5) * H * 0.01;
-                // Ajuste para manter a velocidade original (30 FPS) com 60 FPS
                 const wing = Math.sin(globalTime * 0.025 + b.wingPhase) > 0;
                 ctx.fillStyle = `rgba(${PALETTE.bird.join(',')},0.4)`;
                 ctx.fillRect(Math.floor(bx), Math.floor(by), 1, 1);
@@ -1379,7 +1373,7 @@
 
             function loop() {
                 update();
-                setTimeout(loop, 16); // 60 FPS
+                setTimeout(loop, 16);
             }
 
             window.addEventListener('resize', () => {
@@ -1393,13 +1387,13 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO + PROJECTS + CONTACT (antigo EMAIL)
+        //  NAVEGAÇÃO + PROJECTS + CONTACT
         // ============================================================
         (function() {
             const homeScreen     = document.getElementById('screen-home');
             const aboutScreen    = document.getElementById('screen-about');
             const projectsScreen = document.getElementById('screen-projects');
-            const emailScreen    = document.getElementById('screen-email'); // agora é CONTACT
+            const emailScreen    = document.getElementById('screen-email'); // CONTACT
             const flash          = document.getElementById('flash-overlay');
             const retroWindow    = document.querySelector('.retro-window');
             const body           = document.body;
@@ -1442,7 +1436,6 @@
                 }
             }
 
-            // Função de transição APENAS para navegações principais
             function triggerTransition(callback) {
                 retroWindow.classList.add('rolling');
                 flash.classList.add('snap');
@@ -1485,7 +1478,7 @@
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
-                    } else if (screen === 'email') { // CONTACT
+                    } else if (screen === 'email') {
                         emailScreen.classList.add('active');
                     }
 
@@ -1495,7 +1488,7 @@
             }
 
             // ============================================================
-            //  PROJECTS – 16 projetos
+            //  PROJECTS
             // ============================================================
             const PROJECTS = [
                 { name: 'CoralApp',        role: 'Community Manager', duration: '2024 – now',  category: 'Web3',        description: 'Descrição do projeto CoralApp.', url: '', gif: 'coralapp.gif' },
@@ -1535,13 +1528,11 @@
                 if (currentScreen === 'projects') body.classList.add('projects-mode');
             }
 
-            // ===== showProjectDetail SEM flash/rolling (apenas transição suave) =====
             function showProjectDetail(project) {
                 if (project.url) {
                     window.open(project.url, '_blank');
                 }
 
-                // Apenas transição suave (sem flash)
                 if (iconsArea) iconsArea.style.display = 'none';
                 if (detailView) detailView.style.display = 'block';
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
@@ -1574,7 +1565,6 @@
                 body.classList.remove('projects-mode');
             }
 
-            // ===== closeProjectDetail SEM flash/rolling =====
             function closeProjectDetail(animate = true) {
                 if (!isDetailOpen) return;
 
@@ -1585,10 +1575,10 @@
             }
 
             // ============================================================
-            //  EVENTO DE CLIQUE NOS ÍCONES (inclui BACK)
+            //  EVENTO DE CLIQUE – SOMENTE NA IMAGEM (data-target)
             // ============================================================
-            document.querySelectorAll('.icon-item').forEach(item => {
-                item.addEventListener('click', function(e) {
+            document.querySelectorAll('.icon-img').forEach(img => {
+                img.addEventListener('click', function(e) {
                     const target = this.dataset.target;
                     if (target === 'about') {
                         navigateTo('about');
@@ -1597,7 +1587,6 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'back') {
-                        // Se estamos na tela de projects e o detalhe está aberto, fechar detalhe (sem flash)
                         if (currentScreen === 'projects' && isDetailOpen) {
                             closeProjectDetail(true);
                         } else {
@@ -1610,7 +1599,7 @@
             });
 
             // ============================================================
-            //  CRIAÇÃO DOS ÍCONES DE PROJETO
+            //  CRIAÇÃO DOS ÍCONES DE PROJETO (continua igual)
             // ============================================================
             if (iconsArea) {
                 PROJECTS.forEach((project) => {
@@ -1661,7 +1650,7 @@
             }
 
             // ============================================================
-            //  FORMULÁRIO DE CONTATO – sem validação nativa do navegador
+            //  FORMULÁRIO DE CONTATO
             // ============================================================
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
@@ -1674,7 +1663,6 @@
                 const subject = document.getElementById('subject').value.trim();
                 const message = document.getElementById('message').value.trim();
 
-                // Validação customizada (sem alertas do navegador)
                 if (!email || !subject || !message) {
                     feedback.textContent = 'Please fill in all fields.';
                     feedback.style.color = '#c41e3a';
@@ -1725,7 +1713,6 @@
                 feedback.style.color = '#c41e3a';
             }
 
-            // Inicializar
             showProjectsList();
         })();
     </script>
