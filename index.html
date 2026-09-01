@@ -216,11 +216,9 @@
             align-items: center;
             cursor: pointer;
             padding: 10px 5px;
-            /* removido transition e border */
-            border: 1px solid transparent; /* mantido para evitar deslocamento, mas sem interação */
+            border: 1px solid transparent;
         }
 
-        /* Remove hover e active feedback */
         .icon-item:hover,
         .icon-item.active {
             background: transparent;
@@ -284,7 +282,7 @@
             z-index: 9;
         }
 
-        /* ===== LAYOUT ABOUT (com avatar) ===== */
+        /* ===== LAYOUT ABOUT ===== */
         .about-layout {
             display: flex;
             gap: 16px;
@@ -379,44 +377,49 @@
             50% { opacity: 0; }
         }
 
-        /* ===== LAYOUT EMAIL (sem avatar, formulário centralizado) ===== */
-.email-form-box {
-    background: #c0c0c0;
-    border: 2px solid;
-    border-color: #808080 #ffffff #ffffff #808080;
-    box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-    /* REMOVIDO: padding: 12px; */
-    text-align: left;
-    width: 100%;
-    overflow: hidden; /* igual o about-bio-box */
-}
+        /* ===== LAYOUT EMAIL ===== */
+        .email-form-box {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            text-align: left;
+            width: 100%;
+            overflow: hidden;
+        }
 
-.form-titlebar {
-    background: linear-gradient(90deg, #000080, #1084d0);
-    padding: 3px 6px;
-    display: flex;
-    align-items: center;
-    /* margin-bottom: 10px; REMOVIDO — agora o padding do form-content que cuida do espaço */
-}
+        .form-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+        }
 
-/* NOVO: envolve só o conteúdo do form */
-.email-form-content {
-    padding: 12px;
-}
+        .form-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000000;
+        }
 
-.email-form-box label {
-    display: block;
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #000;
-    margin-top: 8px;
-    margin-bottom: 2px;
-}
+        .email-form-content {
+            padding: 12px;
+        }
 
-.email-form-box label:first-of-type {
-    margin-top: 0;
-}
+        .email-form-box label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #000;
+            margin-top: 8px;
+            margin-bottom: 2px;
+        }
+
+        .email-form-box label:first-of-type {
+            margin-top: 0;
+        }
 
         .email-form-box input,
         .email-form-box textarea {
@@ -522,7 +525,7 @@
                 max-height: 160px;
                 font-size: 12px;
             }
-            .email-form-box {
+            .email-form-content {
                 padding: 8px;
             }
             .email-form-box textarea {
@@ -530,6 +533,7 @@
             }
         }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -614,33 +618,29 @@
                         </div>
                     </div>
 
-                    <!-- TELA EMAIL (sem avatar) -->
+                    <!-- TELA EMAIL -->
                     <div id="screen-email" class="screen-container">
-<div class="email-form-box">
-    <div class="form-titlebar">
-        <span class="form-title">CONTACT.TXT</span>
-    </div>
-    <div class="email-form-content">  <!-- NOVO -->
-        <form id="email-form">
-            ...
-        </form>
-    </div>
-</div>
-                            <form id="email-form">
-                                <label for="user-email">YOUR EMAIL</label>
-                                <input type="email" id="user-email" name="email" required placeholder="your@email.com" />
+                        <div class="email-form-box">
+                            <div class="form-titlebar">
+                                <span class="form-title">CONTACT.TXT</span>
+                            </div>
+                            <div class="email-form-content">
+                                <form id="email-form">
+                                    <label for="user-email">YOUR EMAIL</label>
+                                    <input type="email" id="user-email" name="email" required placeholder="your@email.com" />
 
-                                <label for="subject">SUBJECT</label>
-                                <input type="text" id="subject" name="subject" required placeholder="Subject" />
+                                    <label for="subject">SUBJECT</label>
+                                    <input type="text" id="subject" name="subject" required placeholder="Subject" />
 
-                                <label for="message">MESSAGE</label>
-                                <textarea id="message" name="message" required placeholder="Write your message..."></textarea>
+                                    <label for="message">MESSAGE</label>
+                                    <textarea id="message" name="message" required placeholder="Write your message..."></textarea>
 
-                                <div class="form-actions">
-                                    <button type="submit" class="retro-btn" id="send-btn">SEND</button>
-                                </div>
-                                <div id="form-feedback"></div>
-                            </form>
+                                    <div class="form-actions">
+                                        <button type="submit" class="retro-btn" id="send-btn">SEND</button>
+                                    </div>
+                                    <div id="form-feedback"></div>
+                                </form>
+                            </div>
                         </div>
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
@@ -899,11 +899,9 @@
             let currentScreen = 'home';
             let transitioning = false;
 
-            // ---- CONFIGURAÇÃO DO FORMSPREE ----
             const FORMSPREE_ID = 'mrpgpbdb';
             const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
 
-            // ---- EFEITOS DE FLASH E RUÍDO ----
             let noiseRAF = null;
             function startNoise() {
                 function tick() {
@@ -981,7 +979,6 @@
                 }, 780);
             }
 
-            // ---- CLIQUE NOS ÍCONES ----
             document.querySelectorAll('.icon-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     const target = this.dataset.target;
@@ -997,18 +994,6 @@
                 });
             });
 
-            // ---- NAVEGAÇÃO POR TECLADO ----
-            // Remove o destaque por teclado, mas mantemos a navegação funcional
-            // Não precisamos mais do active visual, mas podemos manter a lógica de seleção para navegação,
-            // apenas sem o destaque. Vamos comentar a parte de updateActiveItem e a classe active.
-            // Ou podemos simplesmente remover a classe active do CSS e da lógica.
-            // Vou deixar a navegação por teclado funcionando sem destaque.
-            // Para simplificar, vou remover a função updateActiveItem e o uso de 'active'.
-
-            // Removemos a lógica de destaque, mas mantemos a navegação por teclado para acessibilidade.
-            // A navegação por teclado continua funcionando, mas sem o highlight visual.
-
-            // ---- ENVIO DO FORMULÁRIO ----
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
             const sendBtn = document.getElementById('send-btn');
@@ -1022,7 +1007,7 @@
 
                 if (!email || !subject || !message) {
                     feedback.textContent = 'Please fill in all fields.';
-                    feedback.style.color = '#c41e3a'; // vermelho
+                    feedback.style.color = '#c41e3a';
                     return;
                 }
 
@@ -1048,7 +1033,7 @@
 
                     if (response.ok) {
                         feedback.textContent = 'Message sent successfully!';
-                        feedback.style.color = '#2d5016'; // verde
+                        feedback.style.color = '#2d5016';
                         form.reset();
                     } else {
                         const data = await response.json();
@@ -1064,7 +1049,6 @@
                 sendBtn.textContent = 'SEND';
             });
 
-            // Se o Formspree não estiver configurado (já está com seu ID)
             if (FORMSPREE_ID === 'SEU_FORM_ID_AQUI') {
                 console.warn('⚠️ Replace FORMSPREE_ID with your actual Formspree ID.');
                 feedback.textContent = '⚠️ Configure Formspree (see console).';
