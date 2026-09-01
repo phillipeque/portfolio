@@ -523,8 +523,8 @@
             50% { opacity: 0; }
         }
 
-        /* ===== EMAIL ===== */
-        .email-form-box {
+        /* ===== CONTACT (antigo EMAIL) ===== */
+        .contact-form-box {
             background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
@@ -549,11 +549,11 @@
             text-shadow: 1px 1px 0 #000000;
         }
 
-        .email-form-content {
+        .contact-form-content {
             padding: 12px;
         }
 
-        .email-form-box label {
+        .contact-form-box label {
             display: block;
             font-size: 12px;
             font-weight: bold;
@@ -563,12 +563,12 @@
             margin-bottom: 2px;
         }
 
-        .email-form-box label:first-of-type {
+        .contact-form-box label:first-of-type {
             margin-top: 0;
         }
 
-        .email-form-box input,
-        .email-form-box textarea {
+        .contact-form-box input,
+        .contact-form-box textarea {
             width: 100%;
             padding: 4px 6px;
             font-family: 'Courier New', monospace;
@@ -582,17 +582,17 @@
             box-sizing: border-box;
         }
 
-        .email-form-box input:focus,
-        .email-form-box textarea:focus {
+        .contact-form-box input:focus,
+        .contact-form-box textarea:focus {
             outline: none;
             border-color: #000080 #808080 #808080 #000080;
         }
 
-        .email-form-box textarea {
+        .contact-form-box textarea {
             min-height: 140px;
         }
 
-        .email-form-box .form-actions {
+        .contact-form-box .form-actions {
             display: flex;
             justify-content: flex-end;
             margin-top: 12px;
@@ -948,10 +948,10 @@
                 max-height: 160px;
                 font-size: 12px;
             }
-            .email-form-content {
+            .contact-form-content {
                 padding: 8px;
             }
-            .email-form-box textarea {
+            .contact-form-box textarea {
                 min-height: 100px;
             }
             .explorer-icons-area {
@@ -1009,8 +1009,8 @@
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
                             <div class="icon-item" data-target="contact">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="CONTACT" />
-                                <span class="icon-label label-green">CONTACT</span>
+                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
+                                <span class="icon-label label-green">SOCIALS</span>
                             </div>
                             <div class="icon-item" data-target="github">
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
@@ -1021,8 +1021,8 @@
                                 <span class="icon-label label-blue">LINKEDIN</span>
                             </div>
                             <div class="icon-item" data-target="email">
-                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="EMAIL" />
-                                <span class="icon-label label-purple">EMAIL</span>
+                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
+                                <span class="icon-label label-purple">CONTACT</span>
                             </div>
                         </div>
                     </div>
@@ -1111,13 +1111,13 @@
                         </div>
                     </div>
 
-                    <!-- TELA EMAIL -->
+                    <!-- TELA CONTACT (antigo EMAIL) -->
                     <div id="screen-email" class="screen-container">
-                        <div class="email-form-box">
+                        <div class="contact-form-box">
                             <div class="form-titlebar">
                                 <span class="form-title">CONTACT.TXT</span>
                             </div>
-                            <div class="email-form-content">
+                            <div class="contact-form-content">
                                 <form id="email-form">
                                     <label for="user-email">YOUR EMAIL</label>
                                     <input type="email" id="user-email" name="email" required placeholder="your@email.com" />
@@ -1381,13 +1381,13 @@
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO + PROJECTS + EMAIL
+        //  NAVEGAÇÃO + PROJECTS + CONTACT (antigo EMAIL)
         // ============================================================
         (function() {
             const homeScreen     = document.getElementById('screen-home');
             const aboutScreen    = document.getElementById('screen-about');
             const projectsScreen = document.getElementById('screen-projects');
-            const emailScreen    = document.getElementById('screen-email');
+            const emailScreen    = document.getElementById('screen-email'); // agora é CONTACT
             const flash          = document.getElementById('flash-overlay');
             const retroWindow    = document.querySelector('.retro-window');
             const body           = document.body;
@@ -1474,7 +1474,7 @@
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
-                    } else if (screen === 'email') {
+                    } else if (screen === 'email') { // agora é CONTACT
                         emailScreen.classList.add('active');
                     }
 
@@ -1560,7 +1560,7 @@
                     if (projectsCount) projectsCount.textContent = '1 object(s)';
                     if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
                     isDetailOpen = true;
-                    // Aplica o modo detalhe (compacto, estilo EMAIL)
+                    // Aplica o modo detalhe (compacto, estilo CONTACT)
                     body.classList.add('detail-mode');
                     // Remove projects-mode para que a janela fique no tamanho normal (70%)
                     body.classList.remove('projects-mode');
@@ -1661,7 +1661,7 @@
             }
 
             // ============================================================
-            //  FORMULÁRIO DE EMAIL
+            //  FORMULÁRIO DE CONTATO (antigo EMAIL)
             // ============================================================
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
