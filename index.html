@@ -179,6 +179,28 @@
             background: #c0c0c0;
             min-height: 180px;
             position: relative;
+            max-height: 70vh;  /* ADICIONADO PARA SCROLL */
+            overflow-y: auto;   /* ADICIONADO PARA SCROLL */
+        }
+
+        .window-content::-webkit-scrollbar {
+            width: 12px;
+            background: #dfdfdf;
+        }
+        .window-content::-webkit-scrollbar-track {
+            background: #dfdfdf;
+            border-left: 1px solid #808080;
+        }
+        .window-content::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .window-content::-webkit-scrollbar-button {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            height: 12px;
         }
 
         .window-footer {
@@ -506,6 +528,117 @@
             height: 12px;
         }
 
+        /* ===== NOVO CSS PARA PROJECTS ===== */
+        .projects-header {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .projects-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 6px;
+            display: inline-block;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .projects-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000000;
+        }
+
+        .projects-subtitle {
+            font-size: 10px;
+            color: #000;
+            margin-top: 4px;
+            letter-spacing: 1px;
+            text-align: left;
+            opacity: 0.8;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .project-card {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000,
+                2px 2px 0 rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.1s linear;
+            user-select: none;
+        }
+
+        .project-card:hover {
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf,
+                2px 2px 0 rgba(0, 0, 0, 0.3);
+            transform: translateY(1px);
+        }
+
+        .project-card:active {
+            transform: translateY(2px);
+            box-shadow: inset 2px 2px 0 #000000;
+        }
+
+        .project-card-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 4px;
+            font-size: 8px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            text-transform: uppercase;
+            border-bottom: 1px solid #000;
+        }
+
+        .project-card-body {
+            padding: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+            background: #c0c0c0;
+        }
+
+        .project-card-logo {
+            width: 48px;
+            height: 48px;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 20px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000, -1px -1px 0 #000;
+            text-transform: uppercase;
+            transition: transform 0.1s linear;
+        }
+
+        .project-card:hover .project-card-logo {
+            transform: scale(1.05);
+            filter: brightness(1.15);
+        }
+
         @media (max-width: 768px) {
             #tv-screen { padding: 2% 12% 2% 12%; }
             .retro-window { max-width: 90%; }
@@ -531,10 +664,24 @@
             .email-form-box textarea {
                 min-height: 100px;
             }
+            /* PROJECTS responsive */
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .project-card-body {
+                height: 50px;
+                padding: 6px;
+            }
+            .project-card-logo {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+            .project-card-titlebar {
+                font-size: 7px;
+            }
         }
     </style>
-<base target="_blank">
-<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -608,6 +755,125 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="icon-item" data-target="back">
+                                <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <span class="icon-label label-black">BACK</span>
+                            </div>
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                        </div>
+                    </div>
+
+                    <!-- TELA PROJECTS -->
+                    <div id="screen-projects" class="screen-container">
+                        <div class="projects-header">
+                            <div class="projects-titlebar">
+                                <span class="projects-title">COMPANIES.DAT</span>
+                            </div>
+                            <div class="projects-subtitle">// CLIQUE PARA EXPLORAR</div>
+                        </div>
+
+                        <div class="projects-grid">
+                            <!-- 16 empresas placeholder -->
+                            <div class="project-card" data-company="nexacore">
+                                <div class="project-card-titlebar">NEXACORE</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#000080;">N</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="orbital">
+                                <div class="project-card-titlebar">ORBITAL LABS</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#1a1a2e;">O</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="pixelforge">
+                                <div class="project-card-titlebar">PIXELFORGE</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#800000;">P</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="ironclad">
+                                <div class="project-card-titlebar">IRONCLAD</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#4a4a4a;">I</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="monolith">
+                                <div class="project-card-titlebar">MONOLITH</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#2d5016;">M</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="quantum">
+                                <div class="project-card-titlebar">QUANTUM</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#000;">Q</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="stellar">
+                                <div class="project-card-titlebar">STELLAR</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#800080;">S</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="vertex">
+                                <div class="project-card-titlebar">VERTEX</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#008080;">V</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="beacon">
+                                <div class="project-card-titlebar">BEACON</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#1a3a5c;">B</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="foundry">
+                                <div class="project-card-titlebar">FOUNDRY</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#c45c26;">F</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="nova">
+                                <div class="project-card-titlebar">NOVA</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#c41e3a;">N</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="titan">
+                                <div class="project-card-titlebar">TITAN</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#4a2d6b;">T</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="zephyr">
+                                <div class="project-card-titlebar">ZEPHYR</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#006400;">Z</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="onyx">
+                                <div class="project-card-titlebar">ONYX</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#000;">O</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="phoenix">
+                                <div class="project-card-titlebar">PHOENIX</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#ff4500;">P</div>
+                                </div>
+                            </div>
+                            <div class="project-card" data-company="gravity">
+                                <div class="project-card-titlebar">GRAVITY</div>
+                                <div class="project-card-body">
+                                    <div class="project-card-logo" style="background:#191970;">G</div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                             <div class="icon-item" data-target="back">
@@ -891,13 +1157,14 @@
         //  NAVEGAÇÃO COM TROCA DE CANAL + ENVIO DE EMAIL
         // ============================================================
         (function() {
-            const homeScreen  = document.getElementById('screen-home');
-            const aboutScreen = document.getElementById('screen-about');
-            const emailScreen = document.getElementById('screen-email');
-            const flash       = document.getElementById('flash-overlay');
-            const retroWindow = document.querySelector('.retro-window');
-            let currentScreen = 'home';
-            let transitioning = false;
+            const homeScreen     = document.getElementById('screen-home');
+            const aboutScreen    = document.getElementById('screen-about');
+            const projectsScreen = document.getElementById('screen-projects');
+            const emailScreen    = document.getElementById('screen-email');
+            const flash          = document.getElementById('flash-overlay');
+            const retroWindow    = document.querySelector('.retro-window');
+            let currentScreen    = 'home';
+            let transitioning    = false;
 
             const FORMSPREE_ID = 'mrpgpbdb';
             const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
@@ -950,12 +1217,15 @@
                 setTimeout(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
+                    projectsScreen.classList.remove('active');
                     emailScreen.classList.remove('active');
 
                     if (screen === 'home') {
                         homeScreen.classList.add('active');
                     } else if (screen === 'about') {
                         aboutScreen.classList.add('active');
+                    } else if (screen === 'projects') {
+                        projectsScreen.classList.add('active');
                     } else if (screen === 'email') {
                         emailScreen.classList.add('active');
                     }
@@ -984,6 +1254,8 @@
                     const target = this.dataset.target;
                     if (target === 'about') {
                         navigateTo('about');
+                    } else if (target === 'projects') {
+                        navigateTo('projects');
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'back') {
@@ -991,6 +1263,15 @@
                     } else {
                         alert('Navigating to: ' + target);
                     }
+                });
+            });
+
+            // Clique nos cards de projetos
+            document.querySelectorAll('.project-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const company = this.dataset.company;
+                    alert('Abrindo projeto: ' + company.toUpperCase());
+                    // Aqui você pode redirecionar para um link real depois
                 });
             });
 
