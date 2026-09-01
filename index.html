@@ -134,6 +134,8 @@
         }
         body.detail-mode .explorer-detail {
             display: block !important;
+            max-height: none !important;   /* <--- ADICIONAR ESTA LINHA */
+            overflow-y: hidden !important;  /* <--- ADICIONAR ESTA LINHA */
         }
         body.detail-mode .explorer-toolbar {
             display: none !important;
@@ -712,8 +714,6 @@
             max-width: 100%;
             margin: 0 auto;
             transition: all 0.3s ease;
-            max-height: 58vh;
-            overflow-y: auto;
         }
         .explorer-detail::-webkit-scrollbar {
             width: 12px;
@@ -972,7 +972,6 @@
             body.detail-mode .explorer-detail {
                 max-width: 100%;
                 padding: 8px;
-                max-height: 55vh;
             }
             .detail-header-card {
                 padding: 8px;
