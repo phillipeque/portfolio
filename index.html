@@ -5,113 +5,702 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Retro Portfolio</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100vh; background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
-        #tv-container { position: relative; width: 100vw; height: 100vh; }
-        #background-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
-        #tv-static { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px); background-size: 100% 4px, 4px 100%; animation: staticMove 0.1s steps(2) infinite; z-index: 1; pointer-events: none; }
-        @keyframes staticMove { 0% { background-position: 0 0, 0 0; } 50% { background-position: 0 2px, 2px 0; } 100% { background-position: 0 4px, 4px 0; } }
-        #tv-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; padding: 1.5% 22% 1.5% 22%; text-align: center; transition: padding 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        body.projects-mode #tv-screen { padding: 0.5% 8% 0.5% 8%; }
-        body.projects-mode .retro-window { max-width: 92%; transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        body.projects-mode .window-content { max-height: none; overflow-y: hidden; padding: 10px 14px 8px; transition: max-height 0.4s ease, padding 0.4s ease; }
-        body.projects-mode .explorer-icons-area { grid-template-columns: repeat(4, 1fr); gap: 16px 8px; padding: 12px 10px 10px; }
-        body.projects-mode .explorer-item-icon { width: 68px; height: 68px; }
-        body.projects-mode .explorer-item-name { font-size: 13px; }
-        body.projects-mode .explorer-item-role { font-size: 12px; }
-        body.projects-mode .explorer-item-duration { font-size: 12px; }
-        body.projects-mode .explorer-item { padding: 6px 4px 8px; }
-        body.projects-mode .explorer-toolbar { padding: 2px 6px; }
-        body.projects-mode .explorer-statusbar { font-size: 11px; padding: 2px 8px; }
-        body.detail-mode #tv-screen { padding: 1.5% 18% 1.5% 18%; }
-        body.detail-mode .retro-window { max-width: 75%; }
-        body.detail-mode .window-content { max-height: none; overflow-y: hidden; padding: 12px 16px; }
-        body.detail-mode .explorer-detail { padding: 0; max-width: 100%; margin: 0 auto; }
-        body.detail-mode .explorer-icons-area { display: none !important; }
-        body.detail-mode .explorer-detail { display: block !important; }
-        body.detail-mode .explorer-toolbar { display: none !important; }
-        #flash-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 30; pointer-events: none; opacity: 0; background-color: #000; }
-        #flash-overlay.snap { opacity: 1; transition: opacity 0.04s linear; }
-        #flash-overlay.snowing { opacity: 1; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px); background-size: 3px 3px, 3px 3px, 6px 6px; }
-        .retro-window { position: relative; background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0,0,0,0.3); width: 100%; max-width: 70%; margin: 0 auto; color: #000; text-shadow: none; overflow: hidden; transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes verticalRoll { 0% { transform: translateY(0); } 12% { transform: translateY(-16px); } 28% { transform: translateY(11px); } 45% { transform: translateY(-7px); } 62% { transform: translateY(4px); } 80% { transform: translateY(-2px); } 100% { transform: translateY(0); } }
-        .retro-window.rolling { animation: verticalRoll 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
-        .tear-line { position: absolute; left: 0; width: 100%; background: rgba(255, 255, 255, 0.55); mix-blend-mode: difference; pointer-events: none; z-index: 25; animation: tearShift 0.16s ease-out forwards; }
-        @keyframes tearShift { 0% { transform: translateX(0); opacity: 0.9; } 55% { transform: translateX(var(--tear-offset, 30px)); opacity: 0.7; } 100% { transform: translateX(0); opacity: 0; } }
-        .window-titlebar { background: linear-gradient(90deg, #808080, #a0a0a0); padding: 4px 8px; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid; border-color: #808080 #ffffff #ffffff #808080; }
-        .window-title { font-size: 14px; font-weight: bold; letter-spacing: 2px; color: #000; text-shadow: 1px 1px 0 #a0a0a0; margin-left: 4px; }
-        .window-content { padding: 16px; background: #c0c0c0; min-height: 180px; position: relative; max-height: 70vh; overflow-y: auto; transition: max-height 0.4s ease, padding 0.4s ease, overflow 0.3s ease; }
-        .window-content::-webkit-scrollbar { width: 12px; background: #dfdfdf; }
-        .window-content::-webkit-scrollbar-track { background: #dfdfdf; border-left: 1px solid #808080; }
-        .window-content::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; }
-        .window-content::-webkit-scrollbar-button { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; height: 12px; }
-        .window-footer { text-align: center; padding: 10px; font-size: 10px; color: #fff; text-shadow: 1px 1px 0 #000; letter-spacing: 2px; background: #000; border-top: 2px solid #808080; }
-        .screen-container { display: none; }
-        .screen-container.active { display: block; }
-        .icon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 10px; }
-        .icon-grid .ghost { visibility: hidden; pointer-events: none; }
-        .icon-item { display: flex; flex-direction: column; align-items: center; padding: 10px 5px; }
-        .icon-img { width: 64px; height: 64px; image-rendering: pixelated; image-rendering: crisp-edges; margin-bottom: 8px; object-fit: contain; cursor: pointer; }
-        .icon-label { font-size: 12px; font-weight: bold; letter-spacing: 1px; text-align: center; line-height: 1.3; user-select: none; }
-        .label-orange { color: #c45c26; }
-        .label-black { color: #000; }
-        .label-green { color: #2d5016; }
-        .label-red { color: #c41e3a; }
-        .label-blue { color: #1a3a5c; }
-        .label-purple { color: #4a2d6b; }
-        #tv-frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('pngs/tvframe.png'); background-size: 100% 100%; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; image-rendering: crisp-edges; pointer-events: none; z-index: 40; }
-        #scanlines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px); pointer-events: none; z-index: 9; }
-        .about-layout { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
-        .about-avatar-box { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
-        .avatar-frame { width: 120px; height: 120px; background: #c0c0c0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; padding: 4px; image-rendering: pixelated; image-rendering: crisp-edges; }
-        .avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
-        .avatar-caption { font-size: 10px; font-weight: bold; letter-spacing: 1px; color: #000; text-shadow: 1px 1px 0 #a0a0a0; }
-        .about-bio-box { flex: 1; background: #ffffff; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; overflow: hidden; }
-        .bio-titlebar { background: linear-gradient(90deg, #000080, #1084d0); padding: 3px 6px; display: flex; align-items: center; }
-        .bio-title { font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #ffffff; text-shadow: 1px 1px 0 #000000; }
-        .bio-content { padding: 12px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #000000; text-align: left; max-height: 200px; overflow-y: auto; }
-        .bio-content p { margin-bottom: 10px; text-indent: 0; }
-        .bio-cursor { animation: blink 1s step-end infinite; color: #000080; font-weight: bold; }
-        @keyframes blink { 50% { opacity: 0; } }
-        .contact-form-box { background: #c0c0c0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; text-align: left; width: 100%; overflow: hidden; }
-        .form-titlebar { background: linear-gradient(90deg, #000080, #1084d0); padding: 3px 6px; display: flex; align-items: center; }
-        .form-title { font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #ffffff; text-shadow: 1px 1px 0 #000000; }
-        .contact-form-content { padding: 12px; }
-        .contact-form-box label { display: block; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #000; margin-top: 8px; margin-bottom: 2px; }
-        .contact-form-box label:first-of-type { margin-top: 0; }
-        .contact-form-box input, .contact-form-box textarea { width: 100%; padding: 4px 6px; font-family: 'Courier New', monospace; font-size: 13px; background: #ffffff; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; color: #000; resize: vertical; box-sizing: border-box; }
-        .contact-form-box input:focus, .contact-form-box textarea:focus { outline: none; border-color: #000080 #808080 #808080 #000080; }
-        .contact-form-box textarea { min-height: 140px; }
-        .contact-form-box .form-actions { display: flex; justify-content: flex-end; margin-top: 12px; gap: 8px; }
-        .retro-btn { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; padding: 4px 16px; font-family: 'Courier New', monospace; font-size: 13px; font-weight: bold; color: #000; cursor: pointer; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000; transition: all 0.05s linear; }
-        .retro-btn:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
-        .retro-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        #form-feedback { margin-top: 8px; font-size: 12px; font-weight: bold; text-align: center; color: #000; min-height: 20px; }
-        .bio-content::-webkit-scrollbar { width: 12px; background: #dfdfdf; }
-        .bio-content::-webkit-scrollbar-track { background: #dfdfdf; border-left: 1px solid #808080; }
-        .bio-content::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; }
-        .bio-content::-webkit-scrollbar-button { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; height: 12px; }
-        .explorer-window { margin-bottom: 4px; }
-        .explorer-toolbar { display: flex; align-items: center; gap: 6px; background: #c0c0c0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; padding: 4px 6px; }
-        .explorer-toolbar-btn { width: 22px; height: 20px; display: flex; align-items: center; justify-content: center; background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000; font-size: 12px; font-weight: bold; color: #a0a0a0; flex-shrink: 0; user-select: none; cursor: default; }
-        .explorer-toolbar-btn.disabled { color: #a0a0a0; cursor: default; }
-        .explorer-address { flex: 1; display: flex; align-items: center; gap: 6px; background: #ffffff; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; padding: 3px 8px; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #000; text-align: left; min-width: 0; }
-        .explorer-address span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .explorer-icons-area { background: #ffffff; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; padding: 22px 12px 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px 6px; transition: all 0.3s ease; }
-        .explorer-item { display: flex; flex-direction: column; align-items: center; padding: 6px 4px 8px; cursor: pointer; user-select: none; border: 1px dotted transparent; transition: transform 0.15s ease; }
-        .explorer-item:hover { transform: scale(1.02); }
-        .explorer-item:active { transform: scale(0.96); }
-        .explorer-item-icon { width: 64px; height: 64px; margin-bottom: 6px; image-rendering: pixelated; image-rendering: crisp-edges; object-fit: contain; }
-        .explorer-item-name { font-size: 11px; font-weight: bold; letter-spacing: 0.5px; color: #000; text-align: center; line-height: 1.3; padding: 1px 3px; }
-        .explorer-item-role { font-size: 10px; color: #555; text-align: center; margin-top: 4px; line-height: 1.3; }
-        .explorer-item-duration { font-size: 10px; font-weight: bold; color: #000080; text-align: center; margin-top: 1px; line-height: 1.3; }
-        .explorer-item:hover, .explorer-item:focus-visible { outline: none; border: 1px dotted #000; }
-        .explorer-item:hover .explorer-item-name, .explorer-item:focus-visible .explorer-item-name { background: #000080; color: #ffffff; }
-        .explorer-statusbar { display: flex; justify-content: space-between; gap: 12px; background: #c0c0c0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; padding: 3px 8px; margin-top: 4px; font-size: 10px; letter-spacing: 0.5px; color: #000; }
-        .explorer-statusbar span { border: 1px solid; border-color: #808080 #ffffff #ffffff #808080; padding: 1px 8px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html,
+        body {
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+        #tv-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        #background-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        #tv-static {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 3px);
+            background-size: 100% 4px, 4px 100%;
+            animation: staticMove 0.1s steps(2) infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+        @keyframes staticMove {
+            0% {
+                background-position: 0 0, 0 0;
+            }
+            50% {
+                background-position: 0 2px, 2px 0;
+            }
+            100% {
+                background-position: 0 4px, 4px 0;
+            }
+        }
+        #tv-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            padding: 1.5% 22% 1.5% 22%;
+            text-align: center;
+            transition: padding 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        body.projects-mode #tv-screen {
+            padding: 0.5% 8% 0.5% 8%;
+        }
+        body.projects-mode .retro-window {
+            max-width: 92%;
+            transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        body.projects-mode .window-content {
+            max-height: none;
+            overflow-y: hidden;
+            padding: 10px 14px 8px;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+        body.projects-mode .explorer-icons-area {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px 8px;
+            padding: 12px 10px 10px;
+        }
+        body.projects-mode .explorer-item-icon {
+            width: 68px;
+            height: 68px;
+        }
+        body.projects-mode .explorer-item-name {
+            font-size: 13px;
+        }
+        body.projects-mode .explorer-item-role {
+            font-size: 12px;
+        }
+        body.projects-mode .explorer-item-duration {
+            font-size: 12px;
+        }
+        body.projects-mode .explorer-item {
+            padding: 6px 4px 8px;
+        }
+        body.projects-mode .explorer-toolbar {
+            padding: 2px 6px;
+        }
+        body.projects-mode .explorer-statusbar {
+            font-size: 11px;
+            padding: 2px 8px;
+        }
+        body.detail-mode #tv-screen {
+            padding: 1.5% 18% 1.5% 18%;
+        }
+        body.detail-mode .retro-window {
+            max-width: 75%;
+        }
+        body.detail-mode .window-content {
+            max-height: none;
+            overflow-y: hidden;
+            padding: 12px 16px;
+        }
+        body.detail-mode .explorer-detail {
+            padding: 0;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        body.detail-mode .explorer-icons-area {
+            display: none !important;
+        }
+        body.detail-mode .explorer-detail {
+            display: block !important;
+        }
+        body.detail-mode .explorer-toolbar {
+            display: none !important;
+        }
+        #flash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 30;
+            pointer-events: none;
+            opacity: 0;
+            background-color: #000;
+        }
+        #flash-overlay.snap {
+            opacity: 1;
+            transition: opacity 0.04s linear;
+        }
+        #flash-overlay.snowing {
+            opacity: 1;
+            background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.22) 0px, rgba(255, 255, 255, 0.22) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.3) 0px, rgba(255, 255, 255, 0.3) 2px, transparent 2px, transparent 4px);
+            background-size: 3px 3px, 3px 3px, 6px 6px;
+        }
+        .retro-window {
+            position: relative;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 70%;
+            margin: 0 auto;
+            color: #000;
+            text-shadow: none;
+            overflow: hidden;
+            transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes verticalRoll {
+            0% {
+                transform: translateY(0);
+            }
+            12% {
+                transform: translateY(-16px);
+            }
+            28% {
+                transform: translateY(11px);
+            }
+            45% {
+                transform: translateY(-7px);
+            }
+            62% {
+                transform: translateY(4px);
+            }
+            80% {
+                transform: translateY(-2px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        .retro-window.rolling {
+            animation: verticalRoll 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+        .tear-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.55);
+            mix-blend-mode: difference;
+            pointer-events: none;
+            z-index: 25;
+            animation: tearShift 0.16s ease-out forwards;
+        }
+        @keyframes tearShift {
+            0% {
+                transform: translateX(0);
+                opacity: 0.9;
+            }
+            55% {
+                transform: translateX(var(--tear-offset, 30px));
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+        }
+        .window-titlebar {
+            background: linear-gradient(90deg, #808080, #a0a0a0);
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .window-title {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #000;
+            text-shadow: 1px 1px 0 #a0a0a0;
+            margin-left: 4px;
+        }
+        .window-content {
+            padding: 16px;
+            background: #c0c0c0;
+            min-height: 180px;
+            position: relative;
+            max-height: 70vh;
+            overflow-y: auto;
+            transition: max-height 0.4s ease, padding 0.4s ease, overflow 0.3s ease;
+        }
+        .window-content::-webkit-scrollbar {
+            width: 12px;
+            background: #dfdfdf;
+        }
+        .window-content::-webkit-scrollbar-track {
+            background: #dfdfdf;
+            border-left: 1px solid #808080;
+        }
+        .window-content::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .window-content::-webkit-scrollbar-button {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            height: 12px;
+        }
+        .window-footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 10px;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+            letter-spacing: 2px;
+            background: #000;
+            border-top: 2px solid #808080;
+        }
+        .screen-container {
+            display: none;
+        }
+        .screen-container.active {
+            display: block;
+        }
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+        .icon-grid .ghost {
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 5px;
+        }
+        .icon-img {
+            width: 64px;
+            height: 64px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            margin-bottom: 8px;
+            object-fit: contain;
+            cursor: pointer;
+        }
+        .icon-label {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center;
+            line-height: 1.3;
+            user-select: none;
+        }
+        .label-orange {
+            color: #c45c26;
+        }
+        .label-black {
+            color: #000;
+        }
+        .label-green {
+            color: #2d5016;
+        }
+        .label-red {
+            color: #c41e3a;
+        }
+        .label-blue {
+            color: #1a3a5c;
+        }
+        .label-purple {
+            color: #4a2d6b;
+        }
+        #tv-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('pngs/tvframe.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            pointer-events: none;
+            z-index: 40;
+        }
+        #scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 3px, rgba(0, 0, 0, 0.15) 3px, rgba(0, 0, 0, 0.15) 4px);
+            pointer-events: none;
+            z-index: 9;
+        }
+        .about-layout {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .about-avatar-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .avatar-frame {
+            width: 120px;
+            height: 120px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            padding: 4px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        .avatar-caption {
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #000;
+            text-shadow: 1px 1px 0 #a0a0a0;
+        }
+        .about-bio-box {
+            flex: 1;
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            overflow: hidden;
+        }
+        .bio-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+        }
+        .bio-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000000;
+        }
+        .bio-content {
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #000000;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .bio-content p {
+            margin-bottom: 10px;
+            text-indent: 0;
+        }
+        .bio-cursor {
+            animation: blink 1s step-end infinite;
+            color: #000080;
+            font-weight: bold;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        .contact-form-box {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            text-align: left;
+            width: 100%;
+            overflow: hidden;
+        }
+        .form-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+        }
+        .form-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000000;
+        }
+        .contact-form-content {
+            padding: 12px;
+        }
+        .contact-form-box label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #000;
+            margin-top: 8px;
+            margin-bottom: 2px;
+        }
+        .contact-form-box label:first-of-type {
+            margin-top: 0;
+        }
+        .contact-form-box input,
+        .contact-form-box textarea {
+            width: 100%;
+            padding: 4px 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            color: #000;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .contact-form-box input:focus,
+        .contact-form-box textarea:focus {
+            outline: none;
+            border-color: #000080 #808080 #808080 #000080;
+        }
+        .contact-form-box textarea {
+            min-height: 140px;
+        }
+        .contact-form-box .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+            gap: 8px;
+        }
+        .retro-btn {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 4px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+            cursor: pointer;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
+            transition: all 0.05s linear;
+        }
+        .retro-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+        }
+        .retro-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        #form-feedback {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            color: #000;
+            min-height: 20px;
+        }
+        .bio-content::-webkit-scrollbar {
+            width: 12px;
+            background: #dfdfdf;
+        }
+        .bio-content::-webkit-scrollbar-track {
+            background: #dfdfdf;
+            border-left: 1px solid #808080;
+        }
+        .bio-content::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .bio-content::-webkit-scrollbar-button {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            height: 12px;
+        }
+        .explorer-window {
+            margin-bottom: 4px;
+        }
+        .explorer-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 4px 6px;
+        }
+        .explorer-toolbar-btn {
+            width: 22px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
+            font-size: 12px;
+            font-weight: bold;
+            color: #a0a0a0;
+            flex-shrink: 0;
+            user-select: none;
+            cursor: default;
+        }
+        .explorer-toolbar-btn.disabled {
+            color: #a0a0a0;
+            cursor: default;
+        }
+        .explorer-address {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #000;
+            text-align: left;
+            min-width: 0;
+        }
+        .explorer-address span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .explorer-icons-area {
+            background: #ffffff;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+            padding: 22px 12px 18px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px 6px;
+            transition: all 0.3s ease;
+        }
+        .explorer-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 6px 4px 8px;
+            cursor: pointer;
+            user-select: none;
+            border: 1px dotted transparent;
+            transition: transform 0.15s ease;
+        }
+        .explorer-item:hover {
+            transform: scale(1.02);
+        }
+        .explorer-item:active {
+            transform: scale(0.96);
+        }
+        .explorer-item-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 6px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            object-fit: contain;
+        }
+        .explorer-item-name {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            color: #000;
+            text-align: center;
+            line-height: 1.3;
+            padding: 1px 3px;
+        }
+        .explorer-item-role {
+            font-size: 10px;
+            color: #555;
+            text-align: center;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+        .explorer-item-duration {
+            font-size: 10px;
+            font-weight: bold;
+            color: #000080;
+            text-align: center;
+            margin-top: 1px;
+            line-height: 1.3;
+        }
+        .explorer-item:hover,
+        .explorer-item:focus-visible {
+            outline: none;
+            border: 1px dotted #000;
+        }
+        .explorer-item:hover .explorer-item-name,
+        .explorer-item:focus-visible .explorer-item-name {
+            background: #000080;
+            color: #ffffff;
+        }
+        .explorer-statusbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 3px 8px;
+            margin-top: 4px;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+            color: #000;
+        }
+        .explorer-statusbar span {
+            border: 1px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 1px 8px;
+        }
 
         /* ============================================================
-           DETAIL VIEW REFORMULADO – Estilo Win95 Properties
+           DETAIL VIEW – Win95 Properties
            ============================================================ */
         .explorer-detail {
             background: #c0c0c0;
@@ -126,16 +715,31 @@
             max-height: 58vh;
             overflow-y: auto;
         }
-        .explorer-detail::-webkit-scrollbar { width: 12px; background: #dfdfdf; }
-        .explorer-detail::-webkit-scrollbar-track { background: #dfdfdf; border-left: 1px solid #808080; }
-        .explorer-detail::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; }
-        .explorer-detail::-webkit-scrollbar-button { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; height: 12px; }
+        .explorer-detail::-webkit-scrollbar {
+            width: 12px;
+            background: #dfdfdf;
+        }
+        .explorer-detail::-webkit-scrollbar-track {
+            background: #dfdfdf;
+            border-left: 1px solid #808080;
+        }
+        .explorer-detail::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .explorer-detail::-webkit-scrollbar-button {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            height: 12px;
+        }
 
         .detail-header-card {
             display: flex;
             align-items: center;
             gap: 14px;
-            background: #ffffff;
+            background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
@@ -153,11 +757,28 @@
             border: 2px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
             padding: 2px;
+            mix-blend-mode: multiply;
         }
-        .detail-header-info { flex: 1; min-width: 0; }
-        .detail-header-name { font-size: 14px; font-weight: bold; letter-spacing: 1px; color: #000; margin-bottom: 2px; }
-        .detail-header-meta { font-size: 11px; color: #555; letter-spacing: 0.5px; }
-        .detail-header-meta span { color: #000080; font-weight: bold; }
+        .detail-header-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .detail-header-name {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #000;
+            margin-bottom: 2px;
+        }
+        .detail-header-meta {
+            font-size: 11px;
+            color: #555;
+            letter-spacing: 0.5px;
+        }
+        .detail-header-meta span {
+            color: #000080;
+            font-weight: bold;
+        }
 
         .win95-groupbox {
             background: #c0c0c0;
@@ -180,11 +801,38 @@
             color: #000080;
             text-shadow: none;
         }
-        .detail-about-text { font-size: 12px; line-height: 1.7; color: #000; text-align: left; }
-        .detail-list { list-style: none; padding: 0; margin: 0; }
-        .detail-list li { font-size: 12px; line-height: 1.6; color: #000; padding: 3px 0 3px 18px; position: relative; }
-        .detail-list li::before { content: '►'; position: absolute; left: 2px; top: 3px; font-size: 8px; color: #000080; }
-        .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+        .detail-about-text {
+            font-size: 12px;
+            line-height: 1.7;
+            color: #000;
+            text-align: left;
+        }
+        .detail-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .detail-list li {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #000;
+            padding: 3px 0 3px 18px;
+            position: relative;
+        }
+        .detail-list li::before {
+            content: '►';
+            position: absolute;
+            left: 2px;
+            top: 3px;
+            font-size: 8px;
+            color: #000080;
+        }
+        .detail-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
         .detail-tag {
             background: #c0c0c0;
             border: 2px solid;
@@ -198,15 +846,17 @@
         }
         .detail-actions {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             margin-top: 10px;
             padding-top: 8px;
             border-top: 1px solid #808080;
             border-bottom: 1px solid #ffffff;
         }
-        .detail-actions-left { font-size: 10px; color: #555; letter-spacing: 0.5px; }
-        .detail-actions-right { display: flex; gap: 8px; }
+        .detail-actions-right {
+            display: flex;
+            gap: 8px;
+        }
         .detail-btn {
             background: #c0c0c0;
             border: 2px solid;
@@ -223,7 +873,10 @@
             align-items: center;
             gap: 6px;
         }
-        .detail-btn:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
+        .detail-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+        }
         .detail-btn-secondary {
             background: #c0c0c0;
             border: 2px solid;
@@ -236,7 +889,10 @@
             color: #000;
             cursor: pointer;
         }
-        .detail-btn-secondary:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
+        .detail-btn-secondary:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
+        }
 
         #scan-sweep {
             position: absolute;
@@ -247,7 +903,7 @@
             z-index: 35;
             pointer-events: none;
             opacity: 0;
-            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(200,225,255,0.12) 20%, rgba(255,255,255,0.55) 45%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.55) 55%, rgba(200,225,255,0.12) 80%, rgba(255,255,255,0) 100%);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(200, 225, 255, 0.12) 20%, rgba(255, 255, 255, 0.55) 45%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0.55) 55%, rgba(200, 225, 255, 0.12) 80%, rgba(255, 255, 255, 0) 100%);
             mix-blend-mode: screen;
             filter: blur(0.5px);
         }
@@ -258,54 +914,166 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(to right, rgba(255,255,255,0.9) 0px, rgba(255,255,255,0.9) 1px, transparent 1px, transparent 3px);
+            background: repeating-linear-gradient(to right, rgba(255, 255, 255, 0.9) 0px, rgba(255, 255, 255, 0.9) 1px, transparent 1px, transparent 3px);
             opacity: 0.35;
             mix-blend-mode: screen;
         }
-        #scan-sweep.sweeping { animation: scanSweepMove 2.8s linear; }
-        @keyframes scanSweepMove { 0% { top: -30px; opacity: 0; } 4% { opacity: 1; } 50% { opacity: 1; } 94% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+        #scan-sweep.sweeping {
+            animation: scanSweepMove 2.8s linear;
+        }
+        @keyframes scanSweepMove {
+            0% {
+                top: -30px;
+                opacity: 0;
+            }
+            4% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 1;
+            }
+            94% {
+                opacity: 1;
+            }
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
 
         @media (max-width: 768px) {
-            body.projects-mode #tv-screen { padding: 1% 4% 1% 4%; }
-            body.projects-mode .retro-window { max-width: 98%; }
-            body.projects-mode .explorer-icons-area { grid-template-columns: repeat(2, 1fr); gap: 12px 6px; }
-            body.projects-mode .explorer-item-icon { width: 56px; height: 56px; }
-            body.projects-mode .explorer-item-name { font-size: 12px; }
-            body.projects-mode .explorer-item-role, body.projects-mode .explorer-item-duration { font-size: 11px; }
-            body.detail-mode .retro-window { max-width: 95%; }
-            body.detail-mode #tv-screen { padding: 1% 4% 1% 4%; }
-            body.detail-mode .explorer-detail { max-width: 100%; padding: 8px; max-height: 55vh; }
-            .detail-header-card { padding: 8px; gap: 10px; }
-            .detail-header-icon { width: 40px; height: 40px; }
-            .detail-header-name { font-size: 13px; }
-            .detail-header-meta { font-size: 10px; }
-            .win95-groupbox { padding: 12px 10px 8px; margin-bottom: 8px; }
-            .win95-groupbox-legend { font-size: 10px; }
-            .detail-about-text, .detail-list li { font-size: 11px; }
-            .detail-actions { flex-direction: column; gap: 8px; align-items: stretch; }
-            .detail-actions-right { justify-content: flex-end; }
-            #tv-screen { padding: 2% 12% 2% 12%; }
-            .retro-window { max-width: 90%; }
-            .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .icon-grid .ghost { display: none; }
-            .icon-grid.about-grid { display: flex; justify-content: center; align-items: center; }
-            .icon-img { width: 48px; height: 48px; }
-            .icon-label { font-size: 10px; }
-            .about-layout { flex-direction: column; align-items: center; }
-            .about-bio-box { width: 100%; }
-            .bio-content { max-height: 160px; font-size: 12px; }
-            .contact-form-content { padding: 8px; }
-            .contact-form-box textarea { min-height: 100px; }
-            .explorer-icons-area { grid-template-columns: repeat(2, 1fr); gap: 18px 4px; padding: 16px 6px; }
-            .explorer-item-icon { width: 48px; height: 48px; }
-            .explorer-item-name { font-size: 10px; }
-            .explorer-item-role, .explorer-item-duration { font-size: 9px; }
-            .explorer-address { font-size: 10px; }
-            .explorer-statusbar { font-size: 9px; }
+            body.projects-mode #tv-screen {
+                padding: 1% 4% 1% 4%;
+            }
+            body.projects-mode .retro-window {
+                max-width: 98%;
+            }
+            body.projects-mode .explorer-icons-area {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px 6px;
+            }
+            body.projects-mode .explorer-item-icon {
+                width: 56px;
+                height: 56px;
+            }
+            body.projects-mode .explorer-item-name {
+                font-size: 12px;
+            }
+            body.projects-mode .explorer-item-role,
+            body.projects-mode .explorer-item-duration {
+                font-size: 11px;
+            }
+            body.detail-mode .retro-window {
+                max-width: 95%;
+            }
+            body.detail-mode #tv-screen {
+                padding: 1% 4% 1% 4%;
+            }
+            body.detail-mode .explorer-detail {
+                max-width: 100%;
+                padding: 8px;
+                max-height: 55vh;
+            }
+            .detail-header-card {
+                padding: 8px;
+                gap: 10px;
+            }
+            .detail-header-icon {
+                width: 40px;
+                height: 40px;
+            }
+            .detail-header-name {
+                font-size: 13px;
+            }
+            .detail-header-meta {
+                font-size: 10px;
+            }
+            .win95-groupbox {
+                padding: 12px 10px 8px;
+                margin-bottom: 8px;
+            }
+            .win95-groupbox-legend {
+                font-size: 10px;
+            }
+            .detail-about-text,
+            .detail-list li {
+                font-size: 11px;
+            }
+            .detail-actions {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+            .detail-actions-right {
+                justify-content: flex-end;
+            }
+            #tv-screen {
+                padding: 2% 12% 2% 12%;
+            }
+            .retro-window {
+                max-width: 90%;
+            }
+            .icon-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .icon-grid .ghost {
+                display: none;
+            }
+            .icon-grid.about-grid {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .icon-img {
+                width: 48px;
+                height: 48px;
+            }
+            .icon-label {
+                font-size: 10px;
+            }
+            .about-layout {
+                flex-direction: column;
+                align-items: center;
+            }
+            .about-bio-box {
+                width: 100%;
+            }
+            .bio-content {
+                max-height: 160px;
+                font-size: 12px;
+            }
+            .contact-form-content {
+                padding: 8px;
+            }
+            .contact-form-box textarea {
+                min-height: 100px;
+            }
+            .explorer-icons-area {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px 4px;
+                padding: 16px 6px;
+            }
+            .explorer-item-icon {
+                width: 48px;
+                height: 48px;
+            }
+            .explorer-item-name {
+                font-size: 10px;
+            }
+            .explorer-item-role,
+            .explorer-item-duration {
+                font-size: 9px;
+            }
+            .explorer-address {
+                font-size: 10px;
+            }
+            .explorer-statusbar {
+                font-size: 9px;
+            }
         }
     </style>
-<base target="_blank">
-<base target="_blank">
+    <base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -392,15 +1160,15 @@
                                     </div>
                                 </div>
                                 <div class="win95-groupbox">
-                                    <span class="win95-groupbox-legend">SOBRE O PROJETO</span>
+                                    <span class="win95-groupbox-legend">ABOUT THE PROJECT</span>
                                     <p class="detail-about-text" id="detail-description"></p>
                                 </div>
                                 <div class="win95-groupbox">
-                                    <span class="win95-groupbox-legend">MEU PAPEL</span>
+                                    <span class="win95-groupbox-legend">MY ROLE</span>
                                     <ul class="detail-list" id="detail-papel"></ul>
                                 </div>
                                 <div class="win95-groupbox">
-                                    <span class="win95-groupbox-legend">O QUE EU FIZ</span>
+                                    <span class="win95-groupbox-legend">WHAT I DID</span>
                                     <ul class="detail-list" id="detail-fiz"></ul>
                                 </div>
                                 <div class="win95-groupbox">
@@ -408,13 +1176,12 @@
                                     <div class="detail-tags" id="detail-tags"></div>
                                 </div>
                                 <div class="detail-actions">
-                                    <div class="detail-actions-left" id="detail-actions-left"></div>
                                     <div class="detail-actions-right" id="detail-actions-right"></div>
                                 </div>
                             </div>
                             <div class="explorer-statusbar">
                                 <span id="projects-count">16 object(s)</span>
-                                <span id="projects-selected">Double-click to open</span>
+                                <span id="projects-selected">Click to open</span>
                             </div>
                         </div>
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
@@ -464,12 +1231,14 @@
 
     <script>
         // ============================================================
-        //  FUNDO (Canvas)
+        //  BACKGROUND (Canvas)
         // ============================================================
-        (function(){
+        (function() {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
-            let W, H, mouseX = 0.5, mouseY = 0.5;
+            let W, H,
+                mouseX = 0.5,
+                mouseY = 0.5;
             const PIXEL = 8;
             let skyGradient = null;
             let globalTime = 0;
@@ -482,37 +1251,45 @@
                 canvas.width = W;
                 canvas.height = H;
                 skyGradient = ctx.createLinearGradient(0, 0, 0, H);
-                skyGradient.addColorStop(0,   'rgb(26,58,107)');
-                skyGradient.addColorStop(0.25,'rgb(45,90,160)');
-                skyGradient.addColorStop(0.50,'rgb(74,144,217)');
-                skyGradient.addColorStop(0.75,'rgb(135,206,235)');
-                skyGradient.addColorStop(0.92,'rgb(200,230,245)');
-                skyGradient.addColorStop(1,   'rgb(232,244,252)');
+                skyGradient.addColorStop(0, 'rgb(26,58,107)');
+                skyGradient.addColorStop(0.25, 'rgb(45,90,160)');
+                skyGradient.addColorStop(0.50, 'rgb(74,144,217)');
+                skyGradient.addColorStop(0.75, 'rgb(135,206,235)');
+                skyGradient.addColorStop(0.92, 'rgb(200,230,245)');
+                skyGradient.addColorStop(1, 'rgb(232,244,252)');
                 initClouds();
                 initSun();
             }
-            window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth; mouseY = e.clientY / window.innerHeight; });
-            const PALETTE = { sunCore: [255, 252, 240], sunEdge: [255, 248, 220], cloud: [255, 255, 255], cloudShad:[180, 200, 220], bird: [40, 60, 90] };
-            function rgb(arr, a=1) { return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`; }
+            window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth;
+                mouseY = e.clientY / window.innerHeight; });
+            const PALETTE = { sunCore: [255, 252, 240], sunEdge: [255, 248, 220], cloud: [255, 255, 255],
+            cloudShad: [180, 200, 220], bird: [40, 60, 90] };
+
+            function rgb(arr, a = 1) { return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`; }
+
             function pixelCircleOffscreen(x, cx, cy, r, colorStr) {
                 const r2 = r * r;
                 x.fillStyle = colorStr;
                 for (let y = Math.floor(cy - r); y <= Math.ceil(cy + r); y++) {
                     for (let px = Math.floor(cx - r); px <= Math.ceil(cx + r); px++) {
-                        const dx = px - cx; const dy = y - cy;
-                        if (dx*dx + dy*dy <= r2) x.fillRect(px, y, 1, 1);
+                        const dx = px - cx;
+                        const dy = y - cy;
+                        if (dx * dx + dy * dy <= r2) x.fillRect(px, y, 1, 1);
                     }
                 }
             }
+
             function initSun() {
                 const sunR = Math.min(W, H) * 0.06;
                 const outerR = Math.ceil(sunR * 3);
                 const pad = 4;
                 const size = (outerR + pad) * 2;
                 const c = document.createElement('canvas');
-                c.width = size; c.height = size;
+                c.width = size;
+                c.height = size;
                 const x = c.getContext('2d');
-                const cx = size / 2, cy = size / 2;
+                const cx = size / 2,
+                    cy = size / 2;
                 for (let r = outerR; r >= sunR; r -= 2) {
                     const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
                     pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.sunEdge, Math.max(0, alpha)));
@@ -521,13 +1298,15 @@
                 pixelCircleOffscreen(x, cx, cy, sunR * 0.7, rgb(PALETTE.sunEdge, 0.7));
                 sunImg = { canvas: c, pad: outerR + pad, sunR: sunR };
             }
+
             function createCloudCanvas(baseW, baseH, opacity) {
                 const maxR = 0.55 * baseH * 1.8;
                 const pad = Math.ceil(maxR) + 2;
                 const w = baseW + pad * 2;
                 const h = baseH + pad * 2;
                 const c = document.createElement('canvas');
-                c.width = w; c.height = h;
+                c.width = w;
+                c.height = h;
                 const x = c.getContext('2d');
                 const puffs = [
                     { dx: 0.50, dy: 0.50, r: 0.55 },
@@ -562,6 +1341,7 @@
                 { count: 2, speed: 0.30, parallax: 0.14, yRange: [0.40, 0.65], scale: [1.0, 1.8], opacity: [0.60, 0.85] },
             ];
             let clouds = [];
+
             function initClouds() {
                 clouds = [];
                 layers.forEach((l, li) => {
@@ -571,15 +1351,19 @@
                         const h = Math.floor((12 + Math.random() * 10) * scale * (W / 250));
                         const opacity = l.opacity[0] + Math.random() * (l.opacity[1] - l.opacity[0]);
                         clouds.push({
-                            layer: li, x: Math.random() * W * 1.5 - W * 0.25,
+                            layer: li,
+                            x: Math.random() * W * 1.5 - W * 0.25,
                             y: H * (l.yRange[0] + Math.random() * (l.yRange[1] - l.yRange[0])),
-                            w, h, speed: l.speed * (0.8 + Math.random() * 0.4),
+                            w,
+                            h,
+                            speed: l.speed * (0.8 + Math.random() * 0.4),
                             img: createCloudCanvas(w, h, opacity),
                         });
                     }
                 });
             }
             let birds = [];
+
             function initBirds() {
                 birds = [];
                 for (let i = 0; i < 3; i++) {
@@ -591,6 +1375,7 @@
                     });
                 }
             }
+
             function drawBird(b) {
                 const bx = b.x + (mouseX - 0.5) * W * 0.01;
                 const by = b.y + (mouseY - 0.5) * H * 0.01;
@@ -607,6 +1392,7 @@
                     ctx.fillRect(Math.floor(bx + 2), Math.floor(by + 1), 1, 1);
                 }
             }
+
             function draw() {
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, W, H);
@@ -619,28 +1405,36 @@
                     const l = layers[c.layer];
                     const px = c.x + (mouseX - 0.5) * W * l.parallax;
                     const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
-                    ctx.drawImage(c.img.canvas, Math.floor(px - c.w/2 - c.img.pad), Math.floor(py - c.h/2 - c.img.pad));
+                    ctx.drawImage(c.img.canvas, Math.floor(px - c.w / 2 - c.img.pad), Math.floor(py - c.h / 2 - c.img.pad));
                 });
                 birds.forEach(b => drawBird(b));
             }
+
             function update() {
                 clouds.forEach(c => {
                     c.x -= c.speed;
                     if (c.x + c.w < -20) {
                         c.x = W + 10 + Math.random() * 50;
-                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
+                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer]
+                            .yRange[0]));
                     }
                 });
                 birds.forEach(b => {
                     b.x -= b.speed;
-                    if (b.x < -5) { b.x = W + 5; b.y = H * (0.15 + Math.random() * 0.25); }
+                    if (b.x < -5) { b.x = W + 5;
+                        b.y = H * (0.15 + Math.random() * 0.25); }
                 });
                 globalTime++;
                 draw();
             }
-            function loop() { update(); setTimeout(loop, 16); }
-            window.addEventListener('resize', () => { resize(); initBirds(); });
-            resize(); initBirds(); loop();
+
+            function loop() { update();
+                setTimeout(loop, 16); }
+            window.addEventListener('resize', () => { resize();
+                initBirds(); });
+            resize();
+            initBirds();
+            loop();
         })();
 
         // ============================================================
@@ -649,54 +1443,63 @@
         (function() {
             const sweep = document.getElementById('scan-sweep');
             if (!sweep) return;
+
             function triggerSweep() {
                 sweep.classList.remove('sweeping');
                 void sweep.offsetWidth;
                 sweep.classList.add('sweeping');
             }
             sweep.addEventListener('animationend', function() { sweep.classList.remove('sweeping'); });
+
             function scheduleSweep() {
                 const delay = 15000 + Math.random() * 10000;
-                setTimeout(function() { triggerSweep(); scheduleSweep(); }, delay);
+                setTimeout(function() { triggerSweep();
+                    scheduleSweep(); }, delay);
             }
             scheduleSweep();
         })();
 
         // ============================================================
-        //  NAVEGAÇÃO + PROJECTS + CONTACT
+        //  NAVIGATION + PROJECTS + CONTACT
         // ============================================================
         (function() {
-            const homeScreen     = document.getElementById('screen-home');
-            const aboutScreen    = document.getElementById('screen-about');
+            const homeScreen = document.getElementById('screen-home');
+            const aboutScreen = document.getElementById('screen-about');
             const projectsScreen = document.getElementById('screen-projects');
-            const emailScreen    = document.getElementById('screen-email');
-            const flash          = document.getElementById('flash-overlay');
-            const retroWindow    = document.querySelector('.retro-window');
-            const body           = document.body;
-            let currentScreen    = 'home';
-            let transitioning    = false;
+            const emailScreen = document.getElementById('screen-email');
+            const flash = document.getElementById('flash-overlay');
+            const retroWindow = document.querySelector('.retro-window');
+            const body = document.body;
+            let currentScreen = 'home';
+            let transitioning = false;
 
             const FORMSPREE_ID = 'mrpgpbdb';
             const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
 
             let noiseRAF = null;
+
             function startNoise() {
                 function tick() {
-                    const bx1 = (Math.random() * 4).toFixed(1), by1 = (Math.random() * 4).toFixed(1);
-                    const bx2 = (Math.random() * 4).toFixed(1), by2 = (Math.random() * 4).toFixed(1);
-                    const bx3 = (Math.random() * 6).toFixed(1), by3 = (Math.random() * 6).toFixed(1);
+                    const bx1 = (Math.random() * 4).toFixed(1),
+                        by1 = (Math.random() * 4).toFixed(1);
+                    const bx2 = (Math.random() * 4).toFixed(1),
+                        by2 = (Math.random() * 4).toFixed(1);
+                    const bx3 = (Math.random() * 6).toFixed(1),
+                        by3 = (Math.random() * 6).toFixed(1);
                     flash.style.backgroundPosition = `${bx1}px ${by1}px, ${bx2}px ${by2}px, ${bx3}px ${by3}px`;
                     flash.style.opacity = (0.88 + Math.random() * 0.12).toFixed(2);
                     noiseRAF = requestAnimationFrame(tick);
                 }
                 tick();
             }
+
             function stopNoise() {
                 if (noiseRAF) cancelAnimationFrame(noiseRAF);
                 noiseRAF = null;
                 flash.style.opacity = '';
                 flash.style.backgroundPosition = '';
             }
+
             function spawnTearLines(count) {
                 for (let i = 0; i < count; i++) {
                     const line = document.createElement('div');
@@ -710,6 +1513,7 @@
                     setTimeout(() => line.remove(), 400);
                 }
             }
+
             function triggerTransition(callback) {
                 retroWindow.classList.add('rolling');
                 flash.classList.add('snap');
@@ -718,13 +1522,15 @@
                     flash.classList.add('snowing');
                     startNoise();
                 }, 40);
-                setTimeout(() => { stopNoise(); flash.classList.remove('snowing'); }, 260);
+                setTimeout(() => { stopNoise();
+                    flash.classList.remove('snowing'); }, 260);
                 setTimeout(() => {
                     retroWindow.classList.remove('rolling');
                     spawnTearLines(4 + Math.floor(Math.random() * 2));
                     if (callback) callback();
                 }, 500);
             }
+
             function navigateTo(screen) {
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
@@ -740,146 +1546,192 @@
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
-                    }
-                    else if (screen === 'email') emailScreen.classList.add('active');
+                    } else if (screen === 'email') emailScreen.classList.add('active');
                     currentScreen = screen;
                     transitioning = false;
                 });
             }
 
             // ============================================================
-            //  PROJECTS – Array com novos campos
+            //  PROJECTS – Translated to English
             // ============================================================
-            const PROJECTS = [
-                {
-                    name: 'CoralApp', role: 'Community Manager', duration: '2024 – now', category: 'Web3',
-                    description: 'Plataforma Web3 focada em engajamento comunitário e recompensas descentralizadas. O projeto visa conectar usuários através de interações gamificadas dentro do ecossistema blockchain.',
-                    url: '', gif: 'coralapp.gif',
-                    papel: ['Gestão diária da comunidade no Discord e Telegram', 'Criação de campanhas de engajamento', 'Análise de métricas de retenção', 'Moderação de AMAs e eventos ao vivo'],
-                    fiz: ['Aumentei a base de membros ativos em 40%', 'Implementei sistema de recompensas por participação', 'Organizei 12+ eventos comunitários', 'Reduzi tempo de resposta do suporte em 60%'],
-                    tags: ['Web3', 'Discord', 'Telegram', 'Gamificação', 'Blockchain']
-                },
-                {
-                    name: 'Binance', role: 'Moderator', duration: '2023 – 2024', category: 'Exchange',
-                    description: 'Uma das maiores exchanges de criptomoedas do mundo. Atuei na moderação de comunidades em português, garantindo um ambiente seguro e informativo para usuários.',
-                    url: '', gif: 'binance.gif',
-                    papel: ['Moderação de chat em tempo real', 'Aplicação de regras da comunidade', 'Suporte a novos usuários', 'Reporte de atividades suspeitas'],
-                    fiz: ['Mantuve taxa de conformidade acima de 99%', 'Auxiliei na resolução de 200+ tickets mensais', 'Identifiquei e reportei 50+ tentativas de scam', 'Colaborei na tradução de anúncios oficiais'],
-                    tags: ['Exchange', 'Moderação', 'Suporte', 'Cripto', 'PT-BR']
-                },
-                {
-                    name: 'Arena Games', role: 'Community Lead', duration: '2023', category: 'Gaming',
-                    description: 'Plataforma de jogos competitivos com integração blockchain. Comunidade ativa de gamers e entusiastas de esports no espaço Web3.',
-                    url: '', gif: 'arenagames.gif',
-                    papel: ['Liderança da equipe de moderadores', 'Estratégia de crescimento orgânico', 'Parcerias com influenciadores', 'Gestão de crises e conflitos'],
-                    fiz: ['Cresci a comunidade de 2k para 15k membros', 'Fechei parcerias com 8 streamers', 'Criei programa de embaixadores', 'Reduzi churn rate em 25%'],
-                    tags: ['Gaming', 'Esports', 'Web3', 'Liderança', 'Parcerias']
-                },
-                {
-                    name: 'Bionic', role: 'Moderator', duration: '2022 – 2023', category: 'Tech',
-                    description: 'Projeto de infraestrutura tech voltado para automação e ferramentas de produtividade. Comunidade técnica de desenvolvedores e early adopters.',
-                    url: '', gif: 'bionic.gif',
-                    papel: ['Moderação de fóruns técnicos', 'Suporte a integrações', 'Feedback de bugs para devs', 'Documentação da comunidade'],
-                    fiz: ['Criei FAQ com 50+ respostas', 'Reduzi tickets repetitivos em 35%', 'Mapeei 20+ bugs críticos', 'Organizei beta testing com 100 usuários'],
-                    tags: ['Tech', 'Automação', 'Suporte Técnico', 'QA', 'Documentação']
-                },
-                {
-                    name: 'Reaktor', role: 'Community Builder', duration: '2022', category: 'DevOps',
-                    description: 'Ferramenta de DevOps para deploy contínuo e monitoramento. Comunidade de devs e SREs buscando otimização de pipelines.',
-                    url: '', gif: 'reaktor.gif',
-                    papel: ['Construção de comunidade do zero', 'Onboarding de novos membros', 'Criação de conteúdo técnico', 'Networking com devs seniores'],
-                    fiz: ['Lancei comunidade com 500 membros no mês 1', 'Produzi 20+ tutoriais e guias', 'Organizei 6 workshops técnicos', 'Estabeleci canal de feedback direto com founders'],
-                    tags: ['DevOps', 'Comunidade', 'Tutoriais', 'Onboarding', 'Networking']
-                },
-                {
-                    name: 'FortBlockGames', role: 'Moderator', duration: '2024 – now', category: 'Gaming',
-                    description: 'Jogo de estratégia em blocos com economia play-to-earn. Comunidade global de jogadores competitivos e criadores de conteúdo.',
-                    url: '', gif: 'fortblockgames.gif',
-                    papel: ['Moderação multilíngue', 'Suporte a torneios', 'Gestão de creators', 'Análise de feedback de gameplay'],
-                    fiz: ['Suportei 5 torneios oficiais', 'Gerenciei 15+ creators parceiros', 'Coletei 300+ feedbacks de jogadores', 'Mantuve NPS acima de 8.5'],
-                    tags: ['Gaming', 'P2E', 'Torneios', 'Creators', 'Multilíngue']
-                },
-                {
-                    name: 'BeeOS', role: 'Community Manager', duration: '2023', category: 'OS',
-                    description: 'Sistema operacional descentralizado focado em privacidade e soberania digital. Comunidade de early adopters e entusiastas de open source.',
-                    url: '', gif: 'beeos.gif',
-                    papel: ['Gestão de comunidade global', 'Comunicação de updates', 'Beta testing coordination', 'Relacionamento com contribuidores open source'],
-                    fiz: ['Coordenei beta com 1k testers', 'Reduzi churn pós-launch em 30%', 'Criei programa de bug bounties', 'Aumentei contribuições em 45%'],
-                    tags: ['OS', 'Open Source', 'Privacidade', 'Beta', 'Global']
-                },
-                {
-                    name: 'Streamr', role: 'Community Lead', duration: '2022 – 2023', category: 'Streaming',
-                    description: 'Protocolo de streaming de dados em tempo real. Comunidade de desenvolvedores e data engineers interessados em dados descentralizados.',
-                    url: '', gif: 'streamr.gif',
-                    papel: ['Liderança de comunidade dev', 'Criação de conteúdo educacional', 'Organização de hackathons', 'Mentoria de novos contribuidores'],
-                    fiz: ['Organizei 3 hackathons com 500+ participantes', 'Criei curso introdutório acessado por 2k devs', 'Aumentei contribuições GitHub em 60%', 'Estabeleci programa de grants'],
-                    tags: ['Streaming', 'Dados', 'Hackathon', 'DevRel', 'Mentoria']
-                },
-                {
-                    name: 'Xend Finance', role: 'Moderator', duration: '2023', category: 'DeFi',
-                    description: 'Plataforma DeFi de poupança e cooperativas de crédito. Comunidade focada em inclusão financeira e educação sobre DeFi.',
-                    url: '', gif: 'xend.gif',
-                    papel: ['Moderação e educação financeira', 'Suporte a cooperativas', 'Tradução de materiais', 'Webinars educativos'],
-                    fiz: ['Eduquei 1k+ usuários sobre DeFi', 'Suportei 30+ cooperativas', 'Traduzi 25+ artigos técnicos', 'Organizei 8 webinars educativos'],
-                    tags: ['DeFi', 'Educação', 'Cooperativas', 'Moderação', 'Webinars']
-                },
-                {
-                    name: 'Wicrypt', role: 'Community Manager', duration: '2023 – 2024', category: 'Network',
-                    description: 'Rede de compartilhamento de WiFi descentralizada. Comunidade de hosts e usuários em mercados emergentes.',
-                    url: '', gif: 'wicrypt.gif',
-                    papel: ['Gestão de comunidade de hosts', 'Suporte técnico a usuários', 'Campanhas de aquisição', 'Retenção e loyalty programs'],
-                    fiz: ['Aumentei base de hosts em 55%', 'Reduzi churn de hosts em 40%', 'Criei programa de indicação', 'Suportei lançamento em 3 novos países'],
-                    tags: ['Network', 'WiFi', 'Hosts', 'Aquisição', 'Retenção']
-                },
-                {
-                    name: 'PIPE', role: 'Community Builder', duration: '2024', category: 'Infra',
-                    description: 'Infraestrutura de pipeline de dados para Web3. Comunidade técnica de engenheiros de dados e protocolos parceiros.',
-                    url: '', gif: 'pipe.gif',
-                    papel: ['Construção de comunidade técnica', 'Parcerias com protocolos', 'Documentação e tutoriais', 'Eventos técnicos'],
-                    fiz: ['Construí comunidade de 3k engenheiros', 'Fechei 10+ parcerias técnicas', 'Produzi 15+ whitepapers e guias', 'Organizei summit com 200+ participantes'],
-                    tags: ['Infra', 'Dados', 'Parcerias', 'Documentação', 'Eventos']
-                },
-                {
-                    name: 'TAP', role: 'Moderator', duration: '2022', category: 'Payments',
-                    description: 'Solução de pagamentos instantâneos em cripto. Comunidade de merchants e usuários finais buscando adoção de pagamentos digitais.',
-                    url: '', gif: 'tap.gif',
-                    papel: ['Moderação de suporte a merchants', 'Onboarding de novos parceiros', 'Feedback de UX', 'Reporte de fraudes'],
-                    fiz: ['Onboardei 50+ merchants', 'Reduzi tempo de KYC em 25%', 'Identifiquei 15+ casos de fraude', 'Criei guia de boas práticas'],
-                    tags: ['Payments', 'Merchants', 'KYC', 'Fraudes', 'Onboarding']
-                },
-                {
-                    name: 'Sheertopia', role: 'Community Lead', duration: '2023 – now', category: 'Metaverse',
-                    description: 'Metaverse focado em experiências imersivas e economia virtual. Comunidade de creators, gamers e investidores virtuais.',
-                    url: '', gif: 'sheertopia.gif',
-                    papel: ['Liderança estratégica da comunidade', 'Gestão de creators e builders', 'Economia virtual e tokens', 'Eventos e experiências imersivas'],
-                    fiz: ['Cresci comunidade para 25k+ membros', 'Gerenciei 30+ creators oficiais', 'Organizei 10+ eventos no metaverso', 'Aumentei volume de transações em 80%'],
-                    tags: ['Metaverse', 'Creators', 'Economia Virtual', 'Eventos', 'Tokens']
-                },
-                {
-                    name: "Lion's Share Group", role: 'Community Manager', duration: '2024', category: 'Media',
-                    description: 'Grupo de mídia e conteúdo focado em educação sobre cripto e finanças. Comunidade de seguidores e criadores de conteúdo.',
-                    url: '', gif: 'lionssharegroup.gif',
-                    papel: ['Gestão de comunidade de creators', 'Curadoria de conteúdo', 'Engajamento em redes sociais', 'Parcerias de mídia'],
-                    fiz: ['Aumentei engajamento em 70%', 'Coordenei 20+ campanhas de conteúdo', 'Fechei 5+ parcerias de mídia', 'Criei programa de afiliados'],
-                    tags: ['Media', 'Creators', 'Conteúdo', 'Engajamento', 'Afiliados']
-                },
-                {
-                    name: 'Coinracer', role: 'Community Builder', duration: '2023', category: 'Gaming',
-                    description: 'Jogo de corrida arcade com economia NFT. Comunidade de gamers casuais e colecionadores de itens digitais.',
-                    url: '', gif: 'coinracer.gif',
-                    papel: ['Construção de comunidade gamer', 'Gestão de NFTs e drops', 'Suporte a jogadores', 'Marketing comunitário'],
-                    fiz: ['Lancei comunidade com 8k membros', 'Coordenei 6 drops de NFTs', 'Suportei 3 temporadas competitivas', 'Aumentei retenção D7 em 35%'],
-                    tags: ['Gaming', 'NFT', 'Arcade', 'Drops', 'Retenção']
-                },
-                {
-                    name: 'VS1', role: 'Community Manager', duration: '2022 – now', category: 'Platform',
-                    description: 'Plataforma de serviços e ferramentas para comunidades Web3. Hub central para gestores de comunidade e projetos.',
-                    url: '', gif: 'vs1.gif',
-                    papel: ['Gestão da comunidade de gestores', 'Suporte a ferramentas da plataforma', 'Feedback de produto', 'Criação de recursos educativos'],
-                    fiz: ['Mantuve comunidade ativa de 10k+ gestores', 'Coletei 500+ feedbacks de produto', 'Criei 30+ templates e recursos', 'Organizei conferência anual com 1k+ participantes'],
-                    tags: ['Platform', 'Gestores', 'Ferramentas', 'Produto', 'Conferência']
-                }
-            ];
+            const PROJECTS = [{
+                name: 'CoralApp',
+                role: 'Community Manager',
+                duration: '2024 – now',
+                category: 'Web3',
+                description: 'Web3 platform focused on community engagement and decentralized rewards. The project aims to connect users through gamified interactions within the blockchain ecosystem.',
+                url: '',
+                gif: 'coralapp.gif',
+                papel: ['Daily community management on Discord and Telegram', 'Creation of engagement campaigns', 'Retention metrics analysis', 'Moderation of AMAs and live events'],
+                fiz: ['Increased active member base by 40%', 'Implemented participation reward system', 'Organized 12+ community events', 'Reduced support response time by 60%'],
+                tags: ['Web3', 'Discord', 'Telegram', 'Gamification', 'Blockchain']
+            }, {
+                name: 'Binance',
+                role: 'Moderator',
+                duration: '2023 – 2024',
+                category: 'Exchange',
+                description: 'One of the largest cryptocurrency exchanges in the world. I moderated Portuguese-speaking communities, ensuring a safe and informative environment for users.',
+                url: '',
+                gif: 'binance.gif',
+                papel: ['Real-time chat moderation', 'Community rules enforcement', 'Support for new users', 'Reporting suspicious activities'],
+                fiz: ['Maintained compliance rate above 99%', 'Assisted in resolving 200+ monthly tickets', 'Identified and reported 50+ scam attempts', 'Collaborated on translating official announcements'],
+                tags: ['Exchange', 'Moderation', 'Support', 'Crypto', 'PT-BR']
+            }, {
+                name: 'Arena Games',
+                role: 'Community Lead',
+                duration: '2023',
+                category: 'Gaming',
+                description: 'Competitive gaming platform with blockchain integration. Active community of gamers and esports enthusiasts in the Web3 space.',
+                url: '',
+                gif: 'arenagames.gif',
+                papel: ['Leadership of moderator team', 'Organic growth strategy', 'Influencer partnerships', 'Crisis and conflict management'],
+                fiz: ['Grew community from 2k to 15k members', 'Closed partnerships with 8 streamers', 'Created ambassador program', 'Reduced churn rate by 25%'],
+                tags: ['Gaming', 'Esports', 'Web3', 'Leadership', 'Partnerships']
+            }, {
+                name: 'Bionic',
+                role: 'Moderator',
+                duration: '2022 – 2023',
+                category: 'Tech',
+                description: 'Tech infrastructure project focused on automation and productivity tools. Technical community of developers and early adopters.',
+                url: '',
+                gif: 'bionic.gif',
+                papel: ['Technical forum moderation', 'Integration support', 'Bug feedback for developers', 'Community documentation'],
+                fiz: ['Created FAQ with 50+ answers', 'Reduced repetitive tickets by 35%', 'Mapped 20+ critical bugs', 'Organized beta testing with 100 users'],
+                tags: ['Tech', 'Automation', 'Technical Support', 'QA', 'Documentation']
+            }, {
+                name: 'Reaktor',
+                role: 'Community Builder',
+                duration: '2022',
+                category: 'DevOps',
+                description: 'DevOps tool for continuous deployment and monitoring. Community of devs and SREs looking to optimize pipelines.',
+                url: '',
+                gif: 'reaktor.gif',
+                papel: ['Building community from scratch', 'Onboarding new members', 'Creating technical content', 'Networking with senior devs'],
+                fiz: ['Launched community with 500 members in month 1', 'Produced 20+ tutorials and guides', 'Organized 6 technical workshops', 'Established direct feedback channel with founders'],
+                tags: ['DevOps', 'Community', 'Tutorials', 'Onboarding', 'Networking']
+            }, {
+                name: 'FortBlockGames',
+                role: 'Moderator',
+                duration: '2024 – now',
+                category: 'Gaming',
+                description: 'Block strategy game with play-to-earn economy. Global community of competitive players and content creators.',
+                url: '',
+                gif: 'fortblockgames.gif',
+                papel: ['Multilingual moderation', 'Tournament support', 'Creator management', 'Gameplay feedback analysis'],
+                fiz: ['Supported 5 official tournaments', 'Managed 15+ partner creators', 'Collected 300+ player feedbacks', 'Maintained NPS above 8.5'],
+                tags: ['Gaming', 'P2E', 'Tournaments', 'Creators', 'Multilingual']
+            }, {
+                name: 'BeeOS',
+                role: 'Community Manager',
+                duration: '2023',
+                category: 'OS',
+                description: 'Decentralized operating system focused on privacy and digital sovereignty. Community of early adopters and open source enthusiasts.',
+                url: '',
+                gif: 'beeos.gif',
+                papel: ['Global community management', 'Update communication', 'Beta testing coordination', 'Relationship with open source contributors'],
+                fiz: ['Coordinated beta with 1k testers', 'Reduced post-launch churn by 30%', 'Created bug bounty program', 'Increased contributions by 45%'],
+                tags: ['OS', 'Open Source', 'Privacy', 'Beta', 'Global']
+            }, {
+                name: 'Streamr',
+                role: 'Community Lead',
+                duration: '2022 – 2023',
+                category: 'Streaming',
+                description: 'Real-time data streaming protocol. Community of developers and data engineers interested in decentralized data.',
+                url: '',
+                gif: 'streamr.gif',
+                papel: ['Developer community leadership', 'Educational content creation', 'Hackathon organization', 'Mentoring new contributors'],
+                fiz: ['Organized 3 hackathons with 500+ participants', 'Created introductory course accessed by 2k devs', 'Increased GitHub contributions by 60%', 'Established grants program'],
+                tags: ['Streaming', 'Data', 'Hackathon', 'DevRel', 'Mentorship']
+            }, {
+                name: 'Xend Finance',
+                role: 'Moderator',
+                duration: '2023',
+                category: 'DeFi',
+                description: 'DeFi savings and credit union platform. Community focused on financial inclusion and DeFi education.',
+                url: '',
+                gif: 'xend.gif',
+                papel: ['Moderation and financial education', 'Credit union support', 'Material translation', 'Educational webinars'],
+                fiz: ['Educated 1k+ users about DeFi', 'Supported 30+ credit unions', 'Translated 25+ technical articles', 'Organized 8 educational webinars'],
+                tags: ['DeFi', 'Education', 'Credit Unions', 'Moderation', 'Webinars']
+            }, {
+                name: 'Wicrypt',
+                role: 'Community Manager',
+                duration: '2023 – 2024',
+                category: 'Network',
+                description: 'Decentralized WiFi sharing network. Community of hosts and users in emerging markets.',
+                url: '',
+                gif: 'wicrypt.gif',
+                papel: ['Host community management', 'User technical support', 'Acquisition campaigns', 'Retention and loyalty programs'],
+                fiz: ['Increased host base by 55%', 'Reduced host churn by 40%', 'Created referral program', 'Supported launch in 3 new countries'],
+                tags: ['Network', 'WiFi', 'Hosts', 'Acquisition', 'Retention']
+            }, {
+                name: 'PIPE',
+                role: 'Community Builder',
+                duration: '2024',
+                category: 'Infra',
+                description: 'Data pipeline infrastructure for Web3. Technical community of data engineers and partner protocols.',
+                url: '',
+                gif: 'pipe.gif',
+                papel: ['Technical community building', 'Protocol partnerships', 'Documentation and tutorials', 'Technical events'],
+                fiz: ['Built community of 3k engineers', 'Closed 10+ technical partnerships', 'Produced 15+ whitepapers and guides', 'Organized summit with 200+ attendees'],
+                tags: ['Infra', 'Data', 'Partnerships', 'Documentation', 'Events']
+            }, {
+                name: 'TAP',
+                role: 'Moderator',
+                duration: '2022',
+                category: 'Payments',
+                description: 'Instant crypto payment solution. Community of merchants and end-users seeking digital payment adoption.',
+                url: '',
+                gif: 'tap.gif',
+                papel: ['Merchant support moderation', 'New partner onboarding', 'UX feedback', 'Fraud reporting'],
+                fiz: ['Onboarded 50+ merchants', 'Reduced KYC time by 25%', 'Identified 15+ fraud cases', 'Created best practices guide'],
+                tags: ['Payments', 'Merchants', 'KYC', 'Fraud', 'Onboarding']
+            }, {
+                name: 'Sheertopia',
+                role: 'Community Lead',
+                duration: '2023 – now',
+                category: 'Metaverse',
+                description: 'Metaverse focused on immersive experiences and virtual economy. Community of creators, gamers, and virtual investors.',
+                url: '',
+                gif: 'sheertopia.gif',
+                papel: ['Strategic community leadership', 'Creator and builder management', 'Virtual economy and tokens', 'Events and immersive experiences'],
+                fiz: ['Grew community to 25k+ members', 'Managed 30+ official creators', 'Organized 10+ metaverse events', 'Increased transaction volume by 80%'],
+                tags: ['Metaverse', 'Creators', 'Virtual Economy', 'Events', 'Tokens']
+            }, {
+                name: "Lion's Share Group",
+                role: 'Community Manager',
+                duration: '2024',
+                category: 'Media',
+                description: 'Media and content group focused on crypto and finance education. Community of followers and content creators.',
+                url: '',
+                gif: 'lionssharegroup.gif',
+                papel: ['Creator community management', 'Content curation', 'Social media engagement', 'Media partnerships'],
+                fiz: ['Increased engagement by 70%', 'Coordinated 20+ content campaigns', 'Closed 5+ media partnerships', 'Created affiliate program'],
+                tags: ['Media', 'Creators', 'Content', 'Engagement', 'Affiliates']
+            }, {
+                name: 'Coinracer',
+                role: 'Community Builder',
+                duration: '2023',
+                category: 'Gaming',
+                description: 'Arcade racing game with NFT economy. Community of casual gamers and digital item collectors.',
+                url: '',
+                gif: 'coinracer.gif',
+                papel: ['Gamer community building', 'NFT and drops management', 'Player support', 'Community marketing'],
+                fiz: ['Launched community with 8k members', 'Coordinated 6 NFT drops', 'Supported 3 competitive seasons', 'Increased D7 retention by 35%'],
+                tags: ['Gaming', 'NFT', 'Arcade', 'Drops', 'Retention']
+            }, {
+                name: 'VS1',
+                role: 'Community Manager',
+                duration: '2022 – now',
+                category: 'Platform',
+                description: 'Services and tools platform for Web3 communities. Central hub for community managers and projects.',
+                url: '',
+                gif: 'vs1.gif',
+                papel: ['Community of managers management', 'Platform tools support', 'Product feedback', 'Educational resource creation'],
+                fiz: ['Maintained active community of 10k+ managers', 'Collected 500+ product feedbacks', 'Created 30+ templates and resources', 'Organized annual conference with 1k+ attendees'],
+                tags: ['Platform', 'Managers', 'Tools', 'Product', 'Conference']
+            }];
 
             const iconsArea = document.getElementById('projects-icons-area');
             const detailView = document.getElementById('projects-detail');
@@ -893,7 +1745,7 @@
                 if (detailView) detailView.style.display = 'none';
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
-                if (projectsSelected) projectsSelected.textContent = 'Double-click to open';
+                if (projectsSelected) projectsSelected.textContent = 'Click to open';
                 isDetailOpen = false;
                 body.classList.remove('detail-mode');
                 if (currentScreen === 'projects') body.classList.add('projects-mode');
@@ -914,7 +1766,6 @@
                 document.getElementById('detail-duration').textContent = project.duration;
                 document.getElementById('detail-description').textContent = project.description;
 
-                // Papel
                 const papelList = document.getElementById('detail-papel');
                 papelList.innerHTML = '';
                 (project.papel || []).forEach(item => {
@@ -923,7 +1774,6 @@
                     papelList.appendChild(li);
                 });
 
-                // O que eu fiz
                 const fizList = document.getElementById('detail-fiz');
                 fizList.innerHTML = '';
                 (project.fiz || []).forEach(item => {
@@ -932,7 +1782,6 @@
                     fizList.appendChild(li);
                 });
 
-                // Tags
                 const tagsContainer = document.getElementById('detail-tags');
                 tagsContainer.innerHTML = '';
                 (project.tags || []).forEach(tag => {
@@ -942,18 +1791,8 @@
                     tagsContainer.appendChild(span);
                 });
 
-                // Ações
-                const actionsLeft = document.getElementById('detail-actions-left');
                 const actionsRight = document.getElementById('detail-actions-right');
-                actionsLeft.innerHTML = '';
                 actionsRight.innerHTML = '';
-
-                const backBtn = document.createElement('button');
-                backBtn.type = 'button';
-                backBtn.className = 'detail-btn-secondary';
-                backBtn.textContent = '← BACK';
-                backBtn.addEventListener('click', () => closeProjectDetail(true));
-                actionsLeft.appendChild(backBtn);
 
                 if (project.url) {
                     const linkBtn = document.createElement('a');
@@ -1027,14 +1866,15 @@
 
                     item.addEventListener('click', function() { showProjectDetail(project); });
                     item.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();
+                            item.click(); }
                     });
                 });
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
             }
 
             // ============================================================
-            //  FORMULÁRIO DE CONTATO
+            //  CONTACT FORM
             // ============================================================
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
