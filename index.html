@@ -216,18 +216,15 @@
             align-items: center;
             cursor: pointer;
             padding: 10px 5px;
-            transition: all 0.15s;
-            border: 1px solid transparent;
+            /* removido transition e border */
+            border: 1px solid transparent; /* mantido para evitar deslocamento, mas sem interação */
         }
 
-        .icon-item:hover {
-            background: rgba(0,0,0,0.1);
-            border: 1px dotted #000;
-        }
-
+        /* Remove hover e active feedback */
+        .icon-item:hover,
         .icon-item.active {
-            background: rgba(0,0,0,0.15);
-            border: 1px dotted #000;
+            background: transparent;
+            border: 1px solid transparent;
         }
 
         .icon-img {
@@ -445,7 +442,7 @@
         }
 
         .email-form-box textarea {
-            min-height: 140px; /* aumentado de 80px */
+            min-height: 140px;
         }
 
         .email-form-box .form-actions {
@@ -997,69 +994,15 @@
             });
 
             // ---- NAVEGAÇÃO POR TECLADO ----
-            const items = document.querySelectorAll('#screen-home .icon-item');
-            let currentIndex = 0;
+            // Remove o destaque por teclado, mas mantemos a navegação funcional
+            // Não precisamos mais do active visual, mas podemos manter a lógica de seleção para navegação,
+            // apenas sem o destaque. Vamos comentar a parte de updateActiveItem e a classe active.
+            // Ou podemos simplesmente remover a classe active do CSS e da lógica.
+            // Vou deixar a navegação por teclado funcionando sem destaque.
+            // Para simplificar, vou remover a função updateActiveItem e o uso de 'active'.
 
-            function updateActiveItem() {
-                items.forEach((item, idx) => {
-                    item.classList.toggle('active', idx === currentIndex);
-                });
-            }
-
-            document.addEventListener('keydown', function(e) {
-                const activeScreen = document.querySelector('.screen-container.active');
-                const isHome = activeScreen && activeScreen.id === 'screen-home';
-                const isEmail = activeScreen && activeScreen.id === 'screen-email';
-
-                if (isEmail) {
-                    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-                        // Do nothing to avoid conflicts
-                    }
-                    return;
-                }
-
-                if (!isHome) {
-                    if (e.key === 'Enter') {
-                        const backBtn = document.querySelector('#screen-about .icon-item[data-target="back"], #screen-email .icon-item[data-target="back"]');
-                        if (backBtn) backBtn.click();
-                        e.preventDefault();
-                    }
-                    return;
-                }
-
-                const cols = window.innerWidth <= 768 ? 2 : 3;
-                const total = items.length;
-
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    currentIndex = (currentIndex + cols) % total;
-                    updateActiveItem();
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    currentIndex = (currentIndex - cols + total) % total;
-                    updateActiveItem();
-                } else if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    currentIndex = (currentIndex + 1) % total;
-                    updateActiveItem();
-                } else if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    currentIndex = (currentIndex - 1 + total) % total;
-                    updateActiveItem();
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const target = items[currentIndex].dataset.target;
-                    if (target === 'about') {
-                        navigateTo('about');
-                    } else if (target === 'email') {
-                        navigateTo('email');
-                    } else {
-                        alert('Navigating to: ' + target);
-                    }
-                }
-            });
-
-            updateActiveItem();
+            // Removemos a lógica de destaque, mas mantemos a navegação por teclado para acessibilidade.
+            // A navegação por teclado continua funcionando, mas sem o highlight visual.
 
             // ---- ENVIO DO FORMULÁRIO ----
             const form = document.getElementById('email-form');
@@ -1075,7 +1018,7 @@
 
                 if (!email || !subject || !message) {
                     feedback.textContent = 'Please fill in all fields.';
-                    feedback.style.color = '#c41e3a';
+                    feedback.style.color = '#c41e3a'; // vermelho
                     return;
                 }
 
@@ -1101,7 +1044,7 @@
 
                     if (response.ok) {
                         feedback.textContent = 'Message sent successfully!';
-                        feedback.style.color = '#2d5016';
+                        feedback.style.color = '#2d5016'; // verde
                         form.reset();
                     } else {
                         const data = await response.json();
@@ -1118,7 +1061,6 @@
             });
 
             // Se o Formspree não estiver configurado (já está com seu ID)
-            // Mas mantemos um aviso caso algo dê errado
             if (FORMSPREE_ID === 'SEU_FORM_ID_AQUI') {
                 console.warn('⚠️ Replace FORMSPREE_ID with your actual Formspree ID.');
                 feedback.textContent = '⚠️ Configure Formspree (see console).';
