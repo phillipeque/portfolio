@@ -1160,7 +1160,7 @@
 
     <script>
         // ============================================================
-        //  FUNDO (Canvas) — OTIMIZADO v3
+        //  FUNDO (Canvas) — OTIMIZADO v4
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -1205,6 +1205,7 @@
                 return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`;
             }
 
+            // Desenha círculo pixelado (sem anti-alias) no canvas offscreen
             function pixelCircleOffscreen(x, cx, cy, r, colorStr) {
                 const r2 = r * r;
                 x.fillStyle = colorStr;
@@ -1223,7 +1224,7 @@
             function initSun() {
                 const sunR = Math.min(W, H) * 0.06;
                 const outerR = Math.ceil(sunR * 3);
-                const pad = 4; // margem extra para segurança
+                const pad = 4;
                 const size = (outerR + pad) * 2;
                 const c = document.createElement('canvas');
                 c.width = size;
@@ -1232,20 +1233,17 @@
                 const cx = size / 2;
                 const cy = size / 2;
 
-                // Halo externo: círculos concêntricos com alpha decrescente
                 for (let r = outerR; r >= sunR; r -= 2) {
                     const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
                     pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.sunEdge, Math.max(0, alpha)));
                 }
-                // Núcleo
                 pixelCircleOffscreen(x, cx, cy, sunR, rgb(PALETTE.sunCore, 0.95));
-                // Inner glow
                 pixelCircleOffscreen(x, cx, cy, sunR * 0.7, rgb(PALETTE.sunEdge, 0.7));
 
                 sunImg = { canvas: c, pad: outerR + pad, sunR: sunR };
             }
 
-            // ===== NUVENS OFFSCREEN =====
+            // ===== NUVENS OFFSCREEN (pixeladas, visual idêntico ao original) =====
             function createCloudCanvas(baseW, baseH, opacity) {
                 const maxR = 0.55 * baseH * 1.8;
                 const pad = Math.ceil(maxR) + 2;
@@ -1255,7 +1253,6 @@
                 c.width = w;
                 c.height = h;
                 const x = c.getContext('2d');
-                x.imageSmoothingEnabled = false;
 
                 const puffs = [
                     { dx: 0.50, dy: 0.50, r: 0.55 },
@@ -1263,24 +1260,27 @@
                     { dx: 0.80, dy: 0.55, r: 0.42 },
                 ];
 
-                x.fillStyle = `rgba(180,200,220,${opacity * 0.3})`;
+                // Sombra
                 puffs.forEach(p => {
-                    x.beginPath();
-                    x.arc(pad + p.dx * baseW, pad + p.dy * baseH + baseH * 0.08, p.r * baseH * 1.8, 0, Math.PI * 2);
-                    x.fill();
+                    const cx = pad + p.dx * baseW;
+                    const cy = pad + p.dy * baseH + baseH * 0.08;
+                    const r = p.r * baseH * 1.8;
+                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloudShad, opacity * 0.3));
                 });
-                x.fillStyle = `rgba(255,255,255,${opacity})`;
+                // Cor base
                 puffs.forEach(p => {
-                    x.beginPath();
-                    x.arc(pad + p.dx * baseW, pad + p.dy * baseH, p.r * baseH * 1.6, 0, Math.PI * 2);
-                    x.fill();
+                    const cx = pad + p.dx * baseW;
+                    const cy = pad + p.dy * baseH;
+                    const r = p.r * baseH * 1.6;
+                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity));
                 });
-                x.fillStyle = `rgba(255,255,255,${opacity * 0.5})`;
+                // Highlight
                 puffs.forEach(p => {
                     if (p.dy < 0.6) {
-                        x.beginPath();
-                        x.arc(pad + p.dx * baseW, pad + p.dy * baseH - baseH * 0.05, p.r * baseH * 1.1 * 0.7, 0, Math.PI * 2);
-                        x.fill();
+                        const cx = pad + p.dx * baseW;
+                        const cy = pad + p.dy * baseH - baseH * 0.05;
+                        const r = p.r * baseH * 1.1 * 0.7;
+                        pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity * 0.5));
                     }
                 });
                 return { canvas: c, pad: pad };
@@ -1347,14 +1347,12 @@
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, W, H);
 
-                // Sol (offscreen)
                 if (sunImg) {
                     const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
                     const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
                     ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad));
                 }
 
-                // Nuvens (offscreen)
                 clouds.forEach(c => {
                     const l = layers[c.layer];
                     const px = c.x + (mouseX - 0.5) * W * l.parallax;
