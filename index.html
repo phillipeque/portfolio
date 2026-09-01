@@ -81,7 +81,7 @@
             justify-content: center;
             align-items: center;
             z-index: 2;
-            padding: 1.5% 22% 1.5% 22%;
+            padding: 0.8% 8% 0.8% 8%; /* reduzido para aproveitar mais espaço */
             text-align: center;
         }
 
@@ -119,11 +119,13 @@
                 inset -1px -1px 0 #000000,
                 4px 4px 0 rgba(0,0,0,0.3);
             width: 100%;
-            max-width: 70%;
+            max-width: 88%; /* mais larga */
             margin: 0 auto;
             color: #000;
             text-shadow: none;
             overflow: hidden;
+            /* altura fixa para evitar scroll, mas pode crescer conforme conteúdo */
+            max-height: 92vh;
         }
 
         @keyframes verticalRoll {
@@ -175,37 +177,16 @@
         }
 
         .window-content {
-            padding: 16px;
+            padding: 12px 16px; /* reduzido */
             background: #c0c0c0;
-            min-height: 180px;
+            min-height: 160px;
             position: relative;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        .window-content::-webkit-scrollbar {
-            width: 12px;
-            background: #dfdfdf;
-        }
-        .window-content::-webkit-scrollbar-track {
-            background: #dfdfdf;
-            border-left: 1px solid #808080;
-        }
-        .window-content::-webkit-scrollbar-thumb {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-        }
-        .window-content::-webkit-scrollbar-button {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            height: 12px;
+            /* removido max-height e overflow para não scrollar */
         }
 
         .window-footer {
             text-align: center;
-            padding: 10px;
+            padding: 6px 10px;
             font-size: 10px;
             color: #fff;
             text-shadow: 1px 1px 0 #000;
@@ -321,8 +302,8 @@
         }
 
         .avatar-frame {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
@@ -374,18 +355,18 @@
         }
 
         .bio-content {
-            padding: 12px;
+            padding: 10px 12px;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.6;
+            font-size: 12px;
+            line-height: 1.5;
             color: #000000;
             text-align: left;
-            max-height: 200px;
+            max-height: 160px;
             overflow-y: auto;
         }
 
         .bio-content p {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-indent: 0;
         }
 
@@ -435,7 +416,7 @@
             font-weight: bold;
             letter-spacing: 1px;
             color: #000;
-            margin-top: 8px;
+            margin-top: 6px;
             margin-bottom: 2px;
         }
 
@@ -465,13 +446,13 @@
         }
 
         .email-form-box textarea {
-            min-height: 140px;
+            min-height: 100px;
         }
 
         .email-form-box .form-actions {
             display: flex;
             justify-content: flex-end;
-            margin-top: 12px;
+            margin-top: 10px;
             gap: 8px;
         }
 
@@ -509,7 +490,7 @@
         }
 
         .bio-content::-webkit-scrollbar {
-            width: 12px;
+            width: 10px;
             background: #dfdfdf;
         }
         .bio-content::-webkit-scrollbar-track {
@@ -540,7 +521,7 @@
             background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
-            padding: 4px 6px;
+            padding: 3px 6px;
         }
 
         .explorer-toolbar-btn {
@@ -580,8 +561,8 @@
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 3px 8px;
-            font-size: 12px;
+            padding: 2px 8px;
+            font-size: 11px;
             font-weight: bold;
             letter-spacing: 1px;
             color: #000;
@@ -600,47 +581,47 @@
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 22px 12px 18px;
+            padding: 16px 10px 12px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px 10px;
+            grid-template-columns: repeat(4, 1fr); /* 4 colunas */
+            gap: 12px 8px;
         }
 
         .explorer-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 6px 4px 8px;
+            padding: 4px 2px 6px;
             cursor: pointer;
             user-select: none;
             border: 1px dotted transparent;
         }
 
         .explorer-item-icon {
-            width: 64px;
-            height: 64px;
-            margin-bottom: 6px;
+            width: 80px;  /* +25% de 64px */
+            height: 80px;
+            margin-bottom: 4px;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             object-fit: contain;
         }
 
         .explorer-item-name {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             letter-spacing: 0.5px;
             color: #000;
             text-align: center;
-            line-height: 1.3;
-            padding: 1px 3px;
+            line-height: 1.2;
+            padding: 1px 2px;
         }
 
         .explorer-item-role {
             font-size: 10px;
             color: #555;
             text-align: center;
-            margin-top: 4px;
-            line-height: 1.3;
+            margin-top: 2px;
+            line-height: 1.2;
         }
 
         .explorer-item-duration {
@@ -648,8 +629,8 @@
             font-weight: bold;
             color: #000080;
             text-align: center;
-            margin-top: 1px;
-            line-height: 1.3;
+            margin-top: 0;
+            line-height: 1.2;
         }
 
         .explorer-item:hover,
@@ -671,8 +652,8 @@
             background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
-            padding: 3px 8px;
-            margin-top: 4px;
+            padding: 2px 8px;
+            margin-top: 2px;
             font-size: 10px;
             letter-spacing: 0.5px;
             color: #000;
@@ -684,13 +665,13 @@
             padding: 1px 8px;
         }
 
-        /* ===== PROJECTS: detail view (opens inside the same window) ===== */
+        /* ===== PROJECTS: detail view ===== */
         .explorer-detail {
             background: #ffffff;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 16px;
+            padding: 14px;
             text-align: left;
         }
 
@@ -698,14 +679,14 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            padding-bottom: 12px;
-            margin-bottom: 12px;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
             border-bottom: 1px solid #c0c0c0;
         }
 
         .detail-icon {
-            width: 64px;
-            height: 64px;
+            width: 80px;
+            height: 80px;
             flex-shrink: 0;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
@@ -713,7 +694,7 @@
         }
 
         .detail-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             letter-spacing: 1px;
             color: #000;
@@ -722,19 +703,19 @@
         .detail-category {
             font-size: 10px;
             color: #555;
-            margin-top: 3px;
+            margin-top: 2px;
             letter-spacing: 0.5px;
         }
 
         .detail-fields {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .detail-field {
             display: flex;
             gap: 10px;
             font-size: 12px;
-            padding: 4px 0;
+            padding: 3px 0;
         }
 
         .detail-field-label {
@@ -751,12 +732,12 @@
 
         .detail-description {
             font-size: 12px;
-            line-height: 1.6;
+            line-height: 1.5;
             color: #333;
-            padding: 10px 12px;
+            padding: 8px 10px;
             background: #f4f4f4;
             border: 1px solid #c0c0c0;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .detail-link-row {
@@ -765,8 +746,8 @@
         }
 
         @media (max-width: 768px) {
-            #tv-screen { padding: 2% 12% 2% 12%; }
-            .retro-window { max-width: 90%; }
+            #tv-screen { padding: 1% 5% 1% 5%; }
+            .retro-window { max-width: 96%; }
             .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
             .icon-grid .ghost { display: none; }
             .icon-grid.about-grid { display: flex; justify-content: center; align-items: center; }
@@ -780,24 +761,24 @@
                 width: 100%;
             }
             .bio-content {
-                max-height: 160px;
-                font-size: 12px;
+                max-height: 140px;
+                font-size: 11px;
             }
             .email-form-content {
                 padding: 8px;
             }
             .email-form-box textarea {
-                min-height: 100px;
+                min-height: 80px;
             }
             /* PROJECTS responsive */
             .explorer-icons-area {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 18px 4px;
-                padding: 16px 6px;
+                gap: 12px 4px;
+                padding: 12px 6px;
             }
             .explorer-item-icon {
-                width: 48px;
-                height: 48px;
+                width: 64px;
+                height: 64px;
             }
             .explorer-item-name {
                 font-size: 10px;
@@ -937,7 +918,7 @@
                             </div>
                         </div>
 
-                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                        <div class="icon-grid about-grid" style="margin-top: 12px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                             <div class="icon-item" data-target="back">
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
@@ -971,7 +952,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                        <div class="icon-grid about-grid" style="margin-top: 12px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                             <div class="icon-item" data-target="back">
                                 <img class="icon-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
