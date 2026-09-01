@@ -179,8 +179,8 @@
             background: #c0c0c0;
             min-height: 180px;
             position: relative;
-            max-height: 70vh;  /* ADICIONADO PARA SCROLL */
-            overflow-y: auto;   /* ADICIONADO PARA SCROLL */
+            max-height: 70vh;
+            overflow-y: auto;
         }
 
         .window-content::-webkit-scrollbar {
@@ -602,8 +602,8 @@
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
             padding: 22px 12px 18px;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 22px 6px;
+            grid-template-columns: repeat(3, 1fr);  /* ALTERADO: 3 colunas */
+            gap: 30px 10px;                         /* ALTERADO: espaçamento maior */
         }
 
         .explorer-item {
@@ -617,11 +617,12 @@
         }
 
         .explorer-item-icon {
-            width: 38px;
-            height: 30px;
+            width: 64px;   /* ALTERADO: maior */
+            height: 64px;  /* ALTERADO: maior */
             margin-bottom: 6px;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
+            object-fit: contain;
         }
 
         .explorer-item-name {
@@ -708,6 +709,7 @@
             flex-shrink: 0;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
+            object-fit: contain;
         }
 
         .detail-name {
@@ -789,13 +791,13 @@
             }
             /* PROJECTS responsive */
             .explorer-icons-area {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr); /* em telas pequenas, 2 colunas */
                 gap: 18px 4px;
                 padding: 16px 6px;
             }
             .explorer-item-icon {
-                width: 30px;
-                height: 24px;
+                width: 48px;
+                height: 48px;
             }
             .explorer-item-name {
                 font-size: 9px;
@@ -906,7 +908,7 @@
                                 </div>
                             </div>
                             <div class="explorer-icons-area" id="projects-icons-area">
-                                <!-- 16 project folders injected by JS, see script below -->
+                                <!-- injetado via JS -->
                             </div>
                             <div class="explorer-detail" id="projects-detail" style="display:none;">
                                 <div class="detail-header">
@@ -930,7 +932,7 @@
                                 <div class="detail-link-row" id="detail-link-row"></div>
                             </div>
                             <div class="explorer-statusbar">
-                                <span id="projects-count">16 object(s)</span>
+                                <span id="projects-count">17 object(s)</span>
                                 <span id="projects-selected">Double-click to open</span>
                             </div>
                         </div>
@@ -1329,43 +1331,27 @@
             });
 
             // ========================================================
-            //  PROJECTS: gera os 16 ícones de pasta e trata os cliques
+            //  PROJECTS: array atualizado com 17 projetos
             // ========================================================
-            // Edite este array pra personalizar cada projeto:
-            // - name: nome do projeto/empresa
-            // - color: cor da pasta (troque por um logo real depois, ver folderIconDataUri)
-            // - role: sua função no projeto
-            // - duration: período em que trabalhou nele (ex: "2023 – 2024")
-            // - category: tipo do projeto (aparece no tooltip e na páginazinha de detalhe)
-            // - description: texto livre pra contar mais sobre o projeto
-            // - url: se preencher, mostra um botão "OPEN LINK" na páginazinha
             const PROJECTS = [
-                { name: 'NEXACORE',   color: '#3a4a9e', role: 'Community Manager', duration: '2023 – 2024', category: 'SaaS Platform',   description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'ORBITAL',    color: '#2a2a45', role: 'Moderator',         duration: '2023 – 2024', category: 'Mobile App',      description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'PIXELFORGE', color: '#8c2e2e', role: 'Community Lead',    duration: '2022 – 2023', category: 'Game Studio',     description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'IRONCLAD',   color: '#5a5a5a', role: 'Moderator',         duration: '2022',        category: 'Security Tool',   description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'MONOLITH',   color: '#3a6423', role: 'Community Builder', duration: '2024 – now',  category: 'Infrastructure',  description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'QUANTUM',    color: '#3a3a3a', role: 'Moderator',         duration: '2021 – 2022', category: 'Research Lab',    description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'STELLAR',    color: '#7a3f9e', role: 'Community Manager', duration: '2023',        category: 'Design System',   description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'VERTEX',     color: '#1f8c8c', role: 'Community Lead',    duration: '2022',        category: '3D Engine',       description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'BEACON',     color: '#2a4d73', role: 'Founder',           duration: '2024 – now',  category: 'Community Hub',   description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'FOUNDRY',    color: '#c4712c', role: 'Moderator',         duration: '2021',        category: 'Dev Tools',       description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'NOVA',       color: '#b6304a', role: 'Community Manager', duration: '2023 – 2024', category: 'Web App',         description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'TITAN',      color: '#5c3a80', role: 'Community Builder', duration: '2022 – 2023', category: 'Automation',      description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'ZEPHYR',     color: '#1f7a4d', role: 'Moderator',         duration: '2023',        category: 'Analytics',       description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'ONYX',       color: '#2b2b2b', role: 'Community Lead',    duration: '2021 – 2022', category: 'CLI Tool',        description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'PHOENIX',    color: '#c8501f', role: 'Community Manager', duration: '2024 – now',  category: 'Rebuild Project', description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
-                { name: 'GRAVITY',    color: '#25256e', role: 'Moderator',         duration: '2022',        category: 'Backend API',     description: 'Adicione aqui uma breve descrição do que você fez neste projeto.', url: '' },
+                { name: 'CoralApp',        role: 'Community Manager', duration: '2024 – now',  category: 'Web3',        description: 'Descrição do projeto CoralApp.', url: '' },
+                { name: 'Binance',         role: 'Moderator',         duration: '2023 – 2024', category: 'Exchange',     description: 'Descrição do projeto Binance.', url: '' },
+                { name: 'Arena Games',     role: 'Community Lead',    duration: '2023',        category: 'Gaming',       description: 'Descrição do projeto Arena Games.', url: '' },
+                { name: 'Bionic',          role: 'Moderator',         duration: '2022 – 2023', category: 'Tech',         description: 'Descrição do projeto Bionic.', url: '' },
+                { name: 'Reaktor',         role: 'Community Builder', duration: '2022',        category: 'DevOps',       description: 'Descrição do projeto Reaktor.', url: '' },
+                { name: 'FortBlockGames',  role: 'Moderator',         duration: '2024 – now',  category: 'Gaming',       description: 'Descrição do projeto FortBlockGames.', url: '' },
+                { name: 'BeeOS',           role: 'Community Manager', duration: '2023',        category: 'OS',           description: 'Descrição do projeto BeeOS.', url: '' },
+                { name: 'Streamr',         role: 'Community Lead',    duration: '2022 – 2023', category: 'Streaming',    description: 'Descrição do projeto Streamr.', url: '' },
+                { name: 'Xend Finance',    role: 'Moderator',         duration: '2023',        category: 'DeFi',         description: 'Descrição do projeto Xend Finance.', url: '' },
+                { name: 'Wicrypt',         role: 'Community Manager', duration: '2023 – 2024', category: 'Network',      description: 'Descrição do projeto Wicrypt.', url: '' },
+                { name: 'PIPE',            role: 'Community Builder', duration: '2024',        category: 'Infra',        description: 'Descrição do projeto PIPE.', url: '' },
+                { name: 'TAP',             role: 'Moderator',         duration: '2022',        category: 'Payments',     description: 'Descrição do projeto TAP.', url: '' },
+                { name: 'Sheertopia',      role: 'Community Lead',    duration: '2023 – now',  category: 'Metaverse',    description: 'Descrição do projeto Sheertopia.', url: '' },
+                { name: 'Solcade',         role: 'Moderator',         duration: '2021 – 2022', category: 'Blockchain',   description: 'Descrição do projeto Solcade.', url: '' },
+                { name: "Lion's Share Group", role: 'Community Manager', duration: '2024',      category: 'Media',        description: 'Descrição do projeto Lion\'s Share Group.', url: '' },
+                { name: 'Coinracer',       role: 'Community Builder', duration: '2023',        category: 'Gaming',       description: 'Descrição do projeto Coinracer.', url: '' },
+                { name: 'VS1',             role: 'Founder',           duration: '2022 – now',  category: 'Platform',     description: 'Descrição do projeto VS1.', url: '' },
             ];
-
-            function folderIconDataUri(hex) {
-                const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="27">
-                    <rect x="1" y="3" width="14" height="4" fill="${hex}" stroke="#000" stroke-width="1"/>
-                    <path d="M1 5 L1 25 L33 25 L33 8 L15 8 Z" fill="${hex}" stroke="#000" stroke-width="1"/>
-                    <path d="M1 5 L1 25 L33 25 L33 8 L15 8 Z" fill="#fff" fill-opacity="0.12"/>
-                </svg>`;
-                return 'data:image/svg+xml,' + encodeURIComponent(svg);
-            }
 
             const iconsArea = document.getElementById('projects-icons-area');
             const detailView = document.getElementById('projects-detail');
@@ -1396,7 +1382,8 @@
                 if (detailView) detailView.style.display = 'block';
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
 
-                document.getElementById('detail-icon').src = folderIconDataUri(project.color);
+                // Usa o GIF da pasta /logos
+                document.getElementById('detail-icon').src = `logos/${encodeURIComponent(project.name)}.gif`;
                 document.getElementById('detail-name').textContent = project.name;
                 document.getElementById('detail-category').textContent = project.category;
                 document.getElementById('detail-role').textContent = project.role;
@@ -1442,7 +1429,7 @@
 
                     const icon = document.createElement('img');
                     icon.className = 'explorer-item-icon';
-                    icon.src = folderIconDataUri(project.color);
+                    icon.src = `logos/${encodeURIComponent(project.name)}.gif`;
                     icon.alt = project.name;
 
                     const label = document.createElement('span');
@@ -1480,6 +1467,9 @@
                 }
             }
 
+            // ========================================================
+            //  FORMULÁRIO DE EMAIL
+            // ========================================================
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
             const sendBtn = document.getElementById('send-btn');
