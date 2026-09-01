@@ -117,7 +117,7 @@
             padding: 1.5% 18% 1.5% 18%;
         }
         body.detail-mode .retro-window {
-            max-width: 75%;
+            max-width: 45%; /* Reduzido 40% (de 75% para 45%) */
         }
         body.detail-mode .window-content {
             max-height: none;
@@ -968,7 +968,7 @@
                 font-size: 11px;
             }
             body.detail-mode .retro-window {
-                max-width: 95%;
+                max-width: 95%; /* Mantém largura maior em mobile para não quebrar */
             }
             body.detail-mode #tv-screen {
                 padding: 1% 4% 1% 4%;
@@ -1753,7 +1753,7 @@
 
             function showProjectDetail(project) {
                 if (project.url) {
-                    window.open(project.url, '_blank');
+                    window.open(project.url, '_blank', 'noopener,noreferrer');
                 }
                 if (iconsArea) iconsArea.style.display = 'none';
                 if (detailView) detailView.style.display = 'block';
@@ -1809,15 +1809,20 @@
             document.querySelectorAll('.icon-img').forEach(img => {
                 img.addEventListener('click', function(e) {
                     const target = this.dataset.target;
-                    if (target === 'about') navigateTo('about');
-                    else if (target === 'projects') navigateTo('projects');
-                    else if (target === 'email') navigateTo('email');
-                    else if (target === 'back') {
+                    if (target === 'about') {
+                        navigateTo('about');
+                    } else if (target === 'projects') {
+                        navigateTo('projects');
+                    } else if (target === 'email') {
+                        navigateTo('email');
+                    } else if (target === 'github') {
+                        // Abre o GitHub em nova aba com segurança
+                        window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
+                    } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
-                    } else {
-                        alert('Navigating to: ' + target);
                     }
+                    // Para "contact", "linkedin", "socials" etc., não fazemos nada (sem alerta)
                 });
             });
 
