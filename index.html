@@ -1163,7 +1163,7 @@
         //  FUNDO (Canvas)
         // ============================================================
         // ============================================================
-        //  FUNDO (Canvas) — OTIMIZADO
+        //  FUNDO (Canvas) — OTIMIZADO v2
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -1198,8 +1198,28 @@
                 sunCore: [255, 252, 240],
                 sunEdge: [255, 248, 220],
                 cloud:   [255, 255, 255],
+                cloudShad:[180, 200, 220],
                 bird:    [40,  60,  90],
             };
+
+            function rgb(arr, a=1) {
+                return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`;
+            }
+
+            // Desenha círculo pixelado (sem anti-alias) no canvas offscreen
+            function pixelCircleOffscreen(x, cx, cy, r, colorStr) {
+                const r2 = r * r;
+                x.fillStyle = colorStr;
+                for (let y = Math.floor(cy - r); y <= Math.ceil(cy + r); y++) {
+                    for (let px = Math.floor(cx - r); px <= Math.ceil(cx + r); px++) {
+                        const dx = px - cx;
+                        const dy = y - cy;
+                        if (dx*dx + dy*dy <= r2) {
+                            x.fillRect(px, y, 1, 1);
+                        }
+                    }
+                }
+            }
 
             function createCloudCanvas(baseW, baseH, opacity) {
                 const maxR = 0.55 * baseH * 1.8;
@@ -1210,29 +1230,35 @@
                 c.width = w;
                 c.height = h;
                 const x = c.getContext('2d');
+                x.imageSmoothingEnabled = false;
+
                 const puffs = [
                     { dx: 0.50, dy: 0.50, r: 0.55 },
                     { dx: 0.20, dy: 0.58, r: 0.40 },
                     { dx: 0.80, dy: 0.55, r: 0.42 },
                 ];
-                x.fillStyle = `rgba(180,200,220,${opacity * 0.3})`;
+
+                // Sombra
                 puffs.forEach(p => {
-                    x.beginPath();
-                    x.arc(pad + p.dx * baseW, pad + p.dy * baseH + baseH * 0.08, p.r * baseH * 1.8, 0, Math.PI * 2);
-                    x.fill();
+                    const cx = pad + p.dx * baseW;
+                    const cy = pad + p.dy * baseH + baseH * 0.08;
+                    const r = p.r * baseH * 1.8;
+                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloudShad, opacity * 0.3));
                 });
-                x.fillStyle = `rgba(255,255,255,${opacity})`;
+                // Cor base
                 puffs.forEach(p => {
-                    x.beginPath();
-                    x.arc(pad + p.dx * baseW, pad + p.dy * baseH, p.r * baseH * 1.6, 0, Math.PI * 2);
-                    x.fill();
+                    const cx = pad + p.dx * baseW;
+                    const cy = pad + p.dy * baseH;
+                    const r = p.r * baseH * 1.6;
+                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity));
                 });
-                x.fillStyle = `rgba(255,255,255,${opacity * 0.5})`;
+                // Highlight
                 puffs.forEach(p => {
                     if (p.dy < 0.6) {
-                        x.beginPath();
-                        x.arc(pad + p.dx * baseW, pad + p.dy * baseH - baseH * 0.05, p.r * baseH * 1.1 * 0.7, 0, Math.PI * 2);
-                        x.fill();
+                        const cx = pad + p.dx * baseW;
+                        const cy = pad + p.dy * baseH - baseH * 0.05;
+                        const r = p.r * baseH * 1.1 * 0.7;
+                        pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity * 0.5));
                     }
                 });
                 return { canvas: c, pad: pad };
