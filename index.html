@@ -602,8 +602,8 @@
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
             padding: 22px 12px 18px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);  /* ALTERADO: 3 colunas */
-            gap: 30px 10px;                         /* ALTERADO: espaçamento maior */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px 10px;
         }
 
         .explorer-item {
@@ -617,8 +617,8 @@
         }
 
         .explorer-item-icon {
-            width: 64px;   /* ALTERADO: maior */
-            height: 64px;  /* ALTERADO: maior */
+            width: 64px;
+            height: 64px;
             margin-bottom: 6px;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
@@ -626,7 +626,7 @@
         }
 
         .explorer-item-name {
-            font-size: 10px;
+            font-size: 11px;
             font-weight: bold;
             letter-spacing: 0.5px;
             color: #000;
@@ -636,7 +636,7 @@
         }
 
         .explorer-item-role {
-            font-size: 9px;
+            font-size: 10px;
             color: #555;
             text-align: center;
             margin-top: 4px;
@@ -644,7 +644,7 @@
         }
 
         .explorer-item-duration {
-            font-size: 9px;
+            font-size: 10px;
             font-weight: bold;
             color: #000080;
             text-align: center;
@@ -704,8 +704,8 @@
         }
 
         .detail-icon {
-            width: 54px;
-            height: 42px;
+            width: 64px;
+            height: 64px;
             flex-shrink: 0;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
@@ -791,7 +791,7 @@
             }
             /* PROJECTS responsive */
             .explorer-icons-area {
-                grid-template-columns: repeat(2, 1fr); /* em telas pequenas, 2 colunas */
+                grid-template-columns: repeat(2, 1fr);
                 gap: 18px 4px;
                 padding: 16px 6px;
             }
@@ -800,11 +800,11 @@
                 height: 48px;
             }
             .explorer-item-name {
-                font-size: 9px;
+                font-size: 10px;
             }
             .explorer-item-role,
             .explorer-item-duration {
-                font-size: 8px;
+                font-size: 9px;
             }
             .explorer-address {
                 font-size: 10px;
@@ -908,7 +908,7 @@
                                 </div>
                             </div>
                             <div class="explorer-icons-area" id="projects-icons-area">
-                                <!-- injetado via JS -->
+                                <!-- Projects injected by JS -->
                             </div>
                             <div class="explorer-detail" id="projects-detail" style="display:none;">
                                 <div class="detail-header">
@@ -1331,26 +1331,26 @@
             });
 
             // ========================================================
-            //  PROJECTS: array atualizado com 17 projetos
+            //  PROJECTS: array com 17 projetos e mapeamento de GIFs
             // ========================================================
             const PROJECTS = [
-                { name: 'CoralApp',        role: 'Community Manager', duration: '2024 – now',  category: 'Web3',        description: 'Descrição do projeto CoralApp.', url: '' },
-                { name: 'Binance',         role: 'Moderator',         duration: '2023 – 2024', category: 'Exchange',     description: 'Descrição do projeto Binance.', url: '' },
-                { name: 'Arena Games',     role: 'Community Lead',    duration: '2023',        category: 'Gaming',       description: 'Descrição do projeto Arena Games.', url: '' },
-                { name: 'Bionic',          role: 'Moderator',         duration: '2022 – 2023', category: 'Tech',         description: 'Descrição do projeto Bionic.', url: '' },
-                { name: 'Reaktor',         role: 'Community Builder', duration: '2022',        category: 'DevOps',       description: 'Descrição do projeto Reaktor.', url: '' },
-                { name: 'FortBlockGames',  role: 'Moderator',         duration: '2024 – now',  category: 'Gaming',       description: 'Descrição do projeto FortBlockGames.', url: '' },
-                { name: 'BeeOS',           role: 'Community Manager', duration: '2023',        category: 'OS',           description: 'Descrição do projeto BeeOS.', url: '' },
-                { name: 'Streamr',         role: 'Community Lead',    duration: '2022 – 2023', category: 'Streaming',    description: 'Descrição do projeto Streamr.', url: '' },
-                { name: 'Xend Finance',    role: 'Moderator',         duration: '2023',        category: 'DeFi',         description: 'Descrição do projeto Xend Finance.', url: '' },
-                { name: 'Wicrypt',         role: 'Community Manager', duration: '2023 – 2024', category: 'Network',      description: 'Descrição do projeto Wicrypt.', url: '' },
-                { name: 'PIPE',            role: 'Community Builder', duration: '2024',        category: 'Infra',        description: 'Descrição do projeto PIPE.', url: '' },
-                { name: 'TAP',             role: 'Moderator',         duration: '2022',        category: 'Payments',     description: 'Descrição do projeto TAP.', url: '' },
-                { name: 'Sheertopia',      role: 'Community Lead',    duration: '2023 – now',  category: 'Metaverse',    description: 'Descrição do projeto Sheertopia.', url: '' },
-                { name: 'Solcade',         role: 'Moderator',         duration: '2021 – 2022', category: 'Blockchain',   description: 'Descrição do projeto Solcade.', url: '' },
-                { name: "Lion's Share Group", role: 'Community Manager', duration: '2024',      category: 'Media',        description: 'Descrição do projeto Lion\'s Share Group.', url: '' },
-                { name: 'Coinracer',       role: 'Community Builder', duration: '2023',        category: 'Gaming',       description: 'Descrição do projeto Coinracer.', url: '' },
-                { name: 'VS1',             role: 'Founder',           duration: '2022 – now',  category: 'Platform',     description: 'Descrição do projeto VS1.', url: '' },
+                { name: 'CoralApp',        role: 'Community Manager', duration: '2024 – now',  category: 'Web3',        description: 'Descrição do projeto CoralApp.', url: '', gif: 'coralapp.gif' },
+                { name: 'Binance',         role: 'Moderator',         duration: '2023 – 2024', category: 'Exchange',     description: 'Descrição do projeto Binance.', url: '', gif: 'binance.gif' },
+                { name: 'Arena Games',     role: 'Community Lead',    duration: '2023',        category: 'Gaming',       description: 'Descrição do projeto Arena Games.', url: '', gif: 'arenagames.gif' },
+                { name: 'Bionic',          role: 'Moderator',         duration: '2022 – 2023', category: 'Tech',         description: 'Descrição do projeto Bionic.', url: '', gif: 'bionic.gif' },
+                { name: 'Reaktor',         role: 'Community Builder', duration: '2022',        category: 'DevOps',       description: 'Descrição do projeto Reaktor.', url: '', gif: 'reaktor.gif' },
+                { name: 'FortBlockGames',  role: 'Moderator',         duration: '2024 – now',  category: 'Gaming',       description: 'Descrição do projeto FortBlockGames.', url: '', gif: 'fortblockgames.gif' },
+                { name: 'BeeOS',           role: 'Community Manager', duration: '2023',        category: 'OS',           description: 'Descrição do projeto BeeOS.', url: '', gif: 'beeos.gif' },
+                { name: 'Streamr',         role: 'Community Lead',    duration: '2022 – 2023', category: 'Streaming',    description: 'Descrição do projeto Streamr.', url: '', gif: 'streamr.gif' },
+                { name: 'Xend Finance',    role: 'Moderator',         duration: '2023',        category: 'DeFi',         description: 'Descrição do projeto Xend Finance.', url: '', gif: 'xend.gif' },
+                { name: 'Wicrypt',         role: 'Community Manager', duration: '2023 – 2024', category: 'Network',      description: 'Descrição do projeto Wicrypt.', url: '', gif: 'wicrypt.gif' },
+                { name: 'PIPE',            role: 'Community Builder', duration: '2024',        category: 'Infra',        description: 'Descrição do projeto PIPE.', url: '', gif: 'pipe.gif' },
+                { name: 'TAP',             role: 'Moderator',         duration: '2022',        category: 'Payments',     description: 'Descrição do projeto TAP.', url: '', gif: 'tap.gif' },
+                { name: 'Sheertopia',      role: 'Community Lead',    duration: '2023 – now',  category: 'Metaverse',    description: 'Descrição do projeto Sheertopia.', url: '', gif: 'sheertopia.gif' },
+                { name: 'Solcade',         role: 'Moderator',         duration: '2021 – 2022', category: 'Blockchain',   description: 'Descrição do projeto Solcade.', url: '', gif: 'solcade.gif' },
+                { name: "Lion's Share Group", role: 'Community Manager', duration: '2024',      category: 'Media',        description: 'Descrição do projeto Lion\'s Share Group.', url: '', gif: 'lionssharegroup.gif' },
+                { name: 'Coinracer',       role: 'Community Builder', duration: '2023',        category: 'Gaming',       description: 'Descrição do projeto Coinracer.', url: '', gif: 'coinracer.gif' },
+                { name: 'VS1',             role: 'Founder',           duration: '2022 – now',  category: 'Platform',     description: 'Descrição do projeto VS1.', url: '', gif: 'vs1.gif' },
             ];
 
             const iconsArea = document.getElementById('projects-icons-area');
@@ -1382,8 +1382,7 @@
                 if (detailView) detailView.style.display = 'block';
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
 
-                // Usa o GIF da pasta /logos
-                document.getElementById('detail-icon').src = `logos/${encodeURIComponent(project.name)}.gif`;
+                document.getElementById('detail-icon').src = 'logos/' + project.gif;
                 document.getElementById('detail-name').textContent = project.name;
                 document.getElementById('detail-category').textContent = project.category;
                 document.getElementById('detail-role').textContent = project.role;
@@ -1420,7 +1419,7 @@
             }
 
             if (iconsArea) {
-                PROJECTS.forEach((project, index) => {
+                PROJECTS.forEach((project) => {
                     const item = document.createElement('div');
                     item.className = 'explorer-item';
                     item.dataset.company = project.name.toLowerCase();
@@ -1429,7 +1428,7 @@
 
                     const icon = document.createElement('img');
                     icon.className = 'explorer-item-icon';
-                    icon.src = `logos/${encodeURIComponent(project.name)}.gif`;
+                    icon.src = 'logos/' + project.gif;
                     icon.alt = project.name;
 
                     const label = document.createElement('span');
