@@ -1201,10 +1201,14 @@
                 bird:    [40,  60,  90],
             };
 
-            function createCloudCanvas(width, height, opacity) {
+            function createCloudCanvas(baseW, baseH, opacity) {
+                const maxR = 0.55 * baseH * 1.8;
+                const pad = Math.ceil(maxR) + 2;
+                const w = baseW + pad * 2;
+                const h = baseH + pad * 2;
                 const c = document.createElement('canvas');
-                c.width = width;
-                c.height = height;
+                c.width = w;
+                c.height = h;
                 const x = c.getContext('2d');
                 const puffs = [
                     { dx: 0.50, dy: 0.50, r: 0.55 },
@@ -1214,24 +1218,24 @@
                 x.fillStyle = `rgba(180,200,220,${opacity * 0.3})`;
                 puffs.forEach(p => {
                     x.beginPath();
-                    x.arc(p.dx * width, p.dy * height + height * 0.08, p.r * height * 1.8, 0, Math.PI * 2);
+                    x.arc(pad + p.dx * baseW, pad + p.dy * baseH + baseH * 0.08, p.r * baseH * 1.8, 0, Math.PI * 2);
                     x.fill();
                 });
                 x.fillStyle = `rgba(255,255,255,${opacity})`;
                 puffs.forEach(p => {
                     x.beginPath();
-                    x.arc(p.dx * width, p.dy * height, p.r * height * 1.6, 0, Math.PI * 2);
+                    x.arc(pad + p.dx * baseW, pad + p.dy * baseH, p.r * baseH * 1.6, 0, Math.PI * 2);
                     x.fill();
                 });
                 x.fillStyle = `rgba(255,255,255,${opacity * 0.5})`;
                 puffs.forEach(p => {
                     if (p.dy < 0.6) {
                         x.beginPath();
-                        x.arc(p.dx * width, p.dy * height - height * 0.05, p.r * height * 1.1 * 0.7, 0, Math.PI * 2);
+                        x.arc(pad + p.dx * baseW, pad + p.dy * baseH - baseH * 0.05, p.r * baseH * 1.1 * 0.7, 0, Math.PI * 2);
                         x.fill();
                     }
                 });
-                return c;
+                return { canvas: c, pad: pad };
             }
 
             const layers = [
@@ -1317,7 +1321,7 @@
                     const l = layers[c.layer];
                     const px = c.x + (mouseX - 0.5) * W * l.parallax;
                     const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
-                    ctx.drawImage(c.img, Math.floor(px - c.w/2), Math.floor(py - c.h/2));
+                    ctx.drawImage(c.img.canvas, Math.floor(px - c.w/2 - c.img.pad), Math.floor(py - c.h/2 - c.img.pad));
                 });
                 birds.forEach(b => drawBird(b));
             }
