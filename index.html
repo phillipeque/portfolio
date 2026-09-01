@@ -1175,9 +1175,6 @@
                                     <span class="win95-groupbox-legend">TAGS</span>
                                     <div class="detail-tags" id="detail-tags"></div>
                                 </div>
-                                <div class="detail-actions">
-                                    <div class="detail-actions-right" id="detail-actions-right"></div>
-                                </div>
                             </div>
                             <div class="explorer-statusbar">
                                 <span id="projects-count">16 object(s)</span>
@@ -1790,18 +1787,6 @@
                     span.textContent = tag;
                     tagsContainer.appendChild(span);
                 });
-
-                const actionsRight = document.getElementById('detail-actions-right');
-                actionsRight.innerHTML = '';
-
-                if (project.url) {
-                    const linkBtn = document.createElement('a');
-                    linkBtn.href = project.url;
-                    linkBtn.target = '_blank';
-                    linkBtn.className = 'detail-btn';
-                    linkBtn.textContent = 'OPEN LINK ↗';
-                    actionsRight.appendChild(linkBtn);
-                }
 
                 if (projectsCount) projectsCount.textContent = '1 object(s)';
                 if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
