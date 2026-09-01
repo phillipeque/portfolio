@@ -140,7 +140,7 @@
             padding: 2px 8px;
         }
 
-        /* ===== DETALHE COMPACTO (estilo EMAIL) ===== */
+        /* ===== DETALHE COMPACTO (estilo CONTACT) ===== */
         body.detail-mode #tv-screen {
             padding: 1.5% 22% 1.5% 22%;
         }
@@ -1119,15 +1119,15 @@
                                 <span class="form-title">CONTACT.TXT</span>
                             </div>
                             <div class="contact-form-content">
-                                <form id="email-form">
+                                <form id="email-form" novalidate>
                                     <label for="user-email">YOUR EMAIL</label>
-                                    <input type="email" id="user-email" name="email" required placeholder="your@email.com" />
+                                    <input type="email" id="user-email" name="email" placeholder="your@email.com" />
 
                                     <label for="subject">SUBJECT</label>
-                                    <input type="text" id="subject" name="subject" required placeholder="Subject" />
+                                    <input type="text" id="subject" name="subject" placeholder="Subject" />
 
                                     <label for="message">MESSAGE</label>
-                                    <textarea id="message" name="message" required placeholder="Write your message..."></textarea>
+                                    <textarea id="message" name="message" placeholder="Write your message..."></textarea>
 
                                     <div class="form-actions">
                                         <button type="submit" class="retro-btn" id="send-btn">SEND</button>
@@ -1160,7 +1160,7 @@
 
     <script>
         // ============================================================
-        //  FUNDO (Canvas) — OTIMIZADO v4
+        //  FUNDO (Canvas) — OTIMIZADO v4 + 60 FPS + Pássaros a 30
         // ============================================================
         (function(){
             const canvas = document.getElementById('background-canvas');
@@ -1205,7 +1205,6 @@
                 return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`;
             }
 
-            // Desenha círculo pixelado (sem anti-alias) no canvas offscreen
             function pixelCircleOffscreen(x, cx, cy, r, colorStr) {
                 const r2 = r * r;
                 x.fillStyle = colorStr;
@@ -1220,7 +1219,6 @@
                 }
             }
 
-            // ===== SOL OFFSCREEN (visual idêntico ao original) =====
             function initSun() {
                 const sunR = Math.min(W, H) * 0.06;
                 const outerR = Math.ceil(sunR * 3);
@@ -1243,7 +1241,6 @@
                 sunImg = { canvas: c, pad: outerR + pad, sunR: sunR };
             }
 
-            // ===== NUVENS OFFSCREEN (pixeladas, visual idêntico ao original) =====
             function createCloudCanvas(baseW, baseH, opacity) {
                 const maxR = 0.55 * baseH * 1.8;
                 const pad = Math.ceil(maxR) + 2;
@@ -1260,21 +1257,18 @@
                     { dx: 0.80, dy: 0.55, r: 0.42 },
                 ];
 
-                // Sombra
                 puffs.forEach(p => {
                     const cx = pad + p.dx * baseW;
                     const cy = pad + p.dy * baseH + baseH * 0.08;
                     const r = p.r * baseH * 1.8;
                     pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloudShad, opacity * 0.3));
                 });
-                // Cor base
                 puffs.forEach(p => {
                     const cx = pad + p.dx * baseW;
                     const cy = pad + p.dy * baseH;
                     const r = p.r * baseH * 1.6;
                     pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity));
                 });
-                // Highlight
                 puffs.forEach(p => {
                     if (p.dy < 0.6) {
                         const cx = pad + p.dx * baseW;
@@ -1329,6 +1323,7 @@
             function drawBird(b) {
                 const bx = b.x + (mouseX - 0.5) * W * 0.01;
                 const by = b.y + (mouseY - 0.5) * H * 0.01;
+                // Ajuste para manter a velocidade original (30 FPS) com 60 FPS
                 const wing = Math.sin(globalTime * 0.025 + b.wingPhase) > 0;
                 ctx.fillStyle = `rgba(${PALETTE.bird.join(',')},0.4)`;
                 ctx.fillRect(Math.floor(bx), Math.floor(by), 1, 1);
@@ -1384,7 +1379,7 @@
 
             function loop() {
                 update();
-                setTimeout(loop, 16);
+                setTimeout(loop, 16); // 60 FPS
             }
 
             window.addEventListener('resize', () => {
@@ -1397,6 +1392,9 @@
             loop();
         })();
 
+        // ============================================================
+        //  NAVEGAÇÃO + PROJECTS + CONTACT (antigo EMAIL)
+        // ============================================================
         (function() {
             const homeScreen     = document.getElementById('screen-home');
             const aboutScreen    = document.getElementById('screen-about');
@@ -1444,7 +1442,7 @@
                 }
             }
 
-            // Função genérica para efeito de transição com flash + rolling
+            // Função de transição APENAS para navegações principais
             function triggerTransition(callback) {
                 retroWindow.classList.add('rolling');
                 flash.classList.add('snap');
@@ -1477,7 +1475,6 @@
                     projectsScreen.classList.remove('active');
                     emailScreen.classList.remove('active');
 
-                    // Remove todos os modos antes de aplicar o novo
                     body.classList.remove('projects-mode', 'detail-mode');
 
                     if (screen === 'home') {
@@ -1488,7 +1485,7 @@
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
-                    } else if (screen === 'email') { // agora é CONTACT
+                    } else if (screen === 'email') { // CONTACT
                         emailScreen.classList.add('active');
                     }
 
@@ -1538,64 +1535,53 @@
                 if (currentScreen === 'projects') body.classList.add('projects-mode');
             }
 
+            // ===== showProjectDetail SEM flash/rolling (apenas transição suave) =====
             function showProjectDetail(project) {
-                // Abre URL se existir
                 if (project.url) {
                     window.open(project.url, '_blank');
                 }
 
-                // Efeito de transição (flash + rolling) para abrir o detalhe
-                triggerTransition(() => {
-                    // Esconde a lista, mostra o detalhe
-                    if (iconsArea) iconsArea.style.display = 'none';
-                    if (detailView) detailView.style.display = 'block';
-                    if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
+                // Apenas transição suave (sem flash)
+                if (iconsArea) iconsArea.style.display = 'none';
+                if (detailView) detailView.style.display = 'block';
+                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
 
-                    document.getElementById('detail-icon').src = 'logos/' + project.gif;
-                    document.getElementById('detail-name').textContent = project.name;
-                    document.getElementById('detail-category').textContent = project.category;
-                    document.getElementById('detail-role').textContent = project.role;
-                    document.getElementById('detail-duration').textContent = project.duration;
-                    document.getElementById('detail-description').textContent = project.description;
+                document.getElementById('detail-icon').src = 'logos/' + project.gif;
+                document.getElementById('detail-name').textContent = project.name;
+                document.getElementById('detail-category').textContent = project.category;
+                document.getElementById('detail-role').textContent = project.role;
+                document.getElementById('detail-duration').textContent = project.duration;
+                document.getElementById('detail-description').textContent = project.description;
 
-                    const linkRow = document.getElementById('detail-link-row');
-                    linkRow.innerHTML = '';
-                    if (project.url) {
-                        const linkBtn = document.createElement('button');
-                        linkBtn.type = 'button';
-                        linkBtn.className = 'retro-btn';
-                        linkBtn.textContent = 'OPEN LINK ↗';
-                        linkBtn.addEventListener('click', function() {
-                            window.open(project.url, '_blank');
-                        });
-                        linkRow.appendChild(linkBtn);
-                    }
+                const linkRow = document.getElementById('detail-link-row');
+                linkRow.innerHTML = '';
+                if (project.url) {
+                    const linkBtn = document.createElement('button');
+                    linkBtn.type = 'button';
+                    linkBtn.className = 'retro-btn';
+                    linkBtn.textContent = 'OPEN LINK ↗';
+                    linkBtn.addEventListener('click', function() {
+                        window.open(project.url, '_blank');
+                    });
+                    linkRow.appendChild(linkBtn);
+                }
 
-                    if (projectsCount) projectsCount.textContent = '1 object(s)';
-                    if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
-                    isDetailOpen = true;
-                    // Aplica o modo detalhe (compacto, estilo CONTACT)
-                    body.classList.add('detail-mode');
-                    // Remove projects-mode para que a janela fique no tamanho normal (70%)
-                    body.classList.remove('projects-mode');
-                });
+                if (projectsCount) projectsCount.textContent = '1 object(s)';
+                if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
+                isDetailOpen = true;
+
+                body.classList.add('detail-mode');
+                body.classList.remove('projects-mode');
             }
 
+            // ===== closeProjectDetail SEM flash/rolling =====
             function closeProjectDetail(animate = true) {
                 if (!isDetailOpen) return;
-                if (animate) {
-                    triggerTransition(() => {
-                        body.classList.remove('detail-mode');
-                        body.classList.add('projects-mode');
-                        showProjectsList();
-                        if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
-                    });
-                } else {
-                    body.classList.remove('detail-mode');
-                    body.classList.add('projects-mode');
-                    showProjectsList();
-                    if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
-                }
+
+                body.classList.remove('detail-mode');
+                body.classList.add('projects-mode');
+                showProjectsList();
+                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
             }
 
             // ============================================================
@@ -1611,7 +1597,7 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'back') {
-                        // Se estamos na tela de projects e o detalhe está aberto, fechar detalhe
+                        // Se estamos na tela de projects e o detalhe está aberto, fechar detalhe (sem flash)
                         if (currentScreen === 'projects' && isDetailOpen) {
                             closeProjectDetail(true);
                         } else {
@@ -1675,7 +1661,7 @@
             }
 
             // ============================================================
-            //  FORMULÁRIO DE CONTATO (antigo EMAIL)
+            //  FORMULÁRIO DE CONTATO – sem validação nativa do navegador
             // ============================================================
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
@@ -1688,6 +1674,7 @@
                 const subject = document.getElementById('subject').value.trim();
                 const message = document.getElementById('message').value.trim();
 
+                // Validação customizada (sem alertas do navegador)
                 if (!email || !subject || !message) {
                     feedback.textContent = 'Please fill in all fields.';
                     feedback.style.color = '#c41e3a';
