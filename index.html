@@ -87,12 +87,12 @@
         }
         body.projects-mode .explorer-icons-area {
             grid-template-columns: repeat(4, 1fr);
-            gap: 14px 1px;
-            padding: 12px 1px 10px;
+            gap: 0px;
+            padding: 0px;
         }
         body.projects-mode .explorer-item-icon {
-            width: 68px;
-            height: 68px;
+            width: 64px;
+            height: 64px;
         }
         body.projects-mode .explorer-item-name {
             font-size: 13px;
@@ -104,7 +104,14 @@
             font-size: 12px;
         }
         body.projects-mode .explorer-item {
-            padding: 6px 4px 8px;
+            padding: 2px;
+            width: 110px;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
         }
         body.projects-mode .explorer-toolbar {
             padding: 2px 6px;
@@ -618,21 +625,24 @@
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 22px 12px 18px;
+            padding: 0;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px 6px;
-            transition: all 0.3s ease;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
         }
         .explorer-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 6px 4px 8px;
+            padding: 2px;
+            width: 110px;
+            min-height: 110px;
             cursor: pointer;
             user-select: none;
             border: 1px dotted transparent;
             transition: transform 0.15s ease;
+            box-sizing: border-box;
+            justify-content: center;
         }
         .explorer-item:hover {
             transform: scale(1.02);
@@ -643,7 +653,7 @@
         .explorer-item-icon {
             width: 64px;
             height: 64px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             object-fit: contain;
@@ -661,7 +671,7 @@
             font-size: 10px;
             color: #555;
             text-align: center;
-            margin-top: 4px;
+            margin-top: 2px;
             line-height: 1.3;
         }
         .explorer-item-duration {
@@ -954,7 +964,7 @@
             }
             body.projects-mode .explorer-icons-area {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 12px 6px;
+                gap: 0px;
             }
             body.projects-mode .explorer-item-icon {
                 width: 56px;
@@ -1054,8 +1064,12 @@
             }
             .explorer-icons-area {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 18px 4px;
-                padding: 16px 6px;
+                gap: 0px;
+                padding: 0px;
+            }
+            .explorer-item {
+                width: 100px;
+                min-height: 100px;
             }
             .explorer-item-icon {
                 width: 48px;
