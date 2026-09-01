@@ -142,11 +142,11 @@
 
         /* ===== DETALHE COMPACTO (estilo EMAIL) ===== */
         body.detail-mode #tv-screen {
-            padding: 1.5% 22% 1.5% 22%; /* mesmo padding do EMAIL */
+            padding: 1.5% 22% 1.5% 22%;
         }
 
         body.detail-mode .retro-window {
-            max-width: 70%; /* mesmo que o normal */
+            max-width: 70%;
         }
 
         body.detail-mode .window-content {
@@ -198,7 +198,6 @@
             display: block !important;
         }
 
-        /* ===== ESCONDER A BARRA DE FERRAMENTAS NO MODO DETALHE ===== */
         body.detail-mode .explorer-toolbar {
             display: none !important;
         }
@@ -1458,16 +1457,14 @@
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
 
-                // Remove modes ao sair
-                if (screen !== 'projects') {
-                    body.classList.remove('projects-mode', 'detail-mode');
-                }
-
                 triggerTransition(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
                     projectsScreen.classList.remove('active');
                     emailScreen.classList.remove('active');
+
+                    // Remove todos os modos antes de aplicar o novo
+                    body.classList.remove('projects-mode', 'detail-mode');
 
                     if (screen === 'home') {
                         homeScreen.classList.add('active');
@@ -1572,7 +1569,6 @@
 
             function closeProjectDetail(animate = true) {
                 if (!isDetailOpen) return;
-                // Efeito de transição para voltar à lista
                 if (animate) {
                     triggerTransition(() => {
                         body.classList.remove('detail-mode');
