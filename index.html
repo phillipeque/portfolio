@@ -589,26 +589,26 @@
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 14px 8px 10px;
+            padding: 22px 12px 18px;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 4px 0;
+            gap: 22px 6px;
         }
 
         .explorer-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 6px 2px 5px;
+            padding: 6px 4px 8px;
             cursor: pointer;
             user-select: none;
             border: 1px dotted transparent;
         }
 
         .explorer-item-icon {
-            width: 34px;
-            height: 27px;
-            margin-bottom: 5px;
+            width: 38px;
+            height: 30px;
+            margin-bottom: 6px;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
         }
@@ -621,6 +621,23 @@
             text-align: center;
             line-height: 1.3;
             padding: 1px 3px;
+        }
+
+        .explorer-item-role {
+            font-size: 9px;
+            color: #555;
+            text-align: center;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+
+        .explorer-item-duration {
+            font-size: 9px;
+            font-weight: bold;
+            color: #000080;
+            text-align: center;
+            margin-top: 1px;
+            line-height: 1.3;
         }
 
         .explorer-item:hover,
@@ -682,15 +699,20 @@
             }
             /* PROJECTS responsive */
             .explorer-icons-area {
-                grid-template-columns: repeat(3, 1fr);
-                padding: 10px 4px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px 4px;
+                padding: 16px 6px;
             }
             .explorer-item-icon {
-                width: 28px;
-                height: 22px;
+                width: 30px;
+                height: 24px;
             }
             .explorer-item-name {
                 font-size: 9px;
+            }
+            .explorer-item-role,
+            .explorer-item-duration {
+                font-size: 8px;
             }
             .explorer-address {
                 font-size: 10px;
@@ -1197,26 +1219,30 @@
             // ========================================================
             //  PROJECTS: gera os 16 ícones de pasta e trata os cliques
             // ========================================================
-            // Edite este array para trocar nome, cor e categoria de cada
-            // projeto — a cor pinta a pasta, a categoria aparece no
-            // tooltip (hover) e no rodapé ao clicar.
+            // Edite este array pra personalizar cada projeto:
+            // - name: nome do projeto/empresa
+            // - color: cor da pasta (troque por um logo real depois, ver folderIconDataUri)
+            // - role: sua função ou o tipo do projeto
+            // - duration: período em que trabalhou nele (ex: "2023 – 2024")
+            // - category: usado só no tooltip (hover) e no rodapé ao clicar
+            // - url: se preencher, abre o link em nova aba ao clicar
             const PROJECTS = [
-                { name: 'NEXACORE',   color: '#3a4a9e', category: 'SaaS Platform',   url: '' },
-                { name: 'ORBITAL',    color: '#2a2a45', category: 'Mobile App',      url: '' },
-                { name: 'PIXELFORGE', color: '#8c2e2e', category: 'Game Studio',     url: '' },
-                { name: 'IRONCLAD',   color: '#5a5a5a', category: 'Security Tool',   url: '' },
-                { name: 'MONOLITH',   color: '#3a6423', category: 'Infrastructure',  url: '' },
-                { name: 'QUANTUM',    color: '#3a3a3a', category: 'Research Lab',    url: '' },
-                { name: 'STELLAR',    color: '#7a3f9e', category: 'Design System',   url: '' },
-                { name: 'VERTEX',     color: '#1f8c8c', category: '3D Engine',       url: '' },
-                { name: 'BEACON',     color: '#2a4d73', category: 'Community Hub',   url: '' },
-                { name: 'FOUNDRY',    color: '#c4712c', category: 'Dev Tools',       url: '' },
-                { name: 'NOVA',       color: '#b6304a', category: 'Web App',         url: '' },
-                { name: 'TITAN',      color: '#5c3a80', category: 'Automation',      url: '' },
-                { name: 'ZEPHYR',     color: '#1f7a4d', category: 'Analytics',       url: '' },
-                { name: 'ONYX',       color: '#2b2b2b', category: 'CLI Tool',        url: '' },
-                { name: 'PHOENIX',    color: '#c8501f', category: 'Rebuild Project', url: '' },
-                { name: 'GRAVITY',    color: '#25256e', category: 'Backend API',     url: '' },
+                { name: 'NEXACORE',   color: '#3a4a9e', role: 'Community Manager', duration: '2023 – 2024', category: 'SaaS Platform',   url: '' },
+                { name: 'ORBITAL',    color: '#2a2a45', role: 'Moderator',         duration: '2023 – 2024', category: 'Mobile App',      url: '' },
+                { name: 'PIXELFORGE', color: '#8c2e2e', role: 'Community Lead',    duration: '2022 – 2023', category: 'Game Studio',     url: '' },
+                { name: 'IRONCLAD',   color: '#5a5a5a', role: 'Moderator',         duration: '2022',        category: 'Security Tool',   url: '' },
+                { name: 'MONOLITH',   color: '#3a6423', role: 'Community Builder', duration: '2024 – now',  category: 'Infrastructure',  url: '' },
+                { name: 'QUANTUM',    color: '#3a3a3a', role: 'Moderator',         duration: '2021 – 2022', category: 'Research Lab',    url: '' },
+                { name: 'STELLAR',    color: '#7a3f9e', role: 'Community Manager', duration: '2023',        category: 'Design System',   url: '' },
+                { name: 'VERTEX',     color: '#1f8c8c', role: 'Community Lead',    duration: '2022',        category: '3D Engine',       url: '' },
+                { name: 'BEACON',     color: '#2a4d73', role: 'Founder',           duration: '2024 – now',  category: 'Community Hub',   url: '' },
+                { name: 'FOUNDRY',    color: '#c4712c', role: 'Moderator',         duration: '2021',        category: 'Dev Tools',       url: '' },
+                { name: 'NOVA',       color: '#b6304a', role: 'Community Manager', duration: '2023 – 2024', category: 'Web App',         url: '' },
+                { name: 'TITAN',      color: '#5c3a80', role: 'Community Builder', duration: '2022 – 2023', category: 'Automation',      url: '' },
+                { name: 'ZEPHYR',     color: '#1f7a4d', role: 'Moderator',         duration: '2023',        category: 'Analytics',       url: '' },
+                { name: 'ONYX',       color: '#2b2b2b', role: 'Community Lead',    duration: '2021 – 2022', category: 'CLI Tool',        url: '' },
+                { name: 'PHOENIX',    color: '#c8501f', role: 'Community Manager', duration: '2024 – now',  category: 'Rebuild Project', url: '' },
+                { name: 'GRAVITY',    color: '#25256e', role: 'Moderator',         duration: '2022',        category: 'Backend API',     url: '' },
             ];
 
             function folderIconDataUri(hex) {
@@ -1249,8 +1275,18 @@
                     label.className = 'explorer-item-name';
                     label.textContent = project.name;
 
+                    const role = document.createElement('span');
+                    role.className = 'explorer-item-role';
+                    role.textContent = project.role;
+
+                    const duration = document.createElement('span');
+                    duration.className = 'explorer-item-duration';
+                    duration.textContent = project.duration;
+
                     item.appendChild(icon);
                     item.appendChild(label);
+                    item.appendChild(role);
+                    item.appendChild(duration);
                     iconsArea.appendChild(item);
 
                     item.addEventListener('click', function() {
