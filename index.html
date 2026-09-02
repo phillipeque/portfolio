@@ -739,13 +739,13 @@
             height: 12px;
         }
 
-        /* NOVA BARRA AZUL DO DETALHE */
+        /* BARRA AZUL DO DETALHE (sem margem inferior) */
         .win95-titlebar {
             background: linear-gradient(90deg, #000080, #1084d0);
             padding: 3px 6px;
             display: flex;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 0;
         }
         .win95-title {
             font-size: 12px;
@@ -755,12 +755,14 @@
             text-shadow: 1px 1px 0 #000000;
         }
 
+        /* CARD DO PROJETO (sem borda superior) */
         .detail-header-card {
             display: flex;
             align-items: center;
             gap: 14px;
             background: #c0c0c0;
             border: 2px solid;
+            border-top: none;
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
             padding: 10px 12px;
@@ -1091,7 +1093,10 @@
                 font-size: 9px;
             }
             .win95-titlebar {
-                margin-bottom: 6px;
+                margin-bottom: 0;
+            }
+            .detail-header-card {
+                border-top: none;
             }
         }
     </style>
@@ -1118,7 +1123,6 @@
                                 <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
-                            <!-- SERVICES -->
                             <div class="icon-item">
                                 <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" alt="SERVICES" />
                                 <span class="icon-label label-green">SERVICES</span>
@@ -1127,7 +1131,6 @@
                                 <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                                 <span class="icon-label label-red">GITHUB</span>
                             </div>
-                            <!-- SOCIALS (antes LINKEDIN) -->
                             <div class="icon-item">
                                 <img class="icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
                                 <span class="icon-label label-blue">SOCIALS</span>
@@ -1172,7 +1175,6 @@
                             </div>
                             <div class="explorer-icons-area" id="projects-icons-area"></div>
                             <div class="explorer-detail" id="projects-detail" style="display:none;">
-                                <!-- BARRA AZUL DO DETALHE -->
                                 <div class="win95-titlebar">
                                     <span class="win95-title" id="detail-header-title"></span>
                                 </div>
@@ -1784,7 +1786,7 @@
                 if (detailView) detailView.style.display = 'block';
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
 
-                // Atualiza a barra azul com o nome do projeto + .PDF
+                // Barra azul com o nome do projeto + .PDF
                 document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
 
                 document.getElementById('detail-icon').src = 'logos/' + project.gif;
@@ -1849,7 +1851,6 @@
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
                     }
-                    // Para "contact", "socials", "services" etc., não fazemos nada (sem alerta)
                 });
             });
 
