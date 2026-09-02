@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Retro Portfolio</title>
+    <!-- Fonte Press Start 2P (APENAS para SERVICES) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
     <style>
         * {
             margin: 0;
@@ -47,15 +49,9 @@
             pointer-events: none;
         }
         @keyframes staticMove {
-            0% {
-                background-position: 0 0, 0 0;
-            }
-            50% {
-                background-position: 0 2px, 2px 0;
-            }
-            100% {
-                background-position: 0 4px, 4px 0;
-            }
+            0% { background-position: 0 0, 0 0; }
+            50% { background-position: 0 2px, 2px 0; }
+            100% { background-position: 0 4px, 4px 0; }
         }
         #tv-screen {
             position: absolute;
@@ -72,6 +68,20 @@
             text-align: center;
             transition: padding 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        /* Modo services: esconde a janela e mostra o wrapper flutuante */
+        body.services-mode #tv-screen {
+            padding: 0 !important;
+        }
+        body.services-mode .retro-window {
+            display: none !important;
+        }
+        body.services-mode .services-float-wrapper {
+            display: flex !important;
+        }
+        body.services-mode .float-back-btn {
+            display: block !important;
+        }
+
         body.projects-mode #tv-screen {
             padding: 0.5% 8% 0.5% 8%;
         }
@@ -140,6 +150,7 @@
         body.detail-mode .explorer-toolbar {
             display: none !important;
         }
+
         #flash-overlay {
             position: absolute;
             top: 0;
@@ -157,7 +168,7 @@
         }
         #flash-overlay.snowing {
             opacity: 1;
-            background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.22) 0px, rgba(255, 255, 255, 0.22) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0px, rgba(255, 255, 255, 0.16) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.3) 0px, rgba(255, 255, 255, 0.3) 2px, transparent 2px, transparent 4px);
+            background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px);
             background-size: 3px 3px, 3px 3px, 6px 6px;
         }
         .retro-window {
@@ -165,7 +176,7 @@
             background: #c0c0c0;
             border: 2px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0, 0, 0, 0.3);
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0,0,0,0.3);
             width: 100%;
             max-width: 70%;
             margin: 0 auto;
@@ -175,27 +186,13 @@
             transition: max-width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         @keyframes verticalRoll {
-            0% {
-                transform: translateY(0);
-            }
-            12% {
-                transform: translateY(-16px);
-            }
-            28% {
-                transform: translateY(11px);
-            }
-            45% {
-                transform: translateY(-7px);
-            }
-            62% {
-                transform: translateY(4px);
-            }
-            80% {
-                transform: translateY(-2px);
-            }
-            100% {
-                transform: translateY(0);
-            }
+            0% { transform: translateY(0); }
+            12% { transform: translateY(-16px); }
+            28% { transform: translateY(11px); }
+            45% { transform: translateY(-7px); }
+            62% { transform: translateY(4px); }
+            80% { transform: translateY(-2px); }
+            100% { transform: translateY(0); }
         }
         .retro-window.rolling {
             animation: verticalRoll 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
@@ -204,25 +201,16 @@
             position: absolute;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.55);
+            background: rgba(255,255,255,0.55);
             mix-blend-mode: difference;
             pointer-events: none;
             z-index: 25;
             animation: tearShift 0.16s ease-out forwards;
         }
         @keyframes tearShift {
-            0% {
-                transform: translateX(0);
-                opacity: 0.9;
-            }
-            55% {
-                transform: translateX(var(--tear-offset, 30px));
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateX(0);
-                opacity: 0;
-            }
+            0% { transform: translateX(0); opacity: 0.9; }
+            55% { transform: translateX(var(--tear-offset,30px)); opacity: 0.7; }
+            100% { transform: translateX(0); opacity: 0; }
         }
         .window-titlebar {
             background: linear-gradient(90deg, #808080, #a0a0a0);
@@ -318,24 +306,13 @@
             line-height: 1.3;
             user-select: none;
         }
-        .label-orange {
-            color: #c45c26;
-        }
-        .label-black {
-            color: #000;
-        }
-        .label-green {
-            color: #2d5016;
-        }
-        .label-red {
-            color: #c41e3a;
-        }
-        .label-blue {
-            color: #1a3a5c;
-        }
-        .label-purple {
-            color: #4a2d6b;
-        }
+        .label-orange { color: #c45c26; }
+        .label-black { color: #000; }
+        .label-green { color: #2d5016; }
+        .label-red { color: #c41e3a; }
+        .label-blue { color: #1a3a5c; }
+        .label-purple { color: #4a2d6b; }
+
         #tv-frame {
             position: absolute;
             top: 0;
@@ -357,7 +334,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 3px, rgba(0, 0, 0, 0.15) 3px, rgba(0, 0, 0, 0.15) 4px);
+            background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px);
             pointer-events: none;
             z-index: 9;
         }
@@ -441,9 +418,7 @@
             font-weight: bold;
         }
         @keyframes blink {
-            50% {
-                opacity: 0;
-            }
+            50% { opacity: 0; }
         }
         .contact-form-box {
             background: #c0c0c0;
@@ -479,9 +454,7 @@
             margin-top: 8px;
             margin-bottom: 2px;
         }
-        .contact-form-box label:first-of-type {
-            margin-top: 0;
-        }
+        .contact-form-box label:first-of-type { margin-top: 0; }
         .contact-form-box input,
         .contact-form-box textarea {
             width: 100%;
@@ -739,7 +712,6 @@
             height: 12px;
         }
 
-        /* BARRA AZUL DO DETALHE (sem margem inferior) */
         .win95-titlebar {
             background: linear-gradient(90deg, #000080, #1084d0);
             padding: 3px 6px;
@@ -754,8 +726,6 @@
             color: #ffffff;
             text-shadow: 1px 1px 0 #000000;
         }
-
-        /* CARD DO PROJETO (sem borda superior) */
         .detail-header-card {
             display: flex;
             align-items: center;
@@ -801,7 +771,6 @@
             color: #000080;
             font-weight: bold;
         }
-
         .win95-groupbox {
             background: #c0c0c0;
             border: 2px solid;
@@ -925,7 +894,7 @@
             z-index: 35;
             pointer-events: none;
             opacity: 0;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(200, 225, 255, 0.12) 20%, rgba(255, 255, 255, 0.55) 45%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0.55) 55%, rgba(200, 225, 255, 0.12) 80%, rgba(255, 255, 255, 0) 100%);
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(200,225,255,0.12) 20%, rgba(255,255,255,0.55) 45%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.55) 55%, rgba(200,225,255,0.12) 80%, rgba(255,255,255,0) 100%);
             mix-blend-mode: screen;
             filter: blur(0.5px);
         }
@@ -936,7 +905,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(to right, rgba(255, 255, 255, 0.9) 0px, rgba(255, 255, 255, 0.9) 1px, transparent 1px, transparent 3px);
+            background: repeating-linear-gradient(to right, rgba(255,255,255,0.9) 0px, rgba(255,255,255,0.9) 1px, transparent 1px, transparent 3px);
             opacity: 0.35;
             mix-blend-mode: screen;
         }
@@ -944,23 +913,11 @@
             animation: scanSweepMove 2.8s linear;
         }
         @keyframes scanSweepMove {
-            0% {
-                top: -30px;
-                opacity: 0;
-            }
-            4% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 1;
-            }
-            94% {
-                opacity: 1;
-            }
-            100% {
-                top: 100%;
-                opacity: 0;
-            }
+            0% { top: -30px; opacity: 0; }
+            4% { opacity: 1; }
+            50% { opacity: 1; }
+            94% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
         }
 
         @media (max-width: 768px) {
@@ -1101,53 +1058,83 @@
         }
 
         /* ============================================================
-           SERVICES – Floating Text over Night Sky
+           SERVICES – Floating Text sem moldura, apenas letras
            ============================================================ */
-        #screen-services.services-float .window-content {
-            background: transparent !important;
-            padding: 0 !important;
-            max-height: none !important;
-            overflow: visible !important;
+        .services-float-wrapper {
+            display: none; /* oculto por padrão */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            pointer-events: none; /* permite cliques apenas no botão */
+            font-family: 'Press Start 2P', monospace;
         }
-
-        .services-float-container {
+        .services-float-wrapper::-webkit-scrollbar {
+            width: 6px;
+            background: transparent;
+        }
+        .services-float-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        .services-float-inner {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 30px 50px;
-            padding: 20px 30px;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-            align-items: flex-start;
+            pointer-events: auto;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-
-        .services-column {
+        .services-col {
             flex: 1 1 200px;
-            max-width: 300px;
             min-width: 160px;
+            max-width: 280px;
+            text-align: left;
         }
-
-        .services-column .pixel-heading {
-            font-size: 14px;
-            margin-top: 0;
-            margin-bottom: 8px;
-            border-bottom: 2px solid rgba(200, 200, 200, 0.3);
-            padding-bottom: 4px;
-        }
-
-        .services-column .pixel-line {
+        .services-col .cat-title {
+            font-family: 'Press Start 2P', monospace;
             font-size: 11px;
-            line-height: 1.6;
-            padding: 1px 0;
+            color: #e8d4a2;
+            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+        .services-col .divider {
+            border: none;
+            border-top: 1px solid rgba(200,200,200,0.2);
+            margin: 0 0 8px 0;
+        }
+        .services-col .service-item {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            color: #d0d0d0;
+            text-shadow: 1px 1px 0 #000;
+            line-height: 1.8;
+            padding: 2px 0;
+            letter-spacing: 0.3px;
+        }
+        .services-col .service-item::before {
+            content: '>';
+            color: #a0c4ff;
+            text-shadow: 1px 1px 0 #000;
+            margin-right: 4px;
         }
 
-        /* BACK button floating */
+        /* Botão BACK flutuante – visível apenas em services-mode */
         .float-back-btn {
+            display: none; /* oculto por padrão */
             position: fixed;
             bottom: 30px;
             right: 30px;
-            z-index: 50;
+            z-index: 60;
             background: #c0c0c0;
             border: 3px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
@@ -1161,6 +1148,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: transform 0.1s ease;
+            pointer-events: auto;
         }
         .float-back-btn:hover {
             transform: scale(1.05);
@@ -1171,16 +1159,18 @@
         }
 
         @media (max-width: 768px) {
-            .services-float-container {
-                gap: 20px;
-                padding: 10px 15px;
-                flex-direction: column;
-                align-items: center;
+            .services-float-wrapper {
+                padding: 20px;
             }
-            .services-column {
-                max-width: 100%;
-                width: 100%;
+            .services-float-inner {
+                gap: 25px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .services-col {
                 flex: none;
+                width: 100%;
+                max-width: 100%;
             }
             .float-back-btn {
                 bottom: 15px;
@@ -1247,13 +1237,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="icon-grid about-grid" style="margin-top: 16px;">
-                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                        <div class="icon-grid about-grid" style="margin-top:16px;">
+                            <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                             <div class="icon-item">
                                 <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
-                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                         </div>
                     </div>
                     <div id="screen-projects" class="screen-container">
@@ -1301,81 +1291,18 @@
                                 <span id="projects-selected">Click to open</span>
                             </div>
                         </div>
-                        <div class="icon-grid about-grid" style="margin-top: 16px;">
-                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                        <div class="icon-grid about-grid" style="margin-top:16px;">
+                            <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                             <div class="icon-item">
                                 <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
-                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                         </div>
                     </div>
 
-                    <!-- SERVICES SCREEN – Floating Text -->
-                    <div id="screen-services" class="screen-container services-float">
-                        <div class="services-float-container">
-                            <!-- Coluna 1 -->
-                            <div class="services-column">
-                                <h2 class="pixel-heading">COMMUNITY MANAGEMENT</h2>
-                                <p class="pixel-line">Community Setup — Server structure, channels, roles and onboarding flows</p>
-                                <p class="pixel-line">Community Management — Daily operations, member engagement and community health</p>
-                                <p class="pixel-line">Community Optimization — Identify operational gaps and improve community workflows</p>
-                                <p class="pixel-line">Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</p>
-                                <p class="pixel-line">Community Scaling — Processes and systems for managing growing communities</p>
-
-                                <h2 class="pixel-heading">MODERATION</h2>
-                                <p class="pixel-line">Community Moderation — Real-time moderation across Discord and Telegram</p>
-                                <p class="pixel-line">Moderation Systems — Rules, escalation flows and moderation procedures</p>
-                                <p class="pixel-line">Anti-Scam Protection — Scam detection, reporting and preventive measures</p>
-                                <p class="pixel-line">Moderator Management — Moderator coordination, guidelines and team workflows</p>
-                                <p class="pixel-line">Incident Management — Conflict resolution, escalations and community incidents</p>
-                            </div>
-
-                            <!-- Coluna 2 -->
-                            <div class="services-column">
-                                <h2 class="pixel-heading">SUPPORT</h2>
-                                <p class="pixel-line">User Support — Member assistance and issue resolution</p>
-                                <p class="pixel-line">Technical Support — Troubleshooting, integrations and technical issues</p>
-                                <p class="pixel-line">Ticket Operations — Ticket handling, categorization and escalation</p>
-                                <p class="pixel-line">Bug Triage — Collect, reproduce and escalate user-reported issues</p>
-                                <p class="pixel-line">Onboarding Systems — New-user flows, documentation and guidance</p>
-
-                                <h2 class="pixel-heading">GROWTH</h2>
-                                <p class="pixel-line">Community Growth — Growth strategies and acquisition campaigns</p>
-                                <p class="pixel-line">Engagement Optimization — Identify engagement gaps and design activation campaigns</p>
-                                <p class="pixel-line">Retention Optimization — Improve recurring participation and reduce member churn</p>
-                                <p class="pixel-line">Ambassador Programs — Program setup, coordination and community activation</p>
-                                <p class="pixel-line">Referral Systems — Referral campaign setup and management</p>
-                            </div>
-
-                            <!-- Coluna 3 -->
-                            <div class="services-column">
-                                <h2 class="pixel-heading">EVENTS &amp; PARTNERSHIPS</h2>
-                                <p class="pixel-line">AMA Management — Planning, moderation and post-event coordination</p>
-                                <p class="pixel-line">Community Events — Planning and operational management</p>
-                                <p class="pixel-line">Tournament Operations — Tournament coordination and community engagement</p>
-                                <p class="pixel-line">Creator Management — Creator onboarding, coordination and partnerships</p>
-                                <p class="pixel-line">Influencer Partnerships — Outreach, coordination and campaign support</p>
-
-                                <h2 class="pixel-heading">CONTENT</h2>
-                                <p class="pixel-line">Community Documentation — FAQs, guides and knowledge bases</p>
-                                <p class="pixel-line">Technical Guides — Tutorials and educational resources</p>
-                                <p class="pixel-line">Community Education — Web3, product and ecosystem education</p>
-                                <p class="pixel-line">Localization — Community announcements and content translation</p>
-                                <p class="pixel-line">Content Strategy — Content planning, curation and editorial calendar</p>
-
-                                <h2 class="pixel-heading">AUTOMATION &amp; TOOLS</h2>
-                                <p class="pixel-line">Discord Bot Development — Custom bots and community utilities</p>
-                                <p class="pixel-line">Telegram Bot Development — Custom bots and automated workflows</p>
-                                <p class="pixel-line">Moderation Automation — Automated spam, scam and rule enforcement</p>
-                                <p class="pixel-line">Bot Integration — Configuration and integration of existing bots</p>
-                                <p class="pixel-line">Community Automation — Roles, tickets, verification and onboarding workflows</p>
-                            </div>
-                        </div>
-
-                        <!-- BACK button flutuante -->
-                        <button class="float-back-btn" data-target="back">← BACK</button>
-                    </div>
+                    <!-- SCREEN SERVICES – vazio, pois o conteúdo flutuante está fora da janela -->
+                    <div id="screen-services" class="screen-container"></div>
 
                     <div id="screen-email" class="screen-container">
                         <div class="contact-form-box">
@@ -1395,18 +1322,92 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="icon-grid about-grid" style="margin-top: 16px;">
-                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                        <div class="icon-grid about-grid" style="margin-top:16px;">
+                            <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                             <div class="icon-item">
                                 <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
                                 <span class="icon-label label-black">BACK</span>
                             </div>
-                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
+
+            <!-- SERVICES FLOATING WRAPPER – aparece apenas quando body tem .services-mode -->
+            <div class="services-float-wrapper" id="services-float-wrapper">
+                <div class="services-float-inner">
+                    <!-- COLUNA 1 -->
+                    <div class="services-col">
+                        <div class="cat-title">COMMUNITY MANAGEMENT</div>
+                        <hr class="divider" />
+                        <div class="service-item">Community Setup — Server structure, channels, roles and onboarding flows</div>
+                        <div class="service-item">Community Management — Daily operations, member engagement and community health</div>
+                        <div class="service-item">Community Optimization — Identify operational gaps and improve community workflows</div>
+                        <div class="service-item">Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</div>
+                        <div class="service-item">Community Scaling — Processes and systems for managing growing communities</div>
+
+                        <div class="cat-title" style="margin-top:20px;">MODERATION</div>
+                        <hr class="divider" />
+                        <div class="service-item">Community Moderation — Real-time moderation across Discord and Telegram</div>
+                        <div class="service-item">Moderation Systems — Rules, escalation flows and moderation procedures</div>
+                        <div class="service-item">Anti-Scam Protection — Scam detection, reporting and preventive measures</div>
+                        <div class="service-item">Moderator Management — Moderator coordination, guidelines and team workflows</div>
+                        <div class="service-item">Incident Management — Conflict resolution, escalations and community incidents</div>
+                    </div>
+
+                    <!-- COLUNA 2 -->
+                    <div class="services-col">
+                        <div class="cat-title">SUPPORT</div>
+                        <hr class="divider" />
+                        <div class="service-item">User Support — Member assistance and issue resolution</div>
+                        <div class="service-item">Technical Support — Troubleshooting, integrations and technical issues</div>
+                        <div class="service-item">Ticket Operations — Ticket handling, categorization and escalation</div>
+                        <div class="service-item">Bug Triage — Collect, reproduce and escalate user-reported issues</div>
+                        <div class="service-item">Onboarding Systems — New-user flows, documentation and guidance</div>
+
+                        <div class="cat-title" style="margin-top:20px;">GROWTH</div>
+                        <hr class="divider" />
+                        <div class="service-item">Community Growth — Growth strategies and acquisition campaigns</div>
+                        <div class="service-item">Engagement Optimization — Identify engagement gaps and design activation campaigns</div>
+                        <div class="service-item">Retention Optimization — Improve recurring participation and reduce member churn</div>
+                        <div class="service-item">Ambassador Programs — Program setup, coordination and community activation</div>
+                        <div class="service-item">Referral Systems — Referral campaign setup and management</div>
+                    </div>
+
+                    <!-- COLUNA 3 -->
+                    <div class="services-col">
+                        <div class="cat-title">EVENTS &amp; PARTNERSHIPS</div>
+                        <hr class="divider" />
+                        <div class="service-item">AMA Management — Planning, moderation and post-event coordination</div>
+                        <div class="service-item">Community Events — Planning and operational management</div>
+                        <div class="service-item">Tournament Operations — Tournament coordination and community engagement</div>
+                        <div class="service-item">Creator Management — Creator onboarding, coordination and partnerships</div>
+                        <div class="service-item">Influencer Partnerships — Outreach, coordination and campaign support</div>
+
+                        <div class="cat-title" style="margin-top:20px;">CONTENT</div>
+                        <hr class="divider" />
+                        <div class="service-item">Community Documentation — FAQs, guides and knowledge bases</div>
+                        <div class="service-item">Technical Guides — Tutorials and educational resources</div>
+                        <div class="service-item">Community Education — Web3, product and ecosystem education</div>
+                        <div class="service-item">Localization — Community announcements and content translation</div>
+                        <div class="service-item">Content Strategy — Content planning, curation and editorial calendar</div>
+
+                        <div class="cat-title" style="margin-top:20px;">AUTOMATION &amp; TOOLS</div>
+                        <hr class="divider" />
+                        <div class="service-item">Discord Bot Development — Custom bots and community utilities</div>
+                        <div class="service-item">Telegram Bot Development — Custom bots and automated workflows</div>
+                        <div class="service-item">Moderation Automation — Automated spam, scam and rule enforcement</div>
+                        <div class="service-item">Bot Integration — Configuration and integration of existing bots</div>
+                        <div class="service-item">Community Automation — Roles, tickets, verification and onboarding workflows</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão BACK flutuante (visível apenas em services-mode) -->
+            <button class="float-back-btn" id="float-back-btn">← BACK</button>
+
         </div>
         <div id="scanlines"></div>
         <div id="scan-sweep"></div>
@@ -1464,8 +1465,8 @@
             }
             window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth;
                 mouseY = e.clientY / window.innerHeight; });
-            const PALETTE = { sunCore: [255, 252, 240], sunEdge: [255, 248, 220], cloud: [255, 255, 255],
-            cloudShad: [180, 200, 220], bird: [40, 60, 90] };
+            const PALETTE = { sunCore: [255,252,240], sunEdge: [255,248,220], cloud: [255,255,255],
+            cloudShad: [180,200,220], bird: [40,60,90] };
 
             function rgb(arr, a = 1) { return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`; }
 
@@ -1476,13 +1477,13 @@
                     for (let px = Math.floor(cx - r); px <= Math.ceil(cx + r); px++) {
                         const dx = px - cx;
                         const dy = y - cy;
-                        if (dx * dx + dy * dy <= r2) x.fillRect(px, y, 1, 1);
+                        if (dx*dx + dy*dy <= r2) x.fillRect(px, y, 1, 1);
                     }
                 }
             }
 
             function initSun() {
-                const sunR = Math.min(W, H) * 0.06;
+                const sunR = Math.min(W,H) * 0.06;
                 const outerR = Math.ceil(sunR * 3);
                 const pad = 4;
                 const size = (outerR + pad) * 2;
@@ -1490,8 +1491,7 @@
                 c.width = size;
                 c.height = size;
                 const x = c.getContext('2d');
-                const cx = size / 2,
-                    cy = size / 2;
+                const cx = size/2, cy = size/2;
                 for (let r = outerR; r >= sunR; r -= 2) {
                     const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
                     pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.sunEdge, Math.max(0, alpha)));
@@ -1502,7 +1502,7 @@
             }
 
             function initMoon() {
-                const moonR = Math.min(W, H) * 0.05;
+                const moonR = Math.min(W,H) * 0.05;
                 const outerR = Math.ceil(moonR * 2.5);
                 const pad = 4;
                 const size = (outerR + pad) * 2;
@@ -1510,7 +1510,7 @@
                 c.width = size;
                 c.height = size;
                 const x = c.getContext('2d');
-                const cx = size / 2, cy = size / 2;
+                const cx = size/2, cy = size/2;
                 for (let r = outerR; r >= moonR; r -= 2) {
                     const alpha = 0.15 * (1 - (r - moonR) / (moonR * 1.5));
                     pixelCircleOffscreen(x, cx, cy, r, `rgba(200,210,230,${Math.max(0, alpha)})`);
@@ -1572,9 +1572,9 @@
                 return { canvas: c, pad: pad };
             }
             const layers = [
-                { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08, 0.20], scale: [1.8, 2.8], opacity: [0.30, 0.45] },
-                { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20, 0.40], scale: [1.3, 2.0], opacity: [0.45, 0.65] },
-                { count: 2, speed: 0.30, parallax: 0.14, yRange: [0.40, 0.65], scale: [1.0, 1.8], opacity: [0.60, 0.85] },
+                { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08,0.20], scale: [1.8,2.8], opacity: [0.30,0.45] },
+                { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20,0.40], scale: [1.3,2.0], opacity: [0.45,0.65] },
+                { count: 2, speed: 0.30, parallax: 0.14, yRange: [0.40,0.65], scale: [1.0,1.8], opacity: [0.60,0.85] },
             ];
             let clouds = [];
 
@@ -1665,7 +1665,7 @@
                     const l = layers[c.layer];
                     const px = c.x + (mouseX - 0.5) * W * l.parallax;
                     const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
-                    ctx.drawImage(c.img.canvas, Math.floor(px - c.w / 2 - c.img.pad), Math.floor(py - c.h / 2 - c.img.pad));
+                    ctx.drawImage(c.img.canvas, Math.floor(px - c.w/2 - c.img.pad), Math.floor(py - c.h/2 - c.img.pad));
                 });
                 birds.forEach(b => drawBird(b));
             }
@@ -1681,18 +1681,15 @@
                     });
                     birds.forEach(b => {
                         b.x -= b.speed;
-                        if (b.x < -5) { b.x = W + 5;
-                            b.y = H * (0.15 + Math.random() * 0.25); }
+                        if (b.x < -5) { b.x = W + 5; b.y = H * (0.15 + Math.random() * 0.25); }
                     });
                 }
                 globalTime++;
                 draw();
             }
 
-            function loop() { update();
-                setTimeout(loop, 16); }
-            window.addEventListener('resize', () => { resize();
-                initBirds(); });
+            function loop() { update(); setTimeout(loop, 16); }
+            window.addEventListener('resize', () => { resize(); initBirds(); });
             resize();
             initBirds();
             loop();
@@ -1714,8 +1711,7 @@
 
             function scheduleSweep() {
                 const delay = 15000 + Math.random() * 10000;
-                setTimeout(function() { triggerSweep();
-                    scheduleSweep(); }, delay);
+                setTimeout(function() { triggerSweep(); scheduleSweep(); }, delay);
             }
             scheduleSweep();
         })();
@@ -1742,12 +1738,9 @@
 
             function startNoise() {
                 function tick() {
-                    const bx1 = (Math.random() * 4).toFixed(1),
-                        by1 = (Math.random() * 4).toFixed(1);
-                    const bx2 = (Math.random() * 4).toFixed(1),
-                        by2 = (Math.random() * 4).toFixed(1);
-                    const bx3 = (Math.random() * 6).toFixed(1),
-                        by3 = (Math.random() * 6).toFixed(1);
+                    const bx1 = (Math.random() * 4).toFixed(1), by1 = (Math.random() * 4).toFixed(1);
+                    const bx2 = (Math.random() * 4).toFixed(1), by2 = (Math.random() * 4).toFixed(1);
+                    const bx3 = (Math.random() * 6).toFixed(1), by3 = (Math.random() * 6).toFixed(1);
                     flash.style.backgroundPosition = `${bx1}px ${by1}px, ${bx2}px ${by2}px, ${bx3}px ${by3}px`;
                     flash.style.opacity = (0.88 + Math.random() * 0.12).toFixed(2);
                     noiseRAF = requestAnimationFrame(tick);
@@ -1784,8 +1777,7 @@
                     flash.classList.add('snowing');
                     startNoise();
                 }, 40);
-                setTimeout(() => { stopNoise();
-                    flash.classList.remove('snowing'); }, 260);
+                setTimeout(() => { stopNoise(); flash.classList.remove('snowing'); }, 260);
                 setTimeout(() => {
                     retroWindow.classList.remove('rolling');
                     spawnTearLines(4 + Math.floor(Math.random() * 2));
@@ -1802,16 +1794,22 @@
                     projectsScreen.classList.remove('active');
                     servicesScreen.classList.remove('active');
                     emailScreen.classList.remove('active');
-                    body.classList.remove('projects-mode', 'detail-mode');
-                    if (screen === 'home') homeScreen.classList.add('active');
-                    else if (screen === 'about') aboutScreen.classList.add('active');
-                    else if (screen === 'projects') {
+                    body.classList.remove('projects-mode', 'detail-mode', 'services-mode');
+
+                    if (screen === 'home') {
+                        homeScreen.classList.add('active');
+                    } else if (screen === 'about') {
+                        aboutScreen.classList.add('active');
+                    } else if (screen === 'projects') {
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
                     } else if (screen === 'services') {
-                        servicesScreen.classList.add('active');
-                    } else if (screen === 'email') emailScreen.classList.add('active');
+                        // ativa o modo services (mostra o wrapper flutuante, esconde a janela)
+                        body.classList.add('services-mode');
+                    } else if (screen === 'email') {
+                        emailScreen.classList.add('active');
+                    }
                     if (window.setNightMode) window.setNightMode(screen === 'services');
                     currentScreen = screen;
                     transitioning = false;
@@ -1819,7 +1817,7 @@
             }
 
             // ============================================================
-            //  PROJECTS – Translated to English
+            //  PROJECTS
             // ============================================================
             const PROJECTS = [{
                 name: 'CoralApp',
@@ -2026,7 +2024,6 @@
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
 
                 document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
-
                 document.getElementById('detail-icon').src = 'logos/' + project.gif;
                 document.getElementById('detail-name').textContent = project.name;
                 document.getElementById('detail-category').textContent = project.category;
@@ -2094,8 +2091,8 @@
                 });
             });
 
-            // Evento específico para o botão flutuante BACK em Services
-            document.querySelector('.float-back-btn')?.addEventListener('click', function() {
+            // Botão BACK flutuante – leva para HOME quando em services
+            document.getElementById('float-back-btn').addEventListener('click', function() {
                 if (currentScreen === 'services') navigateTo('home');
             });
 
@@ -2132,8 +2129,7 @@
 
                     item.addEventListener('click', function() { showProjectDetail(project); });
                     item.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();
-                            item.click(); }
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
                     });
                 });
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
