@@ -910,6 +910,7 @@
         }
     </style>
     <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -1170,11 +1171,35 @@
             let sunImg = null;
             let moonImg = null;
             let stars = [];
-            let isNightMode = false;
+            let nightProgress = 0;
+            let nightTarget = 0;
+            let nightAnimStart = 0;
+            let nightAnimDuration = 1800;
+            let goldenHourGradient = null;
 
-            window.setNightMode = function(flag) {
-                isNightMode = flag;
+            window.setNightProgress = function(target, duration = 1800) {
+                nightTarget = target;
+                nightAnimStart = performance.now();
+                nightAnimDuration = duration;
             };
+
+            function easeInOutCubic(t) {
+                return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+
+            function lerpColor(a, b, t) {
+                return a.map((c, i) => Math.round(c + (b[i] - c) * t));
+            }
+
+            function rgbStr(arr, a = 1) {
+                return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`;
+            }
+
+            function buildSkyGradient(stops, h) {
+                const g = ctx.createLinearGradient(0, 0, 0, h);
+                stops.forEach(s => g.addColorStop(s.pos, rgbStr(s.color, s.alpha || 1)));
+                return g;
+            }
 
             function resize() {
                 const rect = canvas.parentElement.getBoundingClientRect();
@@ -1201,6 +1226,19 @@
                 initSun();
                 initMoon();
                 initStars();
+
+                // Golden hour gradient: warm oranges/pinks transitioning to deep purples
+                const ghStops = [
+                    { pos: 0,    color: [80, 40, 60] },
+                    { pos: 0.15, color: [140, 60, 80] },
+                    { pos: 0.30, color: [200, 100, 70] },
+                    { pos: 0.45, color: [230, 140, 60] },
+                    { pos: 0.60, color: [210, 120, 90] },
+                    { pos: 0.75, color: [160, 90, 110] },
+                    { pos: 0.90, color: [100, 60, 100] },
+                    { pos: 1,    color: [60, 40, 80] },
+                ];
+                goldenHourGradient = buildSkyGradient(ghStops, H);
             }
             window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth;
                 mouseY = e.clientY / window.innerHeight; });
@@ -1269,7 +1307,8 @@
                         y: Math.random() * H * 0.75,
                         size: Math.random() < 0.85 ? 1 : 2,
                         brightness: 0.4 + Math.random() * 0.6,
-                        twinklePhase: Math.random() * Math.PI * 2
+                        twinklePhase: Math.random() * Math.PI * 2,
+                        appearAt: 0.3 + Math.random() * 0.7  // each star appears at different progress
                     });
                 }
             }
@@ -1368,58 +1407,150 @@
                 }
             }
 
-            function drawNight() {
-                ctx.fillStyle = skyGradientNight;
-                ctx.fillRect(0, 0, W, H);
-
-                stars.forEach(s => {
-                    const px = s.x + (mouseX - 0.5) * W * 0.015;
-                    const py = s.y + (mouseY - 0.5) * H * 0.015;
-                    const twinkle = 0.7 + 0.3 * Math.sin(globalTime * 0.03 + s.twinklePhase);
-                    const alpha = s.brightness * twinkle;
-                    ctx.fillStyle = `rgba(255,255,240,${alpha.toFixed(2)})`;
-                    ctx.fillRect(Math.floor(px), Math.floor(py), s.size, s.size);
-                });
-
-                if (moonImg) {
-                    const moonX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
-                    const moonY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
-                    ctx.drawImage(moonImg.canvas, Math.floor(moonX - moonImg.pad), Math.floor(moonY - moonImg.pad));
+            function getBlendedSky(progress) {
+                // progress 0 = day, 0.5 = golden hour peak, 1 = night
+                if (progress <= 0.5) {
+                    // Day -> Golden Hour
+                    const t = easeInOutCubic(progress * 2);
+                    // We'll draw day first, then golden hour overlay
+                    return { phase: 'day-to-golden', t: t };
+                } else {
+                    // Golden Hour -> Night
+                    const t = easeInOutCubic((progress - 0.5) * 2);
+                    return { phase: 'golden-to-night', t: t };
                 }
             }
 
             function draw() {
-                if (isNightMode) {
-                    drawNight();
-                    return;
-                }
+                const p = nightProgress;
+                const blend = getBlendedSky(p);
+
+                // 1. Base sky: always day gradient underneath
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, W, H);
-                if (sunImg) {
-                    const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
-                    const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
-                    ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad));
+
+                // 2. Golden hour overlay (0 to 0.5)
+                if (p > 0 && p <= 0.5) {
+                    ctx.globalAlpha = blend.t;
+                    ctx.fillStyle = goldenHourGradient;
+                    ctx.fillRect(0, 0, W, H);
+                    ctx.globalAlpha = 1;
                 }
-                clouds.forEach(c => {
-                    const l = layers[c.layer];
-                    const px = c.x + (mouseX - 0.5) * W * l.parallax;
-                    const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
-                    ctx.drawImage(c.img.canvas, Math.floor(px - c.w/2 - c.img.pad), Math.floor(py - c.h/2 - c.img.pad));
-                });
-                birds.forEach(b => drawBird(b));
+
+                // 3. Night overlay (0.5 to 1)
+                if (p > 0.5) {
+                    // Golden hour fades out as night fades in
+                    ctx.globalAlpha = blend.t;
+                    ctx.fillStyle = skyGradientNight;
+                    ctx.fillRect(0, 0, W, H);
+                    ctx.globalAlpha = 1;
+                }
+
+                // 4. Sun setting (moves down and fades out 0->0.6)
+                if (sunImg && p < 0.7) {
+                    const sunFade = Math.max(0, 1 - p / 0.6);
+                    const sunBaseY = H * 0.12;
+                    const sunSetY = H + sunImg.pad + 20;
+                    const sunY = sunBaseY + (sunSetY - sunBaseY) * easeInOutCubic(Math.min(p / 0.55, 1));
+                    const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
+                    const parallaxY = (mouseY - 0.5) * H * 0.03;
+                    ctx.globalAlpha = sunFade;
+                    ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad + parallaxY));
+                    ctx.globalAlpha = 1;
+                }
+
+                // 5. Moon rising (moves up, fades in 0.3->1)
+                if (moonImg && p > 0.2) {
+                    const moonFade = Math.min(1, (p - 0.2) / 0.5);
+                    const moonBaseY = H + moonImg.pad + 20;
+                    const moonRiseY = H * 0.12;
+                    const moonY = moonBaseY + (moonRiseY - moonBaseY) * easeInOutCubic(Math.min((p - 0.2) / 0.6, 1));
+                    const moonX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
+                    const parallaxY = (mouseY - 0.5) * H * 0.03;
+                    ctx.globalAlpha = moonFade;
+                    ctx.drawImage(moonImg.canvas, Math.floor(moonX - moonImg.pad), Math.floor(moonY - moonImg.pad + parallaxY));
+                    ctx.globalAlpha = 1;
+                }
+
+                // 6. Stars (appear progressively with individual delays)
+                if (p > 0.3) {
+                    stars.forEach(s => {
+                        const appearProgress = (p - 0.3) / 0.7; // normalized 0-1 for star appearance window
+                        if (appearProgress < s.appearAt) return;
+                        const starFade = Math.min(1, (appearProgress - s.appearAt) / 0.15);
+                        const px = s.x + (mouseX - 0.5) * W * 0.015;
+                        const py = s.y + (mouseY - 0.5) * H * 0.015;
+                        const twinkle = 0.7 + 0.3 * Math.sin(globalTime * 0.03 + s.twinklePhase);
+                        const alpha = s.brightness * twinkle * starFade;
+                        ctx.fillStyle = `rgba(255,255,240,${alpha.toFixed(2)})`;
+                        ctx.fillRect(Math.floor(px), Math.floor(py), s.size, s.size);
+                    });
+                }
+
+                // 7. Clouds — only visible during day/sunset, scatter away rapidly
+                if (p < 0.75) {
+                    clouds.forEach(c => {
+                        const l = layers[c.layer];
+                        const px = c.x + (mouseX - 0.5) * W * l.parallax;
+                        const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
+                        // Fade out as they scatter, gone by ~70% progress
+                        const cloudFade = Math.max(0, 1 - (p * p) * 2.2);
+                        if (cloudFade <= 0) return;
+                        ctx.globalAlpha = cloudFade;
+                        ctx.drawImage(c.img.canvas, Math.floor(px - c.w/2 - c.img.pad), Math.floor(py - c.h/2 - c.img.pad));
+                        ctx.globalAlpha = 1;
+                    });
+                }
+
+                // 8. Birds (fly away as sun sets)
+                if (p < 0.5) {
+                    const birdFade = Math.max(0, 1 - p * 2);
+                    ctx.globalAlpha = birdFade;
+                    birds.forEach(b => drawBird(b));
+                    ctx.globalAlpha = 1;
+                }
             }
 
             function update() {
-                if (!isNightMode) {
-                    clouds.forEach(c => {
+                // Animate nightProgress
+                if (nightProgress !== nightTarget) {
+                    const now = performance.now();
+                    const elapsed = now - nightAnimStart;
+                    const t = Math.min(1, elapsed / nightAnimDuration);
+                    const eased = easeInOutCubic(t);
+                    if (nightTarget > nightProgress) {
+                        nightProgress = nightTarget * eased;
+                        if (nightProgress > nightTarget) nightProgress = nightTarget;
+                    } else {
+                        nightProgress = nightTarget + (1 - nightTarget) * (1 - eased);
+                        if (nightProgress < nightTarget) nightProgress = nightTarget;
+                    }
+                    if (t >= 1) nightProgress = nightTarget;
+                }
+
+                // Clouds: normal drift during day, accelerated "scatter" during sunset
+                clouds.forEach(c => {
+                    if (nightProgress > 0.1 && nightProgress < 0.85) {
+                        // Sunset phase: clouds scatter rapidly to the right (wind effect)
+                        const scatterSpeed = c.speed * (1 + nightProgress * 12);
+                        c.x += scatterSpeed; // move RIGHT fast
+                    } else if (nightProgress >= 0.85) {
+                        // Night: clouds are gone, don't update
+                    } else {
+                        // Day: normal leftward drift
                         c.x -= c.speed;
-                        if (c.x + c.w < -20) {
-                            c.x = W + 10 + Math.random() * 50;
-                            c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
-                        }
-                    });
+                    }
+                    // Reset only during day (nightProgress near 0)
+                    if (nightProgress < 0.05 && c.x + c.w < -20) {
+                        c.x = W + 10 + Math.random() * 50;
+                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
+                    }
+                });
+
+                // Birds fly away during sunset
+                if (nightProgress < 0.5) {
                     birds.forEach(b => {
-                        b.x -= b.speed;
+                        b.x -= b.speed * (1 + nightProgress * 4);
                         if (b.x < -5) { b.x = W + 5; b.y = H * (0.15 + Math.random() * 0.25); }
                     });
                 }
@@ -1527,6 +1658,16 @@
             function navigateTo(screen) {
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
+
+                // Start day/night transition immediately, synced with TV effect
+                const goingToServices = (screen === 'services');
+                const comingFromServices = (currentScreen === 'services');
+                if (goingToServices) {
+                    setNightProgress(1, 2000);
+                } else if (comingFromServices) {
+                    setNightProgress(0, 2000);
+                }
+
                 triggerTransition(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
@@ -1548,7 +1689,6 @@
                     } else if (screen === 'email') {
                         emailScreen.classList.add('active');
                     }
-                    if (window.setNightMode) window.setNightMode(screen === 'services');
                     currentScreen = screen;
                     transitioning = false;
                 });
