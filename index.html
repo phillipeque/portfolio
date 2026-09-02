@@ -809,30 +809,29 @@
             border-radius: 3px;
         }
         .services-float-inner {
-            column-count: 3;
-            column-gap: 40px;
-            column-fill: balance;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 28px;
             pointer-events: auto;
-            max-width: 1400px;
             width: 100%;
+            max-width: 1600px;
             margin: 0 auto;
         }
         .services-cat {
-            max-width: 350px;
+            flex: 1 1 0;
+            min-width: 0;
             text-align: left;
-            break-inside: avoid;
-            -webkit-column-break-inside: avoid;
-            page-break-inside: avoid;
-            margin-bottom: 14px;
         }
 
         .services-cat .cat-title {
             font-family: 'Press Start 2P', monospace;
-            font-size: 16px;
+            font-size: 13px;
             color: #e8d4a2;
             text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-            letter-spacing: 1px;
-            margin: 14px 0 4px 0;
+            letter-spacing: 0.5px;
+            margin: 0 0 8px 0;
             text-transform: uppercase;
             line-height: 1.4;
             border-bottom: 2px solid rgba(255,255,255,0.3);
@@ -843,12 +842,12 @@
         }
         .services-cat .service-item {
             font-family: 'Press Start 2P', monospace;
-            font-size: 12px;
+            font-size: 10px;
             color: #d0d0d0;
             text-shadow: 1px 1px 0 #000;
-            line-height: 1.8;
+            line-height: 1.7;
             padding: 2px 0;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
         }
         .services-cat .service-item::before {
             content: '- ';
@@ -894,9 +893,11 @@
                 padding: 20px;
             }
             .services-float-inner {
-                column-count: 1;
+                flex-wrap: wrap;
+                justify-content: center;
             }
             .services-cat {
+                flex: 1 1 100%;
                 width: 100%;
                 max-width: 100%;
             }
