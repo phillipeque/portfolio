@@ -1061,7 +1061,7 @@
            SERVICES – Floating Text sem moldura, apenas letras
            ============================================================ */
         .services-float-wrapper {
-            display: none; /* oculto por padrão */
+            display: none;
             position: absolute;
             top: 0;
             left: 0;
@@ -1071,7 +1071,7 @@
             padding: 40px 60px;
             box-sizing: border-box;
             overflow-y: auto;
-            pointer-events: none; /* permite cliques apenas no botão */
+            pointer-events: none;
             font-family: 'Press Start 2P', monospace;
         }
         .services-float-wrapper::-webkit-scrollbar {
@@ -1103,14 +1103,12 @@
             color: #e8d4a2;
             text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
             letter-spacing: 1px;
-            margin-bottom: 6px;
+            margin: 14px 0 4px 0;
             text-transform: uppercase;
             line-height: 1.4;
         }
-        .services-col .divider {
-            border: none;
-            border-top: 1px solid rgba(200,200,200,0.2);
-            margin: 0 0 8px 0;
+        .services-col .cat-title:first-of-type {
+            margin-top: 0;
         }
         .services-col .service-item {
             font-family: 'Press Start 2P', monospace;
@@ -1122,15 +1120,14 @@
             letter-spacing: 0.3px;
         }
         .services-col .service-item::before {
-            content: '>';
+            content: '- ';
             color: #a0c4ff;
             text-shadow: 1px 1px 0 #000;
-            margin-right: 4px;
         }
 
         /* Botão BACK flutuante – visível apenas em services-mode */
         .float-back-btn {
-            display: none; /* oculto por padrão */
+            display: none;
             position: fixed;
             bottom: 30px;
             right: 30px;
@@ -1301,7 +1298,7 @@
                         </div>
                     </div>
 
-                    <!-- SCREEN SERVICES – vazio, pois o conteúdo flutuante está fora da janela -->
+                    <!-- SCREEN SERVICES – vazio, o conteúdo flutuante está fora da janela -->
                     <div id="screen-services" class="screen-container"></div>
 
                     <div id="screen-email" class="screen-container">
@@ -1335,21 +1332,19 @@
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
 
-            <!-- SERVICES FLOATING WRAPPER – aparece apenas quando body tem .services-mode -->
+            <!-- SERVICES FLOATING WRAPPER – conteúdo exatamente como no print -->
             <div class="services-float-wrapper" id="services-float-wrapper">
                 <div class="services-float-inner">
                     <!-- COLUNA 1 -->
                     <div class="services-col">
-                        <div class="cat-title">COMMUNITY MANAGEMENT</div>
-                        <hr class="divider" />
+                        <div class="cat-title"># Community Management</div>
                         <div class="service-item">Community Setup — Server structure, channels, roles and onboarding flows</div>
                         <div class="service-item">Community Management — Daily operations, member engagement and community health</div>
                         <div class="service-item">Community Optimization — Identify operational gaps and improve community workflows</div>
                         <div class="service-item">Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</div>
                         <div class="service-item">Community Scaling — Processes and systems for managing growing communities</div>
 
-                        <div class="cat-title" style="margin-top:20px;">MODERATION</div>
-                        <hr class="divider" />
+                        <div class="cat-title"># MODERATION</div>
                         <div class="service-item">Community Moderation — Real-time moderation across Discord and Telegram</div>
                         <div class="service-item">Moderation Systems — Rules, escalation flows and moderation procedures</div>
                         <div class="service-item">Anti-Scam Protection — Scam detection, reporting and preventive measures</div>
@@ -1359,16 +1354,14 @@
 
                     <!-- COLUNA 2 -->
                     <div class="services-col">
-                        <div class="cat-title">SUPPORT</div>
-                        <hr class="divider" />
+                        <div class="cat-title"># SUPPORT</div>
                         <div class="service-item">User Support — Member assistance and issue resolution</div>
                         <div class="service-item">Technical Support — Troubleshooting, integrations and technical issues</div>
                         <div class="service-item">Ticket Operations — Ticket handling, categorization and escalation</div>
                         <div class="service-item">Bug Triage — Collect, reproduce and escalate user-reported issues</div>
                         <div class="service-item">Onboarding Systems — New-user flows, documentation and guidance</div>
 
-                        <div class="cat-title" style="margin-top:20px;">GROWTH</div>
-                        <hr class="divider" />
+                        <div class="cat-title"># GROWTH</div>
                         <div class="service-item">Community Growth — Growth strategies and acquisition campaigns</div>
                         <div class="service-item">Engagement Optimization — Identify engagement gaps and design activation campaigns</div>
                         <div class="service-item">Retention Optimization — Improve recurring participation and reduce member churn</div>
@@ -1378,24 +1371,20 @@
 
                     <!-- COLUNA 3 -->
                     <div class="services-col">
-                        <div class="cat-title">EVENTS &amp; PARTNERSHIPS</div>
-                        <hr class="divider" />
-                        <div class="service-item">AMA Management — Planning, moderation and post-event coordination</div>
+                        <div class="cat-title"># EVENTS &amp; PARTNERSHIPS</div>
                         <div class="service-item">Community Events — Planning and operational management</div>
                         <div class="service-item">Tournament Operations — Tournament coordination and community engagement</div>
                         <div class="service-item">Creator Management — Creator onboarding, coordination and partnerships</div>
                         <div class="service-item">Influencer Partnerships — Outreach, coordination and campaign support</div>
 
-                        <div class="cat-title" style="margin-top:20px;">CONTENT</div>
-                        <hr class="divider" />
+                        <div class="cat-title"># CONTENT</div>
                         <div class="service-item">Community Documentation — FAQs, guides and knowledge bases</div>
                         <div class="service-item">Technical Guides — Tutorials and educational resources</div>
                         <div class="service-item">Community Education — Web3, product and ecosystem education</div>
                         <div class="service-item">Localization — Community announcements and content translation</div>
                         <div class="service-item">Content Strategy — Content planning, curation and editorial calendar</div>
 
-                        <div class="cat-title" style="margin-top:20px;">AUTOMATION &amp; TOOLS</div>
-                        <hr class="divider" />
+                        <div class="cat-title"># AUTOMATION &amp; TOOLS</div>
                         <div class="service-item">Discord Bot Development — Custom bots and community utilities</div>
                         <div class="service-item">Telegram Bot Development — Custom bots and automated workflows</div>
                         <div class="service-item">Moderation Automation — Automated spam, scam and rule enforcement</div>
@@ -1805,7 +1794,6 @@
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
                     } else if (screen === 'services') {
-                        // ativa o modo services (mostra o wrapper flutuante, esconde a janela)
                         body.classList.add('services-mode');
                     } else if (screen === 'email') {
                         emailScreen.classList.add('active');
