@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Retro Portfolio</title>
-    <!-- Fonte Press Start 2P (APENAS para SERVICES) -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
     <style>
         /* ====== ESTILOS GERAIS ====== */
         * {
@@ -68,18 +66,6 @@
             padding: 1.5% 22% 1.5% 22%;
             text-align: center;
             transition: padding 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        body.services-mode #tv-screen {
-            padding: 0 !important;
-        }
-        body.services-mode .retro-window {
-            display: none !important;
-        }
-        body.services-mode .services-float-wrapper {
-            display: flex !important;
-        }
-        body.services-mode .float-back-btn {
-            display: block !important;
         }
 
         body.projects-mode #tv-screen {
@@ -160,6 +146,7 @@
             pointer-events: none;
             opacity: 0;
             background-color: #000;
+            transition: none;
         }
         #flash-overlay.snap {
             opacity: 1;
@@ -310,7 +297,6 @@
         }
         .label-orange { color: #c45c26; }
         .label-black { color: #000; }
-        .label-green { color: #2d5016; }
         .label-red { color: #c41e3a; }
         .label-blue { color: #1a3a5c; }
         .label-purple { color: #4a2d6b; }
@@ -777,140 +763,8 @@
             .win95-titlebar { margin-bottom: 0; }
             .detail-header-card { border-top: none; }
         }
-
-        /* ============================================================
-           SERVICES – Grid alinhado por categoria (corrigido)
-           ============================================================ */
-        .services-float-wrapper {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 20;
-            padding: 20px 30px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            font-family: 'Press Start 2P', monospace;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-        }
-        body.services-mode .services-float-wrapper {
-            display: flex !important;
-        }
-        .services-float-wrapper::-webkit-scrollbar {
-            width: 6px;
-            background: transparent;
-        }
-        .services-float-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 3px;
-        }
-        .services-float-inner {
-            display: flex;
-            flex-wrap: nowrap;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 28px;
-            pointer-events: auto;
-            width: 100%;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-        .services-cat {
-            flex: 1 1 0;
-            min-width: 0;
-            text-align: left;
-        }
-
-        .services-cat .cat-title {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 13px;
-            color: #e8d4a2;
-            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-            letter-spacing: 0.5px;
-            margin: 0 0 8px 0;
-            text-transform: uppercase;
-            line-height: 1.4;
-            border-bottom: 2px solid rgba(255,255,255,0.3);
-            padding-bottom: 6px;
-        }
-        .services-cat .cat-title:first-of-type {
-            margin-top: 0;
-        }
-        .services-cat .service-item {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 10px;
-            color: #d0d0d0;
-            text-shadow: 1px 1px 0 #000;
-            line-height: 1.7;
-            padding: 2px 0;
-            letter-spacing: 0.2px;
-        }
-        .services-cat .service-item::before {
-            content: '- ';
-            color: #a0c4ff;
-            text-shadow: 1px 1px 0 #000;
-        }
-
-        /* Botão BACK flutuante – visível apenas em services-mode */
-        .float-back-btn {
-            display: none;
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 60 !important;
-            background: #c0c0c0;
-            border: 3px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 2px 2px 0 rgba(0,0,0,0.5);
-            padding: 8px 18px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            font-weight: bold;
-            color: #000;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: transform 0.1s ease;
-            pointer-events: auto;
-        }
-        body.services-mode .float-back-btn {
-            display: block !important;
-        }
-        .float-back-btn:hover {
-            transform: scale(1.05);
-        }
-        .float-back-btn:active {
-            border-color: #808080 #ffffff #ffffff #808080;
-            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-        }
-
-        @media (max-width: 768px) {
-            .services-float-wrapper {
-                padding: 20px;
-            }
-            .services-float-inner {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            .services-cat {
-                flex: 1 1 100%;
-                width: 100%;
-                max-width: 100%;
-            }
-            .float-back-btn {
-                bottom: 15px;
-                right: 15px;
-                padding: 6px 14px;
-                font-size: 12px;
-            }
-        }
     </style>
     <base target="_blank">
-<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -935,10 +789,6 @@
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
                             <div class="icon-item">
-                                <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" alt="SERVICES" />
-                                <span class="icon-label label-green">SERVICES</span>
-                            </div>
-                            <div class="icon-item">
                                 <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                                 <span class="icon-label label-red">GITHUB</span>
                             </div>
@@ -950,6 +800,7 @@
                                 <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
                                 <span class="icon-label label-purple">CONTACT</span>
                             </div>
+                            <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                         </div>
                     </div>
 
@@ -1036,9 +887,6 @@
                         </div>
                     </div>
 
-                    <!-- SCREEN SERVICES – vazio, o conteúdo flutuante está fora da janela -->
-                    <div id="screen-services" class="screen-container"></div>
-
                     <!-- EMAIL -->
                     <div id="screen-email" class="screen-container">
                         <div class="contact-form-box">
@@ -1070,84 +918,6 @@
                 </div>
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
-
-            <!-- SERVICES FLOATING WRAPPER -->
-            <div class="services-float-wrapper" id="services-float-wrapper">
-                <div class="services-float-inner">
-                    <!-- 1: COMMUNITY MANAGEMENT (col 1, row 1) -->
-                    <div class="services-cat">
-                        <div class="cat-title">COMMUNITY MANAGEMENT</div>
-                        <div class="service-item">Community Setup — Server structure, channels, roles and onboarding flows</div>
-                        <div class="service-item">Community Management — Daily operations, member engagement and community health</div>
-                        <div class="service-item">Community Optimization — Identify operational gaps and improve community workflows</div>
-                        <div class="service-item">Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</div>
-                        <div class="service-item">Community Scaling — Processes and systems for managing growing communities</div>
-                    </div>
-
-                    <!-- 2: SUPPORT (col 2, row 1) -->
-                    <div class="services-cat">
-                        <div class="cat-title">SUPPORT</div>
-                        <div class="service-item">User Support — Member assistance and issue resolution</div>
-                        <div class="service-item">Technical Support — Troubleshooting, integrations and technical issues</div>
-                        <div class="service-item">Ticket Operations — Ticket handling, categorization and escalation</div>
-                        <div class="service-item">Bug Triage — Collect, reproduce and escalate user-reported issues</div>
-                        <div class="service-item">Onboarding Systems — New-user flows, documentation and guidance</div>
-                    </div>
-
-                    <!-- 3: EVENTS & PARTNERSHIPS (col 3, row 1) -->
-                    <div class="services-cat">
-                        <div class="cat-title">EVENTS &amp; PARTNERSHIPS</div>
-                        <div class="service-item">Community Events — Planning and operational management</div>
-                        <div class="service-item">Tournament Operations — Tournament coordination and community engagement</div>
-                        <div class="service-item">Creator Management — Creator onboarding, coordination and partnerships</div>
-                        <div class="service-item">Influencer Partnerships — Outreach, coordination and campaign support</div>
-                    </div>
-
-                    <!-- 4: MODERATION (col 1, row 2) -->
-                    <div class="services-cat">
-                        <div class="cat-title">MODERATION</div>
-                        <div class="service-item">Community Moderation — Real-time moderation across Discord and Telegram</div>
-                        <div class="service-item">Moderation Systems — Rules, escalation flows and moderation procedures</div>
-                        <div class="service-item">Anti-Scam Protection — Scam detection, reporting and preventive measures</div>
-                        <div class="service-item">Moderator Management — Moderator coordination, guidelines and team workflows</div>
-                        <div class="service-item">Incident Management — Conflict resolution, escalations and community incidents</div>
-                    </div>
-
-                    <!-- 5: GROWTH (col 2, row 2) -->
-                    <div class="services-cat">
-                        <div class="cat-title">GROWTH</div>
-                        <div class="service-item">Community Growth — Growth strategies and acquisition campaigns</div>
-                        <div class="service-item">Engagement Optimization — Identify engagement gaps and design activation campaigns</div>
-                        <div class="service-item">Retention Optimization — Improve recurring participation and reduce member churn</div>
-                        <div class="service-item">Ambassador Programs — Program setup, coordination and community activation</div>
-                        <div class="service-item">Referral Systems — Referral campaign setup and management</div>
-                    </div>
-
-                    <!-- 6: CONTENT (col 3, row 2) -->
-                    <div class="services-cat">
-                        <div class="cat-title">CONTENT</div>
-                        <div class="service-item">Community Documentation — FAQs, guides and knowledge bases</div>
-                        <div class="service-item">Technical Guides — Tutorials and educational resources</div>
-                        <div class="service-item">Community Education — Web3, product and ecosystem education</div>
-                        <div class="service-item">Localization — Community announcements and content translation</div>
-                        <div class="service-item">Content Strategy — Content planning, curation and editorial calendar</div>
-                    </div>
-
-                    <!-- 7: AUTOMATION & TOOLS (col 3, row 3) -->
-                    <div class="services-cat">
-                        <div class="cat-title">AUTOMATION &amp; TOOLS</div>
-                        <div class="service-item">Discord Bot Development — Custom bots and community utilities</div>
-                        <div class="service-item">Telegram Bot Development — Custom bots and automated workflows</div>
-                        <div class="service-item">Moderation Automation — Automated spam, scam and rule enforcement</div>
-                        <div class="service-item">Bot Integration — Configuration and integration of existing bots</div>
-                        <div class="service-item">Community Automation — Roles, tickets, verification and onboarding workflows</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Botão BACK flutuante -->
-            <button class="float-back-btn" id="float-back-btn">← BACK</button>
-
         </div>
         <div id="scanlines"></div>
         <div id="scan-sweep"></div>
@@ -1156,7 +926,7 @@
 
     <script>
         // ============================================================
-        //  BACKGROUND (Canvas)
+        //  BACKGROUND (Canvas) – Ciclo Dia/Noite Automático
         // ============================================================
         (function() {
             const canvas = document.getElementById('background-canvas');
@@ -1171,17 +941,16 @@
             let sunImg = null;
             let moonImg = null;
             let stars = [];
-            let nightProgress = 0;
-            let nightTarget = 0;
-            let nightAnimStart = 0;
-            let nightAnimDuration = 1800;
+            let nightProgress = 0; // 0 = dia, 1 = noite
             let goldenHourGradient = null;
 
-            window.setNightProgress = function(target, duration = 1800) {
-                nightTarget = target;
-                nightAnimStart = performance.now();
-                nightAnimDuration = duration;
-            };
+            // Constantes do ciclo (em milissegundos)
+            const CYCLE_DURATION = 120000; // 2 minutos total
+            const DAY_DURATION = 30000;
+            const SUNSET_DURATION = 30000;
+            const NIGHT_DURATION = 30000;
+            const SUNRISE_DURATION = 30000;
+            let cycleStartTime = performance.now();
 
             function easeInOutCubic(t) {
                 return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -1199,6 +968,27 @@
                 const g = ctx.createLinearGradient(0, 0, 0, h);
                 stops.forEach(s => g.addColorStop(s.pos, rgbStr(s.color, s.alpha || 1)));
                 return g;
+            }
+
+            function updateNightProgress() {
+                const now = performance.now();
+                const elapsed = (now - cycleStartTime) % CYCLE_DURATION;
+                const progress = elapsed / CYCLE_DURATION; // 0 a 1
+                if (progress < 0.25) {
+                    // Dia
+                    nightProgress = 0;
+                } else if (progress < 0.5) {
+                    // Pôr do sol: 0 -> 1
+                    const t = (progress - 0.25) / 0.25;
+                    nightProgress = easeInOutCubic(t);
+                } else if (progress < 0.75) {
+                    // Noite
+                    nightProgress = 1;
+                } else {
+                    // Amanhecer: 1 -> 0
+                    const t = (progress - 0.75) / 0.25;
+                    nightProgress = 1 - easeInOutCubic(t);
+                }
             }
 
             function resize() {
@@ -1227,7 +1017,7 @@
                 initMoon();
                 initStars();
 
-                // Golden hour gradient: warm oranges/pinks transitioning to deep purples
+                // Golden hour gradient
                 const ghStops = [
                     { pos: 0,    color: [80, 40, 60] },
                     { pos: 0.15, color: [140, 60, 80] },
@@ -1308,7 +1098,7 @@
                         size: Math.random() < 0.85 ? 1 : 2,
                         brightness: 0.4 + Math.random() * 0.6,
                         twinklePhase: Math.random() * Math.PI * 2,
-                        appearAt: 0.3 + Math.random() * 0.7  // each star appears at different progress
+                        appearAt: 0.3 + Math.random() * 0.7
                     });
                 }
             }
@@ -1408,14 +1198,10 @@
             }
 
             function getBlendedSky(progress) {
-                // progress 0 = day, 0.5 = golden hour peak, 1 = night
                 if (progress <= 0.5) {
-                    // Day -> Golden Hour
                     const t = easeInOutCubic(progress * 2);
-                    // We'll draw day first, then golden hour overlay
                     return { phase: 'day-to-golden', t: t };
                 } else {
-                    // Golden Hour -> Night
                     const t = easeInOutCubic((progress - 0.5) * 2);
                     return { phase: 'golden-to-night', t: t };
                 }
@@ -1425,11 +1211,11 @@
                 const p = nightProgress;
                 const blend = getBlendedSky(p);
 
-                // 1. Base sky: always day gradient underneath
+                // 1. Base sky: sempre o gradiente diurno por baixo
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, W, H);
 
-                // 2. Golden hour overlay (0 to 0.5)
+                // 2. Golden hour overlay (0 a 0.5)
                 if (p > 0 && p <= 0.5) {
                     ctx.globalAlpha = blend.t;
                     ctx.fillStyle = goldenHourGradient;
@@ -1437,16 +1223,15 @@
                     ctx.globalAlpha = 1;
                 }
 
-                // 3. Night overlay (0.5 to 1)
+                // 3. Night overlay (0.5 a 1)
                 if (p > 0.5) {
-                    // Golden hour fades out as night fades in
                     ctx.globalAlpha = blend.t;
                     ctx.fillStyle = skyGradientNight;
                     ctx.fillRect(0, 0, W, H);
                     ctx.globalAlpha = 1;
                 }
 
-                // 4. Sun setting (moves down and fades out 0->0.6)
+                // 4. Sol
                 if (sunImg && p < 0.7) {
                     const sunFade = Math.max(0, 1 - p / 0.6);
                     const sunBaseY = H * 0.12;
@@ -1459,7 +1244,7 @@
                     ctx.globalAlpha = 1;
                 }
 
-                // 5. Moon rising (moves up, fades in 0.3->1)
+                // 5. Lua
                 if (moonImg && p > 0.2) {
                     const moonFade = Math.min(1, (p - 0.2) / 0.5);
                     const moonBaseY = H + moonImg.pad + 20;
@@ -1472,10 +1257,10 @@
                     ctx.globalAlpha = 1;
                 }
 
-                // 6. Stars (appear progressively with individual delays)
+                // 6. Estrelas
                 if (p > 0.3) {
                     stars.forEach(s => {
-                        const appearProgress = (p - 0.3) / 0.7; // normalized 0-1 for star appearance window
+                        const appearProgress = (p - 0.3) / 0.7;
                         if (appearProgress < s.appearAt) return;
                         const starFade = Math.min(1, (appearProgress - s.appearAt) / 0.15);
                         const px = s.x + (mouseX - 0.5) * W * 0.015;
@@ -1487,13 +1272,12 @@
                     });
                 }
 
-                // 7. Clouds — only visible during day/sunset, scatter away rapidly
+                // 7. Nuvens
                 if (p < 0.75) {
                     clouds.forEach(c => {
                         const l = layers[c.layer];
                         const px = c.x + (mouseX - 0.5) * W * l.parallax;
                         const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
-                        // Fade out as they scatter, gone by ~70% progress
                         const cloudFade = Math.max(0, 1 - (p * p) * 2.2);
                         if (cloudFade <= 0) return;
                         ctx.globalAlpha = cloudFade;
@@ -1502,7 +1286,7 @@
                     });
                 }
 
-                // 8. Birds (fly away as sun sets)
+                // 8. Pássaros
                 if (p < 0.5) {
                     const birdFade = Math.max(0, 1 - p * 2);
                     ctx.globalAlpha = birdFade;
@@ -1512,42 +1296,25 @@
             }
 
             function update() {
-                // Animate nightProgress
-                if (nightProgress !== nightTarget) {
-                    const now = performance.now();
-                    const elapsed = now - nightAnimStart;
-                    const t = Math.min(1, elapsed / nightAnimDuration);
-                    const eased = easeInOutCubic(t);
-                    if (nightTarget > nightProgress) {
-                        nightProgress = nightTarget * eased;
-                        if (nightProgress > nightTarget) nightProgress = nightTarget;
-                    } else {
-                        nightProgress = nightTarget + (1 - nightTarget) * (1 - eased);
-                        if (nightProgress < nightTarget) nightProgress = nightTarget;
-                    }
-                    if (t >= 1) nightProgress = nightTarget;
-                }
+                updateNightProgress();
 
-                // Clouds: normal drift during day, accelerated "scatter" during sunset
+                // Atualizar nuvens (movimento contínuo, mas com dispersão durante pôr do sol)
                 clouds.forEach(c => {
                     if (nightProgress > 0.1 && nightProgress < 0.85) {
-                        // Sunset phase: clouds scatter rapidly to the LEFT (same direction, faster)
                         const scatterSpeed = c.speed * (1 + nightProgress * 12);
-                        c.x -= scatterSpeed; // move LEFT fast
+                        c.x -= scatterSpeed;
                     } else if (nightProgress >= 0.85) {
-                        // Night: clouds are gone, don't update
+                        // nuvens sumindo
                     } else {
-                        // Day: normal leftward drift
                         c.x -= c.speed;
                     }
-                    // Reset only during day (nightProgress near 0)
                     if (nightProgress < 0.05 && c.x + c.w < -20) {
                         c.x = W + 10 + Math.random() * 50;
                         c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
                     }
                 });
 
-                // Birds fly away during sunset
+                // Pássaros voam
                 if (nightProgress < 0.5) {
                     birds.forEach(b => {
                         b.x -= b.speed * (1 + nightProgress * 4);
@@ -1593,7 +1360,6 @@
             const homeScreen = document.getElementById('screen-home');
             const aboutScreen = document.getElementById('screen-about');
             const projectsScreen = document.getElementById('screen-projects');
-            const servicesScreen = document.getElementById('screen-services');
             const emailScreen = document.getElementById('screen-email');
             const flash = document.getElementById('flash-overlay');
             const retroWindow = document.querySelector('.retro-window');
@@ -1658,23 +1424,12 @@
             function navigateTo(screen) {
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
-
-                // Start day/night transition immediately, synced with TV effect
-                const goingToServices = (screen === 'services');
-                const comingFromServices = (currentScreen === 'services');
-                if (goingToServices) {
-                    setNightProgress(1, 2000);
-                } else if (comingFromServices) {
-                    setNightProgress(0, 2000);
-                }
-
                 triggerTransition(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
                     projectsScreen.classList.remove('active');
-                    servicesScreen.classList.remove('active');
                     emailScreen.classList.remove('active');
-                    body.classList.remove('projects-mode', 'detail-mode', 'services-mode');
+                    body.classList.remove('projects-mode', 'detail-mode');
 
                     if (screen === 'home') {
                         homeScreen.classList.add('active');
@@ -1684,8 +1439,6 @@
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
-                    } else if (screen === 'services') {
-                        body.classList.add('services-mode');
                     } else if (screen === 'email') {
                         emailScreen.classList.add('active');
                     }
@@ -1956,21 +1709,19 @@
                         navigateTo('about');
                     } else if (target === 'projects') {
                         navigateTo('projects');
-                    } else if (target === 'services') {
-                        navigateTo('services');
-                    } else if (target === 'email') {
-                        navigateTo('email');
                     } else if (target === 'github') {
                         window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
+                    } else if (target === 'socials') {
+                        // Redirecionar para algum link de redes sociais?
+                        // Como não foi especificado, apenas voltamos ao home.
+                        navigateTo('home');
+                    } else if (target === 'email') {
+                        navigateTo('email');
                     } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
                     }
                 });
-            });
-
-            document.getElementById('float-back-btn').addEventListener('click', function() {
-                if (currentScreen === 'services') navigateTo('home');
             });
 
             if (iconsArea) {
