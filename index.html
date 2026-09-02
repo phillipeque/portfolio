@@ -1849,7 +1849,7 @@
             resize();
             initBirds();
             loop();
-        })();        })();
+        })();
 
         // ============================================================
         //  SCANLINE SWEEP
@@ -2346,45 +2346,7 @@
             showProjectsList();
         })();
 
-        // ============================================================
-        //  SERVICES – Painel de Controle
-        // ============================================================
-        (function() {
-            const sidebar = document.getElementById('services-sidebar');
-            const content = document.getElementById('services-content');
-            const paneTitle = document.getElementById('services-pane-title');
-            const statusText = document.getElementById('services-status-text');
 
-            if (!sidebar) return;
-
-            const titles = {
-                community: 'Community Management',
-                moderation: 'Moderation',
-                support: 'Support',
-                growth: 'Growth',
-                events: 'Events & Partnerships',
-                content: 'Content',
-                automation: 'Automation & Tools'
-            };
-
-            sidebar.querySelectorAll('.service-category-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const cat = this.dataset.cat;
-                    if (!cat) return;
-
-                    sidebar.querySelectorAll('.service-category-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-
-                    content.querySelectorAll('.service-pane').forEach(p => p.classList.remove('active'));
-                    const pane = content.querySelector(`.service-pane[data-pane="${cat}"]`);
-                    if (pane) pane.classList.add('active');
-
-                    const title = (titles[cat] || cat).toUpperCase() + '.EXE';
-                    if (paneTitle) paneTitle.textContent = title;
-                    if (statusText) statusText.textContent = title + ' selected';
-                });
-            });
-        })();
     </script>
 </body>
 </html>
