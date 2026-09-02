@@ -916,77 +916,16 @@
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
         }
 
-        /* ============================================================
-           SERVICES – BILLBOARD STYLE
-           ============================================================ */
-        .services-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            padding: 4px;
+        /* Ajustes para a tela SERVICES */
+        #screen-services .win95-groupbox {
+            margin-bottom: 12px;
         }
-
-        .service-card {
+        #screen-services .win95-groupbox-legend {
             background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .service-billboard {
-            background: linear-gradient(135deg, #000080, #1084d0);
-            border-bottom: 2px solid #808080;
-            padding: 8px 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #000;
-        }
-
-        .service-billboard .billboard-icon {
-            font-size: 20px;
-            filter: drop-shadow(1px 1px 0 #000);
-        }
-
-        .service-billboard .billboard-title {
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .service-items {
-            padding: 10px;
-            list-style: none;
-            margin: 0;
-        }
-
-        .service-items li {
-            font-size: 11px;
-            line-height: 1.5;
-            color: #000;
-            padding: 3px 0 3px 16px;
-            position: relative;
-        }
-
-        .service-items li::before {
-            content: '►';
-            position: absolute;
-            left: 0;
-            top: 3px;
-            font-size: 8px;
             color: #000080;
         }
-
-        /* Responsivo para mobile */
-        @media (max-width: 768px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
+        #screen-services .detail-list li {
+            line-height: 1.8;
         }
 
         #scan-sweep {
@@ -1165,8 +1104,11 @@
             .explorer-statusbar {
                 font-size: 9px;
             }
-            .services-grid {
-                grid-template-columns: 1fr;
+            .win95-titlebar {
+                margin-bottom: 0;
+            }
+            .detail-header-card {
+                border-top: none;
             }
         }
     </style>
@@ -1193,7 +1135,6 @@
                                 <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
-                            <!-- SERVICES -->
                             <div class="icon-item">
                                 <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" alt="SERVICES" />
                                 <span class="icon-label label-green">SERVICES</span>
@@ -1202,7 +1143,6 @@
                                 <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                                 <span class="icon-label label-red">GITHUB</span>
                             </div>
-                            <!-- SOCIALS -->
                             <div class="icon-item">
                                 <img class="icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
                                 <span class="icon-label label-blue">SOCIALS</span>
@@ -1292,95 +1232,89 @@
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
                     </div>
-
-                    <!-- ================= SERVICES ================= -->
                     <div id="screen-services" class="screen-container">
-                        <div class="services-grid">
-                            <!-- Category 1 -->
-                            <div class="service-card">
-                                <div class="service-billboard">
-                                    <span class="billboard-icon">🌐</span>
-                                    <span class="billboard-title">Community Management</span>
-                                </div>
-                                <ul class="service-items">
-                                    <li>Community Setup — Server structure, channels, roles and onboarding flows</li>
-                                    <li>Community Management — Daily operations, member engagement and community health</li>
-                                    <li>Community Optimization — Identify operational gaps and improve community workflows</li>
-                                    <li>Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</li>
-                                    <li>Community Scaling — Processes and systems for managing growing communities</li>
-                                </ul>
+                        <div class="explorer-window">
+                            <div class="explorer-toolbar">
+                                <div class="explorer-toolbar-btn disabled">◄</div>
+                                <div class="explorer-toolbar-btn disabled">▲</div>
+                                <div class="explorer-address"><span id="services-address-text">📁 C:\PORTFOLIO\SERVICES\</span></div>
                             </div>
-                            <!-- Category 2 -->
-                            <div class="service-card">
-                                <div class="service-billboard">
-                                    <span class="billboard-icon">🛡️</span>
-                                    <span class="billboard-title">Moderation</span>
+                            <div class="explorer-detail" style="display:block; padding:12px; max-height:none; overflow-y:auto;">
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">COMMUNITY MANAGEMENT</span>
+                                    <ul class="detail-list">
+                                        <li>Community Setup — Server structure, channels, roles and onboarding flows</li>
+                                        <li>Community Management — Daily operations, member engagement and community health</li>
+                                        <li>Community Optimization — Identify operational gaps and improve community workflows</li>
+                                        <li>Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</li>
+                                        <li>Community Scaling — Processes and systems for managing growing communities</li>
+                                    </ul>
                                 </div>
-                                <ul class="service-items">
-                                    <li>Community Moderation — Real-time moderation across Discord and Telegram</li>
-                                    <li>Moderation Systems — Rules, escalation flows and moderation procedures</li>
-                                    <li>Anti-Scam Protection — Scam detection, reporting and preventive measures</li>
-                                    <li>Moderator Management — Moderator coordination, guidelines and team workflows</li>
-                                    <li>Incident Management — Conflict resolution, escalations and community incidents</li>
-                                </ul>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">MODERATION</span>
+                                    <ul class="detail-list">
+                                        <li>Community Moderation — Real-time moderation across Discord and Telegram</li>
+                                        <li>Moderation Systems — Rules, escalation flows and moderation procedures</li>
+                                        <li>Anti-Scam Protection — Scam detection, reporting and preventive measures</li>
+                                        <li>Moderator Management — Moderator coordination, guidelines and team workflows</li>
+                                        <li>Incident Management — Conflict resolution, escalations and community incidents</li>
+                                    </ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">SUPPORT</span>
+                                    <ul class="detail-list">
+                                        <li>User Support — Member assistance and issue resolution</li>
+                                        <li>Technical Support — Troubleshooting, integrations and technical issues</li>
+                                        <li>Ticket Operations — Ticket handling, categorization and escalation</li>
+                                        <li>Bug Triage — Collect, reproduce and escalate user-reported issues</li>
+                                        <li>Onboarding Systems — New-user flows, documentation and guidance</li>
+                                    </ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">GROWTH</span>
+                                    <ul class="detail-list">
+                                        <li>Community Growth — Growth strategies and acquisition campaigns</li>
+                                        <li>Engagement Optimization — Identify engagement gaps and design activation campaigns</li>
+                                        <li>Retention Optimization — Improve recurring participation and reduce member churn</li>
+                                        <li>Ambassador Programs — Program setup, coordination and community activation</li>
+                                        <li>Referral Systems — Referral campaign setup and management</li>
+                                    </ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">EVENTS & PARTNERSHIPS</span>
+                                    <ul class="detail-list">
+                                        <li>AMA Management — Planning, moderation and post-event coordination</li>
+                                        <li>Community Events — Planning and operational management</li>
+                                        <li>Tournament Operations — Tournament coordination and community engagement</li>
+                                        <li>Creator Management — Creator onboarding, coordination and partnerships</li>
+                                        <li>Influencer Partnerships — Outreach, coordination and campaign support</li>
+                                    </ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">CONTENT</span>
+                                    <ul class="detail-list">
+                                        <li>Community Documentation — FAQs, guides and knowledge bases</li>
+                                        <li>Technical Guides — Tutorials and educational resources</li>
+                                        <li>Community Education — Web3, product and ecosystem education</li>
+                                        <li>Localization — Community announcements and content translation</li>
+                                    </ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">AUTOMATION & TOOLS</span>
+                                    <ul class="detail-list">
+                                        <li>Discord Bot Development — Custom bots and community utilities</li>
+                                        <li>Telegram Bot Development — Custom bots and automated workflows</li>
+                                        <li>Moderation Automation — Automated spam, scam and rule enforcement</li>
+                                        <li>Bot Integration — Configuration and integration of existing bots</li>
+                                        <li>Community Automation — Roles, tickets, verification and onboarding workflows</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <!-- Category 3 -->
-                            <div class="service-card">
-                                <div class="service-billboard">
-                                    <span class="billboard-icon">🎧</span>
-                                    <span class="billboard-title">Support</span>
-                                </div>
-                                <ul class="service-items">
-                                    <li>User Support — Member assistance and issue resolution</li>
-                                    <li>Technical Support — Troubleshooting, integrations and technical issues</li>
-                                    <li>Ticket Operations — Ticket handling, categorization and escalation</li>
-                                    <li>Bug Triage — Collect, reproduce and escalate user-reported issues</li>
-                                    <li>Onboarding Systems — New-user flows, documentation and guidance</li>
-                                </ul>
-                            </div>
-                            <!-- Category 4 -->
-                            <div class="service-card">
-                                <div class="service-billboard">
-                                    <span class="billboard-icon">📈</span>
-                                    <span class="billboard-title">Growth</span>
-                                </div>
-                                <ul class="service-items">
-                                    <li>Community Growth — Growth strategies and acquisition campaigns</li>
-                                    <li>Engagement Optimization — Identify engagement gaps and design activation campaigns</li>
-                                    <li>Retention Optimization — Improve recurring participation and reduce member churn</li>
-                                    <li>Ambassador Programs — Program setup, coordination and community activation</li>
-                                    <li>Referral Systems — Referral campaign setup and management</li>
-                                </ul>
-                            </div>
-                            <!-- Category 5 -->
-                            <div class="service-card">
-                                <div class="service-billboard">
-                                    <span class="billboard-icon">📝</span>
-                                    <span class="billboard-title">Content</span>
-                                </div>
-                                <ul class="service-items">
-                                    <li>Community Documentation — FAQs, guides and knowledge bases</li>
-                                    <li>Technical Guides — Tutorials and educational resources</li>
-                                    <li>Community Education — Web3, product and ecosystem education</li>
-                                    <li>Localization — Community announcements and content translation</li>
-                                </ul>
-                            </div>
-                            <!-- Category 6 -->
-                            <div class="service-card">
-                                <div class="service-billboard">
-                                    <span class="billboard-icon">🤖</span>
-                                    <span class="billboard-title">Automation & Tools</span>
-                                </div>
-                                <ul class="service-items">
-                                    <li>Discord Bot Development — Custom bots and community utilities</li>
-                                    <li>Telegram Bot Development — Custom bots and automated workflows</li>
-                                    <li>Moderation Automation — Automated spam, scam and rule enforcement</li>
-                                    <li>Bot Integration — Configuration and integration of existing bots</li>
-                                    <li>Community Automation — Roles, tickets, verification and onboarding workflows</li>
-                                </ul>
+                            <div class="explorer-statusbar">
+                                <span>7 object(s)</span>
+                                <span>Click to view</span>
                             </div>
                         </div>
-                        <!-- Botão voltar -->
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                             <div class="icon-item">
@@ -1390,8 +1324,6 @@
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
                     </div>
-                    <!-- ============== FIM SERVICES ============== -->
-
                     <div id="screen-email" class="screen-container">
                         <div class="contact-form-box">
                             <div class="form-titlebar"><span class="form-title">CONTACT.TXT</span></div>
