@@ -1531,9 +1531,9 @@
                 // Clouds: normal drift during day, accelerated "scatter" during sunset
                 clouds.forEach(c => {
                     if (nightProgress > 0.1 && nightProgress < 0.85) {
-                        // Sunset phase: clouds scatter rapidly to the right (wind effect)
+                        // Sunset phase: clouds scatter rapidly to the LEFT (same direction, faster)
                         const scatterSpeed = c.speed * (1 + nightProgress * 12);
-                        c.x += scatterSpeed; // move RIGHT fast
+                        c.x -= scatterSpeed; // move LEFT fast
                     } else if (nightProgress >= 0.85) {
                         // Night: clouds are gone, don't update
                     } else {
