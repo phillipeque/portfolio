@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Retro Portfolio</title>
+    <!-- Fonte Press Start 2P (APENAS para SERVICES) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
     <style>
         /* ====== ESTILOS GERAIS ====== */
         * {
@@ -67,7 +69,6 @@
             text-align: center;
             transition: padding 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         body.projects-mode #tv-screen {
             padding: 0.5% 8% 0.5% 8%;
         }
@@ -146,7 +147,6 @@
             pointer-events: none;
             opacity: 0;
             background-color: #000;
-            transition: none;
         }
         #flash-overlay.snap {
             opacity: 1;
@@ -764,8 +764,14 @@
             .win95-titlebar { margin-bottom: 0; }
             .detail-header-card { border-top: none; }
         }
+
+        /* ============================================================
+           SERVICES – Grid alinhado por categoria (corrigido)
+           ============================================================ */
+
     </style>
     <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -789,7 +795,6 @@
                                 <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
-                            <!-- Ícone SERVICES recolocado -->
                             <div class="icon-item">
                                 <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" alt="SERVICES" />
                                 <span class="icon-label label-green">SERVICES</span>
@@ -806,7 +811,6 @@
                                 <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
                                 <span class="icon-label label-purple">CONTACT</span>
                             </div>
-                            <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                         </div>
                     </div>
 
@@ -893,6 +897,9 @@
                         </div>
                     </div>
 
+                    <!-- SCREEN SERVICES – vazio, o conteúdo flutuante está fora da janela -->
+                    <div id="screen-services" class="screen-container"></div>
+
                     <!-- EMAIL -->
                     <div id="screen-email" class="screen-container">
                         <div class="contact-form-box">
@@ -924,6 +931,9 @@
                 </div>
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
+
+
+
         </div>
         <div id="scanlines"></div>
         <div id="scan-sweep"></div>
@@ -932,7 +942,7 @@
 
     <script>
         // ============================================================
-        //  BACKGROUND (Canvas) – Ciclo Dia/Noite Automático
+        //  BACKGROUND (Canvas)
         // ============================================================
         (function() {
             const canvas = document.getElementById('background-canvas');
@@ -947,32 +957,14 @@
             let sunImg = null;
             let moonImg = null;
             let stars = [];
-            let nightProgress = 0; // 0 = dia, 1 = noite
+            let nightProgress = 0;
             let goldenHourGradient = null;
-
-            // Constantes do ciclo (em milissegundos)
-            const CYCLE_DURATION = 120000; // 2 minutos total
             let cycleStartTime = performance.now();
+            const PHASE_DURATION = 30000; // 30 seconds per phase
 
             function easeInOutCubic(t) {
                 return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
             }
-
-            // Easing mais linear para o movimento do sol/lua
-            function almostLinear(t) {
-                // combinação de linear com um pouco de suavidade
-                return t; // linear puro, mas com início e fim suaves? Vamos usar uma curva suave.
-                // Para movimento mais constante, usamos easeInOutQuad ou algo similar.
-                // Mas para ser mais perceptível, vou usar uma função que acelera e desacelera levemente,
-                // mas mantém a maior parte do movimento constante.
-                // Vou usar uma função de easing que é quase linear, mas com suavidade nas bordas.
-                // Usarei uma combinação: 0.8*linear + 0.2*easeInOutCubic
-                // return 0.8 * t + 0.2 * easeInOutCubic(t);
-                return t; // por enquanto linear puro
-            }
-
-            // Vou usar easing linear para o movimento do sol/lua, mas mantendo a transição de céu com easeInOutCubic.
-            // A função de progresso do pôr do sol/amanhecer será linear para posição, mas o céu usa easeInOut.
 
             function lerpColor(a, b, t) {
                 return a.map((c, i) => Math.round(c + (b[i] - c) * t));
@@ -988,23 +980,33 @@
                 return g;
             }
 
-            function updateNightProgress() {
-                const now = performance.now();
-                const elapsed = (now - cycleStartTime) % CYCLE_DURATION;
-                const progress = elapsed / CYCLE_DURATION; // 0 a 1
-                if (progress < 0.25) {
-                    nightProgress = 0; // dia
-                } else if (progress < 0.5) {
-                    // Pôr do sol: 0 -> 1 linear
-                    const t = (progress - 0.25) / 0.25;
-                    nightProgress = almostLinear(t);
-                } else if (progress < 0.75) {
-                    nightProgress = 1; // noite
-                } else {
-                    // Amanhecer: 1 -> 0 linear
-                    const t = (progress - 0.75) / 0.25;
-                    nightProgress = 1 - almostLinear(t);
+            // Cycle: 0=Day(30s) → 1=Sunset(30s) → 2=Moonrise(30s) → 3=Night(30s) → 4=Sunrise(30s) → loop
+            function getCycleState() {
+                const totalCycle = PHASE_DURATION * 5;
+                const elapsed = (performance.now() - cycleStartTime) % totalCycle;
+                const phase = Math.floor(elapsed / PHASE_DURATION);
+                const phaseProgress = (elapsed % PHASE_DURATION) / PHASE_DURATION;
+                const easedProgress = easeInOutCubic(phaseProgress);
+
+                let p;
+                switch(phase) {
+                    case 0: // Day — sun at top, full daylight
+                        p = 0;
+                        break;
+                    case 1: // Sunset — sun descends, golden hour, 0→0.5
+                        p = easedProgress * 0.5;
+                        break;
+                    case 2: // Moonrise — moon ascends, stars appear, 0.5→1
+                        p = 0.5 + easedProgress * 0.5;
+                        break;
+                    case 3: // Night — moon at top, full night
+                        p = 1;
+                        break;
+                    case 4: // Sunrise — reverse, moon descends, sun rises, 1→0
+                        p = 1 - easedProgress;
+                        break;
                 }
+                return { phase, progress: p, rawProgress: phaseProgress };
             }
 
             function resize() {
@@ -1033,7 +1035,7 @@
                 initMoon();
                 initStars();
 
-                // Golden hour gradient
+                // Golden hour gradient: warm oranges/pinks transitioning to deep purples
                 const ghStops = [
                     { pos: 0,    color: [80, 40, 60] },
                     { pos: 0.15, color: [140, 60, 80] },
@@ -1114,7 +1116,7 @@
                         size: Math.random() < 0.85 ? 1 : 2,
                         brightness: 0.4 + Math.random() * 0.6,
                         twinklePhase: Math.random() * Math.PI * 2,
-                        appearAt: 0.3 + Math.random() * 0.7
+                        appearAt: 0.3 + Math.random() * 0.7  // each star appears at different progress
                     });
                 }
             }
@@ -1214,10 +1216,14 @@
             }
 
             function getBlendedSky(progress) {
+                // progress 0 = day, 0.5 = golden hour peak, 1 = night
                 if (progress <= 0.5) {
+                    // Day -> Golden Hour
                     const t = easeInOutCubic(progress * 2);
+                    // We'll draw day first, then golden hour overlay
                     return { phase: 'day-to-golden', t: t };
                 } else {
+                    // Golden Hour -> Night
                     const t = easeInOutCubic((progress - 0.5) * 2);
                     return { phase: 'golden-to-night', t: t };
                 }
@@ -1227,11 +1233,11 @@
                 const p = nightProgress;
                 const blend = getBlendedSky(p);
 
-                // 1. Base sky: sempre o gradiente diurno por baixo
+                // 1. Base sky: always day gradient underneath
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, W, H);
 
-                // 2. Golden hour overlay (0 a 0.5)
+                // 2. Golden hour overlay (0 to 0.5)
                 if (p > 0 && p <= 0.5) {
                     ctx.globalAlpha = blend.t;
                     ctx.fillStyle = goldenHourGradient;
@@ -1239,21 +1245,21 @@
                     ctx.globalAlpha = 1;
                 }
 
-                // 3. Night overlay (0.5 a 1)
+                // 3. Night overlay (0.5 to 1)
                 if (p > 0.5) {
+                    // Golden hour fades out as night fades in
                     ctx.globalAlpha = blend.t;
                     ctx.fillStyle = skyGradientNight;
                     ctx.fillRect(0, 0, W, H);
                     ctx.globalAlpha = 1;
                 }
 
-                // 4. Sol
+                // 4. Sun setting (moves down and fades out 0->0.6)
                 if (sunImg && p < 0.7) {
                     const sunFade = Math.max(0, 1 - p / 0.6);
                     const sunBaseY = H * 0.12;
                     const sunSetY = H + sunImg.pad + 20;
-                    // Usamos p diretamente (linear) para a posição, já que o nightProgress já foi mapeado linearmente
-                    const sunY = sunBaseY + (sunSetY - sunBaseY) * Math.min(p / 0.55, 1);
+                    const sunY = sunBaseY + (sunSetY - sunBaseY) * easeInOutCubic(Math.min(p / 0.55, 1));
                     const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
                     const parallaxY = (mouseY - 0.5) * H * 0.03;
                     ctx.globalAlpha = sunFade;
@@ -1261,12 +1267,12 @@
                     ctx.globalAlpha = 1;
                 }
 
-                // 5. Lua
+                // 5. Moon rising (moves up, fades in 0.3->1)
                 if (moonImg && p > 0.2) {
                     const moonFade = Math.min(1, (p - 0.2) / 0.5);
                     const moonBaseY = H + moonImg.pad + 20;
                     const moonRiseY = H * 0.12;
-                    const moonY = moonBaseY + (moonRiseY - moonBaseY) * (1 - Math.min((p - 0.2) / 0.6, 1));
+                    const moonY = moonBaseY + (moonRiseY - moonBaseY) * easeInOutCubic(Math.min((p - 0.2) / 0.6, 1));
                     const moonX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
                     const parallaxY = (mouseY - 0.5) * H * 0.03;
                     ctx.globalAlpha = moonFade;
@@ -1274,10 +1280,10 @@
                     ctx.globalAlpha = 1;
                 }
 
-                // 6. Estrelas
+                // 6. Stars (appear progressively with individual delays)
                 if (p > 0.3) {
                     stars.forEach(s => {
-                        const appearProgress = (p - 0.3) / 0.7;
+                        const appearProgress = (p - 0.3) / 0.7; // normalized 0-1 for star appearance window
                         if (appearProgress < s.appearAt) return;
                         const starFade = Math.min(1, (appearProgress - s.appearAt) / 0.15);
                         const px = s.x + (mouseX - 0.5) * W * 0.015;
@@ -1289,12 +1295,13 @@
                     });
                 }
 
-                // 7. Nuvens (sem aceleração, apenas movimento constante)
+                // 7. Clouds — only visible during day/sunset, scatter away rapidly
                 if (p < 0.75) {
                     clouds.forEach(c => {
                         const l = layers[c.layer];
                         const px = c.x + (mouseX - 0.5) * W * l.parallax;
                         const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
+                        // Fade out as they scatter, gone by ~70% progress
                         const cloudFade = Math.max(0, 1 - (p * p) * 2.2);
                         if (cloudFade <= 0) return;
                         ctx.globalAlpha = cloudFade;
@@ -1303,7 +1310,7 @@
                     });
                 }
 
-                // 8. Pássaros
+                // 8. Birds (fly away as sun sets)
                 if (p < 0.5) {
                     const birdFade = Math.max(0, 1 - p * 2);
                     ctx.globalAlpha = birdFade;
@@ -1313,48 +1320,42 @@
             }
 
             function update() {
-                updateNightProgress();
+                const state = getCycleState();
+                nightProgress = state.progress;
+                const phase = state.phase;
 
-                const p = nightProgress;
-
-                // Atualizar nuvens (movimento constante, sem aceleração)
-                // Reposição de nuvens: permitir apenas durante o dia e durante os primeiros 2/3 do pôr do sol
-                // ou seja, quando p < 0.25 + 0.25*(2/3) = 0.25 + 0.1667 = 0.4167
-                const canSpawn = (p < 0.4167); // durante dia e 2/3 do pôr do sol
-
+                // Clouds behavior based on cycle phase
                 clouds.forEach(c => {
-                    // Movimento constante para a esquerda (velocidade normal)
-                    c.x -= c.speed;
-                    // Repor se saiu da tela
-                    if (c.x + c.w < -20) {
-                        if (canSpawn) {
-                            // Repor à direita com nova posição aleatória
-                            c.x = W + 10 + Math.random() * 50;
-                            c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
-                        } else {
-                            // Não repor, apenas remover (sumir) - marcar para ser removido
-                            // Mas como vamos remover, podemos simplesmente não fazer nada e deixar sumir.
-                            // Para evitar acumular, vou definir um valor que nunca será redesenhado: largura negativa
-                            // ou podemos filtrar no draw, mas é mais fácil remover do array.
-                            // Vou remover do array quando sair e não puder repor.
-                            // Para remover com segurança, vamos criar um novo array sem essa nuvem.
-                            // Mas como estamos iterando, marcamos para remoção depois.
-                            c.markForRemoval = true;
-                        }
+                    if (phase === 1 || phase === 2) {
+                        // Sunset / Moonrise: clouds scatter rapidly to the LEFT
+                        const scatterSpeed = c.speed * (1 + nightProgress * 12);
+                        c.x -= scatterSpeed;
+                    } else if (phase === 3) {
+                        // Night: clouds are gone, silently reset to right side for next sunrise
+                        c.x = W + 20 + Math.random() * 100;
+                    } else if (phase === 4) {
+                        // Sunrise: clouds drift in from the right, slower at first
+                        const dawnSpeed = c.speed * (0.3 + (1 - nightProgress) * 0.7);
+                        c.x -= dawnSpeed;
+                    } else {
+                        // Day: normal leftward drift
+                        c.x -= c.speed;
+                    }
+                    // Reset when off-screen left (only during day or sunrise)
+                    if ((phase === 0 || phase === 4) && c.x + c.w < -20) {
+                        c.x = W + 10 + Math.random() * 50;
+                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
                     }
                 });
 
-                // Remover nuvens marcadas
-                clouds = clouds.filter(c => !c.markForRemoval);
-
-                // Pássaros voam normalmente (sem aceleração)
-                if (p < 0.5) {
+                // Birds: active during day and early sunset, gone at night
+                if (phase === 0 || (phase === 1 && nightProgress < 0.4)) {
                     birds.forEach(b => {
-                        b.x -= b.speed;
+                        const speedMult = phase === 1 ? (1 + nightProgress * 4) : 1;
+                        b.x -= b.speed * speedMult;
                         if (b.x < -5) { b.x = W + 5; b.y = H * (0.15 + Math.random() * 0.25); }
                     });
                 }
-
                 globalTime++;
                 draw();
             }
@@ -1394,6 +1395,7 @@
             const homeScreen = document.getElementById('screen-home');
             const aboutScreen = document.getElementById('screen-about');
             const projectsScreen = document.getElementById('screen-projects');
+            const servicesScreen = document.getElementById('screen-services');
             const emailScreen = document.getElementById('screen-email');
             const flash = document.getElementById('flash-overlay');
             const retroWindow = document.querySelector('.retro-window');
@@ -1459,15 +1461,11 @@
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
 
-                // Se for "services", redireciona para home (pois a página está vazia)
-                if (screen === 'services') {
-                    screen = 'home';
-                }
-
                 triggerTransition(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
                     projectsScreen.classList.remove('active');
+                    servicesScreen.classList.remove('active');
                     emailScreen.classList.remove('active');
                     body.classList.remove('projects-mode', 'detail-mode');
 
@@ -1479,6 +1477,9 @@
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
+                    } else if (screen === 'services') {
+                        // Services content removed — button kept for future rewrite
+                        homeScreen.classList.add('active');
                     } else if (screen === 'email') {
                         emailScreen.classList.add('active');
                     }
@@ -1750,21 +1751,19 @@
                     } else if (target === 'projects') {
                         navigateTo('projects');
                     } else if (target === 'services') {
-                        navigateTo('services'); // redireciona para home
-                    } else if (target === 'github') {
-                        window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
-                    } else if (target === 'socials') {
-                        // Redirecionar para algum link de redes sociais?
-                        // Vou redirecionar para home ou abrir um link padrão
-                        window.open('https://www.instagram.com', '_blank');
+                        navigateTo('services');
                     } else if (target === 'email') {
                         navigateTo('email');
+                    } else if (target === 'github') {
+                        window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
                     } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
                     }
                 });
             });
+
+
 
             if (iconsArea) {
                 PROJECTS.forEach((project) => {
