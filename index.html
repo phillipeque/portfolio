@@ -783,82 +783,80 @@
         }
 
         /* ============================================================
-           SERVICES – Floating Text Centralizado (com tamanhos maiores e divisórias)
-           ============================================================ */
-        .services-float-wrapper {
-            display: none; /* oculto por padrão, aparece com body.services-mode */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 20;
-            padding: 40px 60px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            font-family: 'Press Start 2P', monospace;
-            /* Centralização vertical e horizontal */
-            display: none; /* será flex quando ativado */
-            align-items: center;
-            justify-content: center;
-            pointer-events: none; /* permite clique apenas no botão */
-        }
-        body.services-mode .services-float-wrapper {
-            display: flex !important;
-        }
-        .services-float-wrapper::-webkit-scrollbar {
-            width: 6px;
-            background: transparent;
-        }
-        .services-float-wrapper::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 3px;
-        }
-        .services-float-inner {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px 60px;
-            pointer-events: auto;
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        .services-col {
-            flex: 1 1 250px;
-            min-width: 200px;
-            max-width: 350px;
-            text-align: left;
-        }
-        .services-col .cat-title {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 16px; /* aumentado de 11px para 16px (+50%) */
-            color: #e8d4a2;
-            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
-            letter-spacing: 1px;
-            margin: 14px 0 4px 0;
-            text-transform: uppercase;
-            line-height: 1.4;
-            border-bottom: 2px solid rgba(255,255,255,0.3); /* linha divisória branca */
-            padding-bottom: 6px;
-        }
-        .services-col .cat-title:first-of-type {
-            margin-top: 0;
-        }
-        .services-col .service-item {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 12px; /* aumentado de 8px para 12px (+50%) */
-            color: #d0d0d0;
-            text-shadow: 1px 1px 0 #000;
-            line-height: 1.8;
-            padding: 2px 0;
-            letter-spacing: 0.3px;
-        }
-        .services-col .service-item::before {
-            content: '- ';
-            color: #a0c4ff;
-            text-shadow: 1px 1px 0 #000;
-        }
+   SERVICES – Floating Text Centralizado (colunas lado a lado)
+   ============================================================ */
+.services-float-wrapper {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    padding: 20px 30px; /* menos padding lateral para mais espaço */
+    box-sizing: border-box;
+    overflow-y: auto;
+    font-family: 'Press Start 2P', monospace;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+body.services-mode .services-float-wrapper {
+    display: flex !important;
+}
+.services-float-wrapper::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+.services-float-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+}
+.services-float-inner {
+    display: flex;
+    flex-wrap: nowrap; /* FORÇA LADO A LADO */
+    justify-content: center;
+    gap: 30px 40px;
+    pointer-events: auto;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+.services-col {
+    flex: 0 0 30%; /* cada coluna ocupa 30%, cabem 3 confortavelmente */
+    max-width: 350px;
+    min-width: 200px;
+    text-align: left;
+}
+.services-col .cat-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
+    color: #e8d4a2;
+    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+    letter-spacing: 1px;
+    margin: 14px 0 4px 0;
+    text-transform: uppercase;
+    line-height: 1.4;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+    padding-bottom: 6px;
+}
+.services-col .cat-title:first-of-type {
+    margin-top: 0;
+}
+.services-col .service-item {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: #d0d0d0;
+    text-shadow: 1px 1px 0 #000;
+    line-height: 1.8;
+    padding: 2px 0;
+    letter-spacing: 0.3px;
+}
+.services-col .service-item::before {
+    content: '- ';
+    color: #a0c4ff;
+    text-shadow: 1px 1px 0 #000;
+}
 
         /* Botão BACK flutuante – visível apenas em services-mode */
         .float-back-btn {
