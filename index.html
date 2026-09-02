@@ -7,13 +7,13 @@
     <!-- Fonte Press Start 2P (APENAS para SERVICES) -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
     <style>
+        /* ====== ESTILOS GERAIS (mantidos como antes) ====== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        html,
-        body {
+        html, body {
             width: 100%;
             height: 100vh;
             background: #000;
@@ -42,7 +42,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 3px);
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px),
+                        repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px);
             background-size: 100% 4px, 4px 100%;
             animation: staticMove 0.1s steps(2) infinite;
             z-index: 1;
@@ -82,6 +83,7 @@
             display: block !important;
         }
 
+        /* Modo projects e detail (mantidos) */
         body.projects-mode #tv-screen {
             padding: 0.5% 8% 0.5% 8%;
         }
@@ -93,7 +95,6 @@
             max-height: none;
             overflow-y: hidden;
             padding: 10px 4px 8px;
-            transition: max-height 0.4s ease, padding 0.4s ease;
         }
         body.projects-mode .explorer-icons-area {
             grid-template-columns: repeat(4, 1fr);
@@ -151,6 +152,7 @@
             display: none !important;
         }
 
+        /* ====== FLASH OVERLAY ====== */
         #flash-overlay {
             position: absolute;
             top: 0;
@@ -168,9 +170,13 @@
         }
         #flash-overlay.snowing {
             opacity: 1;
-            background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px);
+            background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 2px),
+                              repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px, transparent 1px, transparent 2px),
+                              repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px);
             background-size: 3px 3px, 3px 3px, 6px 6px;
         }
+
+        /* ====== JANELA RETRO (mantida) ====== */
         .retro-window {
             position: relative;
             background: #c0c0c0;
@@ -338,88 +344,20 @@
             pointer-events: none;
             z-index: 9;
         }
-        .about-layout {
-            display: flex;
-            gap: 16px;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-        .about-avatar-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-        .avatar-frame {
-            width: 120px;
-            height: 120px;
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            padding: 4px;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-        .avatar-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-        }
-        .avatar-caption {
-            font-size: 10px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #000;
-            text-shadow: 1px 1px 0 #a0a0a0;
-        }
-        .about-bio-box {
-            flex: 1;
-            background: #ffffff;
-            border: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-            overflow: hidden;
-        }
-        .bio-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 3px 6px;
-            display: flex;
-            align-items: center;
-        }
-        .bio-title {
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #000000;
-        }
-        .bio-content {
-            padding: 12px;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            color: #000000;
-            text-align: left;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .bio-content p {
-            margin-bottom: 10px;
-            text-indent: 0;
-        }
-        .bio-cursor {
-            animation: blink 1s step-end infinite;
-            color: #000080;
-            font-weight: bold;
-        }
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
+        /* ====== ABOUT (mantido) ====== */
+        .about-layout { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
+        .about-avatar-box { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
+        .avatar-frame { width: 120px; height: 120px; background: #c0c0c0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; padding: 4px; image-rendering: pixelated; image-rendering: crisp-edges; }
+        .avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: pixelated; image-rendering: crisp-edges; }
+        .avatar-caption { font-size: 10px; font-weight: bold; letter-spacing: 1px; color: #000; text-shadow: 1px 1px 0 #a0a0a0; }
+        .about-bio-box { flex: 1; background: #ffffff; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; overflow: hidden; }
+        .bio-titlebar { background: linear-gradient(90deg, #000080, #1084d0); padding: 3px 6px; display: flex; align-items: center; }
+        .bio-title { font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #ffffff; text-shadow: 1px 1px 0 #000000; }
+        .bio-content { padding: 12px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #000000; text-align: left; max-height: 200px; overflow-y: auto; }
+        .bio-content p { margin-bottom: 10px; text-indent: 0; }
+        .bio-cursor { animation: blink 1s step-end infinite; color: #000080; font-weight: bold; }
+        @keyframes blink { 50% { opacity: 0; } }
+        /* ====== CONTACT (mantido) ====== */
         .contact-form-box {
             background: #c0c0c0;
             border: 2px solid;
@@ -429,31 +367,10 @@
             width: 100%;
             overflow: hidden;
         }
-        .form-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 3px 6px;
-            display: flex;
-            align-items: center;
-        }
-        .form-title {
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #000000;
-        }
-        .contact-form-content {
-            padding: 12px;
-        }
-        .contact-form-box label {
-            display: block;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #000;
-            margin-top: 8px;
-            margin-bottom: 2px;
-        }
+        .form-titlebar { background: linear-gradient(90deg, #000080, #1084d0); padding: 3px 6px; display: flex; align-items: center; }
+        .form-title { font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #ffffff; text-shadow: 1px 1px 0 #000000; }
+        .contact-form-content { padding: 12px; }
+        .contact-form-box label { display: block; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #000; margin-top: 8px; margin-bottom: 2px; }
         .contact-form-box label:first-of-type { margin-top: 0; }
         .contact-form-box input,
         .contact-form-box textarea {
@@ -474,15 +391,8 @@
             outline: none;
             border-color: #000080 #808080 #808080 #000080;
         }
-        .contact-form-box textarea {
-            min-height: 140px;
-        }
-        .contact-form-box .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 12px;
-            gap: 8px;
-        }
+        .contact-form-box textarea { min-height: 140px; }
+        .contact-form-box .form-actions { display: flex; justify-content: flex-end; margin-top: 12px; gap: 8px; }
         .retro-btn {
             background: #c0c0c0;
             border: 2px solid;
@@ -500,40 +410,11 @@
             border-color: #808080 #ffffff #ffffff #808080;
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
         }
-        .retro-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        #form-feedback {
-            margin-top: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-            color: #000;
-            min-height: 20px;
-        }
-        .bio-content::-webkit-scrollbar {
-            width: 12px;
-            background: #dfdfdf;
-        }
-        .bio-content::-webkit-scrollbar-track {
-            background: #dfdfdf;
-            border-left: 1px solid #808080;
-        }
-        .bio-content::-webkit-scrollbar-thumb {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-        }
-        .bio-content::-webkit-scrollbar-button {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            height: 12px;
-        }
-        .explorer-window {
-            margin-bottom: 4px;
-        }
+        .retro-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        #form-feedback { margin-top: 8px; font-size: 12px; font-weight: bold; text-align: center; color: #000; min-height: 20px; }
+
+        /* ====== EXPLORER / PROJECTS (mantido) ====== */
+        .explorer-window { margin-bottom: 4px; }
         .explorer-toolbar {
             display: flex;
             align-items: center;
@@ -560,10 +441,7 @@
             user-select: none;
             cursor: default;
         }
-        .explorer-toolbar-btn.disabled {
-            color: #a0a0a0;
-            cursor: default;
-        }
+        .explorer-toolbar-btn.disabled { color: #a0a0a0; cursor: default; }
         .explorer-address {
             flex: 1;
             display: flex;
@@ -581,11 +459,7 @@
             text-align: left;
             min-width: 0;
         }
-        .explorer-address span {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+        .explorer-address span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .explorer-icons-area {
             background: #ffffff;
             border: 2px solid;
@@ -607,12 +481,8 @@
             border: 1px dotted transparent;
             transition: transform 0.15s ease;
         }
-        .explorer-item:hover {
-            transform: scale(1.02);
-        }
-        .explorer-item:active {
-            transform: scale(0.96);
-        }
+        .explorer-item:hover { transform: scale(1.02); }
+        .explorer-item:active { transform: scale(0.96); }
         .explorer-item-icon {
             width: 64px;
             height: 64px;
@@ -678,9 +548,7 @@
             padding: 1px 8px;
         }
 
-        /* ============================================================
-           DETAIL VIEW – Win95 Properties
-           ============================================================ */
+        /* ====== DETAIL VIEW (Win95) ====== */
         .explorer-detail {
             background: #c0c0c0;
             border: 2px solid;
@@ -692,26 +560,6 @@
             margin: 0 auto;
             transition: all 0.3s ease;
         }
-        .explorer-detail::-webkit-scrollbar {
-            width: 12px;
-            background: #dfdfdf;
-        }
-        .explorer-detail::-webkit-scrollbar-track {
-            background: #dfdfdf;
-            border-left: 1px solid #808080;
-        }
-        .explorer-detail::-webkit-scrollbar-thumb {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-        }
-        .explorer-detail::-webkit-scrollbar-button {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            height: 12px;
-        }
-
         .win95-titlebar {
             background: linear-gradient(90deg, #000080, #1084d0);
             padding: 3px 6px;
@@ -751,26 +599,10 @@
             padding: 2px;
             mix-blend-mode: multiply;
         }
-        .detail-header-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .detail-header-name {
-            font-size: 14px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #000;
-            margin-bottom: 2px;
-        }
-        .detail-header-meta {
-            font-size: 11px;
-            color: #555;
-            letter-spacing: 0.5px;
-        }
-        .detail-header-meta span {
-            color: #000080;
-            font-weight: bold;
-        }
+        .detail-header-info { flex: 1; min-width: 0; }
+        .detail-header-name { font-size: 14px; font-weight: bold; letter-spacing: 1px; color: #000; margin-bottom: 2px; }
+        .detail-header-meta { font-size: 11px; color: #555; letter-spacing: 0.5px; }
+        .detail-header-meta span { color: #000080; font-weight: bold; }
         .win95-groupbox {
             background: #c0c0c0;
             border: 2px solid;
@@ -792,17 +624,8 @@
             color: #000080;
             text-shadow: none;
         }
-        .detail-about-text {
-            font-size: 12px;
-            line-height: 1.7;
-            color: #000;
-            text-align: left;
-        }
-        .detail-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+        .detail-about-text { font-size: 12px; line-height: 1.7; color: #000; text-align: left; }
+        .detail-list { list-style: none; padding: 0; margin: 0; }
         .detail-list li {
             font-size: 12px;
             line-height: 1.6;
@@ -818,12 +641,7 @@
             font-size: 8px;
             color: #000080;
         }
-        .detail-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 4px;
-        }
+        .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
         .detail-tag {
             background: #c0c0c0;
             border: 2px solid;
@@ -844,10 +662,7 @@
             border-top: 1px solid #808080;
             border-bottom: 1px solid #ffffff;
         }
-        .detail-actions-right {
-            display: flex;
-            gap: 8px;
-        }
+        .detail-actions-right { display: flex; gap: 8px; }
         .detail-btn {
             background: #c0c0c0;
             border: 2px solid;
@@ -885,6 +700,7 @@
             box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
         }
 
+        /* ====== SCAN SWEEP ====== */
         #scan-sweep {
             position: absolute;
             top: -30px;
@@ -920,159 +736,75 @@
             100% { top: 100%; opacity: 0; }
         }
 
+        /* ====== RESPONSIVO ====== */
         @media (max-width: 768px) {
-            body.projects-mode #tv-screen {
-                padding: 1% 4% 1% 4%;
-            }
-            body.projects-mode .retro-window {
-                max-width: 98%;
-            }
+            body.projects-mode #tv-screen { padding: 1% 4% 1% 4%; }
+            body.projects-mode .retro-window { max-width: 98%; }
             body.projects-mode .explorer-icons-area {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px 6px;
             }
-            body.projects-mode .explorer-item-icon {
-                width: 56px;
-                height: 56px;
-            }
-            body.projects-mode .explorer-item-name {
-                font-size: 12px;
-            }
+            body.projects-mode .explorer-item-icon { width: 56px; height: 56px; }
+            body.projects-mode .explorer-item-name { font-size: 12px; }
             body.projects-mode .explorer-item-role,
-            body.projects-mode .explorer-item-duration {
-                font-size: 11px;
-            }
-            body.detail-mode .retro-window {
-                max-width: 95%;
-            }
-            body.detail-mode #tv-screen {
-                padding: 1% 4% 1% 4%;
-            }
-            body.detail-mode .explorer-detail {
-                max-width: 100%;
-                padding: 8px;
-            }
-            .detail-header-card {
-                padding: 8px;
-                gap: 10px;
-            }
-            .detail-header-icon {
-                width: 40px;
-                height: 40px;
-            }
-            .detail-header-name {
-                font-size: 13px;
-            }
-            .detail-header-meta {
-                font-size: 10px;
-            }
-            .win95-groupbox {
-                padding: 12px 10px 8px;
-                margin-bottom: 8px;
-            }
-            .win95-groupbox-legend {
-                font-size: 10px;
-            }
-            .detail-about-text,
-            .detail-list li {
-                font-size: 11px;
-            }
-            .detail-actions {
-                flex-direction: column;
-                gap: 8px;
-                align-items: stretch;
-            }
-            .detail-actions-right {
-                justify-content: flex-end;
-            }
-            #tv-screen {
-                padding: 2% 12% 2% 12%;
-            }
-            .retro-window {
-                max-width: 90%;
-            }
-            .icon-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            .icon-grid .ghost {
-                display: none;
-            }
-            .icon-grid.about-grid {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            .icon-img {
-                width: 48px;
-                height: 48px;
-            }
-            .icon-label {
-                font-size: 10px;
-            }
-            .about-layout {
-                flex-direction: column;
-                align-items: center;
-            }
-            .about-bio-box {
-                width: 100%;
-            }
-            .bio-content {
-                max-height: 160px;
-                font-size: 12px;
-            }
-            .contact-form-content {
-                padding: 8px;
-            }
-            .contact-form-box textarea {
-                min-height: 100px;
-            }
-            .explorer-icons-area {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 18px 4px;
-                padding: 16px 6px;
-            }
-            .explorer-item-icon {
-                width: 48px;
-                height: 48px;
-            }
-            .explorer-item-name {
-                font-size: 10px;
-            }
-            .explorer-item-role,
-            .explorer-item-duration {
-                font-size: 9px;
-            }
-            .explorer-address {
-                font-size: 10px;
-            }
-            .explorer-statusbar {
-                font-size: 9px;
-            }
-            .win95-titlebar {
-                margin-bottom: 0;
-            }
-            .detail-header-card {
-                border-top: none;
-            }
+            body.projects-mode .explorer-item-duration { font-size: 11px; }
+            body.detail-mode .retro-window { max-width: 95%; }
+            body.detail-mode #tv-screen { padding: 1% 4% 1% 4%; }
+            body.detail-mode .explorer-detail { max-width: 100%; padding: 8px; }
+            .detail-header-card { padding: 8px; gap: 10px; }
+            .detail-header-icon { width: 40px; height: 40px; }
+            .detail-header-name { font-size: 13px; }
+            .detail-header-meta { font-size: 10px; }
+            .win95-groupbox { padding: 12px 10px 8px; margin-bottom: 8px; }
+            .win95-groupbox-legend { font-size: 10px; }
+            .detail-about-text, .detail-list li { font-size: 11px; }
+            .detail-actions { flex-direction: column; gap: 8px; align-items: stretch; }
+            .detail-actions-right { justify-content: flex-end; }
+            #tv-screen { padding: 2% 12% 2% 12%; }
+            .retro-window { max-width: 90%; }
+            .icon-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .icon-grid .ghost { display: none; }
+            .icon-grid.about-grid { display: flex; justify-content: center; align-items: center; }
+            .icon-img { width: 48px; height: 48px; }
+            .icon-label { font-size: 10px; }
+            .about-layout { flex-direction: column; align-items: center; }
+            .about-bio-box { width: 100%; }
+            .bio-content { max-height: 160px; font-size: 12px; }
+            .contact-form-content { padding: 8px; }
+            .contact-form-box textarea { min-height: 100px; }
+            .explorer-icons-area { grid-template-columns: repeat(2, 1fr); gap: 18px 4px; padding: 16px 6px; }
+            .explorer-item-icon { width: 48px; height: 48px; }
+            .explorer-item-name { font-size: 10px; }
+            .explorer-item-role, .explorer-item-duration { font-size: 9px; }
+            .explorer-address { font-size: 10px; }
+            .explorer-statusbar { font-size: 9px; }
+            .win95-titlebar { margin-bottom: 0; }
+            .detail-header-card { border-top: none; }
         }
 
         /* ============================================================
-           SERVICES – Floating Text sem moldura, apenas letras
+           SERVICES – Floating Text Centralizado
            ============================================================ */
         .services-float-wrapper {
-            display: none;
+            display: none; /* oculto por padrão, aparece com body.services-mode */
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 20;
-            padding: 40px 60px;
+            padding: 20px 40px;
             box-sizing: border-box;
             overflow-y: auto;
-            pointer-events: none;
             font-family: 'Press Start 2P', monospace;
+            /* Centralização vertical e horizontal */
+            display: none; /* será flex quando ativado */
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* permite clique apenas no botão */
+        }
+        body.services-mode .services-float-wrapper {
+            display: flex !important;
         }
         .services-float-wrapper::-webkit-scrollbar {
             width: 6px;
@@ -1089,6 +821,7 @@
             gap: 30px 50px;
             pointer-events: auto;
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
         }
         .services-col {
@@ -1131,7 +864,7 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            z-index: 60;
+            z-index: 60 !important; /* acima da moldura (z-index 40) */
             background: #c0c0c0;
             border: 3px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
@@ -1146,6 +879,9 @@
             letter-spacing: 1px;
             transition: transform 0.1s ease;
             pointer-events: auto;
+        }
+        body.services-mode .float-back-btn {
+            display: block !important;
         }
         .float-back-btn:hover {
             transform: scale(1.05);
@@ -1190,6 +926,7 @@
                     <div class="window-title">PORTFOLIO</div>
                 </div>
                 <div class="window-content">
+                    <!-- HOME -->
                     <div id="screen-home" class="screen-container active">
                         <div class="icon-grid">
                             <div class="icon-item">
@@ -1218,6 +955,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- ABOUT -->
                     <div id="screen-about" class="screen-container">
                         <div class="about-layout">
                             <div class="about-avatar-box">
@@ -1243,6 +982,8 @@
                             <div class="ghost icon-item" style="visibility:hidden;pointer-events:none;"></div>
                         </div>
                     </div>
+
+                    <!-- PROJECTS -->
                     <div id="screen-projects" class="screen-container">
                         <div class="explorer-window">
                             <div class="explorer-toolbar">
@@ -1301,6 +1042,7 @@
                     <!-- SCREEN SERVICES – vazio, o conteúdo flutuante está fora da janela -->
                     <div id="screen-services" class="screen-container"></div>
 
+                    <!-- EMAIL -->
                     <div id="screen-email" class="screen-container">
                         <div class="contact-form-box">
                             <div class="form-titlebar"><span class="form-title">CONTACT.TXT</span></div>
@@ -1332,7 +1074,7 @@
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
 
-            <!-- SERVICES FLOATING WRAPPER – conteúdo exatamente como no print -->
+            <!-- SERVICES FLOATING WRAPPER (aparece quando body tem .services-mode) -->
             <div class="services-float-wrapper" id="services-float-wrapper">
                 <div class="services-float-inner">
                     <!-- COLUNA 1 -->
