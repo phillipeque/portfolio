@@ -779,7 +779,7 @@
         }
 
         /* ============================================================
-           SERVICES – CORRIGIDO: colunas lado a lado com flex-wrap
+           SERVICES – Grid alinhado por categoria (corrigido)
            ============================================================ */
         .services-float-wrapper {
             display: none;
@@ -809,22 +809,30 @@
             border-radius: 3px;
         }
         .services-float-inner {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: start;
             gap: 30px 40px;
             pointer-events: auto;
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
         }
-        .services-col {
-            flex: 0 0 calc(33.333% - 30px);
+        .services-cat {
             max-width: 350px;
             min-width: 200px;
             text-align: left;
         }
-        .services-col .cat-title {
+        /* Posicionamento explícito na grade: linhas alinhadas por categoria */
+        .services-cat:nth-child(1) { grid-column: 1; grid-row: 1; } /* COMMUNITY MANAGEMENT */
+        .services-cat:nth-child(2) { grid-column: 2; grid-row: 1; } /* SUPPORT */
+        .services-cat:nth-child(3) { grid-column: 3; grid-row: 1; } /* PARTNERSHIPS */
+        .services-cat:nth-child(4) { grid-column: 1; grid-row: 2; } /* MODERATION */
+        .services-cat:nth-child(5) { grid-column: 2; grid-row: 2; } /* GROWTH */
+        .services-cat:nth-child(6) { grid-column: 3; grid-row: 2; } /* CONTENT */
+        .services-cat:nth-child(7) { grid-column: 3; grid-row: 3; } /* AUTOMATION & TOOLS */
+
+        .services-cat .cat-title {
             font-family: 'Press Start 2P', monospace;
             font-size: 16px;
             color: #e8d4a2;
@@ -836,10 +844,10 @@
             border-bottom: 2px solid rgba(255,255,255,0.3);
             padding-bottom: 6px;
         }
-        .services-col .cat-title:first-of-type {
+        .services-cat .cat-title:first-of-type {
             margin-top: 0;
         }
-        .services-col .service-item {
+        .services-cat .service-item {
             font-family: 'Press Start 2P', monospace;
             font-size: 12px;
             color: #d0d0d0;
@@ -848,7 +856,7 @@
             padding: 2px 0;
             letter-spacing: 0.3px;
         }
-        .services-col .service-item::before {
+        .services-cat .service-item::before {
             content: '- ';
             color: #a0c4ff;
             text-shadow: 1px 1px 0 #000;
@@ -892,12 +900,12 @@
                 padding: 20px;
             }
             .services-float-inner {
+                grid-template-columns: 1fr;
                 gap: 25px;
-                flex-direction: column;
-                align-items: stretch;
             }
-            .services-col {
-                flex: none;
+            .services-cat {
+                grid-column: 1 !important;
+                grid-row: auto !important;
                 width: 100%;
                 max-width: 100%;
             }
@@ -1073,15 +1081,37 @@
             <!-- SERVICES FLOATING WRAPPER -->
             <div class="services-float-wrapper" id="services-float-wrapper">
                 <div class="services-float-inner">
-                    <!-- COLUNA 1 -->
-                    <div class="services-col">
+                    <!-- 1: COMMUNITY MANAGEMENT (col 1, row 1) -->
+                    <div class="services-cat">
                         <div class="cat-title">COMMUNITY MANAGEMENT</div>
                         <div class="service-item">Community Setup — Server structure, channels, roles and onboarding flows</div>
                         <div class="service-item">Community Management — Daily operations, member engagement and community health</div>
                         <div class="service-item">Community Optimization — Identify operational gaps and improve community workflows</div>
                         <div class="service-item">Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</div>
                         <div class="service-item">Community Scaling — Processes and systems for managing growing communities</div>
+                    </div>
 
+                    <!-- 2: SUPPORT (col 2, row 1) -->
+                    <div class="services-cat">
+                        <div class="cat-title">SUPPORT</div>
+                        <div class="service-item">User Support — Member assistance and issue resolution</div>
+                        <div class="service-item">Technical Support — Troubleshooting, integrations and technical issues</div>
+                        <div class="service-item">Ticket Operations — Ticket handling, categorization and escalation</div>
+                        <div class="service-item">Bug Triage — Collect, reproduce and escalate user-reported issues</div>
+                        <div class="service-item">Onboarding Systems — New-user flows, documentation and guidance</div>
+                    </div>
+
+                    <!-- 3: EVENTS & PARTNERSHIPS (col 3, row 1) -->
+                    <div class="services-cat">
+                        <div class="cat-title">EVENTS &amp; PARTNERSHIPS</div>
+                        <div class="service-item">Community Events — Planning and operational management</div>
+                        <div class="service-item">Tournament Operations — Tournament coordination and community engagement</div>
+                        <div class="service-item">Creator Management — Creator onboarding, coordination and partnerships</div>
+                        <div class="service-item">Influencer Partnerships — Outreach, coordination and campaign support</div>
+                    </div>
+
+                    <!-- 4: MODERATION (col 1, row 2) -->
+                    <div class="services-cat">
                         <div class="cat-title">MODERATION</div>
                         <div class="service-item">Community Moderation — Real-time moderation across Discord and Telegram</div>
                         <div class="service-item">Moderation Systems — Rules, escalation flows and moderation procedures</div>
@@ -1090,15 +1120,8 @@
                         <div class="service-item">Incident Management — Conflict resolution, escalations and community incidents</div>
                     </div>
 
-                    <!-- COLUNA 2 -->
-                    <div class="services-col">
-                        <div class="cat-title">SUPPORT</div>
-                        <div class="service-item">User Support — Member assistance and issue resolution</div>
-                        <div class="service-item">Technical Support — Troubleshooting, integrations and technical issues</div>
-                        <div class="service-item">Ticket Operations — Ticket handling, categorization and escalation</div>
-                        <div class="service-item">Bug Triage — Collect, reproduce and escalate user-reported issues</div>
-                        <div class="service-item">Onboarding Systems — New-user flows, documentation and guidance</div>
-
+                    <!-- 5: GROWTH (col 2, row 2) -->
+                    <div class="services-cat">
                         <div class="cat-title">GROWTH</div>
                         <div class="service-item">Community Growth — Growth strategies and acquisition campaigns</div>
                         <div class="service-item">Engagement Optimization — Identify engagement gaps and design activation campaigns</div>
@@ -1107,21 +1130,18 @@
                         <div class="service-item">Referral Systems — Referral campaign setup and management</div>
                     </div>
 
-                    <!-- COLUNA 3 -->
-                    <div class="services-col">
-                        <div class="cat-title">EVENTS &amp; PARTNERSHIPS</div>
-                        <div class="service-item">Community Events — Planning and operational management</div>
-                        <div class="service-item">Tournament Operations — Tournament coordination and community engagement</div>
-                        <div class="service-item">Creator Management — Creator onboarding, coordination and partnerships</div>
-                        <div class="service-item">Influencer Partnerships — Outreach, coordination and campaign support</div>
-
+                    <!-- 6: CONTENT (col 3, row 2) -->
+                    <div class="services-cat">
                         <div class="cat-title">CONTENT</div>
                         <div class="service-item">Community Documentation — FAQs, guides and knowledge bases</div>
                         <div class="service-item">Technical Guides — Tutorials and educational resources</div>
                         <div class="service-item">Community Education — Web3, product and ecosystem education</div>
                         <div class="service-item">Localization — Community announcements and content translation</div>
                         <div class="service-item">Content Strategy — Content planning, curation and editorial calendar</div>
+                    </div>
 
+                    <!-- 7: AUTOMATION & TOOLS (col 3, row 3) -->
+                    <div class="services-cat">
                         <div class="cat-title">AUTOMATION &amp; TOOLS</div>
                         <div class="service-item">Discord Bot Development — Custom bots and community utilities</div>
                         <div class="service-item">Telegram Bot Development — Custom bots and automated workflows</div>
