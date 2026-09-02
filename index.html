@@ -783,7 +783,7 @@
         }
 
         /* ============================================================
-           SERVICES – Floating Text Centralizado
+           SERVICES – Floating Text Centralizado (com tamanhos maiores e divisórias)
            ============================================================ */
         .services-float-wrapper {
             display: none; /* oculto por padrão, aparece com body.services-mode */
@@ -793,7 +793,7 @@
             width: 100%;
             height: 100%;
             z-index: 20;
-            padding: 20px 40px;
+            padding: 40px 60px;
             box-sizing: border-box;
             overflow-y: auto;
             font-family: 'Press Start 2P', monospace;
@@ -818,34 +818,36 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px 50px;
+            gap: 40px 60px;
             pointer-events: auto;
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             margin: 0 auto;
         }
         .services-col {
-            flex: 1 1 200px;
-            min-width: 160px;
-            max-width: 280px;
+            flex: 1 1 250px;
+            min-width: 200px;
+            max-width: 350px;
             text-align: left;
         }
         .services-col .cat-title {
             font-family: 'Press Start 2P', monospace;
-            font-size: 11px;
+            font-size: 16px; /* aumentado de 11px para 16px (+50%) */
             color: #e8d4a2;
             text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
             letter-spacing: 1px;
             margin: 14px 0 4px 0;
             text-transform: uppercase;
             line-height: 1.4;
+            border-bottom: 2px solid rgba(255,255,255,0.3); /* linha divisória branca */
+            padding-bottom: 6px;
         }
         .services-col .cat-title:first-of-type {
             margin-top: 0;
         }
         .services-col .service-item {
             font-family: 'Press Start 2P', monospace;
-            font-size: 8px;
+            font-size: 12px; /* aumentado de 8px para 12px (+50%) */
             color: #d0d0d0;
             text-shadow: 1px 1px 0 #000;
             line-height: 1.8;
@@ -1079,14 +1081,14 @@
                 <div class="services-float-inner">
                     <!-- COLUNA 1 -->
                     <div class="services-col">
-                        <div class="cat-title"># Community Management</div>
+                        <div class="cat-title">COMMUNITY MANAGEMENT</div>
                         <div class="service-item">Community Setup — Server structure, channels, roles and onboarding flows</div>
                         <div class="service-item">Community Management — Daily operations, member engagement and community health</div>
                         <div class="service-item">Community Optimization — Identify operational gaps and improve community workflows</div>
                         <div class="service-item">Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</div>
                         <div class="service-item">Community Scaling — Processes and systems for managing growing communities</div>
 
-                        <div class="cat-title"># MODERATION</div>
+                        <div class="cat-title">MODERATION</div>
                         <div class="service-item">Community Moderation — Real-time moderation across Discord and Telegram</div>
                         <div class="service-item">Moderation Systems — Rules, escalation flows and moderation procedures</div>
                         <div class="service-item">Anti-Scam Protection — Scam detection, reporting and preventive measures</div>
@@ -1096,14 +1098,14 @@
 
                     <!-- COLUNA 2 -->
                     <div class="services-col">
-                        <div class="cat-title"># SUPPORT</div>
+                        <div class="cat-title">SUPPORT</div>
                         <div class="service-item">User Support — Member assistance and issue resolution</div>
                         <div class="service-item">Technical Support — Troubleshooting, integrations and technical issues</div>
                         <div class="service-item">Ticket Operations — Ticket handling, categorization and escalation</div>
                         <div class="service-item">Bug Triage — Collect, reproduce and escalate user-reported issues</div>
                         <div class="service-item">Onboarding Systems — New-user flows, documentation and guidance</div>
 
-                        <div class="cat-title"># GROWTH</div>
+                        <div class="cat-title">GROWTH</div>
                         <div class="service-item">Community Growth — Growth strategies and acquisition campaigns</div>
                         <div class="service-item">Engagement Optimization — Identify engagement gaps and design activation campaigns</div>
                         <div class="service-item">Retention Optimization — Improve recurring participation and reduce member churn</div>
@@ -1113,20 +1115,20 @@
 
                     <!-- COLUNA 3 -->
                     <div class="services-col">
-                        <div class="cat-title"># EVENTS &amp; PARTNERSHIPS</div>
+                        <div class="cat-title">EVENTS &amp; PARTNERSHIPS</div>
                         <div class="service-item">Community Events — Planning and operational management</div>
                         <div class="service-item">Tournament Operations — Tournament coordination and community engagement</div>
                         <div class="service-item">Creator Management — Creator onboarding, coordination and partnerships</div>
                         <div class="service-item">Influencer Partnerships — Outreach, coordination and campaign support</div>
 
-                        <div class="cat-title"># CONTENT</div>
+                        <div class="cat-title">CONTENT</div>
                         <div class="service-item">Community Documentation — FAQs, guides and knowledge bases</div>
                         <div class="service-item">Technical Guides — Tutorials and educational resources</div>
                         <div class="service-item">Community Education — Web3, product and ecosystem education</div>
                         <div class="service-item">Localization — Community announcements and content translation</div>
                         <div class="service-item">Content Strategy — Content planning, curation and editorial calendar</div>
 
-                        <div class="cat-title"># AUTOMATION &amp; TOOLS</div>
+                        <div class="cat-title">AUTOMATION &amp; TOOLS</div>
                         <div class="service-item">Discord Bot Development — Custom bots and community utilities</div>
                         <div class="service-item">Telegram Bot Development — Custom bots and automated workflows</div>
                         <div class="service-item">Moderation Automation — Automated spam, scam and rule enforcement</div>
