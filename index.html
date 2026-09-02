@@ -8,7 +8,14 @@
     <link rel="icon" href="favicons/favicon-32x32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="favicons/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="favicons/site.webmanifest" />
-    <title>My Retro Portfolio</title>
+    <!-- Open Graph / Social Preview -->
+    <meta property="og:title" content="Phillipe Queiroz — Portfolio" />
+    <meta property="og:description" content="Building communities and the bots that run them" />
+    <meta property="og:image" content="https://phillipe.online/favicons/android-chrome-512x512.png" />
+    <meta property="og:url" content="https://phillipe.online/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Phillipe's Lab</title>
     <style>
         * {
             margin: 0;
@@ -724,7 +731,7 @@
             border: 1px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             padding: 1px 8px;
-            user-select: none; /* IMPEDE SELEÇÃO */
+            user-select: none;
         }
 
         /* ============================================================
@@ -853,7 +860,7 @@
             line-height: 1.7;
             color: #000;
             text-align: left;
-            user-select: text; /* permite seleção de texto descritivo */
+            user-select: text;
         }
         .detail-list {
             list-style: none;
@@ -866,7 +873,7 @@
             color: #000;
             padding: 3px 0 3px 18px;
             position: relative;
-            user-select: text; /* permite seleção de texto descritivo */
+            user-select: text;
         }
         .detail-list li::before {
             content: '►';
@@ -892,7 +899,7 @@
             font-weight: bold;
             letter-spacing: 0.5px;
             color: #000;
-            user-select: none; /* IMPEDE SELEÇÃO DAS TAGS */
+            user-select: none;
         }
         .detail-actions {
             display: flex;
