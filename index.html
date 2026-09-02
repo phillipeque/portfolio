@@ -117,7 +117,7 @@
             padding: 1.5% 18% 1.5% 18%;
         }
         body.detail-mode .retro-window {
-            max-width: 45%; /* Reduzido 40% (de 75% para 45%) */
+            max-width: 45%;
         }
         body.detail-mode .window-content {
             max-height: none;
@@ -739,6 +739,22 @@
             height: 12px;
         }
 
+        /* NOVA BARRA AZUL DO DETALHE */
+        .win95-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .win95-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000000;
+        }
+
         .detail-header-card {
             display: flex;
             align-items: center;
@@ -968,7 +984,7 @@
                 font-size: 11px;
             }
             body.detail-mode .retro-window {
-                max-width: 95%; /* Mantém largura maior em mobile para não quebrar */
+                max-width: 95%;
             }
             body.detail-mode #tv-screen {
                 padding: 1% 4% 1% 4%;
@@ -1074,6 +1090,9 @@
             .explorer-statusbar {
                 font-size: 9px;
             }
+            .win95-titlebar {
+                margin-bottom: 6px;
+            }
         }
     </style>
     <base target="_blank">
@@ -1099,17 +1118,19 @@
                                 <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
+                            <!-- SERVICES -->
                             <div class="icon-item">
-                                <img class="icon-img" data-target="contact" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
-                                <span class="icon-label label-green">SOCIALS</span>
+                                <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" alt="SERVICES" />
+                                <span class="icon-label label-green">SERVICES</span>
                             </div>
                             <div class="icon-item">
                                 <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                                 <span class="icon-label label-red">GITHUB</span>
                             </div>
+                            <!-- SOCIALS (antes LINKEDIN) -->
                             <div class="icon-item">
-                                <img class="icon-img" data-target="linkedin" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3Ein%3C/text%3E%3C/svg%3E" alt="LINKEDIN" />
-                                <span class="icon-label label-blue">LINKEDIN</span>
+                                <img class="icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
+                                <span class="icon-label label-blue">SOCIALS</span>
                             </div>
                             <div class="icon-item">
                                 <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
@@ -1151,6 +1172,10 @@
                             </div>
                             <div class="explorer-icons-area" id="projects-icons-area"></div>
                             <div class="explorer-detail" id="projects-detail" style="display:none;">
+                                <!-- BARRA AZUL DO DETALHE -->
+                                <div class="win95-titlebar">
+                                    <span class="win95-title" id="detail-header-title"></span>
+                                </div>
                                 <div class="detail-header-card">
                                     <img class="detail-header-icon" id="detail-icon" src="" alt="" />
                                     <div class="detail-header-info">
@@ -1759,6 +1784,9 @@
                 if (detailView) detailView.style.display = 'block';
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
 
+                // Atualiza a barra azul com o nome do projeto + .PDF
+                document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
+
                 document.getElementById('detail-icon').src = 'logos/' + project.gif;
                 document.getElementById('detail-name').textContent = project.name;
                 document.getElementById('detail-category').textContent = project.category;
@@ -1816,13 +1844,12 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'github') {
-                        // Abre o GitHub em nova aba com segurança
                         window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
                     } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
                     }
-                    // Para "contact", "linkedin", "socials" etc., não fazemos nada (sem alerta)
+                    // Para "contact", "socials", "services" etc., não fazemos nada (sem alerta)
                 });
             });
 
