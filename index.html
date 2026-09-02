@@ -1268,8 +1268,87 @@
                 margin: -10px -10px 10px -10px;
             }
         }
-    </style>
+    
+        /* ============================================================
+           SERVICES – Pixel Night Mode
+           ============================================================ */
+        .services-pixel-container {
+            width: 100%;
+            max-height: 58vh;
+            overflow-y: auto;
+            padding: 12px 16px;
+            text-align: center;
+        }
+        .services-pixel-container::-webkit-scrollbar {
+            width: 12px;
+            background: #dfdfdf;
+        }
+        .services-pixel-container::-webkit-scrollbar-track {
+            background: #dfdfdf;
+            border-left: 1px solid #808080;
+        }
+        .services-pixel-container::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+        }
+        .services-pixel-container::-webkit-scrollbar-button {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            height: 12px;
+        }
+        .services-pixel-content {
+            display: inline-block;
+            text-align: left;
+            max-width: 640px;
+        }
+        .pixel-heading {
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            font-weight: bold;
+            color: #e8d4a2;
+            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+            letter-spacing: 2px;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .pixel-heading:first-of-type {
+            margin-top: 0;
+        }
+        .pixel-line {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #d0d0d0;
+            text-shadow: 1px 1px 0 #000;
+            line-height: 1.7;
+            margin: 0;
+            padding: 2px 0;
+            letter-spacing: 0.5px;
+        }
+        .pixel-line::before {
+            content: '> ';
+            color: #a0c4ff;
+            text-shadow: 1px 1px 0 #000;
+        }
+        @media (max-width: 768px) {
+            .services-pixel-container {
+                max-height: 52vh;
+                padding: 8px 10px;
+            }
+            .pixel-heading {
+                font-size: 13px;
+                margin-top: 14px;
+            }
+            .pixel-line {
+                font-size: 11px;
+                line-height: 1.6;
+            }
+        }
+</style>
     <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -1391,292 +1470,57 @@
                     </div>
                     <!-- SERVICES SCREEN -->
                     <div id="screen-services" class="screen-container">
-                        <div class="explorer-window">
-                            <div class="services-panel">
-                                <!-- Sidebar -->
-                                <div class="services-sidebar" id="services-sidebar">
-                                    <button class="service-category-btn active" data-cat="community">
-                                        <svg class="svc-icon" viewBox="0 0 20 20"><rect width="20" height="20" fill="#c0c0c0" stroke="#000" stroke-width="1"/><circle cx="10" cy="7" r="3" fill="#000"/><path d="M4 17c0-3 3-5 6-5s6 2 6 5" fill="none" stroke="#000" stroke-width="1.5"/></svg>
-                                        Community
-                                    </button>
-                                    <button class="service-category-btn" data-cat="moderation">
-                                        <svg class="svc-icon" viewBox="0 0 20 20"><rect width="20" height="20" fill="#c0c0c0" stroke="#000" stroke-width="1"/><rect x="4" y="6" width="12" height="8" fill="none" stroke="#000" stroke-width="1.5"/><line x1="8" y1="6" x2="8" y2="14" stroke="#000" stroke-width="1"/></svg>
-                                        Moderation
-                                    </button>
-                                    <button class="service-category-btn" data-cat="support">
-                                        <svg class="svc-icon" viewBox="0 0 20 20"><rect width="20" height="20" fill="#c0c0c0" stroke="#000" stroke-width="1"/><circle cx="10" cy="10" r="6" fill="none" stroke="#000" stroke-width="1.5"/><text x="10" y="14" text-anchor="middle" font-size="10" fill="#000">?</text></svg>
-                                        Support
-                                    </button>
-                                    <button class="service-category-btn" data-cat="growth">
-                                        <svg class="svc-icon" viewBox="0 0 20 20"><rect width="20" height="20" fill="#c0c0c0" stroke="#000" stroke-width="1"/><polyline points="4,14 8,10 12,12 16,6" fill="none" stroke="#000" stroke-width="1.5"/><circle cx="16" cy="6" r="1.5" fill="#000"/></svg>
-                                        Growth
-                                    </button>
-                                    <button class="service-category-btn" data-cat="events">
-                                        <svg class="svc-icon" viewBox="0 0 20 20"><rect width="20" height="20" fill="#c0c0c0" stroke="#000" stroke-width="1"/><rect x="3" y="4" width="14" height="12" fill="none" stroke="#000" stroke-width="1.5"/><line x1="7" y1="2" x2="7" y2="6" stroke="#000" stroke-width="1"/><line x1="13" y1="2" x2="13" y2="6" stroke="#000" stroke-width="1"/><line x1="3" y1="9" x2="17" y2="9" stroke="#000" stroke-width="1"/></svg>
-                                        Events
-                                    </button>
-                                    <button class="service-category-btn" data-cat="content">
-                                        <svg class="svc-icon" viewBox="0 0 20 20"><rect width="20" height="20" fill="#c0c0c0" stroke="#000" stroke-width="1"/><rect x="4" y="3" width="12" height="14" fill="none" stroke="#000" stroke-width="1.5"/><line x1="6" y1="7" x2="14" y2="7" stroke="#000" stroke-width="1"/><line x1="6" y1="10" x2="12" y2="10" stroke="#000" stroke-width="1"/><line x1="6" y1="13" x2="10" y2="13" stroke="#000" stroke-width="1"/></svg>
-                                        Content
-                                    </button>
-                                    <button class="service-category-btn" data-cat="automation">
-                                        <svg class="svc-icon" viewBox="0 0 20 20"><rect width="20" height="20" fill="#c0c0c0" stroke="#000" stroke-width="1"/><rect x="5" y="5" width="10" height="6" fill="none" stroke="#000" stroke-width="1.5"/><polyline points="7,11 7,14 13,14 13,11" fill="none" stroke="#000" stroke-width="1.5"/><circle cx="10" cy="16" r="1" fill="#000"/></svg>
-                                        Automation
-                                    </button>
-                                </div>
+                        <div class="services-pixel-container">
+                            <div class="services-pixel-content">
+                                <h2 class="pixel-heading">COMMUNITY MANAGEMENT</h2>
+                                <p class="pixel-line">Community Setup — Server structure, channels, roles and onboarding flows</p>
+                                <p class="pixel-line">Community Management — Daily operations, member engagement and community health</p>
+                                <p class="pixel-line">Community Optimization — Identify operational gaps and improve community workflows</p>
+                                <p class="pixel-line">Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs</p>
+                                <p class="pixel-line">Community Scaling — Processes and systems for managing growing communities</p>
 
-                                <!-- Content -->
-                                <div class="services-content" id="services-content">
-                                    <div class="services-content-header">
-                                        <span id="services-pane-title">COMMUNITY MANAGEMENT.EXE</span>
-                                    </div>
+                                <h2 class="pixel-heading">MODERATION</h2>
+                                <p class="pixel-line">Community Moderation — Real-time moderation across Discord and Telegram</p>
+                                <p class="pixel-line">Moderation Systems — Rules, escalation flows and moderation procedures</p>
+                                <p class="pixel-line">Anti-Scam Protection — Scam detection, reporting and preventive measures</p>
+                                <p class="pixel-line">Moderator Management — Moderator coordination, guidelines and team workflows</p>
+                                <p class="pixel-line">Incident Management — Conflict resolution, escalations and community incidents</p>
 
-                                    <!-- Community -->
-                                    <div class="service-pane active" data-pane="community">
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Setup</div>
-                                                <div class="service-item-desc">Server structure, channels, roles and onboarding flows</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Management</div>
-                                                <div class="service-item-desc">Daily operations, member engagement and community health</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Optimization</div>
-                                                <div class="service-item-desc">Identify operational gaps and improve community workflows</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Retention Analysis</div>
-                                                <div class="service-item-desc">Analyze member activity, churn patterns and engagement drop-offs</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Scaling</div>
-                                                <div class="service-item-desc">Processes and systems for managing growing communities</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <h2 class="pixel-heading">SUPPORT</h2>
+                                <p class="pixel-line">User Support — Member assistance and issue resolution</p>
+                                <p class="pixel-line">Technical Support — Troubleshooting, integrations and technical issues</p>
+                                <p class="pixel-line">Ticket Operations — Ticket handling, categorization and escalation</p>
+                                <p class="pixel-line">Bug Triage — Collect, reproduce and escalate user-reported issues</p>
+                                <p class="pixel-line">Onboarding Systems — New-user flows, documentation and guidance</p>
 
-                                    <!-- Moderation -->
-                                    <div class="service-pane" data-pane="moderation">
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Moderation</div>
-                                                <div class="service-item-desc">Real-time moderation across Discord and Telegram</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Moderation Systems</div>
-                                                <div class="service-item-desc">Rules, escalation flows and moderation procedures</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Anti-Scam Protection</div>
-                                                <div class="service-item-desc">Scam detection, reporting and preventive measures</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Moderator Management</div>
-                                                <div class="service-item-desc">Moderator coordination, guidelines and team workflows</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Incident Management</div>
-                                                <div class="service-item-desc">Conflict resolution, escalations and community incidents</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <h2 class="pixel-heading">GROWTH</h2>
+                                <p class="pixel-line">Community Growth — Growth strategies and acquisition campaigns</p>
+                                <p class="pixel-line">Engagement Optimization — Identify engagement gaps and design activation campaigns</p>
+                                <p class="pixel-line">Retention Optimization — Improve recurring participation and reduce member churn</p>
+                                <p class="pixel-line">Ambassador Programs — Program setup, coordination and community activation</p>
+                                <p class="pixel-line">Referral Systems — Referral campaign setup and management</p>
 
-                                    <!-- Support -->
-                                    <div class="service-pane" data-pane="support">
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">User Support</div>
-                                                <div class="service-item-desc">Member assistance and issue resolution</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Technical Support</div>
-                                                <div class="service-item-desc">Troubleshooting, integrations and technical issues</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Ticket Operations</div>
-                                                <div class="service-item-desc">Ticket handling, categorization and escalation</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Bug Triage</div>
-                                                <div class="service-item-desc">Collect, reproduce and escalate user-reported issues</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Onboarding Systems</div>
-                                                <div class="service-item-desc">New-user flows, documentation and guidance</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <h2 class="pixel-heading">EVENTS & PARTNERSHIPS</h2>
+                                <p class="pixel-line">AMA Management — Planning, moderation and post-event coordination</p>
+                                <p class="pixel-line">Community Events — Planning and operational management</p>
+                                <p class="pixel-line">Tournament Operations — Tournament coordination and community engagement</p>
+                                <p class="pixel-line">Creator Management — Creator onboarding, coordination and partnerships</p>
+                                <p class="pixel-line">Influencer Partnerships — Outreach, coordination and campaign support</p>
 
-                                    <!-- Growth -->
-                                    <div class="service-pane" data-pane="growth">
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Growth</div>
-                                                <div class="service-item-desc">Growth strategies and acquisition campaigns</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Engagement Optimization</div>
-                                                <div class="service-item-desc">Identify engagement gaps and design activation campaigns</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Retention Optimization</div>
-                                                <div class="service-item-desc">Improve recurring participation and reduce member churn</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Ambassador Programs</div>
-                                                <div class="service-item-desc">Program setup, coordination and community activation</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Referral Systems</div>
-                                                <div class="service-item-desc">Referral campaign setup and management</div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <h2 class="pixel-heading">CONTENT</h2>
+                                <p class="pixel-line">Community Documentation — FAQs, guides and knowledge bases</p>
+                                <p class="pixel-line">Technical Guides — Tutorials and educational resources</p>
+                                <p class="pixel-line">Community Education — Web3, product and ecosystem education</p>
+                                <p class="pixel-line">Localization — Community announcements and content translation</p>
 
-                                    <!-- Events -->
-                                    <div class="service-pane" data-pane="events">
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">AMA Management</div>
-                                                <div class="service-item-desc">Planning, moderation and post-event coordination</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Events</div>
-                                                <div class="service-item-desc">Planning and operational management</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Tournament Operations</div>
-                                                <div class="service-item-desc">Tournament coordination and community engagement</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Creator Management</div>
-                                                <div class="service-item-desc">Creator onboarding, coordination and partnerships</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Influencer Partnerships</div>
-                                                <div class="service-item-desc">Outreach, coordination and campaign support</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Content -->
-                                    <div class="service-pane" data-pane="content">
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Documentation</div>
-                                                <div class="service-item-desc">FAQs, guides and knowledge bases</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Technical Guides</div>
-                                                <div class="service-item-desc">Tutorials and educational resources</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Education</div>
-                                                <div class="service-item-desc">Web3, product and ecosystem education</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Localization</div>
-                                                <div class="service-item-desc">Community announcements and content translation</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Content Strategy</div>
-                                                <div class="service-item-desc">Content planning, curation and editorial calendar</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Automation -->
-                                    <div class="service-pane" data-pane="automation">
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Discord Bot Development</div>
-                                                <div class="service-item-desc">Custom bots and community utilities</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Telegram Bot Development</div>
-                                                <div class="service-item-desc">Custom bots and automated workflows</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Moderation Automation</div>
-                                                <div class="service-item-desc">Automated spam, scam and rule enforcement</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Bot Integration</div>
-                                                <div class="service-item-desc">Configuration and integration of existing bots</div>
-                                            </div>
-                                        </div>
-                                        <div class="service-item">
-                                            <div class="service-item-text">
-                                                <div class="service-item-title">Community Automation</div>
-                                                <div class="service-item-desc">Roles, tickets, verification and onboarding workflows</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="explorer-statusbar">
-                                <span>7 categories</span>
-                                <span id="services-status-text">COMMUNITY MANAGEMENT.EXE selected</span>
+                                <h2 class="pixel-heading">AUTOMATION & TOOLS</h2>
+                                <p class="pixel-line">Discord Bot Development — Custom bots and community utilities</p>
+                                <p class="pixel-line">Telegram Bot Development — Custom bots and automated workflows</p>
+                                <p class="pixel-line">Moderation Automation — Automated spam, scam and rule enforcement</p>
+                                <p class="pixel-line">Bot Integration — Configuration and integration of existing bots</p>
+                                <p class="pixel-line">Community Automation — Roles, tickets, verification and onboarding workflows</p>
                             </div>
                         </div>
-
                         <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                             <div class="icon-item">
@@ -1734,8 +1578,16 @@
                 mouseY = 0.5;
             const PIXEL = 8;
             let skyGradient = null;
+            let skyGradientNight = null;
             let globalTime = 0;
             let sunImg = null;
+            let moonImg = null;
+            let stars = [];
+            let isNightMode = false;
+
+            window.setNightMode = function(flag) {
+                isNightMode = flag;
+            };
 
             function resize() {
                 const rect = canvas.parentElement.getBoundingClientRect();
@@ -1750,8 +1602,18 @@
                 skyGradient.addColorStop(0.75, 'rgb(135,206,235)');
                 skyGradient.addColorStop(0.92, 'rgb(200,230,245)');
                 skyGradient.addColorStop(1, 'rgb(232,244,252)');
+
+                skyGradientNight = ctx.createLinearGradient(0, 0, 0, H);
+                skyGradientNight.addColorStop(0, 'rgb(5,5,20)');
+                skyGradientNight.addColorStop(0.3, 'rgb(15,15,45)');
+                skyGradientNight.addColorStop(0.6, 'rgb(25,25,70)');
+                skyGradientNight.addColorStop(0.85, 'rgb(35,35,90)');
+                skyGradientNight.addColorStop(1, 'rgb(45,45,110)');
+
                 initClouds();
                 initSun();
+                initMoon();
+                initStars();
             }
             window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth;
                 mouseY = e.clientY / window.innerHeight; });
@@ -1790,6 +1652,40 @@
                 pixelCircleOffscreen(x, cx, cy, sunR, rgb(PALETTE.sunCore, 0.95));
                 pixelCircleOffscreen(x, cx, cy, sunR * 0.7, rgb(PALETTE.sunEdge, 0.7));
                 sunImg = { canvas: c, pad: outerR + pad, sunR: sunR };
+            }
+
+            function initMoon() {
+                const moonR = Math.min(W, H) * 0.05;
+                const outerR = Math.ceil(moonR * 2.5);
+                const pad = 4;
+                const size = (outerR + pad) * 2;
+                const c = document.createElement('canvas');
+                c.width = size;
+                c.height = size;
+                const x = c.getContext('2d');
+                const cx = size / 2, cy = size / 2;
+                for (let r = outerR; r >= moonR; r -= 2) {
+                    const alpha = 0.15 * (1 - (r - moonR) / (moonR * 1.5));
+                    pixelCircleOffscreen(x, cx, cy, r, `rgba(200,210,230,${Math.max(0, alpha)})`);
+                }
+                pixelCircleOffscreen(x, cx, cy, moonR, `rgba(220,225,235,0.95)`);
+                pixelCircleOffscreen(x, cx - moonR*0.25, cy - moonR*0.2, moonR*0.25, `rgba(180,185,200,0.4)`);
+                pixelCircleOffscreen(x, cx + moonR*0.15, cy + moonR*0.3, moonR*0.18, `rgba(180,185,200,0.3)`);
+                moonImg = { canvas: c, pad: outerR + pad, moonR: moonR };
+            }
+
+            function initStars() {
+                stars = [];
+                const count = Math.min(150, Math.floor(W * H * 0.008));
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * W,
+                        y: Math.random() * H * 0.75,
+                        size: Math.random() < 0.85 ? 1 : 2,
+                        brightness: 0.4 + Math.random() * 0.6,
+                        twinklePhase: Math.random() * Math.PI * 2
+                    });
+                }
             }
 
             function createCloudCanvas(baseW, baseH, opacity) {
@@ -1886,7 +1782,31 @@
                 }
             }
 
+            function drawNight() {
+                ctx.fillStyle = skyGradientNight;
+                ctx.fillRect(0, 0, W, H);
+
+                stars.forEach(s => {
+                    const px = s.x + (mouseX - 0.5) * W * 0.015;
+                    const py = s.y + (mouseY - 0.5) * H * 0.015;
+                    const twinkle = 0.7 + 0.3 * Math.sin(globalTime * 0.03 + s.twinklePhase);
+                    const alpha = s.brightness * twinkle;
+                    ctx.fillStyle = `rgba(255,255,240,${alpha.toFixed(2)})`;
+                    ctx.fillRect(Math.floor(px), Math.floor(py), s.size, s.size);
+                });
+
+                if (moonImg) {
+                    const moonX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
+                    const moonY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
+                    ctx.drawImage(moonImg.canvas, Math.floor(moonX - moonImg.pad), Math.floor(moonY - moonImg.pad));
+                }
+            }
+
             function draw() {
+                if (isNightMode) {
+                    drawNight();
+                    return;
+                }
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, W, H);
                 if (sunImg) {
@@ -1904,19 +1824,20 @@
             }
 
             function update() {
-                clouds.forEach(c => {
-                    c.x -= c.speed;
-                    if (c.x + c.w < -20) {
-                        c.x = W + 10 + Math.random() * 50;
-                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer]
-                            .yRange[0]));
-                    }
-                });
-                birds.forEach(b => {
-                    b.x -= b.speed;
-                    if (b.x < -5) { b.x = W + 5;
-                        b.y = H * (0.15 + Math.random() * 0.25); }
-                });
+                if (!isNightMode) {
+                    clouds.forEach(c => {
+                        c.x -= c.speed;
+                        if (c.x + c.w < -20) {
+                            c.x = W + 10 + Math.random() * 50;
+                            c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
+                        }
+                    });
+                    birds.forEach(b => {
+                        b.x -= b.speed;
+                        if (b.x < -5) { b.x = W + 5;
+                            b.y = H * (0.15 + Math.random() * 0.25); }
+                    });
+                }
                 globalTime++;
                 draw();
             }
@@ -1928,7 +1849,7 @@
             resize();
             initBirds();
             loop();
-        })();
+        })();        })();
 
         // ============================================================
         //  SCANLINE SWEEP
@@ -2044,6 +1965,7 @@
                     } else if (screen === 'services') {
                         servicesScreen.classList.add('active');
                     } else if (screen === 'email') emailScreen.classList.add('active');
+                    if (window.setNightMode) window.setNightMode(screen === 'services');
                     currentScreen = screen;
                     transitioning = false;
                 });
