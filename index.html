@@ -297,6 +297,7 @@
         }
         .label-orange { color: #c45c26; }
         .label-black { color: #000; }
+        .label-green { color: #2d5016; }
         .label-red { color: #c41e3a; }
         .label-blue { color: #1a3a5c; }
         .label-purple { color: #4a2d6b; }
@@ -788,6 +789,11 @@
                                 <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
+                            <!-- Ícone SERVICES recolocado -->
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" alt="SERVICES" />
+                                <span class="icon-label label-green">SERVICES</span>
+                            </div>
                             <div class="icon-item">
                                 <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                                 <span class="icon-label label-red">GITHUB</span>
@@ -946,15 +952,27 @@
 
             // Constantes do ciclo (em milissegundos)
             const CYCLE_DURATION = 120000; // 2 minutos total
-            const DAY_DURATION = 30000;
-            const SUNSET_DURATION = 30000;
-            const NIGHT_DURATION = 30000;
-            const SUNRISE_DURATION = 30000;
             let cycleStartTime = performance.now();
 
             function easeInOutCubic(t) {
                 return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
             }
+
+            // Easing mais linear para o movimento do sol/lua
+            function almostLinear(t) {
+                // combinação de linear com um pouco de suavidade
+                return t; // linear puro, mas com início e fim suaves? Vamos usar uma curva suave.
+                // Para movimento mais constante, usamos easeInOutQuad ou algo similar.
+                // Mas para ser mais perceptível, vou usar uma função que acelera e desacelera levemente,
+                // mas mantém a maior parte do movimento constante.
+                // Vou usar uma função de easing que é quase linear, mas com suavidade nas bordas.
+                // Usarei uma combinação: 0.8*linear + 0.2*easeInOutCubic
+                // return 0.8 * t + 0.2 * easeInOutCubic(t);
+                return t; // por enquanto linear puro
+            }
+
+            // Vou usar easing linear para o movimento do sol/lua, mas mantendo a transição de céu com easeInOutCubic.
+            // A função de progresso do pôr do sol/amanhecer será linear para posição, mas o céu usa easeInOut.
 
             function lerpColor(a, b, t) {
                 return a.map((c, i) => Math.round(c + (b[i] - c) * t));
@@ -975,19 +993,17 @@
                 const elapsed = (now - cycleStartTime) % CYCLE_DURATION;
                 const progress = elapsed / CYCLE_DURATION; // 0 a 1
                 if (progress < 0.25) {
-                    // Dia
-                    nightProgress = 0;
+                    nightProgress = 0; // dia
                 } else if (progress < 0.5) {
-                    // Pôr do sol: 0 -> 1
+                    // Pôr do sol: 0 -> 1 linear
                     const t = (progress - 0.25) / 0.25;
-                    nightProgress = easeInOutCubic(t);
+                    nightProgress = almostLinear(t);
                 } else if (progress < 0.75) {
-                    // Noite
-                    nightProgress = 1;
+                    nightProgress = 1; // noite
                 } else {
-                    // Amanhecer: 1 -> 0
+                    // Amanhecer: 1 -> 0 linear
                     const t = (progress - 0.75) / 0.25;
-                    nightProgress = 1 - easeInOutCubic(t);
+                    nightProgress = 1 - almostLinear(t);
                 }
             }
 
@@ -1236,7 +1252,8 @@
                     const sunFade = Math.max(0, 1 - p / 0.6);
                     const sunBaseY = H * 0.12;
                     const sunSetY = H + sunImg.pad + 20;
-                    const sunY = sunBaseY + (sunSetY - sunBaseY) * easeInOutCubic(Math.min(p / 0.55, 1));
+                    // Usamos p diretamente (linear) para a posição, já que o nightProgress já foi mapeado linearmente
+                    const sunY = sunBaseY + (sunSetY - sunBaseY) * Math.min(p / 0.55, 1);
                     const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
                     const parallaxY = (mouseY - 0.5) * H * 0.03;
                     ctx.globalAlpha = sunFade;
@@ -1249,7 +1266,7 @@
                     const moonFade = Math.min(1, (p - 0.2) / 0.5);
                     const moonBaseY = H + moonImg.pad + 20;
                     const moonRiseY = H * 0.12;
-                    const moonY = moonBaseY + (moonRiseY - moonBaseY) * easeInOutCubic(Math.min((p - 0.2) / 0.6, 1));
+                    const moonY = moonBaseY + (moonRiseY - moonBaseY) * (1 - Math.min((p - 0.2) / 0.6, 1));
                     const moonX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
                     const parallaxY = (mouseY - 0.5) * H * 0.03;
                     ctx.globalAlpha = moonFade;
@@ -1272,7 +1289,7 @@
                     });
                 }
 
-                // 7. Nuvens
+                // 7. Nuvens (sem aceleração, apenas movimento constante)
                 if (p < 0.75) {
                     clouds.forEach(c => {
                         const l = layers[c.layer];
@@ -1298,29 +1315,46 @@
             function update() {
                 updateNightProgress();
 
-                // Atualizar nuvens (movimento contínuo, mas com dispersão durante pôr do sol)
+                const p = nightProgress;
+
+                // Atualizar nuvens (movimento constante, sem aceleração)
+                // Reposição de nuvens: permitir apenas durante o dia e durante os primeiros 2/3 do pôr do sol
+                // ou seja, quando p < 0.25 + 0.25*(2/3) = 0.25 + 0.1667 = 0.4167
+                const canSpawn = (p < 0.4167); // durante dia e 2/3 do pôr do sol
+
                 clouds.forEach(c => {
-                    if (nightProgress > 0.1 && nightProgress < 0.85) {
-                        const scatterSpeed = c.speed * (1 + nightProgress * 12);
-                        c.x -= scatterSpeed;
-                    } else if (nightProgress >= 0.85) {
-                        // nuvens sumindo
-                    } else {
-                        c.x -= c.speed;
-                    }
-                    if (nightProgress < 0.05 && c.x + c.w < -20) {
-                        c.x = W + 10 + Math.random() * 50;
-                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
+                    // Movimento constante para a esquerda (velocidade normal)
+                    c.x -= c.speed;
+                    // Repor se saiu da tela
+                    if (c.x + c.w < -20) {
+                        if (canSpawn) {
+                            // Repor à direita com nova posição aleatória
+                            c.x = W + 10 + Math.random() * 50;
+                            c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
+                        } else {
+                            // Não repor, apenas remover (sumir) - marcar para ser removido
+                            // Mas como vamos remover, podemos simplesmente não fazer nada e deixar sumir.
+                            // Para evitar acumular, vou definir um valor que nunca será redesenhado: largura negativa
+                            // ou podemos filtrar no draw, mas é mais fácil remover do array.
+                            // Vou remover do array quando sair e não puder repor.
+                            // Para remover com segurança, vamos criar um novo array sem essa nuvem.
+                            // Mas como estamos iterando, marcamos para remoção depois.
+                            c.markForRemoval = true;
+                        }
                     }
                 });
 
-                // Pássaros voam
-                if (nightProgress < 0.5) {
+                // Remover nuvens marcadas
+                clouds = clouds.filter(c => !c.markForRemoval);
+
+                // Pássaros voam normalmente (sem aceleração)
+                if (p < 0.5) {
                     birds.forEach(b => {
-                        b.x -= b.speed * (1 + nightProgress * 4);
+                        b.x -= b.speed;
                         if (b.x < -5) { b.x = W + 5; b.y = H * (0.15 + Math.random() * 0.25); }
                     });
                 }
+
                 globalTime++;
                 draw();
             }
@@ -1424,6 +1458,12 @@
             function navigateTo(screen) {
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
+
+                // Se for "services", redireciona para home (pois a página está vazia)
+                if (screen === 'services') {
+                    screen = 'home';
+                }
+
                 triggerTransition(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
@@ -1709,12 +1749,14 @@
                         navigateTo('about');
                     } else if (target === 'projects') {
                         navigateTo('projects');
+                    } else if (target === 'services') {
+                        navigateTo('services'); // redireciona para home
                     } else if (target === 'github') {
                         window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
                     } else if (target === 'socials') {
                         // Redirecionar para algum link de redes sociais?
-                        // Como não foi especificado, apenas voltamos ao home.
-                        navigateTo('home');
+                        // Vou redirecionar para home ou abrir um link padrão
+                        window.open('https://www.instagram.com', '_blank');
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'back') {
