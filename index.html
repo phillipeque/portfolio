@@ -1399,11 +1399,7 @@
                     <!-- SERVICES SCREEN -->
                     <div id="screen-services" class="screen-container">
                         <div class="explorer-window">
-                            <div class="explorer-toolbar">
-                                <div class="explorer-toolbar-btn disabled">◄</div>
-                                <div class="explorer-toolbar-btn disabled">▲</div>
-                                <div class="explorer-address"><span>📁 C:\PORTFOLIO\SERVICES\CONTROL.EXE</span></div>
-                            </div>
+                            <!-- Barra de endereço removida -->
                             
                             <div class="services-panel">
                                 <!-- Sidebar -->
@@ -1441,7 +1437,7 @@
                                 <!-- Content -->
                                 <div class="services-content" id="services-content">
                                     <div class="services-content-header">
-                                        <span id="services-pane-title">Community Management</span>
+                                        <span id="services-pane-title">COMMUNITY MANAGEMENT.EXE</span>
                                     </div>
 
                                     <!-- Community -->
@@ -1714,7 +1710,7 @@
 
                             <div class="explorer-statusbar">
                                 <span>7 categories</span>
-                                <span id="services-status-text">Community selected</span>
+                                <span id="services-status-text">COMMUNITY MANAGEMENT.EXE selected</span>
                             </div>
                         </div>
 
@@ -2501,9 +2497,10 @@
                     const pane = content.querySelector(`.service-pane[data-pane="${cat}"]`);
                     if (pane) pane.classList.add('active');
 
-                    // Atualiza título e status
-                    if (paneTitle) paneTitle.textContent = titles[cat] || cat;
-                    if (statusText) statusText.textContent = (titles[cat] || cat) + ' selected';
+                    // Atualiza título e status com maiúsculas e .EXE
+                    const title = (titles[cat] || cat).toUpperCase() + '.EXE';
+                    if (paneTitle) paneTitle.textContent = title;
+                    if (statusText) statusText.textContent = title + ' selected';
                 });
             });
         })();
