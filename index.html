@@ -17,7 +17,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Phillipe's Lab</title>
     <style>
-        /* ===== CSS BASE (mantido) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -735,7 +734,9 @@
             user-select: none;
         }
 
-        /* ===== DETAIL VIEW ===== */
+        /* ============================================================
+           DETAIL VIEW – Win95 Properties
+           ============================================================ */
         .explorer-detail {
             background: #c0c0c0;
             border: 2px solid;
@@ -999,153 +1000,6 @@
             }
         }
 
-        /* ============================================================
-           ADIÇÃO PARA SERVICES – TELA COM DESCIDA À ILHA
-           ============================================================ */
-        body.services-mode #tv-screen {
-            padding: 0;
-        }
-        body.services-mode .retro-window {
-            max-width: 100%;
-            width: 100%;
-            height: 100%;
-            border: none;
-            box-shadow: none;
-        }
-        body.services-mode .window-titlebar,
-        body.services-mode .window-footer {
-            display: none;
-        }
-        body.services-mode .window-content {
-            padding: 0;
-            max-height: 100vh;
-            overflow: hidden;
-        }
-
-        #screen-services {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            overflow: hidden;
-        }
-
-        #services-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: block;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            z-index: 1;
-        }
-
-        #services-ui {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.6s ease, transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        #services-ui.hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(-60px) scale(0.9);
-        }
-
-        .services-menu-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 10px;
-        }
-        .services-menu-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px 5px;
-            cursor: pointer;
-            transition: transform 0.15s ease;
-        }
-        .services-menu-item:hover {
-            transform: scale(1.08);
-        }
-        .services-menu-item:active {
-            transform: scale(0.94);
-        }
-        .services-menu-icon {
-            width: 64px;
-            height: 64px;
-            image-rendering: pixelated;
-            margin-bottom: 8px;
-            object-fit: contain;
-            user-select: none;
-        }
-        .services-menu-label {
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-align: center;
-            line-height: 1.3;
-            user-select: none;
-            text-shadow: 1px 1px 0 #000;
-        }
-
-        #services-back-btn {
-            position: absolute;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 15;
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
-            padding: 6px 24px;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            font-weight: bold;
-            color: #000;
-            cursor: pointer;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-        #services-back-btn.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        #services-back-btn:active {
-            border-color: #808080 #ffffff #ffffff #808080;
-            box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf;
-        }
-
-        @media (max-width: 768px) {
-            body.services-mode .retro-window {
-                max-width: 100%;
-            }
-            .services-menu-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            .services-menu-icon {
-                width: 48px;
-                height: 48px;
-            }
-            .services-menu-label {
-                font-size: 10px;
-            }
-        }
-
-        /* ===== RESPONSIVIDADE GERAL ===== */
         @media (max-width: 768px) {
             body.projects-mode #tv-screen {
                 padding: 1% 4% 1% 4%;
@@ -1286,619 +1140,173 @@
     <base target="_blank">
 </head>
 <body>
-<div id="tv-container">
-    <canvas id="background-canvas"></canvas>
-    <div id="tv-static"></div>
-    <div id="tv-screen">
-        <div id="flash-overlay"></div>
-        <div class="retro-window">
-            <div class="window-titlebar">
-                <div class="window-title">PORTFOLIO</div>
-            </div>
-            <div class="window-content">
-                <!-- ===== HOME ===== -->
-                <div id="screen-home" class="screen-container active">
-                    <div class="icon-grid">
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="about" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="ABOUT" />
-                            <span class="icon-label label-orange">ABOUT</span>
-                        </div>
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
-                            <span class="icon-label label-black">PROJECTS</span>
-                        </div>
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E⚙%3C/text%3E%3C/svg%3E" alt="SERVICES" />
-                            <span class="icon-label label-green">SERVICES</span>
-                        </div>
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
-                            <span class="icon-label label-red">GITHUB</span>
-                        </div>
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
-                            <span class="icon-label label-blue">SOCIALS</span>
-                        </div>
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
-                            <span class="icon-label label-purple">CONTACT</span>
-                        </div>
-                    </div>
+    <div id="tv-container">
+        <canvas id="background-canvas"></canvas>
+        <div id="tv-static"></div>
+        <div id="tv-screen">
+            <div id="flash-overlay"></div>
+            <div class="retro-window">
+                <div class="window-titlebar">
+                    <div class="window-title">PORTFOLIO</div>
                 </div>
-
-                <!-- ===== ABOUT ===== -->
-                <div id="screen-about" class="screen-container">
-                    <div class="about-layout">
-                        <div class="about-avatar-box">
-                            <div class="avatar-frame">
-                                <img src="pngs/avatar.png" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' fill='%23808080' stroke='%23000' stroke-width='2'/%3E%3Ctext x='60' y='70' text-anchor='middle' font-size='48' fill='%23000'%3E?%3C/text%3E%3C/svg%3E'" />
+                <div class="window-content">
+                    <div id="screen-home" class="screen-container active">
+                        <div class="icon-grid">
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="about" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="ABOUT" />
+                                <span class="icon-label label-orange">ABOUT</span>
                             </div>
-                            <span class="avatar-caption">PROFILE_PIC.PNG</span>
-                        </div>
-                        <div class="about-bio-box">
-                            <div class="bio-titlebar"><span class="bio-title">README.TXT</span></div>
-                            <div class="bio-content">
-                                <p><span class="bio-cursor">_</span> Hey, I'm Phillipe — a community builder, manager, and moderator who genuinely does this out of passion. I've built communities from scratch and stepped into existing ones to figure out what's broken, fix what isn't working, and keep things running smoothly.</p>
-                                <p>I like digging into the details, spotting gaps, improving dynamics, and making spaces actually feel good to be in. If it involves people, structure, and a little chaos to organize, that's where I do my best work.</p>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
+                                <span class="icon-label label-black">PROJECTS</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" alt="SERVICES" />
+                                <span class="icon-label label-green">SERVICES</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
+                                <span class="icon-label label-red">GITHUB</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
+                                <span class="icon-label label-blue">SOCIALS</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
+                                <span class="icon-label label-purple">CONTACT</span>
                             </div>
                         </div>
                     </div>
-                    <div class="icon-grid about-grid" style="margin-top: 16px;">
-                        <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
-                            <span class="icon-label label-black">BACK</span>
-                        </div>
-                        <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                    </div>
-                </div>
-
-                <!-- ===== PROJECTS ===== -->
-                <div id="screen-projects" class="screen-container">
-                    <div class="explorer-window">
-                        <div class="explorer-toolbar">
-                            <div class="explorer-toolbar-btn disabled">◄</div>
-                            <div class="explorer-toolbar-btn disabled">▲</div>
-                            <div class="explorer-address"><span id="projects-address-text">📁 C:\PORTFOLIO\PROJECTS\</span></div>
-                        </div>
-                        <div class="explorer-icons-area" id="projects-icons-area"></div>
-                        <div class="explorer-detail" id="projects-detail" style="display:none;">
-                            <div class="win95-titlebar">
-                                <span class="win95-title" id="detail-header-title"></span>
+                    <div id="screen-about" class="screen-container">
+                        <div class="about-layout">
+                            <div class="about-avatar-box">
+                                <div class="avatar-frame">
+                                    <img src="pngs/avatar.png" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' fill='%23808080' stroke='%23000' stroke-width='2'/%3E%3Ctext x='60' y='70' text-anchor='middle' font-size='48' fill='%23000'%3E?%3C/text%3E%3C/svg%3E'" />
+                                </div>
+                                <span class="avatar-caption">PROFILE_PIC.PNG</span>
                             </div>
-                            <div class="detail-header-card">
-                                <img class="detail-header-icon" id="detail-icon" src="" alt="" />
-                                <div class="detail-header-info">
-                                    <div class="detail-header-name" id="detail-name"></div>
-                                    <div class="detail-header-meta">
-                                        <span id="detail-category"></span> &nbsp;|&nbsp; 
-                                        <span id="detail-duration"></span> &nbsp;|&nbsp; 
-                                        <span id="detail-role"></span>
+                            <div class="about-bio-box">
+                                <div class="bio-titlebar"><span class="bio-title">README.TXT</span></div>
+                                <div class="bio-content">
+                                    <p><span class="bio-cursor">_</span> Hey, I'm Phillipe — a community builder, manager, and moderator who genuinely does this out of passion. I've built communities from scratch and stepped into existing ones to figure out what's broken, fix what isn't working, and keep things running smoothly.</p>
+                                    <p>I like digging into the details, spotting gaps, improving dynamics, and making spaces actually feel good to be in. If it involves people, structure, and a little chaos to organize, that's where I do my best work.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <span class="icon-label label-black">BACK</span>
+                            </div>
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                        </div>
+                    </div>
+                    <div id="screen-projects" class="screen-container">
+                        <div class="explorer-window">
+                            <div class="explorer-toolbar">
+                                <div class="explorer-toolbar-btn disabled">◄</div>
+                                <div class="explorer-toolbar-btn disabled">▲</div>
+                                <div class="explorer-address"><span id="projects-address-text">📁 C:\PORTFOLIO\PROJECTS\</span></div>
+                            </div>
+                            <div class="explorer-icons-area" id="projects-icons-area"></div>
+                            <div class="explorer-detail" id="projects-detail" style="display:none;">
+                                <div class="win95-titlebar">
+                                    <span class="win95-title" id="detail-header-title"></span>
+                                </div>
+                                <div class="detail-header-card">
+                                    <img class="detail-header-icon" id="detail-icon" src="" alt="" />
+                                    <div class="detail-header-info">
+                                        <div class="detail-header-name" id="detail-name"></div>
+                                        <div class="detail-header-meta">
+                                            <span id="detail-category"></span> &nbsp;|&nbsp; 
+                                            <span id="detail-duration"></span> &nbsp;|&nbsp; 
+                                            <span id="detail-role"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="win95-groupbox">
-                                <span class="win95-groupbox-legend">ABOUT THE PROJECT</span>
-                                <p class="detail-about-text" id="detail-description"></p>
-                            </div>
-                            <div class="win95-groupbox">
-                                <span class="win95-groupbox-legend">MY ROLE</span>
-                                <ul class="detail-list" id="detail-papel"></ul>
-                            </div>
-                            <div class="win95-groupbox">
-                                <span class="win95-groupbox-legend">WHAT I DID</span>
-                                <ul class="detail-list" id="detail-fiz"></ul>
-                            </div>
-                            <div class="win95-groupbox">
-                                <span class="win95-groupbox-legend">TAGS</span>
-                                <div class="detail-tags" id="detail-tags"></div>
-                            </div>
-                        </div>
-                        <div class="explorer-statusbar">
-                            <span id="projects-count">16 object(s)</span>
-                            <span id="projects-selected">Click to open</span>
-                        </div>
-                    </div>
-                    <div class="icon-grid about-grid" style="margin-top: 16px;">
-                        <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
-                            <span class="icon-label label-black">BACK</span>
-                        </div>
-                        <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                    </div>
-                </div>
-
-                <!-- ===== EMAIL ===== -->
-                <div id="screen-email" class="screen-container">
-                    <div class="contact-form-box">
-                        <div class="form-titlebar"><span class="form-title">CONTACT.TXT</span></div>
-                        <div class="contact-form-content">
-                            <form id="email-form" novalidate>
-                                <label for="user-email">YOUR EMAIL</label>
-                                <input type="email" id="user-email" name="email" placeholder="your@email.com" />
-                                <label for="subject">SUBJECT</label>
-                                <input type="text" id="subject" name="subject" placeholder="Subject" />
-                                <label for="message">MESSAGE</label>
-                                <textarea id="message" name="message" placeholder="Write your message..."></textarea>
-                                <div class="form-actions">
-                                    <button type="submit" class="retro-btn" id="send-btn">SEND</button>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">ABOUT THE PROJECT</span>
+                                    <p class="detail-about-text" id="detail-description"></p>
                                 </div>
-                                <div id="form-feedback"></div>
-                            </form>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">MY ROLE</span>
+                                    <ul class="detail-list" id="detail-papel"></ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">WHAT I DID</span>
+                                    <ul class="detail-list" id="detail-fiz"></ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">TAGS</span>
+                                    <div class="detail-tags" id="detail-tags"></div>
+                                </div>
+                            </div>
+                            <div class="explorer-statusbar">
+                                <span id="projects-count">16 object(s)</span>
+                                <span id="projects-selected">Click to open</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="icon-grid about-grid" style="margin-top: 16px;">
-                        <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                        <div class="icon-item">
-                            <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
-                            <span class="icon-label label-black">BACK</span>
-                        </div>
-                        <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                    </div>
-                </div>
-
-                <!-- ===== SERVICES – TELA COM DESCIDA À ILHA ===== -->
-                <div id="screen-services" class="screen-container">
-                    <canvas id="services-canvas"></canvas>
-                    <div id="services-ui">
-                        <div class="services-menu-grid">
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            <div class="services-menu-item" id="services-enter-btn">
-                                <img class="services-menu-icon" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E⚙%3C/text%3E%3C/svg%3E" alt="SERVICES" />
-                                <span class="services-menu-label" style="color:#2d5016;">SERVICES</span>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <span class="icon-label label-black">BACK</span>
                             </div>
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
-                        <p style="color:#888; font-size:11px; margin-top:8px; text-shadow:1px 1px 0 #000;">Clique para descer ↓</p>
                     </div>
-                    <button id="services-back-btn">↑ VOLTAR</button>
+                    <div id="screen-email" class="screen-container">
+                        <div class="contact-form-box">
+                            <div class="form-titlebar"><span class="form-title">CONTACT.TXT</span></div>
+                            <div class="contact-form-content">
+                                <form id="email-form" novalidate>
+                                    <label for="user-email">YOUR EMAIL</label>
+                                    <input type="email" id="user-email" name="email" placeholder="your@email.com" />
+                                    <label for="subject">SUBJECT</label>
+                                    <input type="text" id="subject" name="subject" placeholder="Subject" />
+                                    <label for="message">MESSAGE</label>
+                                    <textarea id="message" name="message" placeholder="Write your message..."></textarea>
+                                    <div class="form-actions">
+                                        <button type="submit" class="retro-btn" id="send-btn">SEND</button>
+                                    </div>
+                                    <div id="form-feedback"></div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <span class="icon-label label-black">BACK</span>
+                            </div>
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                        </div>
+                    </div>
                 </div>
+                <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
+            </div>
+        </div>
+        <div id="scanlines"></div>
+        <div id="scan-sweep"></div>
+        <div id="tv-frame"></div>
+    </div>
 
-            </div> <!-- fim .window-content -->
-            <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
-        </div> <!-- fim .retro-window -->
-    </div> <!-- fim #tv-screen -->
-    <div id="scanlines"></div>
-    <div id="scan-sweep"></div>
-    <div id="tv-frame"></div>
-</div> <!-- fim #tv-container -->
-
-<script>
-    // ===== BACKGROUND (Canvas) – mantido =====
-    (function() {
-        const canvas = document.getElementById('background-canvas');
-        const ctx = canvas.getContext('2d');
-        let W, H, mouseX = 0.5, mouseY = 0.5;
-        const PIXEL = 8;
-        let skyGradient = null;
-        let globalTime = 0;
-        let sunImg = null;
-
-        function resize() {
-            const rect = canvas.parentElement.getBoundingClientRect();
-            W = Math.ceil(rect.width / PIXEL);
-            H = Math.ceil(rect.height / PIXEL);
-            canvas.width = W;
-            canvas.height = H;
-            skyGradient = ctx.createLinearGradient(0, 0, 0, H);
-            skyGradient.addColorStop(0, 'rgb(26,58,107)');
-            skyGradient.addColorStop(0.25, 'rgb(45,90,160)');
-            skyGradient.addColorStop(0.50, 'rgb(74,144,217)');
-            skyGradient.addColorStop(0.75, 'rgb(135,206,235)');
-            skyGradient.addColorStop(0.92, 'rgb(200,230,245)');
-            skyGradient.addColorStop(1, 'rgb(232,244,252)');
-            initClouds();
-            initSun();
-        }
-        window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth; mouseY = e.clientY / window.innerHeight; });
-        const PALETTE = { sunCore: [255,252,240], sunEdge: [255,248,220], cloud: [255,255,255], cloudShad: [180,200,220], bird: [40,60,90] };
-
-        function rgb(arr, a = 1) { return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`; }
-
-        function pixelCircleOffscreen(x, cx, cy, r, colorStr) {
-            const r2 = r * r;
-            x.fillStyle = colorStr;
-            for (let y = Math.floor(cy - r); y <= Math.ceil(cy + r); y++) {
-                for (let px = Math.floor(cx - r); px <= Math.ceil(cx + r); px++) {
-                    const dx = px - cx;
-                    const dy = y - cy;
-                    if (dx*dx + dy*dy <= r2) x.fillRect(px, y, 1, 1);
-                }
-            }
-        }
-
-        function initSun() {
-            const sunR = Math.min(W, H) * 0.06;
-            const outerR = Math.ceil(sunR * 3);
-            const pad = 4;
-            const size = (outerR + pad) * 2;
-            const c = document.createElement('canvas');
-            c.width = size;
-            c.height = size;
-            const x = c.getContext('2d');
-            const cx = size / 2, cy = size / 2;
-            for (let r = outerR; r >= sunR; r -= 2) {
-                const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
-                pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.sunEdge, Math.max(0, alpha)));
-            }
-            pixelCircleOffscreen(x, cx, cy, sunR, rgb(PALETTE.sunCore, 0.95));
-            pixelCircleOffscreen(x, cx, cy, sunR * 0.7, rgb(PALETTE.sunEdge, 0.7));
-            sunImg = { canvas: c, pad: outerR + pad, sunR: sunR };
-        }
-
-        function createCloudCanvas(baseW, baseH, opacity) {
-            const maxR = 0.55 * baseH * 1.8;
-            const pad = Math.ceil(maxR) + 2;
-            const w = baseW + pad * 2;
-            const h = baseH + pad * 2;
-            const c = document.createElement('canvas');
-            c.width = w;
-            c.height = h;
-            const x = c.getContext('2d');
-            const puffs = [
-                { dx: 0.50, dy: 0.50, r: 0.55 },
-                { dx: 0.20, dy: 0.58, r: 0.40 },
-                { dx: 0.80, dy: 0.55, r: 0.42 },
-            ];
-            puffs.forEach(p => {
-                const cx = pad + p.dx * baseW;
-                const cy = pad + p.dy * baseH + baseH * 0.08;
-                const r = p.r * baseH * 1.8;
-                pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloudShad, opacity * 0.3));
-            });
-            puffs.forEach(p => {
-                const cx = pad + p.dx * baseW;
-                const cy = pad + p.dy * baseH;
-                const r = p.r * baseH * 1.6;
-                pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity));
-            });
-            puffs.forEach(p => {
-                if (p.dy < 0.6) {
-                    const cx = pad + p.dx * baseW;
-                    const cy = pad + p.dy * baseH - baseH * 0.05;
-                    const r = p.r * baseH * 1.1 * 0.7;
-                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity * 0.5));
-                }
-            });
-            return { canvas: c, pad: pad };
-        }
-
-        const layers = [
-            { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08, 0.20], scale: [1.8, 2.8], opacity: [0.30, 0.45] },
-            { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20, 0.40], scale: [1.3, 2.0], opacity: [0.45, 0.65] },
-            { count: 2, speed: 0.30, parallax: 0.14, yRange: [0.40, 0.65], scale: [1.0, 1.8], opacity: [0.60, 0.85] },
-        ];
-        let clouds = [];
-
-        function initClouds() {
-            clouds = [];
-            layers.forEach((l, li) => {
-                for (let i = 0; i < l.count; i++) {
-                    const scale = l.scale[0] + Math.random() * (l.scale[1] - l.scale[0]);
-                    const w = Math.floor((40 + Math.random() * 30) * scale * (W / 250));
-                    const h = Math.floor((12 + Math.random() * 10) * scale * (W / 250));
-                    const opacity = l.opacity[0] + Math.random() * (l.opacity[1] - l.opacity[0]);
-                    clouds.push({
-                        layer: li,
-                        x: Math.random() * W * 1.5 - W * 0.25,
-                        y: H * (l.yRange[0] + Math.random() * (l.yRange[1] - l.yRange[0])),
-                        w, h,
-                        speed: l.speed * (0.8 + Math.random() * 0.4),
-                        img: createCloudCanvas(w, h, opacity),
-                    });
-                }
-            });
-        }
-
-        let birds = [];
-        function initBirds() {
-            birds = [];
-            for (let i = 0; i < 3; i++) {
-                birds.push({
-                    x: Math.random() * W,
-                    y: H * (0.15 + Math.random() * 0.25),
-                    speed: 0.06 + Math.random() * 0.08,
-                    wingPhase: Math.random() * Math.PI * 2,
-                });
-            }
-        }
-
-        function drawBird(b) {
-            const bx = b.x + (mouseX - 0.5) * W * 0.01;
-            const by = b.y + (mouseY - 0.5) * H * 0.01;
-            const wing = Math.sin(globalTime * 0.025 + b.wingPhase) > 0;
-            ctx.fillStyle = `rgba(${PALETTE.bird.join(',')},0.4)`;
-            ctx.fillRect(Math.floor(bx), Math.floor(by), 1, 1);
-            ctx.fillRect(Math.floor(bx-1), Math.floor(by), 1, 1);
-            ctx.fillRect(Math.floor(bx+1), Math.floor(by), 1, 1);
-            if (wing) {
-                ctx.fillRect(Math.floor(bx-2), Math.floor(by-1), 1, 1);
-                ctx.fillRect(Math.floor(bx+2), Math.floor(by-1), 1, 1);
-            } else {
-                ctx.fillRect(Math.floor(bx-2), Math.floor(by+1), 1, 1);
-                ctx.fillRect(Math.floor(bx+2), Math.floor(by+1), 1, 1);
-            }
-        }
-
-        function draw() {
-            ctx.fillStyle = skyGradient;
-            ctx.fillRect(0, 0, W, H);
-            if (sunImg) {
-                const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
-                const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
-                ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad));
-            }
-            clouds.forEach(c => {
-                const l = layers[c.layer];
-                const px = c.x + (mouseX - 0.5) * W * l.parallax;
-                const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
-                ctx.drawImage(c.img.canvas, Math.floor(px - c.w/2 - c.img.pad), Math.floor(py - c.h/2 - c.img.pad));
-            });
-            birds.forEach(b => drawBird(b));
-        }
-
-        function update() {
-            clouds.forEach(c => {
-                c.x -= c.speed;
-                if (c.x + c.w < -20) {
-                    c.x = W + 10 + Math.random() * 50;
-                    c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
-                }
-            });
-            birds.forEach(b => {
-                b.x -= b.speed;
-                if (b.x < -5) { b.x = W + 5; b.y = H * (0.15 + Math.random() * 0.25); }
-            });
-            globalTime++;
-            draw();
-        }
-
-        function loop() { update(); setTimeout(loop, 16); }
-        window.addEventListener('resize', () => { resize(); initBirds(); });
-        resize();
-        initBirds();
-        loop();
-    })();
-
-    // ===== SCANLINE SWEEP =====
-    (function() {
-        const sweep = document.getElementById('scan-sweep');
-        if (!sweep) return;
-        function triggerSweep() {
-            sweep.classList.remove('sweeping');
-            void sweep.offsetWidth;
-            sweep.classList.add('sweeping');
-        }
-        sweep.addEventListener('animationend', function() { sweep.classList.remove('sweeping'); });
-        function scheduleSweep() {
-            const delay = 15000 + Math.random() * 10000;
-            setTimeout(function() { triggerSweep(); scheduleSweep(); }, delay);
-        }
-        scheduleSweep();
-    })();
-
-    // ===== NAVEGAÇÃO + PROJECTS + CONTACT + SERVICES =====
-    (function() {
-        const homeScreen = document.getElementById('screen-home');
-        const aboutScreen = document.getElementById('screen-about');
-        const projectsScreen = document.getElementById('screen-projects');
-        const emailScreen = document.getElementById('screen-email');
-        const servicesScreen = document.getElementById('screen-services');
-        const flash = document.getElementById('flash-overlay');
-        const retroWindow = document.querySelector('.retro-window');
-        const body = document.body;
-        let currentScreen = 'home';
-        let transitioning = false;
-
-        const FORMSPREE_ID = 'mrpgpbdb';
-        const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
-
-        let noiseRAF = null;
-        function startNoise() {
-            function tick() {
-                const bx1 = (Math.random() * 4).toFixed(1), by1 = (Math.random() * 4).toFixed(1);
-                const bx2 = (Math.random() * 4).toFixed(1), by2 = (Math.random() * 4).toFixed(1);
-                const bx3 = (Math.random() * 6).toFixed(1), by3 = (Math.random() * 6).toFixed(1);
-                flash.style.backgroundPosition = `${bx1}px ${by1}px, ${bx2}px ${by2}px, ${bx3}px ${by3}px`;
-                flash.style.opacity = (0.88 + Math.random() * 0.12).toFixed(2);
-                noiseRAF = requestAnimationFrame(tick);
-            }
-            tick();
-        }
-        function stopNoise() {
-            if (noiseRAF) cancelAnimationFrame(noiseRAF);
-            noiseRAF = null;
-            flash.style.opacity = '';
-            flash.style.backgroundPosition = '';
-        }
-
-        function spawnTearLines(count) {
-            for (let i = 0; i < count; i++) {
-                const line = document.createElement('div');
-                line.className = 'tear-line';
-                line.style.top = (Math.random() * 100).toFixed(1) + '%';
-                line.style.height = (2 + Math.random() * 6).toFixed(1) + 'px';
-                const offset = (Math.random() * 35 + 15) * (Math.random() < 0.5 ? -1 : 1);
-                line.style.setProperty('--tear-offset', offset.toFixed(0) + 'px');
-                line.style.animationDelay = (Math.random() * 90).toFixed(0) + 'ms';
-                retroWindow.appendChild(line);
-                setTimeout(() => line.remove(), 400);
-            }
-        }
-
-        function triggerTransition(callback) {
-            retroWindow.classList.add('rolling');
-            flash.classList.add('snap');
-            setTimeout(() => {
-                flash.classList.remove('snap');
-                flash.classList.add('snowing');
-                startNoise();
-            }, 40);
-            setTimeout(() => { stopNoise(); flash.classList.remove('snowing'); }, 260);
-            setTimeout(() => {
-                retroWindow.classList.remove('rolling');
-                spawnTearLines(4 + Math.floor(Math.random() * 2));
-                if (callback) callback();
-            }, 500);
-        }
-
-        function navigateTo(screen) {
-            if (screen === currentScreen || transitioning) return;
-            transitioning = true;
-            triggerTransition(() => {
-                homeScreen.classList.remove('active');
-                aboutScreen.classList.remove('active');
-                projectsScreen.classList.remove('active');
-                emailScreen.classList.remove('active');
-                servicesScreen.classList.remove('active');
-                body.classList.remove('projects-mode', 'detail-mode', 'services-mode');
-
-                if (screen === 'home') homeScreen.classList.add('active');
-                else if (screen === 'about') aboutScreen.classList.add('active');
-                else if (screen === 'projects') {
-                    projectsScreen.classList.add('active');
-                    body.classList.add('projects-mode');
-                    if (typeof showProjectsList === 'function') showProjectsList();
-                }
-                else if (screen === 'email') emailScreen.classList.add('active');
-                else if (screen === 'services') {
-                    servicesScreen.classList.add('active');
-                    body.classList.add('services-mode');
-                    if (typeof startIslandLoop === 'function') startIslandLoop();
-                }
-                currentScreen = screen;
-                transitioning = false;
-            });
-        }
-
-        // ===== PROJETOS (mantido) =====
-        const PROJECTS = [/* ... mesmo array ... */];
-        // (para não alongar, o array está idêntico ao anterior)
-        // Coloquei o array completo aqui, mas para não repetir todo o código, vou resumir.
-        // Na prática, mantenha o array de PROJECTS exatamente como estava.
-        // Vou incluir apenas o essencial para funcionar.
-
-        // (O array PROJECTS e as funções showProjectsList/showProjectDetail/closeProjectDetail
-        //  são mantidos, mas vou abreviar no exemplo para não estourar o limite.
-        //  No código final, você deve manter o array completo.)
-
-        // ===== CONTACT FORM =====
-        const form = document.getElementById('email-form');
-        const feedback = document.getElementById('form-feedback');
-        const sendBtn = document.getElementById('send-btn');
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('user-email').value.trim();
-            const subject = document.getElementById('subject').value.trim();
-            const message = document.getElementById('message').value.trim();
-            if (!email || !subject || !message) {
-                feedback.textContent = 'Please fill in all fields.';
-                feedback.style.color = '#c41e3a';
-                return;
-            }
-            if (!email.includes('@') || !email.includes('.')) {
-                feedback.textContent = 'Please enter a valid email address.';
-                feedback.style.color = '#c41e3a';
-                return;
-            }
-            sendBtn.disabled = true;
-            sendBtn.textContent = 'SENDING...';
-            feedback.textContent = '';
-            try {
-                const formData = new FormData(form);
-                const response = await fetch(FORMSPREE_URL, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
-                if (response.ok) {
-                    feedback.textContent = 'Message sent successfully!';
-                    feedback.style.color = '#2d5016';
-                    form.reset();
-                } else {
-                    const data = await response.json();
-                    feedback.textContent = `Error: ${data.error || 'please try again later.'}`;
-                    feedback.style.color = '#c41e3a';
-                }
-            } catch (error) {
-                feedback.textContent = 'Connection error. Please check your internet.';
-                feedback.style.color = '#c41e3a';
-            }
-            sendBtn.disabled = false;
-            sendBtn.textContent = 'SEND';
-        });
-
-        if (FORMSPREE_ID === 'SEU_FORM_ID_AQUI') {
-            console.warn('⚠️ Replace FORMSPREE_ID with your actual Formspree ID.');
-            feedback.textContent = '⚠️ Configure Formspree (see console).';
-            feedback.style.color = '#c41e3a';
-        }
-
-        // ===== CLICK NOS ÍCONES =====
-        document.querySelectorAll('.icon-img').forEach(img => {
-            img.addEventListener('click', function(e) {
-                const target = this.dataset.target;
-                if (target === 'about') navigateTo('about');
-                else if (target === 'projects') navigateTo('projects');
-                else if (target === 'email') navigateTo('email');
-                else if (target === 'services') navigateTo('services');
-                else if (target === 'github') {
-                    window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
-                }
-                else if (target === 'back') {
-                    if (currentScreen === 'services') {
-                        navigateTo('home');
-                    } else if (currentScreen === 'projects' && isDetailOpen) {
-                        closeProjectDetail(true);
-                    } else {
-                        navigateTo('home');
-                    }
-                }
-            });
-        });
-
-        // ===== INICIALIZA PROJECTS =====
-        showProjectsList();
-
-        // Exporta funções para uso externo
-        window.navigateTo = navigateTo;
-        window.isDetailOpen = false;
-        window.showProjectsList = showProjectsList;
-        window.closeProjectDetail = closeProjectDetail;
-
-        // ===== SERVICES – ILHA =====
-        // (Código da ilha será adicionado a seguir)
+    <script>
+        // ============================================================
+        //  BACKGROUND (Canvas)
+        // ============================================================
         (function() {
-            const canvas = document.getElementById('services-canvas');
-            if (!canvas) return;
+            const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
-            const PIXEL = 6;
-            let W, H, globalTime = 0;
-            let mode = 'menu';
-            let descentProgress = 0;
-            const DESCENT_DURATION = 180;
-            let islandLoopId = null;
-
-            const PALETTE_ILHA = {
-                sand: [210,195,140],
-                sandDark: [180,165,110],
-                palmTrunk: [120,80,40],
-                palmTrunkDark: [90,55,25],
-                palmLeaf: [40,140,60],
-                palmLeafDark: [25,100,35],
-                palmLeafLight: [60,170,80],
-                waterDeep: [30,80,140],
-                waterMid: [50,120,180],
-                waterLight: [80,160,210],
-                waterFoam: [180,220,245],
-                waterShine: [220,240,255],
-            };
-
-            function rgb(arr, a) {
-                if (a !== undefined) return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`;
-                return `rgb(${arr[0]},${arr[1]},${arr[2]})`;
-            }
+            let W, H,
+                mouseX = 0.5,
+                mouseY = 0.5;
+            const PIXEL = 8;
+            let skyGradient = null;
+            let globalTime = 0;
+            let sunImg = null;
 
             function resize() {
                 const rect = canvas.parentElement.getBoundingClientRect();
@@ -1906,328 +1314,681 @@
                 H = Math.ceil(rect.height / PIXEL);
                 canvas.width = W;
                 canvas.height = H;
+                skyGradient = ctx.createLinearGradient(0, 0, 0, H);
+                skyGradient.addColorStop(0, 'rgb(26,58,107)');
+                skyGradient.addColorStop(0.25, 'rgb(45,90,160)');
+                skyGradient.addColorStop(0.50, 'rgb(74,144,217)');
+                skyGradient.addColorStop(0.75, 'rgb(135,206,235)');
+                skyGradient.addColorStop(0.92, 'rgb(200,230,245)');
+                skyGradient.addColorStop(1, 'rgb(232,244,252)');
+                initClouds();
+                initSun();
             }
+            window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth;
+                mouseY = e.clientY / window.innerHeight; });
+            const PALETTE = { sunCore: [255, 252, 240], sunEdge: [255, 248, 220], cloud: [255, 255, 255],
+                cloudShad: [180, 200, 220], bird: [40, 60, 90] };
 
-            function pixelCircle(cx, cy, r, color) {
+            function rgb(arr, a = 1) { return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`; }
+
+            function pixelCircleOffscreen(x, cx, cy, r, colorStr) {
                 const r2 = r * r;
-                ctx.fillStyle = color;
+                x.fillStyle = colorStr;
                 for (let y = Math.floor(cy - r); y <= Math.ceil(cy + r); y++) {
-                    for (let x = Math.floor(cx - r); x <= Math.ceil(cx + r); x++) {
-                        if ((x - cx) ** 2 + (y - cy) ** 2 <= r2) {
-                            ctx.fillRect(x, y, 1, 1);
-                        }
+                    for (let px = Math.floor(cx - r); px <= Math.ceil(cx + r); px++) {
+                        const dx = px - cx;
+                        const dy = y - cy;
+                        if (dx * dx + dy * dy <= r2) x.fillRect(px, y, 1, 1);
                     }
                 }
             }
 
-            function pixelEllipse(cx, cy, rx, ry, color) {
-                ctx.fillStyle = color;
-                for (let y = Math.floor(cy - ry); y <= Math.ceil(cy + ry); y++) {
-                    for (let x = Math.floor(cx - rx); x <= Math.ceil(cx + rx); x++) {
-                        const dx = (x - cx) / rx;
-                        const dy = (y - cy) / ry;
-                        if (dx * dx + dy * dy <= 1) {
-                            ctx.fillRect(x, y, 1, 1);
-                        }
-                    }
-                }
-            }
-
-            function pixelLine(x0, y0, x1, y1, color, thickness) {
-                ctx.fillStyle = color;
-                const dx = Math.abs(x1 - x0);
-                const dy = Math.abs(y1 - y0);
-                const sx = x0 < x1 ? 1 : -1;
-                const sy = y0 < y1 ? 1 : -1;
-                let err = dx - dy;
-                let x = x0, y = y0;
-                const t = Math.floor(thickness / 2);
-                while (true) {
-                    for (let py = -t; py <= t; py++) {
-                        for (let px = -t; px <= t; px++) {
-                            ctx.fillRect(x + px, y + py, 1, 1);
-                        }
-                    }
-                    if (x === x1 && y === y1) break;
-                    const e2 = 2 * err;
-                    if (e2 > -dy) { err -= dy; x += sx; }
-                    if (e2 < dx) { err += dx; y += sy; }
-                }
-            }
-
-            // Céu do menu
-            function drawMenuSky() {
-                const g = ctx.createLinearGradient(0, 0, 0, H);
-                g.addColorStop(0, 'rgb(26,58,107)');
-                g.addColorStop(0.25, 'rgb(45,90,160)');
-                g.addColorStop(0.50, 'rgb(74,144,217)');
-                g.addColorStop(0.75, 'rgb(135,206,235)');
-                g.addColorStop(0.92, 'rgb(200,230,245)');
-                g.addColorStop(1, 'rgb(232,244,252)');
-                ctx.fillStyle = g;
-                ctx.fillRect(0, 0, W, H);
-
-                const sunX = W * 0.82;
-                const sunY = H * 0.12;
+            function initSun() {
                 const sunR = Math.min(W, H) * 0.06;
-                for (let r = sunR * 3; r >= sunR; r -= 2) {
+                const outerR = Math.ceil(sunR * 3);
+                const pad = 4;
+                const size = (outerR + pad) * 2;
+                const c = document.createElement('canvas');
+                c.width = size;
+                c.height = size;
+                const x = c.getContext('2d');
+                const cx = size / 2,
+                    cy = size / 2;
+                for (let r = outerR; r >= sunR; r -= 2) {
                     const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
-                    pixelCircle(sunX, sunY, r, rgb([255,248,220], Math.max(0, alpha)));
+                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.sunEdge, Math.max(0, alpha)));
                 }
-                pixelCircle(sunX, sunY, sunR, rgb([255,252,240], 0.95));
-                pixelCircle(sunX, sunY, sunR * 0.7, rgb([255,248,220], 0.7));
+                pixelCircleOffscreen(x, cx, cy, sunR, rgb(PALETTE.sunCore, 0.95));
+                pixelCircleOffscreen(x, cx, cy, sunR * 0.7, rgb(PALETTE.sunEdge, 0.7));
+                sunImg = { canvas: c, pad: outerR + pad, sunR: sunR };
+            }
 
-                const clouds = [
-                    {x: 0.15, y: 0.15, r: 8, op: 0.4},
-                    {x: 0.35, y: 0.22, r: 10, op: 0.35},
-                    {x: 0.60, y: 0.12, r: 7, op: 0.45},
-                    {x: 0.75, y: 0.20, r: 9, op: 0.3},
-                    {x: 0.45, y: 0.08, r: 6, op: 0.5},
+            function createCloudCanvas(baseW, baseH, opacity) {
+                const maxR = 0.55 * baseH * 1.8;
+                const pad = Math.ceil(maxR) + 2;
+                const w = baseW + pad * 2;
+                const h = baseH + pad * 2;
+                const c = document.createElement('canvas');
+                c.width = w;
+                c.height = h;
+                const x = c.getContext('2d');
+                const puffs = [
+                    { dx: 0.50, dy: 0.50, r: 0.55 },
+                    { dx: 0.20, dy: 0.58, r: 0.40 },
+                    { dx: 0.80, dy: 0.55, r: 0.42 },
                 ];
-                clouds.forEach((c) => {
-                    const cx = c.x * W + Math.sin(globalTime * 0.003 + 1) * 3;
-                    const cy = c.y * H;
-                    pixelCircle(cx, cy, c.r, rgb([255,255,255], c.op));
-                    pixelCircle(cx - c.r*0.5, cy + 1, c.r*0.7, rgb([255,255,255], c.op*0.7));
-                    pixelCircle(cx + c.r*0.5, cy + 1, c.r*0.7, rgb([255,255,255], c.op*0.7));
-                    pixelCircle(cx, cy - c.r*0.3, c.r*0.6, rgb([255,255,255], c.op*0.5));
+                puffs.forEach(p => {
+                    const cx = pad + p.dx * baseW;
+                    const cy = pad + p.dy * baseH + baseH * 0.08;
+                    const r = p.r * baseH * 1.8;
+                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloudShad, opacity * 0.3));
+                });
+                puffs.forEach(p => {
+                    const cx = pad + p.dx * baseW;
+                    const cy = pad + p.dy * baseH;
+                    const r = p.r * baseH * 1.6;
+                    pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity));
+                });
+                puffs.forEach(p => {
+                    if (p.dy < 0.6) {
+                        const cx = pad + p.dx * baseW;
+                        const cy = pad + p.dy * baseH - baseH * 0.05;
+                        const r = p.r * baseH * 1.1 * 0.7;
+                        pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.cloud, opacity * 0.5));
+                    }
+                });
+                return { canvas: c, pad: pad };
+            }
+            const layers = [
+                { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08, 0.20], scale: [1.8, 2.8], opacity: [0.30, 0.45] },
+                { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20, 0.40], scale: [1.3, 2.0], opacity: [0.45, 0.65] },
+                { count: 2, speed: 0.30, parallax: 0.14, yRange: [0.40, 0.65], scale: [1.0, 1.8], opacity: [0.60, 0.85] },
+            ];
+            let clouds = [];
+
+            function initClouds() {
+                clouds = [];
+                layers.forEach((l, li) => {
+                    for (let i = 0; i < l.count; i++) {
+                        const scale = l.scale[0] + Math.random() * (l.scale[1] - l.scale[0]);
+                        const w = Math.floor((40 + Math.random() * 30) * scale * (W / 250));
+                        const h = Math.floor((12 + Math.random() * 10) * scale * (W / 250));
+                        const opacity = l.opacity[0] + Math.random() * (l.opacity[1] - l.opacity[0]);
+                        clouds.push({
+                            layer: li,
+                            x: Math.random() * W * 1.5 - W * 0.25,
+                            y: H * (l.yRange[0] + Math.random() * (l.yRange[1] - l.yRange[0])),
+                            w,
+                            h,
+                            speed: l.speed * (0.8 + Math.random() * 0.4),
+                            img: createCloudCanvas(w, h, opacity),
+                        });
+                    }
                 });
             }
+            let birds = [];
 
-            // Céu da ilha
-            function drawIslandSky() {
-                const g = ctx.createLinearGradient(0, 0, 0, H);
-                g.addColorStop(0, 'rgb(135,206,235)');
-                g.addColorStop(0.5, 'rgb(180,225,245)');
-                g.addColorStop(0.85, 'rgb(220,240,250)');
-                g.addColorStop(1, 'rgb(232,244,252)');
-                ctx.fillStyle = g;
-                ctx.fillRect(0, 0, W, H);
-
-                const sunX = W * 0.82;
-                const sunY = H * 0.18;
-                const sunR = Math.min(W, H) * 0.045;
-                for (let r = sunR * 4; r >= sunR; r -= 3) {
-                    const alpha = 0.15 * (1 - (r - sunR) / (sunR * 3));
-                    pixelCircle(sunX, sunY, r, rgb(PALETTE_ILHA.waterShine, Math.max(0, alpha)));
-                }
-                pixelCircle(sunX, sunY, sunR, rgb([255,252,240], 0.95));
-                pixelCircle(sunX, sunY, sunR * 0.7, rgb([255,248,220], 0.7));
-
-                const birdOff = Math.sin(globalTime * 0.01) * 5;
-                ctx.fillStyle = 'rgba(100,120,140,0.4)';
-                const b1x = W * 0.25 + birdOff;
-                const b1y = H * 0.22;
-                ctx.fillRect(Math.floor(b1x), Math.floor(b1y), 1, 1);
-                ctx.fillRect(Math.floor(b1x-1), Math.floor(b1y), 1, 1);
-                ctx.fillRect(Math.floor(b1x+1), Math.floor(b1y-1), 1, 1);
-                const b2x = W * 0.30 + birdOff * 0.7;
-                const b2y = H * 0.25;
-                ctx.fillRect(Math.floor(b2x), Math.floor(b2y), 1, 1);
-                ctx.fillRect(Math.floor(b2x-1), Math.floor(b2y), 1, 1);
-                ctx.fillRect(Math.floor(b2x+1), Math.floor(b2y-1), 1, 1);
-            }
-
-            // Mar
-            function drawSea() {
-                const horizonY = H * 0.45;
-                const seaBottom = H;
-                const layersCount = 6;
-                for (let i = 0; i < layersCount; i++) {
-                    const t = i / (layersCount - 1);
-                    const y1 = horizonY + t * (seaBottom - horizonY);
-                    const y2 = horizonY + (t + 1/layersCount) * (seaBottom - horizonY);
-                    let r, g, b;
-                    if (t < 0.3) {
-                        const lt = t / 0.3;
-                        r = PALETTE_ILHA.waterLight[0] + (PALETTE_ILHA.waterMid[0] - PALETTE_ILHA.waterLight[0]) * lt;
-                        g = PALETTE_ILHA.waterLight[1] + (PALETTE_ILHA.waterMid[1] - PALETTE_ILHA.waterLight[1]) * lt;
-                        b = PALETTE_ILHA.waterLight[2] + (PALETTE_ILHA.waterMid[2] - PALETTE_ILHA.waterLight[2]) * lt;
-                    } else {
-                        const lt = (t - 0.3) / 0.7;
-                        r = PALETTE_ILHA.waterMid[0] + (PALETTE_ILHA.waterDeep[0] - PALETTE_ILHA.waterMid[0]) * lt;
-                        g = PALETTE_ILHA.waterMid[1] + (PALETTE_ILHA.waterDeep[1] - PALETTE_ILHA.waterMid[1]) * lt;
-                        b = PALETTE_ILHA.waterMid[2] + (PALETTE_ILHA.waterDeep[2] - PALETTE_ILHA.waterMid[2]) * lt;
-                    }
-                    ctx.fillStyle = `rgb(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)})`;
-                    ctx.fillRect(0, Math.floor(y1), W, Math.ceil(y2 - y1) + 1);
-                }
-
-                const waveCount = 18;
-                for (let w = 0; w < waveCount; w++) {
-                    const wt = w / waveCount;
-                    const wy = horizonY + 2 + wt * (seaBottom - horizonY - 4);
-                    const waveSpeed = 0.02 + wt * 0.04;
-                    const waveAmp = 0.5 + wt * 2.5;
-                    const waveFreq = 0.08 + wt * 0.05;
-                    ctx.fillStyle = w % 3 === 0 ? rgb(PALETTE_ILHA.waterFoam, 0.25) : rgb(PALETTE_ILHA.waterShine, 0.15);
-                    for (let x = 0; x < W; x += 1) {
-                        const waveY = wy + Math.sin(x * waveFreq + globalTime * waveSpeed + w * 1.3) * waveAmp;
-                        const thickness = 1 + wt;
-                        ctx.fillRect(x, Math.floor(waveY), 1, thickness);
-                    }
-                }
-
-                // Reflexo da ilha
-                const islandCX = W * 0.5;
-                const islandCY = H * 0.72;
-                const islandRX = W * 0.28;
-                const reflectY = islandCY + islandRX * 0.05;
-                for (let r = 0; r < 6; r++) {
-                    const ry = reflectY + r * 2.5;
-                    const rw = islandRX * (0.9 - r * 0.12);
-                    const jitter = Math.sin(globalTime * 0.03 + r) * 1.5;
-                    ctx.fillStyle = rgb(PALETTE_ILHA.sand, 0.12 - r * 0.015);
-                    for (let x = islandCX - rw; x <= islandCX + rw; x++) {
-                        if (Math.random() > 0.3) {
-                            ctx.fillRect(x + jitter, ry, 1, 1);
-                        }
-                    }
+            function initBirds() {
+                birds = [];
+                for (let i = 0; i < 3; i++) {
+                    birds.push({
+                        x: Math.random() * W,
+                        y: H * (0.15 + Math.random() * 0.25),
+                        speed: 0.06 + Math.random() * 0.08,
+                        wingPhase: Math.random() * Math.PI * 2,
+                    });
                 }
             }
 
-            // Ilha
-            function drawIsland() {
-                const islandCX = W * 0.5;
-                const islandCY = H * 0.72;
-                const islandRX = W * 0.28;
-                const islandRY = H * 0.10;
-
-                pixelEllipse(islandCX, islandCY + 2, islandRX + 2, islandRY + 1, rgb(PALETTE_ILHA.sandDark));
-                pixelEllipse(islandCX, islandCY, islandRX, islandRY, rgb(PALETTE_ILHA.sand));
-
-                const sandDots = [
-                    {x: 0.35, y: 0.02, r: 1.5}, {x: 0.55, y: -0.01, r: 2},
-                    {x: 0.45, y: 0.03, r: 1.2}, {x: 0.65, y: 0.01, r: 1.8},
-                    {x: 0.25, y: 0.00, r: 1}, {x: 0.75, y: -0.02, r: 1.5}
-                ];
-                sandDots.forEach(d => {
-                    pixelCircle(islandCX + d.x * islandRX, islandCY + d.y * islandRY, d.r, rgb(PALETTE_ILHA.sandDark, 0.5));
-                });
-
-                // Coqueiro
-                const palmX = islandCX + W * 0.06;
-                const palmBaseY = islandCY - islandRY * 0.3;
-                const palmHeight = H * 0.28;
-                const trunkPoints = [];
-                const segments = 14;
-                for (let i = 0; i <= segments; i++) {
-                    const t = i / segments;
-                    const tx = palmX + Math.sin(t * 1.2) * W * 0.015 + t * W * 0.01;
-                    const ty = palmBaseY - t * palmHeight;
-                    trunkPoints.push({x: tx, y: ty});
+            function drawBird(b) {
+                const bx = b.x + (mouseX - 0.5) * W * 0.01;
+                const by = b.y + (mouseY - 0.5) * H * 0.01;
+                const wing = Math.sin(globalTime * 0.025 + b.wingPhase) > 0;
+                ctx.fillStyle = `rgba(${PALETTE.bird.join(',')},0.4)`;
+                ctx.fillRect(Math.floor(bx), Math.floor(by), 1, 1);
+                ctx.fillRect(Math.floor(bx - 1), Math.floor(by), 1, 1);
+                ctx.fillRect(Math.floor(bx + 1), Math.floor(by), 1, 1);
+                if (wing) {
+                    ctx.fillRect(Math.floor(bx - 2), Math.floor(by - 1), 1, 1);
+                    ctx.fillRect(Math.floor(bx + 2), Math.floor(by - 1), 1, 1);
+                } else {
+                    ctx.fillRect(Math.floor(bx - 2), Math.floor(by + 1), 1, 1);
+                    ctx.fillRect(Math.floor(bx + 2), Math.floor(by + 1), 1, 1);
                 }
-                for (let i = 0; i < trunkPoints.length - 1; i++) {
-                    const t = i / trunkPoints.length;
-                    const thick = 2.5 - t * 1.2;
-                    const color = i % 3 === 0 ? rgb(PALETTE_ILHA.palmTrunkDark) : rgb(PALETTE_ILHA.palmTrunk);
-                    pixelLine(trunkPoints[i].x, trunkPoints[i].y, trunkPoints[i+1].x, trunkPoints[i+1].y, color, thick);
-                }
-                const top = trunkPoints[trunkPoints.length - 1];
-                const leafCount = 7;
-                const leafLength = H * 0.14;
-                for (let i = 0; i < leafCount; i++) {
-                    const angle = (i / leafCount) * Math.PI * 2 - Math.PI * 0.5 + Math.sin(globalTime * 0.02 + i) * 0.08;
-                    const leafEndX = top.x + Math.cos(angle) * leafLength;
-                    const leafEndY = top.y + Math.sin(angle) * leafLength * 0.6;
-                    const midX = top.x + Math.cos(angle) * leafLength * 0.5 + Math.sin(globalTime * 0.015 + i * 0.7) * 2;
-                    const midY = top.y + Math.sin(angle) * leafLength * 0.3 + 3;
-                    const steps = 10;
-                    for (let s = 1; s <= steps; s++) {
-                        const st = s / steps;
-                        const lx = (1-st)*(1-st)*top.x + 2*(1-st)*st*midX + st*st*leafEndX;
-                        const ly = (1-st)*(1-st)*top.y + 2*(1-st)*st*midY + st*st*leafEndY;
-                        const radius = 2.8 * (1 - st * 0.7);
-                        const color = s % 2 === 0 ? rgb(PALETTE_ILHA.palmLeafDark) : rgb(PALETTE_ILHA.palmLeaf);
-                        pixelCircle(lx, ly, radius, color);
-                    }
-                    pixelCircle(leafEndX, leafEndY, 1.2, rgb(PALETTE_ILHA.palmLeafLight));
-                }
-                pixelCircle(top.x + 1, top.y + 2, 2, rgb([80,50,20]));
-                pixelCircle(top.x - 1, top.y + 3, 1.8, rgb([90,55,25]));
-                pixelCircle(top.x + 2, top.y + 3, 1.5, rgb([70,45,18]));
             }
 
             function draw() {
-                ctx.clearRect(0, 0, W, H);
-                if (mode === 'menu') {
-                    drawMenuSky();
-                } else if (mode === 'descending') {
-                    const t = descentProgress / DESCENT_DURATION;
-                    drawIslandSky();
-                    drawSea();
-                    drawIsland();
-                    const overlayAlpha = Math.max(0, 1 - t * 1.5);
-                    if (overlayAlpha > 0) {
-                        ctx.fillStyle = `rgba(0,0,0,${overlayAlpha * 0.4})`;
-                        ctx.fillRect(0, 0, W, H * (1 - t * 0.7));
-                    }
-                    if (t < 0.7) {
-                        ctx.fillStyle = `rgba(255,255,255,${0.15 * (1 - t/0.7)})`;
-                        for (let i = 0; i < 20; i++) {
-                            const lx = Math.random() * W;
-                            const ly = Math.random() * H * 0.5;
-                            const lh = 2 + Math.random() * 8;
-                            ctx.fillRect(lx, ly, 1, lh);
-                        }
-                    }
-                } else if (mode === 'island') {
-                    drawIslandSky();
-                    drawSea();
-                    drawIsland();
+                ctx.fillStyle = skyGradient;
+                ctx.fillRect(0, 0, W, H);
+                if (sunImg) {
+                    const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
+                    const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
+                    ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad));
                 }
+                clouds.forEach(c => {
+                    const l = layers[c.layer];
+                    const px = c.x + (mouseX - 0.5) * W * l.parallax;
+                    const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
+                    ctx.drawImage(c.img.canvas, Math.floor(px - c.w / 2 - c.img.pad), Math.floor(py - c.h / 2 - c.img.pad));
+                });
+                birds.forEach(b => drawBird(b));
             }
 
             function update() {
-                globalTime++;
-                if (mode === 'descending') {
-                    descentProgress++;
-                    if (descentProgress >= DESCENT_DURATION) {
-                        mode = 'island';
-                        document.getElementById('services-back-btn').classList.add('visible');
+                clouds.forEach(c => {
+                    c.x -= c.speed;
+                    if (c.x + c.w < -20) {
+                        c.x = W + 10 + Math.random() * 50;
+                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer]
+                            .yRange[0]));
                     }
-                }
+                });
+                birds.forEach(b => {
+                    b.x -= b.speed;
+                    if (b.x < -5) { b.x = W + 5;
+                        b.y = H * (0.15 + Math.random() * 0.25); }
+                });
+                globalTime++;
                 draw();
             }
 
-            function loop() {
-                update();
-                islandLoopId = setTimeout(loop, 16);
-            }
-
-            // Controles
-            const enterBtn = document.getElementById('services-enter-btn');
-            const backBtn = document.getElementById('services-back-btn');
-            const ui = document.getElementById('services-ui');
-
-            if (enterBtn) {
-                enterBtn.addEventListener('click', function() {
-                    ui.classList.add('hidden');
-                    mode = 'descending';
-                    descentProgress = 0;
-                });
-            }
-            if (backBtn) {
-                backBtn.addEventListener('click', function() {
-                    backBtn.classList.remove('visible');
-                    ui.classList.remove('hidden');
-                    mode = 'menu';
-                    descentProgress = 0;
-                });
-            }
-
-            window.addEventListener('resize', resize);
+            function loop() { update();
+                setTimeout(loop, 16); }
+            window.addEventListener('resize', () => { resize();
+                initBirds(); });
             resize();
-
-            window.startIslandLoop = function() {
-                if (!islandLoopId) loop();
-            };
-
-            // Desenho inicial
-            draw();
+            initBirds();
+            loop();
         })();
 
-    })();
-</script>
+        // ============================================================
+        //  SCANLINE SWEEP
+        // ============================================================
+        (function() {
+            const sweep = document.getElementById('scan-sweep');
+            if (!sweep) return;
+
+            function triggerSweep() {
+                sweep.classList.remove('sweeping');
+                void sweep.offsetWidth;
+                sweep.classList.add('sweeping');
+            }
+            sweep.addEventListener('animationend', function() { sweep.classList.remove('sweeping'); });
+
+            function scheduleSweep() {
+                const delay = 15000 + Math.random() * 10000;
+                setTimeout(function() { triggerSweep();
+                    scheduleSweep(); }, delay);
+            }
+            scheduleSweep();
+        })();
+
+        // ============================================================
+        //  NAVIGATION + PROJECTS + CONTACT
+        // ============================================================
+        (function() {
+            const homeScreen = document.getElementById('screen-home');
+            const aboutScreen = document.getElementById('screen-about');
+            const projectsScreen = document.getElementById('screen-projects');
+            const emailScreen = document.getElementById('screen-email');
+            const flash = document.getElementById('flash-overlay');
+            const retroWindow = document.querySelector('.retro-window');
+            const body = document.body;
+            let currentScreen = 'home';
+            let transitioning = false;
+
+            const FORMSPREE_ID = 'mrpgpbdb';
+            const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
+
+            let noiseRAF = null;
+
+            function startNoise() {
+                function tick() {
+                    const bx1 = (Math.random() * 4).toFixed(1),
+                        by1 = (Math.random() * 4).toFixed(1);
+                    const bx2 = (Math.random() * 4).toFixed(1),
+                        by2 = (Math.random() * 4).toFixed(1);
+                    const bx3 = (Math.random() * 6).toFixed(1),
+                        by3 = (Math.random() * 6).toFixed(1);
+                    flash.style.backgroundPosition = `${bx1}px ${by1}px, ${bx2}px ${by2}px, ${bx3}px ${by3}px`;
+                    flash.style.opacity = (0.88 + Math.random() * 0.12).toFixed(2);
+                    noiseRAF = requestAnimationFrame(tick);
+                }
+                tick();
+            }
+
+            function stopNoise() {
+                if (noiseRAF) cancelAnimationFrame(noiseRAF);
+                noiseRAF = null;
+                flash.style.opacity = '';
+                flash.style.backgroundPosition = '';
+            }
+
+            function spawnTearLines(count) {
+                for (let i = 0; i < count; i++) {
+                    const line = document.createElement('div');
+                    line.className = 'tear-line';
+                    line.style.top = (Math.random() * 100).toFixed(1) + '%';
+                    line.style.height = (2 + Math.random() * 6).toFixed(1) + 'px';
+                    const offset = (Math.random() * 35 + 15) * (Math.random() < 0.5 ? -1 : 1);
+                    line.style.setProperty('--tear-offset', offset.toFixed(0) + 'px');
+                    line.style.animationDelay = (Math.random() * 90).toFixed(0) + 'ms';
+                    retroWindow.appendChild(line);
+                    setTimeout(() => line.remove(), 400);
+                }
+            }
+
+            function triggerTransition(callback) {
+                retroWindow.classList.add('rolling');
+                flash.classList.add('snap');
+                setTimeout(() => {
+                    flash.classList.remove('snap');
+                    flash.classList.add('snowing');
+                    startNoise();
+                }, 40);
+                setTimeout(() => { stopNoise();
+                    flash.classList.remove('snowing'); }, 260);
+                setTimeout(() => {
+                    retroWindow.classList.remove('rolling');
+                    spawnTearLines(4 + Math.floor(Math.random() * 2));
+                    if (callback) callback();
+                }, 500);
+            }
+
+            function navigateTo(screen) {
+                if (screen === currentScreen || transitioning) return;
+                transitioning = true;
+                triggerTransition(() => {
+                    homeScreen.classList.remove('active');
+                    aboutScreen.classList.remove('active');
+                    projectsScreen.classList.remove('active');
+                    emailScreen.classList.remove('active');
+                    body.classList.remove('projects-mode', 'detail-mode');
+                    if (screen === 'home') homeScreen.classList.add('active');
+                    else if (screen === 'about') aboutScreen.classList.add('active');
+                    else if (screen === 'projects') {
+                        projectsScreen.classList.add('active');
+                        body.classList.add('projects-mode');
+                        if (typeof showProjectsList === 'function') showProjectsList();
+                    } else if (screen === 'email') emailScreen.classList.add('active');
+                    currentScreen = screen;
+                    transitioning = false;
+                });
+            }
+
+            // ============================================================
+            //  PROJECTS – Translated to English
+            // ============================================================
+            const PROJECTS = [{
+                name: 'CoralApp',
+                role: 'Community Manager',
+                duration: '2024 – 2024',
+                category: 'Wellness',
+                description: 'Web3 platform focused on community engagement and decentralized rewards. The project aims to connect users through gamified interactions within the blockchain ecosystem.',
+                url: '',
+                gif: 'coralapp.gif',
+                papel: ['Daily community management on Discord and Telegram', 'Creation of engagement campaigns', 'Retention metrics analysis', 'Moderation of AMAs and live events'],
+                fiz: ['Increased active member base by 40%', 'Implemented participation reward system', 'Organized 12+ community events', 'Reduced support response time by 60%'],
+                tags: ['Web3', 'Discord', 'Telegram', 'Gamification', 'Blockchain']
+            }, {
+                name: 'Binance',
+                role: 'Binance Angel',
+                duration: '2021 – 2022',
+                category: 'Exchange',
+                description: 'One of the largest cryptocurrency exchanges in the world. I moderated Portuguese-speaking communities, ensuring a safe and informative environment for users.',
+                url: '',
+                gif: 'binance.gif',
+                papel: ['Real-time chat moderation', 'Community rules enforcement', 'Support for new users', 'Reporting suspicious activities'],
+                fiz: ['Maintained compliance rate above 99%', 'Assisted in resolving 200+ monthly tickets', 'Identified and reported 50+ scam attempts', 'Collaborated on translating official announcements'],
+                tags: ['Exchange', 'Moderation', 'Support', 'Crypto', 'PT-BR']
+            }, {
+                name: 'Arena Games',
+                role: 'Community Lead',
+                duration: '2023',
+                category: 'Gaming',
+                description: 'Competitive gaming platform with blockchain integration. Active community of gamers and esports enthusiasts in the Web3 space.',
+                url: '',
+                gif: 'arenagames.gif',
+                papel: ['Leadership of moderator team', 'Organic growth strategy', 'Influencer partnerships', 'Crisis and conflict management'],
+                fiz: ['Grew community from 2k to 15k members', 'Closed partnerships with 8 streamers', 'Created ambassador program', 'Reduced churn rate by 25%'],
+                tags: ['Gaming', 'Esports', 'Web3', 'Leadership', 'Partnerships']
+            }, {
+                name: 'Bionic',
+                role: 'Moderator',
+                duration: '2022 – 2023',
+                category: 'Tech',
+                description: 'Tech infrastructure project focused on automation and productivity tools. Technical community of developers and early adopters.',
+                url: '',
+                gif: 'bionic.gif',
+                papel: ['Technical forum moderation', 'Integration support', 'Bug feedback for developers', 'Community documentation'],
+                fiz: ['Created FAQ with 50+ answers', 'Reduced repetitive tickets by 35%', 'Mapped 20+ critical bugs', 'Organized beta testing with 100 users'],
+                tags: ['Tech', 'Automation', 'Technical Support', 'QA', 'Documentation']
+            }, {
+                name: 'Reaktor',
+                role: 'Moderator',
+                duration: '2022',
+                category: 'DevOps',
+                description: 'DevOps tool for continuous deployment and monitoring. Community of devs and SREs looking to optimize pipelines.',
+                url: '',
+                gif: 'reaktor.gif',
+                papel: ['Building community from scratch', 'Onboarding new members', 'Creating technical content', 'Networking with senior devs'],
+                fiz: ['Launched community with 500 members in month 1', 'Produced 20+ tutorials and guides', 'Organized 6 technical workshops', 'Established direct feedback channel with founders'],
+                tags: ['DevOps', 'Community', 'Tutorials', 'Onboarding', 'Networking']
+            }, {
+                name: 'FortBlockGames',
+                role: 'Moderator',
+                duration: '2024 – now',
+                category: 'Gaming',
+                description: 'Block strategy game with play-to-earn economy. Global community of competitive players and content creators.',
+                url: '',
+                gif: 'fortblockgames.gif',
+                papel: ['Multilingual moderation', 'Tournament support', 'Creator management', 'Gameplay feedback analysis'],
+                fiz: ['Supported 5 official tournaments', 'Managed 15+ partner creators', 'Collected 300+ player feedbacks', 'Maintained NPS above 8.5'],
+                tags: ['Gaming', 'P2E', 'Tournaments', 'Creators', 'Multilingual']
+            }, {
+                name: 'BeeOS',
+                role: 'Community Manager',
+                duration: '2023',
+                category: 'OS',
+                description: 'Decentralized operating system focused on privacy and digital sovereignty. Community of early adopters and open source enthusiasts.',
+                url: '',
+                gif: 'beeos.gif',
+                papel: ['Global community management', 'Update communication', 'Beta testing coordination', 'Relationship with open source contributors'],
+                fiz: ['Coordinated beta with 1k testers', 'Reduced post-launch churn by 30%', 'Created bug bounty program', 'Increased contributions by 45%'],
+                tags: ['OS', 'Open Source', 'Privacy', 'Beta', 'Global']
+            }, {
+                name: 'Streamr',
+                role: 'Moderator',
+                duration: '2022 – 2023',
+                category: 'Streaming',
+                description: 'Real-time data streaming protocol. Community of developers and data engineers interested in decentralized data.',
+                url: '',
+                gif: 'streamr.gif',
+                papel: ['Developer community leadership', 'Educational content creation', 'Hackathon organization', 'Mentoring new contributors'],
+                fiz: ['Organized 3 hackathons with 500+ participants', 'Created introductory course accessed by 2k devs', 'Increased GitHub contributions by 60%', 'Established grants program'],
+                tags: ['Streaming', 'Data', 'Hackathon', 'DevRel', 'Mentorship']
+            }, {
+                name: 'Xend Finance',
+                role: 'Moderator',
+                duration: '2023',
+                category: 'DeFi',
+                description: 'DeFi savings and credit union platform. Community focused on financial inclusion and DeFi education.',
+                url: '',
+                gif: 'xend.gif',
+                papel: ['Moderation and financial education', 'Credit union support', 'Material translation', 'Educational webinars'],
+                fiz: ['Educated 1k+ users about DeFi', 'Supported 30+ credit unions', 'Translated 25+ technical articles', 'Organized 8 educational webinars'],
+                tags: ['DeFi', 'Education', 'Credit Unions', 'Moderation', 'Webinars']
+            }, {
+                name: 'Wicrypt',
+                role: 'Moderator',
+                duration: '2023 – 2024',
+                category: 'Network',
+                description: 'Decentralized WiFi sharing network. Community of hosts and users in emerging markets.',
+                url: '',
+                gif: 'wicrypt.gif',
+                papel: ['Host community management', 'User technical support', 'Acquisition campaigns', 'Retention and loyalty programs'],
+                fiz: ['Increased host base by 55%', 'Reduced host churn by 40%', 'Created referral program', 'Supported launch in 3 new countries'],
+                tags: ['Network', 'WiFi', 'Hosts', 'Acquisition', 'Retention']
+            }, {
+                name: 'PIPE',
+                role: 'Moderator',
+                duration: '2024',
+                category: 'Infra',
+                description: 'Data pipeline infrastructure for Web3. Technical community of data engineers and partner protocols.',
+                url: '',
+                gif: 'pipe.gif',
+                papel: ['Technical community building', 'Protocol partnerships', 'Documentation and tutorials', 'Technical events'],
+                fiz: ['Built community of 3k engineers', 'Closed 10+ technical partnerships', 'Produced 15+ whitepapers and guides', 'Organized summit with 200+ attendees'],
+                tags: ['Infra', 'Data', 'Partnerships', 'Documentation', 'Events']
+            }, {
+                name: 'TAP',
+                role: 'Moderator',
+                duration: '2022',
+                category: 'Payments',
+                description: 'Instant crypto payment solution. Community of merchants and end-users seeking digital payment adoption.',
+                url: '',
+                gif: 'tap.gif',
+                papel: ['Merchant support moderation', 'New partner onboarding', 'UX feedback', 'Fraud reporting'],
+                fiz: ['Onboarded 50+ merchants', 'Reduced KYC time by 25%', 'Identified 15+ fraud cases', 'Created best practices guide'],
+                tags: ['Payments', 'Merchants', 'KYC', 'Fraud', 'Onboarding']
+            }, {
+                name: 'Sheertopia',
+                role: 'Moderator',
+                duration: '2023 – now',
+                category: 'Metaverse',
+                description: 'Metaverse focused on immersive experiences and virtual economy. Community of creators, gamers, and virtual investors.',
+                url: '',
+                gif: 'sheertopia.gif',
+                papel: ['Strategic community leadership', 'Creator and builder management', 'Virtual economy and tokens', 'Events and immersive experiences'],
+                fiz: ['Grew community to 25k+ members', 'Managed 30+ official creators', 'Organized 10+ metaverse events', 'Increased transaction volume by 80%'],
+                tags: ['Metaverse', 'Creators', 'Virtual Economy', 'Events', 'Tokens']
+            }, {
+                name: "Lion's Share Group",
+                role: 'Affiliate Moderator',
+                duration: '2024',
+                category: 'Media',
+                description: 'Media and content group focused on crypto and finance education. Community of followers and content creators.',
+                url: '',
+                gif: 'lionssharegroup.gif',
+                papel: ['Creator community management', 'Content curation', 'Social media engagement', 'Media partnerships'],
+                fiz: ['Increased engagement by 70%', 'Coordinated 20+ content campaigns', 'Closed 5+ media partnerships', 'Created affiliate program'],
+                tags: ['Media', 'Creators', 'Content', 'Engagement', 'Affiliates']
+            }, {
+                name: 'Coinracer',
+                role: 'Head Mod',
+                duration: '2023',
+                category: 'Gaming',
+                description: 'Arcade racing game with NFT economy. Community of casual gamers and digital item collectors.',
+                url: '',
+                gif: 'coinracer.gif',
+                papel: ['Gamer community building', 'NFT and drops management', 'Player support', 'Community marketing'],
+                fiz: ['Launched community with 8k members', 'Coordinated 6 NFT drops', 'Supported 3 competitive seasons', 'Increased D7 retention by 35%'],
+                tags: ['Gaming', 'NFT', 'Arcade', 'Drops', 'Retention']
+            }, {
+                name: 'VS1',
+                role: 'Community Manager',
+                duration: '2022 – now',
+                category: 'Platform',
+                description: 'Services and tools platform for Web3 communities. Central hub for community managers and projects.',
+                url: '',
+                gif: 'vs1.gif',
+                papel: ['Community of managers management', 'Platform tools support', 'Product feedback', 'Educational resource creation'],
+                fiz: ['Maintained active community of 10k+ managers', 'Collected 500+ product feedbacks', 'Created 30+ templates and resources', 'Organized annual conference with 1k+ attendees'],
+                tags: ['Platform', 'Managers', 'Tools', 'Product', 'Conference']
+            }];
+
+            const iconsArea = document.getElementById('projects-icons-area');
+            const detailView = document.getElementById('projects-detail');
+            const addressText = document.getElementById('projects-address-text');
+            const projectsCount = document.getElementById('projects-count');
+            const projectsSelected = document.getElementById('projects-selected');
+            let isDetailOpen = false;
+
+            function showProjectsList() {
+                if (iconsArea) iconsArea.style.display = 'grid';
+                if (detailView) detailView.style.display = 'none';
+                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
+                if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
+                if (projectsSelected) projectsSelected.textContent = 'Click to open';
+                isDetailOpen = false;
+                body.classList.remove('detail-mode');
+                if (currentScreen === 'projects') body.classList.add('projects-mode');
+            }
+
+            function showProjectDetail(project) {
+                if (project.url) {
+                    window.open(project.url, '_blank', 'noopener,noreferrer');
+                }
+                if (iconsArea) iconsArea.style.display = 'none';
+                if (detailView) detailView.style.display = 'block';
+                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
+
+                document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
+
+                document.getElementById('detail-icon').src = 'logos/' + project.gif;
+                document.getElementById('detail-name').textContent = project.name;
+                document.getElementById('detail-category').textContent = project.category;
+                document.getElementById('detail-role').textContent = project.role;
+                document.getElementById('detail-duration').textContent = project.duration;
+                document.getElementById('detail-description').textContent = project.description;
+
+                const papelList = document.getElementById('detail-papel');
+                papelList.innerHTML = '';
+                (project.papel || []).forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    papelList.appendChild(li);
+                });
+
+                const fizList = document.getElementById('detail-fiz');
+                fizList.innerHTML = '';
+                (project.fiz || []).forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    fizList.appendChild(li);
+                });
+
+                const tagsContainer = document.getElementById('detail-tags');
+                tagsContainer.innerHTML = '';
+                (project.tags || []).forEach(tag => {
+                    const span = document.createElement('span');
+                    span.className = 'detail-tag';
+                    span.textContent = tag;
+                    tagsContainer.appendChild(span);
+                });
+
+                if (projectsCount) projectsCount.textContent = '1 object(s)';
+                if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
+                isDetailOpen = true;
+                body.classList.add('detail-mode');
+                body.classList.remove('projects-mode');
+            }
+
+            function closeProjectDetail(animate = true) {
+                if (!isDetailOpen) return;
+                body.classList.remove('detail-mode');
+                body.classList.add('projects-mode');
+                showProjectsList();
+                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
+            }
+
+            document.querySelectorAll('.icon-img').forEach(img => {
+                img.addEventListener('click', function(e) {
+                    const target = this.dataset.target;
+                    if (target === 'about') {
+                        navigateTo('about');
+                    } else if (target === 'projects') {
+                        navigateTo('projects');
+                    } else if (target === 'email') {
+                        navigateTo('email');
+                    } else if (target === 'github') {
+                        window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
+                    } else if (target === 'back') {
+                        if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
+                        else navigateTo('home');
+                    }
+                    // 'services' e 'socials' não fazem nada (mantidos como botões inativos)
+                });
+            });
+
+            if (iconsArea) {
+                PROJECTS.forEach((project) => {
+                    const item = document.createElement('div');
+                    item.className = 'explorer-item';
+                    item.dataset.company = project.name.toLowerCase();
+                    item.tabIndex = 0;
+                    item.title = project.category;
+
+                    const icon = document.createElement('img');
+                    icon.className = 'explorer-item-icon';
+                    icon.src = 'logos/' + project.gif;
+                    icon.alt = project.name;
+
+                    const label = document.createElement('span');
+                    label.className = 'explorer-item-name';
+                    label.textContent = project.name;
+
+                    const role = document.createElement('span');
+                    role.className = 'explorer-item-role';
+                    role.textContent = project.role;
+
+                    const duration = document.createElement('span');
+                    duration.className = 'explorer-item-duration';
+                    duration.textContent = project.duration;
+
+                    item.appendChild(icon);
+                    item.appendChild(label);
+                    item.appendChild(role);
+                    item.appendChild(duration);
+                    iconsArea.appendChild(item);
+
+                    item.addEventListener('click', function() { showProjectDetail(project); });
+                    item.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();
+                            item.click(); }
+                    });
+                });
+                if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
+            }
+
+            // ============================================================
+            //  CONTACT FORM
+            // ============================================================
+            const form = document.getElementById('email-form');
+            const feedback = document.getElementById('form-feedback');
+            const sendBtn = document.getElementById('send-btn');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('user-email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                if (!email || !subject || !message) {
+                    feedback.textContent = 'Please fill in all fields.';
+                    feedback.style.color = '#c41e3a';
+                    return;
+                }
+                if (!email.includes('@') || !email.includes('.')) {
+                    feedback.textContent = 'Please enter a valid email address.';
+                    feedback.style.color = '#c41e3a';
+                    return;
+                }
+                sendBtn.disabled = true;
+                sendBtn.textContent = 'SENDING...';
+                feedback.textContent = '';
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(FORMSPREE_URL, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (response.ok) {
+                        feedback.textContent = 'Message sent successfully!';
+                        feedback.style.color = '#2d5016';
+                        form.reset();
+                    } else {
+                        const data = await response.json();
+                        feedback.textContent = `Error: ${data.error || 'please try again later.'}`;
+                        feedback.style.color = '#c41e3a';
+                    }
+                } catch (error) {
+                    feedback.textContent = 'Connection error. Please check your internet.';
+                    feedback.style.color = '#c41e3a';
+                }
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'SEND';
+            });
+
+            if (FORMSPREE_ID === 'SEU_FORM_ID_AQUI') {
+                console.warn('⚠️ Replace FORMSPREE_ID with your actual Formspree ID.');
+                feedback.textContent = '⚠️ Configure Formspree (see console).';
+                feedback.style.color = '#c41e3a';
+            }
+
+            showProjectsList();
+        })();
+    </script>
 </body>
 </html>
