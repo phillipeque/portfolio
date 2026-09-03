@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Favicons -->
     <link rel="icon" href="favicons/favicon.ico" sizes="any" />
     <link rel="icon" href="favicons/favicon-32x32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="favicons/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="favicons/site.webmanifest" />
-    <!-- Open Graph / Social Preview -->
     <meta property="og:title" content="Phillipe Queiroz — Portfolio" />
     <meta property="og:description" content="Building communities and the bots that run them" />
     <meta property="og:image" content="https://phillipe.online/favicons/android-chrome-512x512.png" />
@@ -737,9 +735,6 @@
             user-select: none;
         }
 
-        /* ============================================================
-           DETAIL VIEW – Win95 Properties
-           ============================================================ */
         .explorer-detail {
             background: #c0c0c0;
             border: 2px solid;
@@ -1146,22 +1141,22 @@
                 margin: 0 -16px;
             }
             .control-panel .panel-titlebar .title-text {
-                font-size: 20px;
+                font-size: 30px;
                 padding: 2px 10px 2px 6px;
             }
             .control-panel .panel-titlebar {
                 border-bottom-width: 1px;
             }
             .control-panel .menu-area .menu-item {
-                font-size: 18px;
+                font-size: 27px;
                 padding: 2px 6px;
             }
             .control-panel .clock-box {
-                font-size: 23px;
+                font-size: 24px;
                 padding: 4px 10px;
             }
             .control-panel .panel-footer {
-                font-size: 16px;
+                font-size: 24px;
                 margin-top: 12px;
                 padding-top: 6px;
             }
@@ -1173,19 +1168,13 @@
                 font-size: 22px;
             }
             .dos-dialog-text {
-                font-size: 18px;
+                font-size: 27px;
             }
             .dos-dialog-hint {
-                font-size: 16px;
+                font-size: 24px;
             }
         }
 
-        /* ============================================================
-           SERVICES - Control Panel
-           Reproduces the reference's 640x400 text-mode geometry:
-           solid blue field, thin white frame, compact title strip,
-           left navigation, clock box and bottom command line.
-           ============================================================ */
         #screen-services {
             position: absolute;
             inset: 0;
@@ -1211,7 +1200,6 @@
             display: flex;
         }
 
-        /* Main frame: approximately 536x355 at a 640x400 viewport. */
         #screen-services .control-panel {
             position: relative;
             width: 62%;
@@ -1223,11 +1211,20 @@
             margin: 0;
             padding: 0 28px 0 28px;
             background: #FFFFFF;
-            border: 2px solid #FFFFFF;
+            border: 0;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
             overflow: hidden;
+            clip-path: polygon(
+                0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
+                calc(100% - 8px) 0, calc(100% - 8px) 4px,
+                calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+                100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px),
+                calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px),
+                calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px),
+                4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px)
+            );
         }
 
         #screen-services .control-panel::before {
@@ -1237,6 +1234,15 @@
             background: #0000AA;
             z-index: 0;
             pointer-events: none;
+            clip-path: polygon(
+                0 7px, 3px 7px, 3px 3px, 7px 3px, 7px 0,
+                calc(100% - 7px) 0, calc(100% - 7px) 3px,
+                calc(100% - 3px) 3px, calc(100% - 3px) 7px, 100% 7px,
+                100% calc(100% - 7px), calc(100% - 3px) calc(100% - 7px),
+                calc(100% - 3px) calc(100% - 3px), calc(100% - 7px) calc(100% - 3px),
+                calc(100% - 7px) 100%, 7px 100%, 7px calc(100% - 3px),
+                3px calc(100% - 3px), 3px calc(100% - 7px), 0 calc(100% - 7px)
+            );
         }
 
         #screen-services .control-panel > * {
@@ -1244,39 +1250,50 @@
             z-index: 1;
         }
 
-        /* Reference title strip: thin white rule with a blue title block. */
         #screen-services .panel-titlebar {
             flex: 0 0 auto;
-            height: 18px;
+            height: 26px;
             margin: 0 -28px;
             padding: 0;
             background: #FFFFFF;
             border: 0;
+            border-top: 1px solid #FFFFFF;
+            border-left: 1px solid #FFFFFF;
             border-bottom: 1px solid #FFFFFF;
             font-size: 0;
             line-height: 1;
             box-sizing: border-box;
+            clip-path: polygon(
+                0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
+                calc(100% - 8px) 0, calc(100% - 8px) 4px,
+                calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+                100% 100%, 0 100%
+            );
         }
 
         #screen-services .panel-titlebar .title-text {
             display: inline-block;
-            height: 17px;
+            height: 26px;
             margin: 0;
-            padding: 0 9px 0 14px;
+            padding: 0 12px 0 15px;
             background: #0000AA;
             color: #FFFFFF;
             font-family: 'VT323', 'Courier New', monospace;
-            font-size: 25px;
+            font-size: 37.5px;
             font-weight: 400;
-            line-height: 17px;
+            line-height: 24px;
             letter-spacing: 0;
             vertical-align: top;
             white-space: nowrap;
             box-sizing: border-box;
-            border: none;
+            border-top: 1px solid #FFFFFF;
+            border-left: 1px solid #FFFFFF;
+            clip-path: polygon(
+                0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
+                100% 0, 100% 100%, 0 100%
+            );
         }
 
-        /* Main area fills the space between title and footer. */
         #screen-services .panel-content {
             position: relative;
             flex: 1 1 auto;
@@ -1287,10 +1304,9 @@
             box-sizing: border-box;
         }
 
-        /* Reference menu starts well below the title and inside the left edge. */
         #screen-services .menu-area {
             position: absolute;
-            top: 42px;
+            top: 54px;
             left: 0;
             display: flex;
             flex-direction: column;
@@ -1304,15 +1320,15 @@
         #screen-services .menu-area .menu-item {
             display: block;
             width: fit-content;
-            height: 21px;
+            height: 27px;
             margin: 0;
-            padding: 0 2px;
+            padding: 0 3px;
             color: #FFFFFF;
             background: transparent;
             font-family: 'VT323', 'Courier New', monospace;
-            font-size: 23px;
+            font-size: 34.5px;
             font-weight: 400;
-            line-height: 21px;
+            line-height: 27px;
             letter-spacing: 0;
             cursor: pointer;
             white-space: nowrap;
@@ -1327,28 +1343,27 @@
 
         #screen-services .menu-area .menu-gap {
             width: 1px;
-            height: 18px;
+            height: 24px;
             margin: 0;
             padding: 0;
             cursor: default;
         }
 
-        /* Clock box is positioned independently to match the reference. */
         #screen-services .clock-box {
             position: absolute;
-            top: 60px;
+            top: 54px;
             right: 4.8%;
-            min-width: 278px;
-            height: 54px;
+            min-width: 315px;
+            height: 72px;
             padding: 4px 18px 0;
             margin: 0;
             border: 1px solid #FFFFFF;
             background: #0000AA;
             color: #FFFFFF;
             font-family: 'VT323', 'Courier New', monospace;
-            font-size: 27px;
+            font-size: 40.5px;
             font-weight: 400;
-            line-height: 22px;
+            line-height: 30px;
             text-align: center;
             box-sizing: border-box;
         }
@@ -1362,23 +1377,22 @@
             white-space: nowrap;
         }
 
-        /* Footer is anchored to the bottom edge with no separator line. */
         #screen-services .panel-footer {
-            flex: 0 0 20px;
+            flex: 0 0 34px;
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
             width: 100%;
-            height: 20px;
+            height: 34px;
             margin: 0;
             padding: 0 0 1px;
             border: 0;
             background: transparent;
             color: #FFFFFF;
             font-family: 'VT323', 'Courier New', monospace;
-            font-size: 20px;
+            font-size: 37.5px;
             font-weight: 400;
-            line-height: 19px;
+            line-height: 33px;
             letter-spacing: 0;
             box-sizing: border-box;
             user-select: none;
@@ -1395,7 +1409,6 @@
             text-align: right;
         }
 
-        /* Service information dialog. */
         #screen-services .dos-dialog {
             position: absolute;
             top: 50%;
@@ -1421,7 +1434,7 @@
             margin: 0 0 8px;
             padding: 0;
             color: #FFFFFF;
-            font-size: 28px;
+            font-size: 42px;
             line-height: 1;
             text-decoration: underline;
         }
@@ -1444,7 +1457,6 @@
             opacity: 0.8;
         }
 
-        /* Mobile keeps the same proportions and hierarchy, scaled down. */
         @media (max-width: 768px) {
             #screen-services .control-panel {
                 width: 88%;
@@ -1460,12 +1472,12 @@
             }
 
             #screen-services .panel-titlebar .title-text {
-                height: 15px;
+                height: 16px;
                 padding-left: 8px;
                 padding-right: 7px;
                 font-size: 20px;
                 line-height: 15px;
-                border: none;
+                border: 1px solid #FFFFFF;
             }
 
             #screen-services .menu-area {
@@ -1487,18 +1499,18 @@
                 top: 42px;
                 right: 3%;
                 min-width: 198px;
-                height: 47px;
-                padding: 3px 11px 0;
-                font-size: 23px;
+                height: 46.5px;
+                padding: 3px 10px 0;
+                font-size: 22.5px;
                 line-height: 18px;
             }
 
             #screen-services .panel-footer {
-                flex-basis: 17px;
-                height: 17px;
+                flex-basis: 20px;
+                height: 20px;
                 padding-bottom: 0;
-                font-size: 16px;
-                line-height: 16px;
+                font-size: 20px;
+                line-height: 19px;
             }
 
             #screen-services .dos-dialog {
@@ -1670,7 +1682,6 @@
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
 
-            <!-- SERVICES: Control Panel text-mode layout -->
             <div id="screen-services" class="screen-container">
                 <div class="control-panel">
                     <div class="panel-titlebar"><span class="title-text">Control Panel</span></div>
@@ -1696,7 +1707,6 @@
                         <span>Open: ↵</span>
                     </div>
                 </div>
-                <!-- Service information dialog -->
                 <div class="dos-dialog" id="dos-dialog">
                     <div class="dos-dialog-title" id="dos-dialog-title"></div>
                     <div class="dos-dialog-text" id="dos-dialog-text"></div>
@@ -1710,15 +1720,10 @@
     </div>
 
     <script>
-        // ============================================================
-        //  BACKGROUND (Canvas)
-        // ============================================================
         (function() {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
-            let W, H,
-                mouseX = 0.5,
-                mouseY = 0.5;
+            let W, H, mouseX = 0.5, mouseY = 0.5;
             const PIXEL = 8;
             let skyGradient = null;
             let globalTime = 0;
@@ -1740,10 +1745,8 @@
                 initClouds();
                 initSun();
             }
-            window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth;
-                mouseY = e.clientY / window.innerHeight; });
-            const PALETTE = { sunCore: [255, 252, 240], sunEdge: [255, 248, 220], cloud: [255, 255, 255],
-                cloudShad: [180, 200, 220], bird: [40, 60, 90] };
+            window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth; mouseY = e.clientY / window.innerHeight; });
+            const PALETTE = { sunCore: [255, 252, 240], sunEdge: [255, 248, 220], cloud: [255, 255, 255], cloudShad: [180, 200, 220], bird: [40, 60, 90] };
 
             function rgb(arr, a = 1) { return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`; }
 
@@ -1768,8 +1771,7 @@
                 c.width = size;
                 c.height = size;
                 const x = c.getContext('2d');
-                const cx = size / 2,
-                    cy = size / 2;
+                const cx = size / 2, cy = size / 2;
                 for (let r = outerR; r >= sunR; r -= 2) {
                     const alpha = 0.35 * (1 - (r - sunR) / (sunR * 2));
                     pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.sunEdge, Math.max(0, alpha)));
@@ -1834,9 +1836,7 @@
                             layer: li,
                             x: Math.random() * W * 1.5 - W * 0.25,
                             y: H * (l.yRange[0] + Math.random() * (l.yRange[1] - l.yRange[0])),
-                            w,
-                            h,
-                            speed: l.speed * (0.8 + Math.random() * 0.4),
+                            w, h, speed: l.speed * (0.8 + Math.random() * 0.4),
                             img: createCloudCanvas(w, h, opacity),
                         });
                     }
@@ -1895,31 +1895,24 @@
                     c.x -= c.speed;
                     if (c.x + c.w < -20) {
                         c.x = W + 10 + Math.random() * 50;
-                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer]
-                            .yRange[0]));
+                        c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
                     }
                 });
                 birds.forEach(b => {
                     b.x -= b.speed;
-                    if (b.x < -5) { b.x = W + 5;
-                        b.y = H * (0.15 + Math.random() * 0.25); }
+                    if (b.x < -5) { b.x = W + 5; b.y = H * (0.15 + Math.random() * 0.25); }
                 });
                 globalTime++;
                 draw();
             }
 
-            function loop() { update();
-                setTimeout(loop, 16); }
-            window.addEventListener('resize', () => { resize();
-                initBirds(); });
+            function loop() { update(); setTimeout(loop, 16); }
+            window.addEventListener('resize', () => { resize(); initBirds(); });
             resize();
             initBirds();
             loop();
         })();
 
-        // ============================================================
-        //  SCANLINE SWEEP
-        // ============================================================
         (function() {
             const sweep = document.getElementById('scan-sweep');
             if (!sweep) return;
@@ -1933,15 +1926,11 @@
 
             function scheduleSweep() {
                 const delay = 15000 + Math.random() * 10000;
-                setTimeout(function() { triggerSweep();
-                    scheduleSweep(); }, delay);
+                setTimeout(function() { triggerSweep(); scheduleSweep(); }, delay);
             }
             scheduleSweep();
         })();
 
-        // ============================================================
-        //  NAVIGATION + PROJECTS + CONTACT
-        // ============================================================
         (function() {
             const homeScreen = document.getElementById('screen-home');
             const aboutScreen = document.getElementById('screen-about');
@@ -1961,12 +1950,9 @@
 
             function startNoise() {
                 function tick() {
-                    const bx1 = (Math.random() * 4).toFixed(1),
-                        by1 = (Math.random() * 4).toFixed(1);
-                    const bx2 = (Math.random() * 4).toFixed(1),
-                        by2 = (Math.random() * 4).toFixed(1);
-                    const bx3 = (Math.random() * 6).toFixed(1),
-                        by3 = (Math.random() * 6).toFixed(1);
+                    const bx1 = (Math.random() * 4).toFixed(1), by1 = (Math.random() * 4).toFixed(1);
+                    const bx2 = (Math.random() * 4).toFixed(1), by2 = (Math.random() * 4).toFixed(1);
+                    const bx3 = (Math.random() * 6).toFixed(1), by3 = (Math.random() * 6).toFixed(1);
                     flash.style.backgroundPosition = `${bx1}px ${by1}px, ${bx2}px ${by2}px, ${bx3}px ${by3}px`;
                     flash.style.opacity = (0.88 + Math.random() * 0.12).toFixed(2);
                     noiseRAF = requestAnimationFrame(tick);
@@ -2003,8 +1989,7 @@
                     flash.classList.add('snowing');
                     startNoise();
                 }, 40);
-                setTimeout(() => { stopNoise();
-                    flash.classList.remove('snowing'); }, 260);
+                setTimeout(() => { stopNoise(); flash.classList.remove('snowing'); }, 260);
                 setTimeout(() => {
                     retroWindow.classList.remove('rolling');
                     spawnTearLines(4 + Math.floor(Math.random() * 2));
@@ -2035,186 +2020,24 @@
                 });
             }
 
-            // ============================================================
-            //  PROJECTS – Translated to English
-            // ============================================================
-            const PROJECTS = [{
-                name: 'CoralApp',
-                role: 'Community Manager',
-                duration: '2024 – 2024',
-                category: 'Wellness',
-                description: 'Web3 platform focused on community engagement and decentralized rewards. The project aims to connect users through gamified interactions within the blockchain ecosystem.',
-                url: '',
-                gif: 'coralapp.gif',
-                papel: ['Daily community management on Discord and Telegram', 'Creation of engagement campaigns', 'Retention metrics analysis', 'Moderation of AMAs and live events'],
-                fiz: ['Increased active member base by 40%', 'Implemented participation reward system', 'Organized 12+ community events', 'Reduced support response time by 60%'],
-                tags: ['Web3', 'Discord', 'Telegram', 'Gamification', 'Blockchain']
-            }, {
-                name: 'Binance',
-                role: 'Binance Angel',
-                duration: '2021 – 2022',
-                category: 'Exchange',
-                description: 'One of the largest cryptocurrency exchanges in the world. I moderated Portuguese-speaking communities, ensuring a safe and informative environment for users.',
-                url: '',
-                gif: 'binance.gif',
-                papel: ['Real-time chat moderation', 'Community rules enforcement', 'Support for new users', 'Reporting suspicious activities'],
-                fiz: ['Maintained compliance rate above 99%', 'Assisted in resolving 200+ monthly tickets', 'Identified and reported 50+ scam attempts', 'Collaborated on translating official announcements'],
-                tags: ['Exchange', 'Moderation', 'Support', 'Crypto', 'PT-BR']
-            }, {
-                name: 'Arena Games',
-                role: 'Community Lead',
-                duration: '2023',
-                category: 'Gaming',
-                description: 'Competitive gaming platform with blockchain integration. Active community of gamers and esports enthusiasts in the Web3 space.',
-                url: '',
-                gif: 'arenagames.gif',
-                papel: ['Leadership of moderator team', 'Organic growth strategy', 'Influencer partnerships', 'Crisis and conflict management'],
-                fiz: ['Grew community from 2k to 15k members', 'Closed partnerships with 8 streamers', 'Created ambassador program', 'Reduced churn rate by 25%'],
-                tags: ['Gaming', 'Esports', 'Web3', 'Leadership', 'Partnerships']
-            }, {
-                name: 'Bionic',
-                role: 'Moderator',
-                duration: '2022 – 2023',
-                category: 'Tech',
-                description: 'Tech infrastructure project focused on automation and productivity tools. Technical community of developers and early adopters.',
-                url: '',
-                gif: 'bionic.gif',
-                papel: ['Technical forum moderation', 'Integration support', 'Bug feedback for developers', 'Community documentation'],
-                fiz: ['Created FAQ with 50+ answers', 'Reduced repetitive tickets by 35%', 'Mapped 20+ critical bugs', 'Organized beta testing with 100 users'],
-                tags: ['Tech', 'Automation', 'Technical Support', 'QA', 'Documentation']
-            }, {
-                name: 'Reaktor',
-                role: 'Moderator',
-                duration: '2022',
-                category: 'DevOps',
-                description: 'DevOps tool for continuous deployment and monitoring. Community of devs and SREs looking to optimize pipelines.',
-                url: '',
-                gif: 'reaktor.gif',
-                papel: ['Building community from scratch', 'Onboarding new members', 'Creating technical content', 'Networking with senior devs'],
-                fiz: ['Launched community with 500 members in month 1', 'Produced 20+ tutorials and guides', 'Organized 6 technical workshops', 'Established direct feedback channel with founders'],
-                tags: ['DevOps', 'Community', 'Tutorials', 'Onboarding', 'Networking']
-            }, {
-                name: 'FortBlockGames',
-                role: 'Moderator',
-                duration: '2024 – now',
-                category: 'Gaming',
-                description: 'Block strategy game with play-to-earn economy. Global community of competitive players and content creators.',
-                url: '',
-                gif: 'fortblockgames.gif',
-                papel: ['Multilingual moderation', 'Tournament support', 'Creator management', 'Gameplay feedback analysis'],
-                fiz: ['Supported 5 official tournaments', 'Managed 15+ partner creators', 'Collected 300+ player feedbacks', 'Maintained NPS above 8.5'],
-                tags: ['Gaming', 'P2E', 'Tournaments', 'Creators', 'Multilingual']
-            }, {
-                name: 'BeeOS',
-                role: 'Community Manager',
-                duration: '2023',
-                category: 'OS',
-                description: 'Decentralized operating system focused on privacy and digital sovereignty. Community of early adopters and open source enthusiasts.',
-                url: '',
-                gif: 'beeos.gif',
-                papel: ['Global community management', 'Update communication', 'Beta testing coordination', 'Relationship with open source contributors'],
-                fiz: ['Coordinated beta with 1k testers', 'Reduced post-launch churn by 30%', 'Created bug bounty program', 'Increased contributions by 45%'],
-                tags: ['OS', 'Open Source', 'Privacy', 'Beta', 'Global']
-            }, {
-                name: 'Streamr',
-                role: 'Moderator',
-                duration: '2022 – 2023',
-                category: 'Streaming',
-                description: 'Real-time data streaming protocol. Community of developers and data engineers interested in decentralized data.',
-                url: '',
-                gif: 'streamr.gif',
-                papel: ['Developer community leadership', 'Educational content creation', 'Hackathon organization', 'Mentoring new contributors'],
-                fiz: ['Organized 3 hackathons with 500+ participants', 'Created introductory course accessed by 2k devs', 'Increased GitHub contributions by 60%', 'Established grants program'],
-                tags: ['Streaming', 'Data', 'Hackathon', 'DevRel', 'Mentorship']
-            }, {
-                name: 'Xend Finance',
-                role: 'Moderator',
-                duration: '2023',
-                category: 'DeFi',
-                description: 'DeFi savings and credit union platform. Community focused on financial inclusion and DeFi education.',
-                url: '',
-                gif: 'xend.gif',
-                papel: ['Moderation and financial education', 'Credit union support', 'Material translation', 'Educational webinars'],
-                fiz: ['Educated 1k+ users about DeFi', 'Supported 30+ credit unions', 'Translated 25+ technical articles', 'Organized 8 educational webinars'],
-                tags: ['DeFi', 'Education', 'Credit Unions', 'Moderation', 'Webinars']
-            }, {
-                name: 'Wicrypt',
-                role: 'Moderator',
-                duration: '2023 – 2024',
-                category: 'Network',
-                description: 'Decentralized WiFi sharing network. Community of hosts and users in emerging markets.',
-                url: '',
-                gif: 'wicrypt.gif',
-                papel: ['Host community management', 'User technical support', 'Acquisition campaigns', 'Retention and loyalty programs'],
-                fiz: ['Increased host base by 55%', 'Reduced host churn by 40%', 'Created referral program', 'Supported launch in 3 new countries'],
-                tags: ['Network', 'WiFi', 'Hosts', 'Acquisition', 'Retention']
-            }, {
-                name: 'PIPE',
-                role: 'Moderator',
-                duration: '2024',
-                category: 'Infra',
-                description: 'Data pipeline infrastructure for Web3. Technical community of data engineers and partner protocols.',
-                url: '',
-                gif: 'pipe.gif',
-                papel: ['Technical community building', 'Protocol partnerships', 'Documentation and tutorials', 'Technical events'],
-                fiz: ['Built community of 3k engineers', 'Closed 10+ technical partnerships', 'Produced 15+ whitepapers and guides', 'Organized summit with 200+ attendees'],
-                tags: ['Infra', 'Data', 'Partnerships', 'Documentation', 'Events']
-            }, {
-                name: 'TAP',
-                role: 'Moderator',
-                duration: '2022',
-                category: 'Payments',
-                description: 'Instant crypto payment solution. Community of merchants and end-users seeking digital payment adoption.',
-                url: '',
-                gif: 'tap.gif',
-                papel: ['Merchant support moderation', 'New partner onboarding', 'UX feedback', 'Fraud reporting'],
-                fiz: ['Onboarded 50+ merchants', 'Reduced KYC time by 25%', 'Identified 15+ fraud cases', 'Created best practices guide'],
-                tags: ['Payments', 'Merchants', 'KYC', 'Fraud', 'Onboarding']
-            }, {
-                name: 'Sheertopia',
-                role: 'Moderator',
-                duration: '2023 – now',
-                category: 'Metaverse',
-                description: 'Metaverse focused on immersive experiences and virtual economy. Community of creators, gamers, and virtual investors.',
-                url: '',
-                gif: 'sheertopia.gif',
-                papel: ['Strategic community leadership', 'Creator and builder management', 'Virtual economy and tokens', 'Events and immersive experiences'],
-                fiz: ['Grew community to 25k+ members', 'Managed 30+ official creators', 'Organized 10+ metaverse events', 'Increased transaction volume by 80%'],
-                tags: ['Metaverse', 'Creators', 'Virtual Economy', 'Events', 'Tokens']
-            }, {
-                name: "Lion's Share Group",
-                role: 'Affiliate Moderator',
-                duration: '2024',
-                category: 'Media',
-                description: 'Media and content group focused on crypto and finance education. Community of followers and content creators.',
-                url: '',
-                gif: 'lionssharegroup.gif',
-                papel: ['Creator community management', 'Content curation', 'Social media engagement', 'Media partnerships'],
-                fiz: ['Increased engagement by 70%', 'Coordinated 20+ content campaigns', 'Closed 5+ media partnerships', 'Created affiliate program'],
-                tags: ['Media', 'Creators', 'Content', 'Engagement', 'Affiliates']
-            }, {
-                name: 'Coinracer',
-                role: 'Head Mod',
-                duration: '2023',
-                category: 'Gaming',
-                description: 'Arcade racing game with NFT economy. Community of casual gamers and digital item collectors.',
-                url: '',
-                gif: 'coinracer.gif',
-                papel: ['Gamer community building', 'NFT and drops management', 'Player support', 'Community marketing'],
-                fiz: ['Launched community with 8k members', 'Coordinated 6 NFT drops', 'Supported 3 competitive seasons', 'Increased D7 retention by 35%'],
-                tags: ['Gaming', 'NFT', 'Arcade', 'Drops', 'Retention']
-            }, {
-                name: 'VS1',
-                role: 'Community Manager',
-                duration: '2022 – now',
-                category: 'Platform',
-                description: 'Services and tools platform for Web3 communities. Central hub for community managers and projects.',
-                url: '',
-                gif: 'vs1.gif',
-                papel: ['Community of managers management', 'Platform tools support', 'Product feedback', 'Educational resource creation'],
-                fiz: ['Maintained active community of 10k+ managers', 'Collected 500+ product feedbacks', 'Created 30+ templates and resources', 'Organized annual conference with 1k+ attendees'],
-                tags: ['Platform', 'Managers', 'Tools', 'Product', 'Conference']
-            }];
+            const PROJECTS = [
+                { name: 'CoralApp', role: 'Community Manager', duration: '2024 – 2024', category: 'Wellness', description: 'Web3 platform focused on community engagement and decentralized rewards.', url: '', gif: 'coralapp.gif', papel: ['Daily community management', 'Creation of engagement campaigns'], fiz: ['Increased active member base by 40%', 'Organized 12+ community events'], tags: ['Web3', 'Discord', 'Telegram'] },
+                { name: 'Binance', role: 'Binance Angel', duration: '2021 – 2022', category: 'Exchange', description: 'One of the largest cryptocurrency exchanges.', url: '', gif: 'binance.gif', papel: ['Real-time chat moderation', 'Community rules enforcement'], fiz: ['Maintained compliance rate above 99%', 'Identified and reported 50+ scam attempts'], tags: ['Exchange', 'Moderation', 'Support'] },
+                { name: 'Arena Games', role: 'Community Lead', duration: '2023', category: 'Gaming', description: 'Competitive gaming platform with blockchain integration.', url: '', gif: 'arenagames.gif', papel: ['Leadership of moderator team', 'Organic growth strategy'], fiz: ['Grew community from 2k to 15k members', 'Closed partnerships with 8 streamers'], tags: ['Gaming', 'Esports', 'Web3'] },
+                { name: 'Bionic', role: 'Moderator', duration: '2022 – 2023', category: 'Tech', description: 'Tech infrastructure project focused on automation.', url: '', gif: 'bionic.gif', papel: ['Technical forum moderation', 'Integration support'], fiz: ['Created FAQ with 50+ answers', 'Reduced repetitive tickets by 35%'], tags: ['Tech', 'Automation', 'QA'] },
+                { name: 'Reaktor', role: 'Moderator', duration: '2022', category: 'DevOps', description: 'DevOps tool for continuous deployment.', url: '', gif: 'reaktor.gif', papel: ['Building community from scratch', 'Onboarding new members'], fiz: ['Launched community with 500 members', 'Produced 20+ tutorials'], tags: ['DevOps', 'Community', 'Networking'] },
+                { name: 'FortBlockGames', role: 'Moderator', duration: '2024 – now', category: 'Gaming', description: 'Block strategy game with play-to-earn economy.', url: '', gif: 'fortblockgames.gif', papel: ['Multilingual moderation', 'Tournament support'], fiz: ['Supported 5 official tournaments', 'Maintained NPS above 8.5'], tags: ['Gaming', 'P2E', 'Tournaments'] },
+                { name: 'BeeOS', role: 'Community Manager', duration: '2023', category: 'OS', description: 'Decentralized operating system focused on privacy.', url: '', gif: 'beeos.gif', papel: ['Global community management', 'Update communication'], fiz: ['Coordinated beta with 1k testers', 'Increased contributions by 45%'], tags: ['OS', 'Open Source', 'Privacy'] },
+                { name: 'Streamr', role: 'Moderator', duration: '2022 – 2023', category: 'Streaming', description: 'Real-time data streaming protocol.', url: '', gif: 'streamr.gif', papel: ['Developer community leadership', 'Educational content creation'], fiz: ['Organized 3 hackathons', 'Created introductory course accessed by 2k devs'], tags: ['Streaming', 'Data', 'DevRel'] },
+                { name: 'Xend Finance', role: 'Moderator', duration: '2023', category: 'DeFi', description: 'DeFi savings and credit union platform.', url: '', gif: 'xend.gif', papel: ['Moderation and financial education', 'Credit union support'], fiz: ['Educated 1k+ users about DeFi', 'Translated 25+ technical articles'], tags: ['DeFi', 'Education', 'Credit Unions'] },
+                { name: 'Wicrypt', role: 'Moderator', duration: '2023 – 2024', category: 'Network', description: 'Decentralized WiFi sharing network.', url: '', gif: 'wicrypt.gif', papel: ['Host community management', 'User technical support'], fiz: ['Increased host base by 55%', 'Created referral program'], tags: ['Network', 'WiFi', 'Acquisition'] },
+                { name: 'PIPE', role: 'Moderator', duration: '2024', category: 'Infra', description: 'Data pipeline infrastructure for Web3.', url: '', gif: 'pipe.gif', papel: ['Technical community building', 'Protocol partnerships'], fiz: ['Built community of 3k engineers', 'Produced 15+ whitepapers'], tags: ['Infra', 'Data', 'Partnerships'] },
+                { name: 'TAP', role: 'Moderator', duration: '2022', category: 'Payments', description: 'Instant crypto payment solution.', url: '', gif: 'tap.gif', papel: ['Merchant support moderation', 'New partner onboarding'], fiz: ['Onboarded 50+ merchants', 'Reduced KYC time by 25%'], tags: ['Payments', 'Merchants', 'KYC'] },
+                { name: 'Sheertopia', role: 'Moderator', duration: '2023 – now', category: 'Metaverse', description: 'Metaverse focused on immersive experiences.', url: '', gif: 'sheertopia.gif', papel: ['Strategic community leadership', 'Creator and builder management'], fiz: ['Grew community to 25k+ members', 'Organized 10+ metaverse events'], tags: ['Metaverse', 'Creators', 'Tokens'] },
+                { name: "Lion's Share Group", role: 'Affiliate Moderator', duration: '2024', category: 'Media', description: 'Media and content group focused on crypto education.', url: '', gif: 'lionssharegroup.gif', papel: ['Creator community management', 'Content curation'], fiz: ['Increased engagement by 70%', 'Created affiliate program'], tags: ['Media', 'Creators', 'Affiliates'] },
+                { name: 'Coinracer', role: 'Head Mod', duration: '2023', category: 'Gaming', description: 'Arcade racing game with NFT economy.', url: '', gif: 'coinracer.gif', papel: ['Gamer community building', 'NFT and drops management'], fiz: ['Launched community with 8k members', 'Supported 3 competitive seasons'], tags: ['Gaming', 'NFT', 'Drops'] },
+                { name: 'VS1', role: 'Community Manager', duration: '2022 – now', category: 'Platform', description: 'Services and tools platform for Web3 communities.', url: '', gif: 'vs1.gif', papel: ['Community of managers management', 'Platform tools support'], fiz: ['Maintained active community of 10k+ managers', 'Created 30+ templates'], tags: ['Platform', 'Managers', 'Tools'] }
+            ];
 
             const iconsArea = document.getElementById('projects-icons-area');
             const detailView = document.getElementById('projects-detail');
@@ -2243,7 +2066,6 @@
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
 
                 document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
-
                 document.getElementById('detail-icon').src = 'logos/' + project.gif;
                 document.getElementById('detail-name').textContent = project.name;
                 document.getElementById('detail-category').textContent = project.category;
@@ -2294,21 +2116,14 @@
             document.querySelectorAll('.icon-img').forEach(img => {
                 img.addEventListener('click', function(e) {
                     const target = this.dataset.target;
-                    if (target === 'about') {
-                        navigateTo('about');
-                    } else if (target === 'projects') {
-                        navigateTo('projects');
-                    } else if (target === 'email') {
-                        navigateTo('email');
-                    } else if (target === 'github') {
-                        window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
-                    } else if (target === 'back') {
+                    if (target === 'about') navigateTo('about');
+                    else if (target === 'projects') navigateTo('projects');
+                    else if (target === 'email') navigateTo('email');
+                    else if (target === 'github') window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
+                    else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
-                    } else if (target === 'services') {
-                        navigateTo('services');
-                    }
-                    // 'socials' não faz nada (mantido como botão inativo)
+                    } else if (target === 'services') navigateTo('services');
                 });
             });
 
@@ -2345,16 +2160,12 @@
 
                     item.addEventListener('click', function() { showProjectDetail(project); });
                     item.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault();
-                            item.click(); }
+                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
                     });
                 });
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
             }
 
-            // ============================================================
-            //  CONTACT FORM
-            // ============================================================
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
             const sendBtn = document.getElementById('send-btn');
@@ -2408,9 +2219,6 @@
                 feedback.style.color = '#c41e3a';
             }
 
-            // ============================================================
-            //  SERVICES - Novo menu "Control Panel"
-            // ============================================================
             const DOS_SERVICES = [
                 { name: 'Community Management', text: 'Strategies for building and engaging communities.' },
                 { name: 'Growth', text: 'Scaling communities and increasing active members.' },
@@ -2435,7 +2243,6 @@
             }
 
             function dosOpen(i) {
-                // O último item é "Back"
                 if (i === menuItems.length - 1) {
                     dosDialogOpen = false;
                     navigateTo('home');
@@ -2455,11 +2262,8 @@
             }
 
             menuItems.forEach((el, i) => {
-                el.addEventListener('mouseenter', () => { dosIndex = i;
-                    dosUpdate(); });
-                el.addEventListener('click', () => { dosIndex = i;
-                    dosUpdate();
-                    dosOpen(i); });
+                el.addEventListener('mouseenter', () => { dosIndex = i; dosUpdate(); });
+                el.addEventListener('click', () => { dosIndex = i; dosUpdate(); dosOpen(i); });
             });
 
             dosDialog.addEventListener('click', dosCloseDialog);
@@ -2497,9 +2301,6 @@
             setInterval(dosTickClock, 1000);
             dosUpdate();
 
-            // ============================================================
-            //  INICIALIZAÇÃO: garantir que a HOME seja a tela ativa
-            // ============================================================
             function init() {
                 document.querySelectorAll('.screen-container').forEach(el => el.classList.remove('active'));
                 homeScreen.classList.add('active');
