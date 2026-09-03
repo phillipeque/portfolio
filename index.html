@@ -16,6 +16,9 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Phillipe's Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <style>
         * {
             margin: 0;
@@ -1136,8 +1139,141 @@
                 border-top: none;
             }
         }
+
+        /* ============================================================
+           SERVICES - Tela estilo BIOS/DOS
+           ============================================================ */
+        #screen-services {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 26;
+            background: #0000AA;
+            color: #FFFFFF;
+            font-family: 'VT323', 'Courier New', monospace;
+            padding: 28px 36px;
+            text-align: left;
+            text-shadow: none;
+            user-select: none;
+            overflow: hidden;
+        }
+        #screen-services.active {
+            display: flex;
+            flex-direction: column;
+        }
+        .dos-topbar {
+            border: 3px double #fff;
+            padding: 2px 10px;
+            font-size: 28px;
+            line-height: 1.15;
+            margin-bottom: 22px;
+        }
+        .dos-body {
+            position: relative;
+            flex: 1;
+        }
+        .dos-menu {
+            font-size: 28px;
+            line-height: 1.28;
+        }
+        .dos-item {
+            padding: 0 6px;
+            cursor: pointer;
+            width: fit-content;
+            white-space: nowrap;
+        }
+        .dos-item.selected {
+            background: #FFFFFF;
+            color: #0000AA;
+        }
+        .dos-gap {
+            height: 30px;
+            cursor: default;
+        }
+        .dos-clockbox {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: 3px double #fff;
+            padding: 6px 20px;
+            font-size: 26px;
+            line-height: 1.25;
+            text-align: center;
+        }
+        .dos-footer {
+            border: 3px double #fff;
+            padding: 4px 12px;
+            font-size: 26px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 22px;
+        }
+        .dos-footer b {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        .dos-dialog {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 72%;
+            max-width: 580px;
+            background: #0000AA;
+            border: 3px double #fff;
+            padding: 14px 18px;
+            display: none;
+            z-index: 5;
+        }
+        .dos-dialog.open {
+            display: block;
+        }
+        .dos-dialog-title {
+            font-size: 26px;
+            margin-bottom: 10px;
+            text-decoration: underline;
+        }
+        .dos-dialog-text {
+            font-size: 22px;
+            line-height: 1.35;
+            white-space: pre-line;
+        }
+        .dos-dialog-hint {
+            margin-top: 12px;
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            #screen-services {
+                padding: 16px;
+            }
+            .dos-topbar,
+            .dos-menu,
+            .dos-footer {
+                font-size: 19px;
+            }
+            .dos-gap {
+                height: 20px;
+            }
+            .dos-clockbox {
+                font-size: 16px;
+                padding: 4px 10px;
+            }
+            .dos-dialog {
+                width: 88%;
+            }
+            .dos-dialog-title {
+                font-size: 20px;
+            }
+            .dos-dialog-text {
+                font-size: 17px;
+            }
+        }
     </style>
     <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -1201,6 +1337,32 @@
                                 <span class="icon-label label-black">BACK</span>
                             </div>
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                        </div>
+                    </div>
+                    <div id="screen-services" class="screen-container">
+                        <div class="dos-topbar"><span class="dos-title">&nbsp;SERVICES&nbsp;</span></div>
+                        <div class="dos-body">
+                            <div class="dos-menu">
+                                <div class="dos-item selected">COMMUNITY MANAGEMENT</div>
+                                <div class="dos-item">MODERATION</div>
+                                <div class="dos-item">SUPPORT</div>
+                                <div class="dos-item">GROWTH</div>
+                                <div class="dos-item">EVENTS &amp; PARTNERSHIPS</div>
+                                <div class="dos-item">CONTENT</div>
+                                <div class="dos-item">AUTOMATION &amp; TOOLS</div>
+                                <div class="dos-gap">&nbsp;</div>
+                                <div class="dos-item">QUIT</div>
+                            </div>
+                            <div class="dos-clockbox">
+                                <div>9:26:56 PM</div>
+                                <div>6/2/90</div>
+                            </div>
+                        </div>
+                        <div class="dos-footer"><span>Select: <b>↓↑</b></span><span>Open: <b>↵</b></span></div>
+                        <div class="dos-dialog" id="dos-dialog">
+                            <div class="dos-dialog-title" id="dos-dialog-title"></div>
+                            <div class="dos-dialog-text" id="dos-dialog-text"></div>
+                            <div class="dos-dialog-hint">Press any key or click to close</div>
                         </div>
                     </div>
                     <div id="screen-projects" class="screen-container">
@@ -1531,6 +1693,7 @@
             const aboutScreen = document.getElementById('screen-about');
             const projectsScreen = document.getElementById('screen-projects');
             const emailScreen = document.getElementById('screen-email');
+            const servicesScreen = document.getElementById('screen-services');
             const flash = document.getElementById('flash-overlay');
             const retroWindow = document.querySelector('.retro-window');
             const body = document.body;
@@ -1601,11 +1764,13 @@
                 triggerTransition(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
+                    servicesScreen.classList.remove('active');
                     projectsScreen.classList.remove('active');
                     emailScreen.classList.remove('active');
                     body.classList.remove('projects-mode', 'detail-mode');
                     if (screen === 'home') homeScreen.classList.add('active');
                     else if (screen === 'about') aboutScreen.classList.add('active');
+                    else if (screen === 'services') servicesScreen.classList.add('active');
                     else if (screen === 'projects') {
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
@@ -1887,7 +2052,10 @@
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
                     }
-                    // 'services' e 'socials' não fazem nada (mantidos como botões inativos)
+                    } else if (target === 'services') {
+                        navigateTo('services');
+                    }
+                    // 'socials' não faz nada (mantido como botão inativo)
                 });
             });
 
@@ -1986,6 +2154,76 @@
                 feedback.textContent = '⚠️ Configure Formspree (see console).';
                 feedback.style.color = '#c41e3a';
             }
+
+            // ============================================================
+            //  SERVICES - Menu estilo BIOS/DOS
+            // ============================================================
+            const DOS_SERVICES = [{
+                name: 'COMMUNITY MANAGEMENT',
+                text: 'End-to-end community building: strategy, onboarding, engagement loops, rituals and governance. From zero to a self-sustaining community with clear rules and a healthy culture.'
+            }, {
+                name: 'MODERATION',
+                text: 'Moderation for Discord and Telegram: rule enforcement, spam and scam filtering, conflict resolution and keeping the environment safe and welcoming.'
+            }, {
+                name: 'SUPPORT',
+                text: 'Front-line user support: ticket handling, FAQ building, fast first responses and clear escalation flows so no user is left hanging.'
+            }, {
+                name: 'GROWTH',
+                text: 'Organic growth playbooks: referral programs, ambassador systems, campaigns and funnel analysis to grow active members - not just raw numbers.'
+            }, {
+                name: 'EVENTS & PARTNERSHIPS',
+                text: 'AMAs, tournaments, workshops and live events - plus closing partnerships with creators, projects and media to expand reach.'
+            }, {
+                name: 'CONTENT',
+                text: 'Content strategy and production: announcements, educational threads, guides and curated news that keep the community informed and engaged.'
+            }, {
+                name: 'AUTOMATION & TOOLS',
+                text: 'Custom bots and automations for Discord and Telegram: verification, alerts, ticketing, workflows and analytics dashboards that save hours of manual work.'
+            }];
+            const dosItems = Array.from(document.querySelectorAll('#screen-services .dos-item'));
+            const dosDialog = document.getElementById('dos-dialog');
+            const dosDialogTitle = document.getElementById('dos-dialog-title');
+            const dosDialogText = document.getElementById('dos-dialog-text');
+            let dosIndex = 0;
+            let dosDialogOpen = false;
+
+            function dosUpdate() {
+                dosItems.forEach((el, i) => el.classList.toggle('selected', i === dosIndex));
+            }
+
+            function dosOpen(i) {
+                if (i === dosItems.length - 1) { // QUIT volta pro HOME com o flash
+                    dosDialogOpen = false;
+                    navigateTo('home');
+                    return;
+                }
+                const svc = DOS_SERVICES[i];
+                if (!svc) return;
+                dosDialogTitle.textContent = svc.name;
+                dosDialogText.textContent = svc.text;
+                dosDialog.classList.add('open');
+                dosDialogOpen = true;
+            }
+
+            function dosCloseDialog() {
+                dosDialog.classList.remove('open');
+                dosDialogOpen = false;
+            }
+
+            dosItems.forEach((el, i) => {
+                el.addEventListener('mouseenter', () => { dosIndex = i; dosUpdate(); });
+                el.addEventListener('click', () => { dosIndex = i; dosUpdate(); dosOpen(i); });
+            });
+            dosDialog.addEventListener('click', dosCloseDialog);
+            document.addEventListener('keydown', (e) => {
+                if (currentScreen !== 'services') return;
+                if (dosDialogOpen) { dosCloseDialog(); return; }
+                if (e.key === 'ArrowDown') { dosIndex = (dosIndex + 1) % dosItems.length; dosUpdate(); e.preventDefault(); }
+                else if (e.key === 'ArrowUp') { dosIndex = (dosIndex - 1 + dosItems.length) % dosItems.length; dosUpdate(); e.preventDefault(); }
+                else if (e.key === 'Enter') { dosOpen(dosIndex); }
+                else if (e.key === 'Escape') { navigateTo('home'); }
+            });
+            dosUpdate();
 
             showProjectsList();
         })();
