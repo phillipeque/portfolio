@@ -1138,117 +1138,253 @@
             .detail-header-card {
                 border-top: none;
             }
+
+            /* ==========================================================
+               SERVICES - ajustes mobile
+               ========================================================== */
+            #screen-services .control-panel {
+                padding: 12px 16px 10px;
+            }
+            .control-panel .panel-titlebar {
+                margin: 0 -16px;
+            }
+            .control-panel .panel-titlebar .title-text {
+                font-size: 20px;
+                padding: 2px 10px 2px 6px;
+            }
+            .control-panel .panel-titlebar {
+                border-bottom-width: 1px;
+            }
+            .control-panel .menu-area .menu-item {
+                font-size: 18px;
+                padding: 2px 6px;
+            }
+            .control-panel .clock-box {
+                font-size: 16px;
+                padding: 4px 10px;
+            }
+            .control-panel .panel-footer {
+                font-size: 16px;
+                margin-top: 12px;
+                padding-top: 6px;
+            }
+            .dos-dialog {
+                width: 82%;
+                padding: 12px 14px;
+            }
+            .dos-dialog-title {
+                font-size: 22px;
+            }
+            .dos-dialog-text {
+                font-size: 18px;
+            }
+            .dos-dialog-hint {
+                font-size: 16px;
+            }
         }
 
         /* ============================================================
-           SERVICES - Estilo BIOS/DOS (igual à imagem "Control Panel")
-           Largura aumentada em 50% e fontes aumentadas em 25%
+           SERVICES - Control Panel
+           Reproduces the reference's 640x400 text-mode geometry:
+           solid blue field, thin white frame, compact title strip,
+           left navigation, clock box and bottom command line.
            ============================================================ */
         #screen-services {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             z-index: 26;
             background: #0000AA;
             color: #FFFFFF;
             font-family: 'VT323', 'Courier New', monospace;
-            padding: 6vh 8vw;
+            padding: 0;
+            margin: 0;
             text-align: left;
             text-shadow: none;
             user-select: none;
             overflow: hidden;
-            display: none; /* OCULTO POR PADRÃO */
+            display: none;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
         }
+
         #screen-services.active {
             display: flex;
         }
 
-        .dos-outer {
+        /* Main frame: approximately 536x355 at a 640x400 viewport. */
+        #screen-services .control-panel {
             position: relative;
-            width: 100%;
-            max-width: 1050px;  /* Aumentado em 50% (700px -> 1050px) */
-            border: 3px double #FFFFFF;
-            padding: 28px 32px 24px;
+            width: 83.75vw;
+            height: 88.75vh;
+            max-width: none;
+            max-height: none;
+            min-width: 0;
+            min-height: 0;
+            margin: 0;
+            padding: 0 42px 0 42px;
+            background: #0000AA;
+            border: 2px solid #FFFFFF;
             display: flex;
             flex-direction: column;
-            background: #0000AA;
-            min-height: 60vh;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
-        .dos-topbar {
+        /* Reference title strip: thin white rule with a blue title block. */
+        #screen-services .panel-titlebar {
+            flex: 0 0 auto;
+            height: 18px;
+            margin: 0 -42px;
+            padding: 0;
+            background: #FFFFFF;
+            border: 0;
+            border-bottom: 1px solid #FFFFFF;
+            font-size: 0;
+            line-height: 1;
+            box-sizing: border-box;
+        }
+
+        #screen-services .panel-titlebar .title-text {
             display: inline-block;
-            border: 3px double #FFFFFF;
-            padding: 4px 18px;  /* Ajustado para ficar igual ao "Control Panel" */
-            font-size: 32px;    /* Aumentado em 25% (26px -> 32px) */
-            line-height: 1.2;
-            margin-bottom: 22px;
-            align-self: flex-start;
+            height: 17px;
+            margin: 0;
+            padding: 0 9px 0 14px;
             background: #0000AA;
+            color: #FFFFFF;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 25px;
+            font-weight: 400;
+            line-height: 17px;
+            letter-spacing: 0;
+            vertical-align: top;
+            white-space: nowrap;
+            box-sizing: border-box;
         }
 
-        .dos-body {
-            flex: 1;
+        /* Main area fills the space between title and footer. */
+        #screen-services .panel-content {
+            position: relative;
+            flex: 1 1 auto;
+            min-height: 0;
+            display: block;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        /* Reference menu starts well below the title and inside the left edge. */
+        #screen-services .menu-area {
+            position: absolute;
+            top: 42px;
+            left: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            position: relative;
-            padding-bottom: 10px;
+            align-items: flex-start;
+            gap: 0;
+            margin: 0;
+            padding: 0;
+            flex-shrink: 0;
         }
 
-        .dos-menu {
-            font-size: 32px;    /* Aumentado em 25% (26px -> 32px) */
-            line-height: 1.5;   /* Ajustado para melhor espaçamento */
-            margin-left: 6%;
-            margin-top: 0;
+        #screen-services .menu-area .menu-item {
+            display: block;
             width: fit-content;
-        }
-
-        .dos-item {
-            padding: 0 8px;
+            height: 21px;
+            margin: 0;
+            padding: 0 2px;
+            color: #FFFFFF;
+            background: transparent;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 23px;
+            font-weight: 400;
+            line-height: 21px;
+            letter-spacing: 0;
             cursor: pointer;
             white-space: nowrap;
-            width: fit-content;
+            user-select: none;
+            box-sizing: border-box;
         }
-        .dos-item.selected {
-            background: #FFFFFF;
+
+        #screen-services .menu-area .menu-item.selected {
             color: #0000AA;
+            background: #FFFFFF;
         }
-        .dos-gap {
-            height: 30px;       /* Aumentado proporcionalmente */
+
+        #screen-services .menu-area .menu-gap {
+            width: 1px;
+            height: 18px;
+            margin: 0;
+            padding: 0;
             cursor: default;
         }
 
-        .dos-clockbox {
+        /* Clock box is positioned independently to match the reference. */
+        #screen-services .clock-box {
             position: absolute;
-            bottom: 12px;
-            right: 4%;
-            border: 3px double #FFFFFF;
-            padding: 6px 20px;  /* Aumentado */
-            font-size: 28px;    /* Aumentado em 25% (22px -> 28px) */
-            line-height: 1.2;
+            top: 60px;
+            right: 4.8%;
+            min-width: 185px;
+            height: 36px;
+            padding: 2px 12px 0;
+            margin: 0;
+            border: 1px solid #FFFFFF;
+            background: #0000AA;
+            color: #FFFFFF;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 15px;
             text-align: center;
+            box-sizing: border-box;
         }
 
-        .dos-footer {
+        #screen-services .clock-box .clock-time,
+        #screen-services .clock-box .clock-date {
+            display: block;
+            margin: 0;
+            padding: 0;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        /* Footer is anchored to the bottom edge with no separator line. */
+        #screen-services .panel-footer {
+            flex: 0 0 20px;
             display: flex;
+            align-items: flex-end;
             justify-content: space-between;
-            font-size: 28px;    /* Aumentado em 25% (24px -> 28px) */
-            line-height: 1;
-            margin-top: 20px;
-            padding: 0 6px;
-            border-top: 1px solid #FFFFFF;
-            padding-top: 12px;
-        }
-        .dos-footer b {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
+            width: 100%;
+            height: 20px;
+            margin: 0;
+            padding: 0 0 1px;
+            border: 0;
+            background: transparent;
+            color: #FFFFFF;
+            font-family: 'VT323', 'Courier New', monospace;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 19px;
+            letter-spacing: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
 
-        .dos-dialog {
+        #screen-services .panel-footer span {
+            display: block;
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+        }
+
+        #screen-services .panel-footer span:last-child {
+            text-align: right;
+        }
+
+        /* Service information dialog. */
+        #screen-services .dos-dialog {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -1256,70 +1392,117 @@
             width: 56%;
             max-width: 560px;
             background: #0000AA;
-            border: 3px double #fff;
+            border: 2px solid #FFFFFF;
             padding: 14px 18px;
             display: none;
             z-index: 5;
+            color: #FFFFFF;
+            font-family: 'VT323', 'Courier New', monospace;
+            box-sizing: border-box;
         }
-        .dos-dialog.open {
+
+        #screen-services .dos-dialog.open {
             display: block;
         }
-        .dos-dialog-title {
-            font-size: 32px;    /* Aumentado */
-            margin-bottom: 10px;
+
+        #screen-services .dos-dialog-title {
+            margin: 0 0 8px;
+            padding: 0;
+            color: #FFFFFF;
+            font-size: 28px;
+            line-height: 1;
             text-decoration: underline;
         }
-        .dos-dialog-text {
-            font-size: 28px;    /* Aumentado */
+
+        #screen-services .dos-dialog-text {
+            margin: 0;
+            padding: 0;
+            color: #FFFFFF;
+            font-size: 22px;
             line-height: 1.35;
             white-space: pre-line;
         }
-        .dos-dialog-hint {
-            margin-top: 12px;
-            font-size: 22px;    /* Aumentado */
+
+        #screen-services .dos-dialog-hint {
+            margin: 10px 0 0;
+            padding: 0;
+            color: #FFFFFF;
+            font-size: 18px;
+            line-height: 1;
             opacity: 0.8;
         }
 
+        /* Mobile keeps the same proportions and hierarchy, scaled down. */
         @media (max-width: 768px) {
-            #screen-services {
-                padding: 3vh 4vw;
+            #screen-services .control-panel {
+                width: 92vw;
+                height: 88vh;
+                padding-left: 22px;
+                padding-right: 22px;
             }
-            .dos-outer {
-                padding: 18px 14px 16px;
-                min-height: 50vh;
-                max-width: 100%;
+
+            #screen-services .panel-titlebar {
+                height: 16px;
+                margin-left: -22px;
+                margin-right: -22px;
             }
-            .dos-topbar {
-                font-size: 24px;
-                padding: 3px 12px;
-                margin-bottom: 14px;
-            }
-            .dos-menu {
-                font-size: 24px;
-                margin-left: 4%;
-            }
-            .dos-gap {
-                height: 22px;
-            }
-            .dos-clockbox {
+
+            #screen-services .panel-titlebar .title-text {
+                height: 15px;
+                padding-left: 8px;
+                padding-right: 7px;
                 font-size: 20px;
-                padding: 3px 12px;
-                bottom: 6px;
+                line-height: 15px;
+            }
+
+            #screen-services .menu-area {
+                top: 32px;
+            }
+
+            #screen-services .menu-area .menu-item {
+                height: 18px;
+                padding: 0 2px;
+                font-size: 18px;
+                line-height: 18px;
+            }
+
+            #screen-services .menu-area .menu-gap {
+                height: 15px;
+            }
+
+            #screen-services .clock-box {
+                top: 42px;
                 right: 3%;
+                min-width: 132px;
+                height: 31px;
+                padding: 2px 7px 0;
+                font-size: 15px;
+                line-height: 12px;
             }
-            .dos-footer {
-                font-size: 20px;
-                margin-top: 14px;
-                padding-top: 8px;
+
+            #screen-services .panel-footer {
+                flex-basis: 17px;
+                height: 17px;
+                padding-bottom: 0;
+                font-size: 16px;
+                line-height: 16px;
             }
-            .dos-dialog {
+
+            #screen-services .dos-dialog {
                 width: 82%;
+                padding: 12px 14px;
             }
-            .dos-dialog-title {
-                font-size: 24px;
+
+            #screen-services .dos-dialog-title {
+                font-size: 22px;
             }
-            .dos-dialog-text {
-                font-size: 20px;
+
+            #screen-services .dos-dialog-text {
+                font-size: 18px;
+            }
+
+            #screen-services .dos-dialog-hint {
+                font-size: 16px;
             }
         }
     </style>
@@ -1474,32 +1657,37 @@
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
 
-            <!-- SERVICES: tela cheia estilo BIOS (dentro da moldura da TV) -->
+            <!-- SERVICES: Control Panel text-mode layout -->
             <div id="screen-services" class="screen-container">
-                <div class="dos-outer">
-                    <div class="dos-topbar"><span class="dos-title">&nbsp;Services&nbsp;</span></div>
-                    <div class="dos-body">
-                        <div class="dos-menu">
-                            <div class="dos-item selected">Community Management</div>
-                            <div class="dos-item">Moderation</div>
-                            <div class="dos-item">Support</div>
-                            <div class="dos-item">Growth</div>
-                            <div class="dos-item">Events &amp; Partnerships</div>
-                            <div class="dos-item">Content</div>
-                            <div class="dos-item">Automation &amp; Tools</div>
-                            <div class="dos-gap">&nbsp;</div>
-                            <div class="dos-item">Quit</div>
+                <div class="control-panel">
+                    <div class="panel-titlebar"><span class="title-text">Control Panel</span></div>
+                    <div class="panel-content">
+                        <div class="menu-area">
+                            <div class="menu-item selected">Display</div>
+                            <div class="menu-item">Sound</div>
+                            <div class="menu-item">System</div>
+                            <div class="menu-item">System Speed</div>
+                            <div class="menu-item">Clock</div>
+                            <div class="menu-item">Keyboard</div>
+                            <div class="menu-item">Slots</div>
+                            <div class="menu-item">Printer Port</div>
+                            <div class="menu-item">Modem Port</div>
+                            <div class="menu-item">RAM Disk</div>
+                            <div class="menu-item">Mouse</div>
+                            <div class="menu-gap"></div>
+                            <div class="menu-item">Quit</div>
                         </div>
-                        <div class="dos-clockbox">
-                            <div id="dos-clock-time">9:26:56 PM</div>
-                            <div id="dos-clock-date">6/2/90</div>
+                        <div class="clock-box">
+                            <div class="clock-time" id="dos-clock-time">9:26:56 PM</div>
+                            <div class="clock-date" id="dos-clock-date">6/2/90</div>
                         </div>
                     </div>
-                    <div class="dos-footer">
-                        <span>Select: <b>↓↑</b></span>
-                        <span>Open: <b>↵</b></span>
+                    <div class="panel-footer">
+                        <span>Select: ↓ ↑</span>
+                        <span>Open: ↵</span>
                     </div>
                 </div>
+                <!-- Service information dialog -->
                 <div class="dos-dialog" id="dos-dialog">
                     <div class="dos-dialog-title" id="dos-dialog-title"></div>
                     <div class="dos-dialog-text" id="dos-dialog-text"></div>
@@ -2212,31 +2400,23 @@
             }
 
             // ============================================================
-            //  SERVICES - Menu estilo BIOS/DOS
+            //  SERVICES - Novo menu "Control Panel"
             // ============================================================
-            const DOS_SERVICES = [{
-                name: 'Community Management',
-                text: 'End-to-end community building: strategy, onboarding, engagement loops, rituals and governance. From zero to a self-sustaining community with clear rules and a healthy culture.'
-            }, {
-                name: 'Moderation',
-                text: 'Moderation for Discord and Telegram: rule enforcement, spam and scam filtering, conflict resolution and keeping the environment safe and welcoming.'
-            }, {
-                name: 'Support',
-                text: 'Front-line user support: ticket handling, FAQ building, fast first responses and clear escalation flows so no user is left hanging.'
-            }, {
-                name: 'Growth',
-                text: 'Organic growth playbooks: referral programs, ambassador systems, campaigns and funnel analysis to grow active members - not just raw numbers.'
-            }, {
-                name: 'Events & Partnerships',
-                text: 'AMAs, tournaments, workshops and live events - plus closing partnerships with creators, projects and media to expand reach.'
-            }, {
-                name: 'Content',
-                text: 'Content strategy and production: announcements, educational threads, guides and curated news that keep the community informed and engaged.'
-            }, {
-                name: 'Automation & Tools',
-                text: 'Custom bots and automations for Discord and Telegram: verification, alerts, ticketing, workflows and analytics dashboards that save hours of manual work.'
-            }];
-            const dosItems = Array.from(document.querySelectorAll('#screen-services .dos-item'));
+            const DOS_SERVICES = [
+                { name: 'Display', text: 'Configure screen resolution, color depth and refresh rate.' },
+                { name: 'Sound', text: 'Adjust volume, audio output device and system sounds.' },
+                { name: 'System', text: 'View system information, memory usage and processor details.' },
+                { name: 'System Speed', text: 'Set performance priorities and cache settings.' },
+                { name: 'Clock', text: 'Set date, time and time zone.' },
+                { name: 'Keyboard', text: 'Configure keyboard layout, repeat delay and rate.' },
+                { name: 'Slots', text: 'Manage expansion cards and IRQ assignments.' },
+                { name: 'Printer Port', text: 'Configure parallel port settings and printer drivers.' },
+                { name: 'Modem Port', text: 'Set up serial port for modem communication.' },
+                { name: 'RAM Disk', text: 'Create and manage RAM disk drives.' },
+                { name: 'Mouse', text: 'Adjust pointer speed, acceleration and button configuration.' }
+            ];
+
+            const menuItems = document.querySelectorAll('#screen-services .menu-item');
             const dosDialog = document.getElementById('dos-dialog');
             const dosDialogTitle = document.getElementById('dos-dialog-title');
             const dosDialogText = document.getElementById('dos-dialog-text');
@@ -2244,11 +2424,14 @@
             let dosDialogOpen = false;
 
             function dosUpdate() {
-                dosItems.forEach((el, i) => el.classList.toggle('selected', i === dosIndex));
+                menuItems.forEach((el, i) => {
+                    el.classList.toggle('selected', i === dosIndex);
+                });
             }
 
             function dosOpen(i) {
-                if (i === dosItems.length - 1) { // QUIT volta pro HOME com o flash
+                // O último item é "Quit"
+                if (i === menuItems.length - 1) {
                     dosDialogOpen = false;
                     navigateTo('home');
                     return;
@@ -2266,19 +2449,34 @@
                 dosDialogOpen = false;
             }
 
-            dosItems.forEach((el, i) => {
-                el.addEventListener('mouseenter', () => { dosIndex = i; dosUpdate(); });
-                el.addEventListener('click', () => { dosIndex = i; dosUpdate(); dosOpen(i); });
+            menuItems.forEach((el, i) => {
+                el.addEventListener('mouseenter', () => { dosIndex = i;
+                    dosUpdate(); });
+                el.addEventListener('click', () => { dosIndex = i;
+                    dosUpdate();
+                    dosOpen(i); });
             });
+
             dosDialog.addEventListener('click', dosCloseDialog);
+
             document.addEventListener('keydown', (e) => {
                 if (currentScreen !== 'services') return;
                 if (dosDialogOpen) { dosCloseDialog(); return; }
-                if (e.key === 'ArrowDown') { dosIndex = (dosIndex + 1) % dosItems.length; dosUpdate(); e.preventDefault(); }
-                else if (e.key === 'ArrowUp') { dosIndex = (dosIndex - 1 + dosItems.length) % dosItems.length; dosUpdate(); e.preventDefault(); }
-                else if (e.key === 'Enter') { dosOpen(dosIndex); }
-                else if (e.key === 'Escape') { navigateTo('home'); }
+                if (e.key === 'ArrowDown') {
+                    dosIndex = (dosIndex + 1) % menuItems.length;
+                    dosUpdate();
+                    e.preventDefault();
+                } else if (e.key === 'ArrowUp') {
+                    dosIndex = (dosIndex - 1 + menuItems.length) % menuItems.length;
+                    dosUpdate();
+                    e.preventDefault();
+                } else if (e.key === 'Enter') {
+                    dosOpen(dosIndex);
+                } else if (e.key === 'Escape') {
+                    navigateTo('home');
+                }
             });
+
             function dosTickClock() {
                 const now = new Date();
                 let h = now.getHours();
@@ -2298,7 +2496,6 @@
             //  INICIALIZAÇÃO: garantir que a HOME seja a tela ativa
             // ============================================================
             function init() {
-                // Garantir que apenas a home esteja ativa
                 document.querySelectorAll('.screen-container').forEach(el => el.classList.remove('active'));
                 homeScreen.classList.add('active');
                 currentScreen = 'home';
