@@ -1142,6 +1142,7 @@
 
         /* ============================================================
            SERVICES - Estilo BIOS/DOS (igual à imagem "Control Panel")
+           Largura aumentada em 50% e fontes aumentadas em 25%
            ============================================================ */
         #screen-services {
             position: absolute;
@@ -1169,7 +1170,7 @@
         .dos-outer {
             position: relative;
             width: 100%;
-            max-width: 700px;
+            max-width: 1050px;  /* Aumentado em 50% (700px -> 1050px) */
             border: 3px double #FFFFFF;
             padding: 28px 32px 24px;
             display: flex;
@@ -1181,10 +1182,10 @@
         .dos-topbar {
             display: inline-block;
             border: 3px double #FFFFFF;
-            padding: 2px 14px;
-            font-size: 26px;
+            padding: 4px 18px;  /* Ajustado para ficar igual ao "Control Panel" */
+            font-size: 32px;    /* Aumentado em 25% (26px -> 32px) */
             line-height: 1.2;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             align-self: flex-start;
             background: #0000AA;
         }
@@ -1199,15 +1200,15 @@
         }
 
         .dos-menu {
-            font-size: 26px;
-            line-height: 1.4;
+            font-size: 32px;    /* Aumentado em 25% (26px -> 32px) */
+            line-height: 1.5;   /* Ajustado para melhor espaçamento */
             margin-left: 6%;
             margin-top: 0;
             width: fit-content;
         }
 
         .dos-item {
-            padding: 0 6px;
+            padding: 0 8px;
             cursor: pointer;
             white-space: nowrap;
             width: fit-content;
@@ -1217,17 +1218,17 @@
             color: #0000AA;
         }
         .dos-gap {
-            height: 24px;
+            height: 30px;       /* Aumentado proporcionalmente */
             cursor: default;
         }
 
         .dos-clockbox {
             position: absolute;
-            bottom: 10px;
+            bottom: 12px;
             right: 4%;
             border: 3px double #FFFFFF;
-            padding: 4px 16px;
-            font-size: 22px;
+            padding: 6px 20px;  /* Aumentado */
+            font-size: 28px;    /* Aumentado em 25% (22px -> 28px) */
             line-height: 1.2;
             text-align: center;
         }
@@ -1235,12 +1236,12 @@
         .dos-footer {
             display: flex;
             justify-content: space-between;
-            font-size: 24px;
+            font-size: 28px;    /* Aumentado em 25% (24px -> 28px) */
             line-height: 1;
-            margin-top: 18px;
+            margin-top: 20px;
             padding: 0 6px;
             border-top: 1px solid #FFFFFF;
-            padding-top: 10px;
+            padding-top: 12px;
         }
         .dos-footer b {
             font-family: 'Courier New', monospace;
@@ -1264,18 +1265,18 @@
             display: block;
         }
         .dos-dialog-title {
-            font-size: 26px;
+            font-size: 32px;    /* Aumentado */
             margin-bottom: 10px;
             text-decoration: underline;
         }
         .dos-dialog-text {
-            font-size: 22px;
+            font-size: 28px;    /* Aumentado */
             line-height: 1.35;
             white-space: pre-line;
         }
         .dos-dialog-hint {
             margin-top: 12px;
-            font-size: 18px;
+            font-size: 22px;    /* Aumentado */
             opacity: 0.8;
         }
 
@@ -1286,37 +1287,39 @@
             .dos-outer {
                 padding: 18px 14px 16px;
                 min-height: 50vh;
+                max-width: 100%;
             }
             .dos-topbar {
-                font-size: 20px;
+                font-size: 24px;
+                padding: 3px 12px;
                 margin-bottom: 14px;
             }
             .dos-menu {
-                font-size: 20px;
+                font-size: 24px;
                 margin-left: 4%;
             }
             .dos-gap {
-                height: 18px;
+                height: 22px;
             }
             .dos-clockbox {
-                font-size: 16px;
-                padding: 2px 10px;
+                font-size: 20px;
+                padding: 3px 12px;
                 bottom: 6px;
                 right: 3%;
             }
             .dos-footer {
-                font-size: 18px;
-                margin-top: 12px;
-                padding-top: 6px;
+                font-size: 20px;
+                margin-top: 14px;
+                padding-top: 8px;
             }
             .dos-dialog {
                 width: 82%;
             }
             .dos-dialog-title {
-                font-size: 20px;
+                font-size: 24px;
             }
             .dos-dialog-text {
-                font-size: 17px;
+                font-size: 20px;
             }
         }
     </style>
