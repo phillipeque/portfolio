@@ -1339,32 +1339,6 @@
                             <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
                     </div>
-                    <div id="screen-services" class="screen-container">
-                        <div class="dos-topbar"><span class="dos-title">&nbsp;SERVICES&nbsp;</span></div>
-                        <div class="dos-body">
-                            <div class="dos-menu">
-                                <div class="dos-item selected">COMMUNITY MANAGEMENT</div>
-                                <div class="dos-item">MODERATION</div>
-                                <div class="dos-item">SUPPORT</div>
-                                <div class="dos-item">GROWTH</div>
-                                <div class="dos-item">EVENTS &amp; PARTNERSHIPS</div>
-                                <div class="dos-item">CONTENT</div>
-                                <div class="dos-item">AUTOMATION &amp; TOOLS</div>
-                                <div class="dos-gap">&nbsp;</div>
-                                <div class="dos-item">QUIT</div>
-                            </div>
-                            <div class="dos-clockbox">
-                                <div>9:26:56 PM</div>
-                                <div>6/2/90</div>
-                            </div>
-                        </div>
-                        <div class="dos-footer"><span>Select: <b>↓↑</b></span><span>Open: <b>↵</b></span></div>
-                        <div class="dos-dialog" id="dos-dialog">
-                            <div class="dos-dialog-title" id="dos-dialog-title"></div>
-                            <div class="dos-dialog-text" id="dos-dialog-text"></div>
-                            <div class="dos-dialog-hint">Press any key or click to close</div>
-                        </div>
-                    </div>
                     <div id="screen-projects" class="screen-container">
                         <div class="explorer-window">
                             <div class="explorer-toolbar">
@@ -1448,6 +1422,34 @@
                     </div>
                 </div>
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
+            </div>
+
+            <!-- SERVICES: tela cheia estilo BIOS (dentro da moldura da TV, cobre a janela) -->
+            <div id="screen-services" class="screen-container">
+                <div class="dos-topbar"><span class="dos-title">&nbsp;SERVICES&nbsp;</span></div>
+                <div class="dos-body">
+                    <div class="dos-menu">
+                        <div class="dos-item selected">COMMUNITY MANAGEMENT</div>
+                        <div class="dos-item">MODERATION</div>
+                        <div class="dos-item">SUPPORT</div>
+                        <div class="dos-item">GROWTH</div>
+                        <div class="dos-item">EVENTS &amp; PARTNERSHIPS</div>
+                        <div class="dos-item">CONTENT</div>
+                        <div class="dos-item">AUTOMATION &amp; TOOLS</div>
+                        <div class="dos-gap">&nbsp;</div>
+                        <div class="dos-item">QUIT</div>
+                    </div>
+                    <div class="dos-clockbox">
+                        <div>9:26:56 PM</div>
+                        <div>6/2/90</div>
+                    </div>
+                </div>
+                <div class="dos-footer"><span>Select: <b>↓↑</b></span><span>Open: <b>↵</b></span></div>
+                <div class="dos-dialog" id="dos-dialog">
+                    <div class="dos-dialog-title" id="dos-dialog-title"></div>
+                    <div class="dos-dialog-text" id="dos-dialog-text"></div>
+                    <div class="dos-dialog-hint">Press any key or click to close</div>
+                </div>
             </div>
         </div>
         <div id="scanlines"></div>
@@ -2051,7 +2053,6 @@
                     } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
-                    }
                     } else if (target === 'services') {
                         navigateTo('services');
                     }
