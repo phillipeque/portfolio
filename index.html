@@ -1143,6 +1143,79 @@
                SERVICES - ajustes mobile
                ========================================================== */
             #screen-services .control-panel {
+                padding: 12px 16px 10px;
+            }
+            .control-panel .panel-titlebar {
+                margin: 0 -16px;
+            }
+            .control-panel .panel-titlebar .title-text {
+                font-size: 30px;
+                padding: 2px 10px 2px 6px;
+            }
+            .control-panel .panel-titlebar {
+                border-bottom-width: 1px;
+            }
+            .control-panel .menu-area .menu-item {
+                font-size: 27px;
+                padding: 2px 6px;
+            }
+            .control-panel .clock-box {
+                font-size: 24px;
+                padding: 4px 10px;
+            }
+            .control-panel .panel-footer {
+                font-size: 24px;
+                margin-top: 12px;
+                padding-top: 6px;
+            }
+            .dos-dialog {
+                width: 82%;
+                padding: 12px 14px;
+            }
+            .dos-dialog-title {
+                font-size: 22px;
+            }
+            .dos-dialog-text {
+                font-size: 27px;
+            }
+            .dos-dialog-hint {
+                font-size: 24px;
+            }
+        }
+
+        /* ============================================================
+           SERVICES - Control Panel
+           Reproduces the reference's 640x400 text-mode geometry:
+           solid blue field, thin white frame, compact title strip,
+           left navigation, clock box and bottom command line.
+           ============================================================ */
+        #screen-services {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 26;
+            background: #0000AA;
+            color: #FFFFFF;
+            font-family: 'VT323', 'Courier New', monospace;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+            text-shadow: none;
+            user-select: none;
+            overflow: hidden;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        #screen-services.active {
+            display: flex;
+        }
+
+        /* Main frame: approximately 536x355 at a 640x400 viewport. */
+        #screen-services .control-panel {
             position: relative;
             width: 62%;
             height: 68%;
@@ -1151,54 +1224,41 @@
             min-width: 0;
             min-height: 0;
             margin: 0;
-            padding: 0 28px;
-            background: #0000AA;
+            padding: 0 28px 0 28px;
+            background: #FFFFFF;
             border: 0;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
             overflow: hidden;
-        }
 
-        /* Exact-style stepped/pixel corners, built as a 1px white frame. */
-        #screen-services .control-panel::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: #FFFFFF;
-            z-index: 0;
-            pointer-events: none;
+            /* Pixel-stepped, CRT-era corners instead of a smooth border-radius. */
             clip-path: polygon(
-                0 6px, 1px 6px, 1px 3px, 3px 3px, 3px 1px, 6px 1px,
-                calc(100% - 6px) 1px, calc(100% - 6px) 3px,
-                calc(100% - 3px) 3px, calc(100% - 1px) 6px, 100% 6px,
-                100% calc(100% - 6px), calc(100% - 1px) calc(100% - 6px),
-                calc(100% - 3px) calc(100% - 3px),
-                calc(100% - 6px) calc(100% - 3px),
-                calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 1px),
-                3px calc(100% - 1px), 3px calc(100% - 3px),
-                1px calc(100% - 3px), 1px calc(100% - 6px), 0 calc(100% - 6px)
+                0 8px, 4px 8px, 4px 4px, 8px 4px, 8px 0,
+                calc(100% - 8px) 0, calc(100% - 8px) 4px,
+                calc(100% - 4px) 4px, calc(100% - 4px) 8px, 100% 8px,
+                100% calc(100% - 8px), calc(100% - 4px) calc(100% - 8px),
+                calc(100% - 4px) calc(100% - 4px), calc(100% - 8px) calc(100% - 4px),
+                calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 4px),
+                4px calc(100% - 4px), 4px calc(100% - 8px), 0 calc(100% - 8px)
             );
         }
 
-        #screen-services .control-panel::after {
+        #screen-services .control-panel::before {
             content: "";
             position: absolute;
-            inset: 1px;
+            inset: 2px;
             background: #0000AA;
             z-index: 0;
             pointer-events: none;
             clip-path: polygon(
-                0 5px, 1px 5px, 1px 3px, 3px 3px, 3px 1px, 5px 1px,
-                calc(100% - 5px) 1px, calc(100% - 5px) 3px,
-                calc(100% - 3px) 3px, calc(100% - 1px) 5px, 100% 5px,
-                100% calc(100% - 5px), calc(100% - 1px) calc(100% - 5px),
-                calc(100% - 3px) calc(100% - 3px),
-                calc(100% - 5px) calc(100% - 3px),
-                calc(100% - 5px) calc(100% - 1px), 5px calc(100% - 1px),
-                5px calc(100% - 3px), 3px calc(100% - 3px),
-                3px calc(100% - 1px), 1px calc(100% - 1px),
-                1px calc(100% - 5px), 0 calc(100% - 5px)
+                0 7px, 3px 7px, 3px 3px, 7px 3px, 7px 0,
+                calc(100% - 7px) 0, calc(100% - 7px) 3px,
+                calc(100% - 3px) 3px, calc(100% - 3px) 7px, 100% 7px,
+                100% calc(100% - 7px), calc(100% - 3px) calc(100% - 7px),
+                calc(100% - 3px) calc(100% - 3px), calc(100% - 7px) calc(100% - 3px),
+                calc(100% - 7px) 100%, 7px 100%, 7px calc(100% - 3px),
+                3px calc(100% - 3px), 3px calc(100% - 7px), 0 calc(100% - 7px)
             );
         }
 
@@ -1210,10 +1270,10 @@
         /* Reference title strip: thin white rule with a blue title block. */
         #screen-services .panel-titlebar {
             flex: 0 0 auto;
-            height: 18px;
+            height: 26px;
             margin: 0 -28px;
             padding: 0;
-            background: transparent;
+            background: #FFFFFF;
             border: 0;
             border-bottom: 1px solid #FFFFFF;
             font-size: 0;
@@ -1223,7 +1283,7 @@
 
         #screen-services .panel-titlebar .title-text {
             display: inline-block;
-            height: 18px;
+            height: 25px;
             margin: 0;
             padding: 0 9px 0 14px;
             background: #0000AA;
@@ -1252,7 +1312,7 @@
         /* Reference menu starts well below the title and inside the left edge. */
         #screen-services .menu-area {
             position: absolute;
-            top: 40px;
+            top: 54px;
             left: 0;
             display: flex;
             flex-direction: column;
@@ -1326,21 +1386,21 @@
 
         /* Footer is anchored to the bottom edge with no separator line. */
         #screen-services .panel-footer {
-            flex: 0 0 32px;
+            flex: 0 0 28px;
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
             width: 100%;
-            height: 32px;
+            height: 28px;
             margin: 0;
             padding: 0 0 1px;
             border: 0;
             background: transparent;
             color: #FFFFFF;
             font-family: 'VT323', 'Courier New', monospace;
-            font-size: 36px;
+            font-size: 30px;
             font-weight: 400;
-            line-height: 32px;
+            line-height: 27px;
             letter-spacing: 0;
             box-sizing: border-box;
             user-select: none;
@@ -1634,7 +1694,7 @@
             <!-- SERVICES: Control Panel text-mode layout -->
             <div id="screen-services" class="screen-container">
                 <div class="control-panel">
-                    <div class="panel-titlebar"><span class="title-text">Services</span></div>
+                    <div class="panel-titlebar"><span class="title-text">Control Panel</span></div>
                     <div class="panel-content">
                         <div class="menu-area">
                             <div class="menu-item selected">Display</div>
