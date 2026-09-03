@@ -1141,7 +1141,7 @@
         }
 
         /* ============================================================
-           SERVICES - Tela estilo BIOS/DOS
+           SERVICES - Tela estilo BIOS/DOS (referencia: setup antigo)
            ============================================================ */
         #screen-services {
             position: absolute;
@@ -1163,12 +1163,22 @@
             display: flex;
             flex-direction: column;
         }
+        .dos-outer {
+            position: relative;
+            flex: 1;
+            border: 3px double #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            padding: 26px 40px 34px;
+        }
         .dos-topbar {
-            border: 3px double #fff;
-            padding: 2px 10px;
+            width: fit-content;
+            border: 3px double #FFFFFF;
+            padding: 0 12px;
             font-size: 28px;
             line-height: 1.15;
-            margin-bottom: 22px;
+            transform: translateY(-65%);
+            margin-bottom: 24px;
         }
         .dos-body {
             position: relative;
@@ -1176,13 +1186,16 @@
         }
         .dos-menu {
             font-size: 28px;
-            line-height: 1.28;
+            line-height: 1.3;
+            margin-left: 6%;
+            margin-top: 1%;
+            width: fit-content;
         }
         .dos-item {
             padding: 0 6px;
             cursor: pointer;
-            width: fit-content;
             white-space: nowrap;
+            width: fit-content;
         }
         .dos-item.selected {
             background: #FFFFFF;
@@ -1195,20 +1208,25 @@
         .dos-clockbox {
             position: absolute;
             top: 0;
-            right: 0;
-            border: 3px double #fff;
+            right: 4%;
+            border: 3px double #FFFFFF;
             padding: 6px 20px;
             font-size: 26px;
             line-height: 1.25;
             text-align: center;
         }
         .dos-footer {
-            border: 3px double #fff;
-            padding: 4px 12px;
-            font-size: 26px;
+            position: absolute;
+            left: 28px;
+            right: 28px;
+            bottom: 0;
+            transform: translateY(50%);
             display: flex;
             justify-content: space-between;
-            margin-top: 22px;
+            font-size: 26px;
+            line-height: 1;
+            background: #0000AA;
+            padding: 0 10px;
         }
         .dos-footer b {
             font-family: 'Courier New', monospace;
@@ -1219,8 +1237,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 72%;
-            max-width: 580px;
+            width: 56%;
+            max-width: 560px;
             background: #0000AA;
             border: 3px double #fff;
             padding: 14px 18px;
@@ -1246,7 +1264,9 @@
             opacity: 0.8;
         }
         @media (max-width: 768px) {
-            /* padding em vh/vw ja se adapta a moldura em telas pequenas */
+            .dos-outer {
+                padding: 20px 18px 26px;
+            }
             .dos-topbar,
             .dos-menu,
             .dos-footer {
@@ -1259,8 +1279,12 @@
                 font-size: 16px;
                 padding: 4px 10px;
             }
+            .dos-footer {
+                left: 14px;
+                right: 14px;
+            }
             .dos-dialog {
-                width: 88%;
+                width: 82%;
             }
             .dos-dialog-title {
                 font-size: 20px;
@@ -1424,25 +1448,27 @@
 
             <!-- SERVICES: tela cheia estilo BIOS (dentro da moldura da TV, cobre a janela) -->
             <div id="screen-services" class="screen-container">
-                <div class="dos-topbar"><span class="dos-title">&nbsp;SERVICES&nbsp;</span></div>
-                <div class="dos-body">
-                    <div class="dos-menu">
-                        <div class="dos-item selected">COMMUNITY MANAGEMENT</div>
-                        <div class="dos-item">MODERATION</div>
-                        <div class="dos-item">SUPPORT</div>
-                        <div class="dos-item">GROWTH</div>
-                        <div class="dos-item">EVENTS &amp; PARTNERSHIPS</div>
-                        <div class="dos-item">CONTENT</div>
-                        <div class="dos-item">AUTOMATION &amp; TOOLS</div>
-                        <div class="dos-gap">&nbsp;</div>
-                        <div class="dos-item">QUIT</div>
+                <div class="dos-outer">
+                    <div class="dos-topbar"><span class="dos-title">&nbsp;Services&nbsp;</span></div>
+                    <div class="dos-body">
+                        <div class="dos-menu">
+                            <div class="dos-item selected">Community Management</div>
+                            <div class="dos-item">Moderation</div>
+                            <div class="dos-item">Support</div>
+                            <div class="dos-item">Growth</div>
+                            <div class="dos-item">Events &amp; Partnerships</div>
+                            <div class="dos-item">Content</div>
+                            <div class="dos-item">Automation &amp; Tools</div>
+                            <div class="dos-gap">&nbsp;</div>
+                            <div class="dos-item">Quit</div>
+                        </div>
+                        <div class="dos-clockbox">
+                            <div id="dos-clock-time">9:26:56 PM</div>
+                            <div id="dos-clock-date">6/2/90</div>
+                        </div>
                     </div>
-                    <div class="dos-clockbox">
-                        <div>9:26:56 PM</div>
-                        <div>6/2/90</div>
-                    </div>
+                    <div class="dos-footer"><span>Select: <b>↓↑</b></span><span>Open: <b>↵</b></span></div>
                 </div>
-                <div class="dos-footer"><span>Select: <b>↓↑</b></span><span>Open: <b>↵</b></span></div>
                 <div class="dos-dialog" id="dos-dialog">
                     <div class="dos-dialog-title" id="dos-dialog-title"></div>
                     <div class="dos-dialog-text" id="dos-dialog-text"></div>
@@ -2158,25 +2184,25 @@
             //  SERVICES - Menu estilo BIOS/DOS
             // ============================================================
             const DOS_SERVICES = [{
-                name: 'COMMUNITY MANAGEMENT',
+                name: 'Community Management',
                 text: 'End-to-end community building: strategy, onboarding, engagement loops, rituals and governance. From zero to a self-sustaining community with clear rules and a healthy culture.'
             }, {
-                name: 'MODERATION',
+                name: 'Moderation',
                 text: 'Moderation for Discord and Telegram: rule enforcement, spam and scam filtering, conflict resolution and keeping the environment safe and welcoming.'
             }, {
-                name: 'SUPPORT',
+                name: 'Support',
                 text: 'Front-line user support: ticket handling, FAQ building, fast first responses and clear escalation flows so no user is left hanging.'
             }, {
-                name: 'GROWTH',
+                name: 'Growth',
                 text: 'Organic growth playbooks: referral programs, ambassador systems, campaigns and funnel analysis to grow active members - not just raw numbers.'
             }, {
-                name: 'EVENTS & PARTNERSHIPS',
+                name: 'Events & Partnerships',
                 text: 'AMAs, tournaments, workshops and live events - plus closing partnerships with creators, projects and media to expand reach.'
             }, {
-                name: 'CONTENT',
+                name: 'Content',
                 text: 'Content strategy and production: announcements, educational threads, guides and curated news that keep the community informed and engaged.'
             }, {
-                name: 'AUTOMATION & TOOLS',
+                name: 'Automation & Tools',
                 text: 'Custom bots and automations for Discord and Telegram: verification, alerts, ticketing, workflows and analytics dashboards that save hours of manual work.'
             }];
             const dosItems = Array.from(document.querySelectorAll('#screen-services .dos-item'));
@@ -2222,6 +2248,19 @@
                 else if (e.key === 'Enter') { dosOpen(dosIndex); }
                 else if (e.key === 'Escape') { navigateTo('home'); }
             });
+            function dosTickClock() {
+                const now = new Date();
+                let h = now.getHours();
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                h = h % 12 || 12;
+                const pad = (n) => String(n).padStart(2, '0');
+                const tEl = document.getElementById('dos-clock-time');
+                const dEl = document.getElementById('dos-clock-date');
+                if (tEl) tEl.textContent = `${h}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${ampm}`;
+                if (dEl) dEl.textContent = `${now.getMonth() + 1}/${now.getDate()}/${String(now.getFullYear()).slice(-2)}`;
+            }
+            dosTickClock();
+            setInterval(dosTickClock, 1000);
             dosUpdate();
 
             showProjectsList();
