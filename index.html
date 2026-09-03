@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="favicons/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="favicons/site.webmanifest" />
     <!-- Open Graph / Social Preview -->
-    <meta property="og:title" content="Phillipe's Lab" />
+    <meta property="og:title" content="Phillipe Queiroz — Portfolio" />
     <meta property="og:description" content="Building communities and the bots that run them" />
     <meta property="og:image" content="https://phillipe.online/favicons/android-chrome-512x512.png" />
     <meta property="og:url" content="https://phillipe.online/" />
@@ -17,6 +17,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <title>Phillipe's Lab</title>
     <style>
+        /* ===== RESET E BASE ===== */
         * {
             margin: 0;
             padding: 0;
@@ -324,6 +325,10 @@
             object-fit: contain;
             cursor: pointer;
             user-select: none;
+            transition: transform 0.2s;
+        }
+        .icon-img:hover {
+            transform: scale(1.05);
         }
         .icon-label {
             font-size: 12px;
@@ -734,9 +739,7 @@
             user-select: none;
         }
 
-        /* ============================================================
-           DETAIL VIEW – Win95 Properties
-           ============================================================ */
+        /* ===== DETAIL VIEW ===== */
         .explorer-detail {
             background: #c0c0c0;
             border: 2px solid;
@@ -1000,6 +1003,128 @@
             }
         }
 
+        /* ============================================================
+           SOCIAL ANIMATION – HINGE (BALANÇO + QUEDA) E ÁREA HORIZONTAL
+           ============================================================ */
+        #social-drop-zone {
+            position: fixed;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: auto;
+            border: 3px dashed red; /* remova depois */
+            border-radius: 12px;
+            background: rgba(255, 0, 0, 0.05);
+            display: none;
+            pointer-events: none;
+            z-index: 60;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row; /* horizontal */
+            gap: 20px;
+            padding: 20px 30px;
+            transition: all 0.3s ease;
+        }
+        #social-drop-zone.active {
+            display: flex;
+            pointer-events: auto;
+            border-color: #000080;
+            background: #c0c0c0;
+            box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #000000, 0 0 0 2px #000080;
+        }
+        #social-drop-zone a {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000;
+            padding: 6px;
+            transition: transform 0.15s;
+            text-decoration: none;
+        }
+        #social-drop-zone a:hover {
+            transform: scale(1.1);
+        }
+        #social-drop-zone a img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .social-link-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .social-link-text {
+            font-size: 10px;
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+            user-select: none;
+        }
+
+        /* Ícone @ que vai ser animado – clonado e posicionado fixed */
+        .social-icon-clone {
+            position: fixed;
+            z-index: 100;
+            pointer-events: none;
+            width: 64px;
+            height: 64px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            object-fit: contain;
+        }
+
+        /* Keyframes do Hinge (balanço puro, sem scale, + queda) */
+        @keyframes hingeAndDrop {
+            0% {
+                transform: rotate(0deg);
+                transform-origin: bottom center;
+                opacity: 1;
+            }
+            15% {
+                transform: rotate(25deg);
+                transform-origin: bottom center;
+            }
+            30% {
+                transform: rotate(-20deg);
+                transform-origin: bottom center;
+            }
+            45% {
+                transform: rotate(15deg);
+                transform-origin: bottom center;
+            }
+            60% {
+                transform: rotate(-10deg);
+                transform-origin: bottom center;
+            }
+            75% {
+                transform: rotate(5deg);
+                transform-origin: bottom center;
+            }
+            100% {
+                transform: rotate(0deg) translateY(200px);
+                transform-origin: bottom center;
+                opacity: 0.9;
+            }
+        }
+
+        /* Animação de fade out do label (limpeza) */
+        @keyframes wipeOut {
+            0% {
+                clip-path: inset(0 0 0 0);
+                opacity: 1;
+            }
+            100% {
+                clip-path: inset(0 100% 0 0);
+                opacity: 0;
+            }
+        }
+
         @media (max-width: 768px) {
             body.projects-mode #tv-screen {
                 padding: 1% 4% 1% 4%;
@@ -1135,6 +1260,21 @@
             .detail-header-card {
                 border-top: none;
             }
+            /* Ajuste da zona de destino em mobile */
+            #social-drop-zone {
+                bottom: 5%;
+                width: 90%;
+                padding: 15px 10px;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            #social-drop-zone a {
+                width: 36px;
+                height: 36px;
+            }
+            .social-link-text {
+                font-size: 9px;
+            }
         }
     </style>
     <base target="_blank">
@@ -1168,9 +1308,9 @@
                                 <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
                                 <span class="icon-label label-red">GITHUB</span>
                             </div>
-                            <div class="icon-item">
-                                <img class="icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
-                                <span class="icon-label label-blue">SOCIALS</span>
+                            <div class="icon-item" id="social-icon-item">
+                                <img class="icon-img" id="social-icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
+                                <span class="icon-label label-blue" id="social-label">SOCIALS</span>
                             </div>
                             <div class="icon-item">
                                 <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
@@ -1288,6 +1428,8 @@
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
         </div>
+        <!-- Zona de destino para o SOCIALS (área horizontal) -->
+        <div id="social-drop-zone"></div>
         <div id="scanlines"></div>
         <div id="scan-sweep"></div>
         <div id="tv-frame"></div>
@@ -1524,7 +1666,81 @@
         })();
 
         // ============================================================
-        //  NAVIGATION + PROJECTS + CONTACT
+        //  SOCIAL ANIMATION
+        // ============================================================
+        (function() {
+            const socialIcon = document.getElementById('social-icon-img');
+            const socialLabel = document.getElementById('social-label');
+            const dropZone = document.getElementById('social-drop-zone');
+            let isAnimating = false;
+
+            // Cria os links sociais com SVGs simples e layout horizontal
+            function buildSocialLinks() {
+                dropZone.innerHTML = '';
+                const links = [
+                    { name: 'X', url: 'https://twitter.com/seuuser', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M4 4l16 16M20 4l-16 16"/></svg>' },
+                    { name: 'Telegram', url: 'https://t.me/seuuser', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>' },
+                    { name: 'Discord', url: 'https://discord.gg/seuconvite', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M8 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/><path d="M12 2C6.5 2 2 6 2 10.5c0 2.5 1.3 4.8 3.5 6.3l-1 3.2 3.2-1.5c1 .4 2 .6 3.3.6 5.5 0 10-4 10-8.5S17.5 2 12 2z"/></svg>' }
+                ];
+                links.forEach(link => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'social-link-wrapper';
+                    const a = document.createElement('a');
+                    a.href = link.url;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    a.innerHTML = link.svg;
+                    a.title = link.name;
+                    const label = document.createElement('span');
+                    label.className = 'social-link-text';
+                    label.textContent = link.name;
+                    wrapper.appendChild(a);
+                    wrapper.appendChild(label);
+                    dropZone.appendChild(wrapper);
+                });
+            }
+
+            function startSocialAnimation() {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                // 1. Esconde o texto "SOCIALS" com wipe
+                socialLabel.style.animation = 'wipeOut 0.4s forwards';
+
+                // 2. Pega a posição do ícone original
+                const rect = socialIcon.getBoundingClientRect();
+                const clone = socialIcon.cloneNode(true);
+                clone.className = 'social-icon-clone';
+                clone.style.left = rect.left + 'px';
+                clone.style.top = rect.top + 'px';
+                clone.style.width = rect.width + 'px';
+                clone.style.height = rect.height + 'px';
+                document.body.appendChild(clone);
+
+                // Oculta o ícone original
+                socialIcon.style.opacity = '0';
+
+                // 3. Aplica a animação de hinge + queda (sem scale)
+                clone.style.animation = 'hingeAndDrop 1.5s ease-in forwards';
+
+                // 4. Prepara a zona de destino (horizontal)
+                dropZone.style.display = 'flex';
+                dropZone.classList.add('active');
+                buildSocialLinks();
+
+                // 5. Quando a animação terminar, limpa o clone
+                clone.addEventListener('animationend', function() {
+                    clone.remove();
+                    isAnimating = false;
+                });
+            }
+
+            // Expõe a função globalmente
+            window.startSocialAnimation = startSocialAnimation;
+        })();
+
+        // ============================================================
+        //  NAVIGATION + PROJECTS + CONTACT (com SOCIAL integrado)
         // ============================================================
         (function() {
             const homeScreen = document.getElementById('screen-home');
@@ -1883,11 +2099,15 @@
                         navigateTo('email');
                     } else if (target === 'github') {
                         window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
+                    } else if (target === 'socials') {
+                        if (typeof window.startSocialAnimation === 'function') {
+                            window.startSocialAnimation();
+                        }
                     } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
                     }
-                    // 'services' e 'socials' não fazem nada (mantidos como botões inativos)
+                    // 'services' não faz nada
                 });
             });
 
