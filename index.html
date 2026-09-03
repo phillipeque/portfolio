@@ -16,9 +16,6 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>Phillipe's Lab</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <style>
         * {
             margin: 0;
@@ -1003,6 +1000,114 @@
             }
         }
 
+        /* ============================================================
+           SERVICES SCREEN
+           ============================================================ */
+        #services-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: none;
+            background: #1414c8;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            user-select: none;
+        }
+        body.services-mode #services-screen {
+            display: block;
+        }
+        body.services-mode #tv-screen {
+            display: none;
+        }
+
+        .services-frame {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            border: 2px solid #fff;
+        }
+
+        .services-titlebar {
+            display: inline-block;
+            margin: 12px 0 0 12px;
+            padding: 2px 12px;
+            border: 2px solid #fff;
+        }
+        .services-title {
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #fff;
+        }
+
+        .services-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 26px 36px 0 44px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .services-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .services-item {
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #fff;
+            padding: 1px 5px;
+            width: fit-content;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .services-item:first-child {
+            border: 1px dotted #fff;
+        }
+        .services-item:hover {
+            background: #fff;
+            color: #1414c8;
+        }
+        .services-quit {
+            margin-top: 22px;
+        }
+
+        .services-clockbox {
+            border: 2px solid #fff;
+            padding: 10px 22px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            min-width: 170px;
+        }
+        #services-time,
+        #services-date {
+            margin: 2px 0;
+        }
+
+        .services-statusbar {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            padding: 5px 12px;
+            border-top: 2px solid #fff;
+        }
+
         @media (max-width: 768px) {
             body.projects-mode #tv-screen {
                 padding: 1% 4% 1% 4%;
@@ -1138,142 +1243,29 @@
             .detail-header-card {
                 border-top: none;
             }
-        }
-
-        /* ============================================================
-           SERVICES - Tela estilo BIOS/DOS
-           ============================================================ */
-        #screen-services {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 26;
-            background: #0000AA;
-            color: #FFFFFF;
-            font-family: 'VT323', 'Courier New', monospace;
-            padding: 28px 36px;
-            text-align: left;
-            text-shadow: none;
-            user-select: none;
-            overflow: hidden;
-        }
-        #screen-services.active {
-            display: flex;
-            flex-direction: column;
-        }
-        .dos-topbar {
-            border: 3px double #fff;
-            padding: 2px 10px;
-            font-size: 28px;
-            line-height: 1.15;
-            margin-bottom: 22px;
-        }
-        .dos-body {
-            position: relative;
-            flex: 1;
-        }
-        .dos-menu {
-            font-size: 28px;
-            line-height: 1.28;
-        }
-        .dos-item {
-            padding: 0 6px;
-            cursor: pointer;
-            width: fit-content;
-            white-space: nowrap;
-        }
-        .dos-item.selected {
-            background: #FFFFFF;
-            color: #0000AA;
-        }
-        .dos-gap {
-            height: 30px;
-            cursor: default;
-        }
-        .dos-clockbox {
-            position: absolute;
-            top: 0;
-            right: 0;
-            border: 3px double #fff;
-            padding: 6px 20px;
-            font-size: 26px;
-            line-height: 1.25;
-            text-align: center;
-        }
-        .dos-footer {
-            border: 3px double #fff;
-            padding: 4px 12px;
-            font-size: 26px;
-            display: flex;
-            justify-content: space-between;
-            margin-top: 22px;
-        }
-        .dos-footer b {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-        }
-        .dos-dialog {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 72%;
-            max-width: 580px;
-            background: #0000AA;
-            border: 3px double #fff;
-            padding: 14px 18px;
-            display: none;
-            z-index: 5;
-        }
-        .dos-dialog.open {
-            display: block;
-        }
-        .dos-dialog-title {
-            font-size: 26px;
-            margin-bottom: 10px;
-            text-decoration: underline;
-        }
-        .dos-dialog-text {
-            font-size: 22px;
-            line-height: 1.35;
-            white-space: pre-line;
-        }
-        .dos-dialog-hint {
-            margin-top: 12px;
-            font-size: 18px;
-            opacity: 0.8;
-        }
-        @media (max-width: 768px) {
-            #screen-services {
-                padding: 16px;
+            .services-frame {
+                top: 8px;
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
             }
-            .dos-topbar,
-            .dos-menu,
-            .dos-footer {
-                font-size: 19px;
+            .services-body {
+                padding: 18px 20px 0 24px;
             }
-            .dos-gap {
-                height: 20px;
+            .services-item {
+                font-size: 13px;
             }
-            .dos-clockbox {
-                font-size: 16px;
-                padding: 4px 10px;
+            .services-clockbox {
+                min-width: 140px;
+                font-size: 13px;
+                padding: 8px 14px;
             }
-            .dos-dialog {
-                width: 88%;
-            }
-            .dos-dialog-title {
-                font-size: 20px;
-            }
-            .dos-dialog-text {
-                font-size: 17px;
+            .services-statusbar {
+                font-size: 11px;
             }
         }
     </style>
     <base target="_blank">
-<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -1423,32 +1415,29 @@
                 </div>
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
-
-            <!-- SERVICES: tela cheia estilo BIOS (dentro da moldura da TV, cobre a janela) -->
-            <div id="screen-services" class="screen-container">
-                <div class="dos-topbar"><span class="dos-title">&nbsp;SERVICES&nbsp;</span></div>
-                <div class="dos-body">
-                    <div class="dos-menu">
-                        <div class="dos-item selected">COMMUNITY MANAGEMENT</div>
-                        <div class="dos-item">MODERATION</div>
-                        <div class="dos-item">SUPPORT</div>
-                        <div class="dos-item">GROWTH</div>
-                        <div class="dos-item">EVENTS &amp; PARTNERSHIPS</div>
-                        <div class="dos-item">CONTENT</div>
-                        <div class="dos-item">AUTOMATION &amp; TOOLS</div>
-                        <div class="dos-gap">&nbsp;</div>
-                        <div class="dos-item">QUIT</div>
+        </div>
+        <div id="services-screen">
+            <div class="services-frame">
+                <div class="services-titlebar"><span class="services-title">SERVICES</span></div>
+                <div class="services-body">
+                    <div class="services-menu" id="services-menu">
+                        <div class="services-item" data-service="community">COMMUNITY MANAGEMENT</div>
+                        <div class="services-item" data-service="moderation">MODERATION</div>
+                        <div class="services-item" data-service="support">SUPPORT</div>
+                        <div class="services-item" data-service="growth">GROWTH</div>
+                        <div class="services-item" data-service="events">EVENTS & PARTNERSHIPS</div>
+                        <div class="services-item" data-service="content">CONTENT</div>
+                        <div class="services-item" data-service="automation">AUTOMATION & TOOLS</div>
+                        <div class="services-item services-quit" data-service="quit">QUIT</div>
                     </div>
-                    <div class="dos-clockbox">
-                        <div>9:26:56 PM</div>
-                        <div>6/2/90</div>
+                    <div class="services-clockbox">
+                        <div id="services-time">--:--:-- --</div>
+                        <div id="services-date">--/--/--</div>
                     </div>
                 </div>
-                <div class="dos-footer"><span>Select: <b>↓↑</b></span><span>Open: <b>↵</b></span></div>
-                <div class="dos-dialog" id="dos-dialog">
-                    <div class="dos-dialog-title" id="dos-dialog-title"></div>
-                    <div class="dos-dialog-text" id="dos-dialog-text"></div>
-                    <div class="dos-dialog-hint">Press any key or click to close</div>
+                <div class="services-statusbar">
+                    <span>Select: ↓ ↑</span>
+                    <span>Open: ↵</span>
                 </div>
             </div>
         </div>
@@ -1688,6 +1677,29 @@
         })();
 
         // ============================================================
+        //  SERVICES CLOCK (real time)
+        // ============================================================
+        (function() {
+            const timeEl = document.getElementById('services-time');
+            const dateEl = document.getElementById('services-date');
+            if (!timeEl || !dateEl) return;
+
+            function pad(n) { return n < 10 ? '0' + n : n; }
+
+            function updateClock() {
+                const now = new Date();
+                let h = now.getHours();
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                h = h % 12;
+                if (h === 0) h = 12;
+                timeEl.textContent = `${h}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${ampm}`;
+                dateEl.textContent = `${now.getMonth() + 1}/${now.getDate()}/${String(now.getFullYear()).slice(-2)}`;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        })();
+
+        // ============================================================
         //  NAVIGATION + PROJECTS + CONTACT
         // ============================================================
         (function() {
@@ -1695,7 +1707,6 @@
             const aboutScreen = document.getElementById('screen-about');
             const projectsScreen = document.getElementById('screen-projects');
             const emailScreen = document.getElementById('screen-email');
-            const servicesScreen = document.getElementById('screen-services');
             const flash = document.getElementById('flash-overlay');
             const retroWindow = document.querySelector('.retro-window');
             const body = document.body;
@@ -1766,18 +1777,19 @@
                 triggerTransition(() => {
                     homeScreen.classList.remove('active');
                     aboutScreen.classList.remove('active');
-                    servicesScreen.classList.remove('active');
                     projectsScreen.classList.remove('active');
                     emailScreen.classList.remove('active');
-                    body.classList.remove('projects-mode', 'detail-mode');
+                    body.classList.remove('projects-mode', 'detail-mode', 'services-mode');
                     if (screen === 'home') homeScreen.classList.add('active');
                     else if (screen === 'about') aboutScreen.classList.add('active');
-                    else if (screen === 'services') servicesScreen.classList.add('active');
                     else if (screen === 'projects') {
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
                         if (typeof showProjectsList === 'function') showProjectsList();
                     } else if (screen === 'email') emailScreen.classList.add('active');
+                    else if (screen === 'services') {
+                        body.classList.add('services-mode');
+                    }
                     currentScreen = screen;
                     transitioning = false;
                 });
@@ -2048,15 +2060,26 @@
                         navigateTo('projects');
                     } else if (target === 'email') {
                         navigateTo('email');
+                    } else if (target === 'services') {
+                        navigateTo('services');
                     } else if (target === 'github') {
                         window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
                     } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
-                    } else if (target === 'services') {
-                        navigateTo('services');
                     }
                     // 'socials' não faz nada (mantido como botão inativo)
+                });
+            });
+
+            // ============================================================
+            //  SERVICES MENU – só o QUIT navega, o resto é decorativo
+            // ============================================================
+            document.querySelectorAll('.services-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (this.dataset.service === 'quit') {
+                        navigateTo('home');
+                    }
                 });
             });
 
@@ -2155,76 +2178,6 @@
                 feedback.textContent = '⚠️ Configure Formspree (see console).';
                 feedback.style.color = '#c41e3a';
             }
-
-            // ============================================================
-            //  SERVICES - Menu estilo BIOS/DOS
-            // ============================================================
-            const DOS_SERVICES = [{
-                name: 'COMMUNITY MANAGEMENT',
-                text: 'End-to-end community building: strategy, onboarding, engagement loops, rituals and governance. From zero to a self-sustaining community with clear rules and a healthy culture.'
-            }, {
-                name: 'MODERATION',
-                text: 'Moderation for Discord and Telegram: rule enforcement, spam and scam filtering, conflict resolution and keeping the environment safe and welcoming.'
-            }, {
-                name: 'SUPPORT',
-                text: 'Front-line user support: ticket handling, FAQ building, fast first responses and clear escalation flows so no user is left hanging.'
-            }, {
-                name: 'GROWTH',
-                text: 'Organic growth playbooks: referral programs, ambassador systems, campaigns and funnel analysis to grow active members - not just raw numbers.'
-            }, {
-                name: 'EVENTS & PARTNERSHIPS',
-                text: 'AMAs, tournaments, workshops and live events - plus closing partnerships with creators, projects and media to expand reach.'
-            }, {
-                name: 'CONTENT',
-                text: 'Content strategy and production: announcements, educational threads, guides and curated news that keep the community informed and engaged.'
-            }, {
-                name: 'AUTOMATION & TOOLS',
-                text: 'Custom bots and automations for Discord and Telegram: verification, alerts, ticketing, workflows and analytics dashboards that save hours of manual work.'
-            }];
-            const dosItems = Array.from(document.querySelectorAll('#screen-services .dos-item'));
-            const dosDialog = document.getElementById('dos-dialog');
-            const dosDialogTitle = document.getElementById('dos-dialog-title');
-            const dosDialogText = document.getElementById('dos-dialog-text');
-            let dosIndex = 0;
-            let dosDialogOpen = false;
-
-            function dosUpdate() {
-                dosItems.forEach((el, i) => el.classList.toggle('selected', i === dosIndex));
-            }
-
-            function dosOpen(i) {
-                if (i === dosItems.length - 1) { // QUIT volta pro HOME com o flash
-                    dosDialogOpen = false;
-                    navigateTo('home');
-                    return;
-                }
-                const svc = DOS_SERVICES[i];
-                if (!svc) return;
-                dosDialogTitle.textContent = svc.name;
-                dosDialogText.textContent = svc.text;
-                dosDialog.classList.add('open');
-                dosDialogOpen = true;
-            }
-
-            function dosCloseDialog() {
-                dosDialog.classList.remove('open');
-                dosDialogOpen = false;
-            }
-
-            dosItems.forEach((el, i) => {
-                el.addEventListener('mouseenter', () => { dosIndex = i; dosUpdate(); });
-                el.addEventListener('click', () => { dosIndex = i; dosUpdate(); dosOpen(i); });
-            });
-            dosDialog.addEventListener('click', dosCloseDialog);
-            document.addEventListener('keydown', (e) => {
-                if (currentScreen !== 'services') return;
-                if (dosDialogOpen) { dosCloseDialog(); return; }
-                if (e.key === 'ArrowDown') { dosIndex = (dosIndex + 1) % dosItems.length; dosUpdate(); e.preventDefault(); }
-                else if (e.key === 'ArrowUp') { dosIndex = (dosIndex - 1 + dosItems.length) % dosItems.length; dosUpdate(); e.preventDefault(); }
-                else if (e.key === 'Enter') { dosOpen(dosIndex); }
-                else if (e.key === 'Escape') { navigateTo('home'); }
-            });
-            dosUpdate();
 
             showProjectsList();
         })();
