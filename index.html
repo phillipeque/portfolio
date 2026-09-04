@@ -1409,10 +1409,11 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 56%;
-            max-width: 560px;
+            width: 76%;
+            max-width: 840px;
             background: #0000AA;
             border: 2px solid #FFFFFF;
+            box-shadow: 10px 10px 0 #000000;
             padding: 14px 18px;
             display: none;
             z-index: 5;
@@ -1426,33 +1427,35 @@
         }
 
         #screen-services .dos-dialog-title {
-            margin: 0 0 8px;
+            margin: 0 0 10px;
             padding: 0;
             color: #FFFFFF;
-            font-size: 42px;
+            font-size: 34px;
             line-height: 1;
-            text-decoration: underline;
+            text-align: center;
         }
 
         #screen-services .dos-dialog-text {
             margin: 0;
             padding: 0;
             color: #FFFFFF;
-            font-size: 22px;
-            line-height: 1.35;
+            font-size: 18px;
+            line-height: 1.4;
             white-space: pre-line;
         }
 
         #screen-services .dos-dialog-hint {
-            margin: 10px 0 0;
+            margin: 12px 0 0;
             padding: 0;
             color: #FFFFFF;
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1;
             opacity: 0.8;
+            text-align: center;
         }
     </style>
     <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -2335,15 +2338,27 @@
             }
 
             function dosOpen(i) {
-                // ========== ALTERAÇÃO TEMPORÁRIA ==========
-                // Apenas o item "Back" (índice = menuItems.length - 1) funciona
+                // "Back" volta pra home
                 if (i === menuItems.length - 1) {
                     dosDialogOpen = false;
                     navigateTo('home');
                     return;
                 }
-                // Todos os outros itens NÃO FAZEM NADA (nem abrem o diálogo)
-                // Simplesmente não executa nenhuma ação.
+
+                // Community Management abre o popup estilo BIOS
+                if (i === 0) {
+                    dosDialogTitle.textContent = 'Community Management';
+                    dosDialogText.textContent =
+                        '1. Community Setup — Server structure, channels, roles and onboarding flows\n' +
+                        '2. Community Management — Daily operations, member engagement and community health\n' +
+                        '3. Community Optimization — Identify operational gaps and improve community workflows\n' +
+                        '4. Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs\n' +
+                        '5. Community Scaling — Processes and systems for managing growing communities';
+                    dosDialog.classList.add('open');
+                    dosDialogOpen = true;
+                }
+
+                // Demais itens: nenhuma ação
             }
 
             function dosCloseDialog() {
