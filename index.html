@@ -1138,7 +1138,8 @@
                 padding: 12px 16px 10px;
             }
             .control-panel .panel-titlebar {
-                margin: 0 -16px;
+                margin: 0 -18px; /* Ajustado para mobile */
+                border-radius: 6px 6px 0 0;
             }
             .control-panel .panel-titlebar .title-text {
                 font-size: 36px;
@@ -1207,7 +1208,7 @@
             height: 68%;
             margin: 0;
             padding: 0 28px 0 28px;
-            background: #0000AA;  /* FUNDO AZUL DE VOLTA */
+            background: #0000AA;
             border: 2px solid #FFFFFF;
             border-radius: 6px;
             display: flex;
@@ -1219,10 +1220,11 @@
         #screen-services .panel-titlebar {
             flex: 0 0 auto;
             height: 26px;
-            margin: 0;
+            margin: 0 -28px; /* CORRIGIDO: para alcançar as bordas */
             padding: 0;
             background: #FFFFFF;
             border-bottom: 1px solid #FFFFFF;
+            border-radius: 6px 6px 0 0; /* CORRIGIDO: arredondar cantos superiores */
             font-size: 0;
             line-height: 1;
             box-sizing: border-box;
@@ -1276,7 +1278,7 @@
             height: 32.4px;
             margin: 0;
             padding: 0 3px;
-            color: #FFFFFF;  /* TEXTO BRANCO (VISÍVEL NO FUNDO AZUL) */
+            color: #FFFFFF;
             background: transparent;
             font-family: 'VT323', 'Courier New', monospace;
             font-size: 41.4px;
@@ -1338,14 +1340,14 @@
             width: 100%;
             height: 34px;
             margin: 0;
-            padding: 0 0 8px; /* MAIS ALTO */
+            padding: 0 0 8px;
             border: 0;
             background: transparent;
             color: #FFFFFF;
             font-family: 'VT323', 'Courier New', monospace;
             font-size: 45px;
             font-weight: 400;
-            line-height: 26px; /* MAIS ALTO */
+            line-height: 26px;
             letter-spacing: 0;
             box-sizing: border-box;
             user-select: none;
@@ -1420,7 +1422,8 @@
 
             #screen-services .panel-titlebar {
                 height: 16px;
-                margin: 0 -18px;
+                margin: 0 -18px; /* CORRIGIDO: para mobile */
+                border-radius: 6px 6px 0 0;
             }
 
             #screen-services .panel-titlebar .title-text {
