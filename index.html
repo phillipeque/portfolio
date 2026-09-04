@@ -230,7 +230,7 @@
         #screen-services .dos-dialog-text { margin: 0; padding: 0; color: #000000; font-size: 22px; line-height: 1.45; white-space: pre-line; }
         #screen-services .dos-dialog-hint { margin: 12px 0 0; padding: 0; color: #000000; font-size: 16px; line-height: 1; opacity: 0.8; text-align: center; }
 
-        /* ===== BOOT OVERLAY (TV ligando) ===== */
+        /* ===== BOOT OVERLAY ===== */
         #boot-overlay {
             position: absolute;
             top: 0;
@@ -253,10 +253,10 @@
             right: 8%;
             color: #00ff00;
             font-family: 'Courier New', monospace;
-            font-size: 28px;
+            font-size: 56px;
             font-weight: bold;
-            letter-spacing: 4px;
-            text-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00;
+            letter-spacing: 8px;
+            text-shadow: 0 0 12px #00ff00, 0 0 24px #00ff00, 0 0 36px #00ff00;
             animation: blinkVideo 1s step-end infinite;
         }
         @keyframes blinkVideo {
@@ -277,14 +277,83 @@
             0% { background-position: 0 0; }
             100% { background-position: 0 4px; }
         }
+        /* ===== EFEITO DE ONDAS DIAGONAIS (DEGAUSSING) ===== */
+        #boot-overlay .diagonal-waves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(0, 255, 0, 0.05) 0px,
+                    rgba(0, 255, 0, 0.05) 4px,
+                    transparent 4px,
+                    transparent 14px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    rgba(255, 255, 255, 0.02) 0px,
+                    rgba(255, 255, 255, 0.02) 5px,
+                    transparent 5px,
+                    transparent 22px
+                );
+            animation: diagonalWaves 1.2s linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes diagonalWaves {
+            0% { transform: translateX(0) translateY(0); opacity: 0.8; }
+            25% { transform: translateX(-15px) translateY(8px); opacity: 0.5; }
+            50% { transform: translateX(10px) translateY(-12px); opacity: 0.9; }
+            75% { transform: translateX(-8px) translateY(15px); opacity: 0.6; }
+            100% { transform: translateX(0) translateY(0); opacity: 0.8; }
+        }
+        /* ===== EFEITO DE AQUECIMENTO (WARM-UP) ===== */
+        #boot-overlay .warm-up {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(ellipse at center, transparent 40%, rgba(0, 255, 0, 0.15) 100%),
+                linear-gradient(to bottom, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(255,255,255,0.08) 100%);
+            animation: warmUpFlicker 0.7s steps(3) infinite;
+        }
+        @keyframes warmUpFlicker {
+            0%, 40%, 100% { opacity: 0.3; }
+            20%, 60%, 80% { opacity: 0.8; }
+        }
         #boot-overlay.boot-off {
             animation: bootOff 0.5s forwards;
         }
         @keyframes bootOff {
             0% { opacity: 1; }
-            15% { opacity: 1; background-color: #fff; } /* flash branco */
+            15% { opacity: 1; background-color: #fff; }
             30% { background-color: #000; }
             100% { opacity: 0; }
+        }
+        /* ===== EFEITO DE GLITCH INICIAL ===== */
+        #boot-overlay .boot-glitch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 3px);
+            animation: glitchShift 0.35s steps(4) infinite;
+        }
+        @keyframes glitchShift {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(12px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
         }
     </style>
     <base target="_blank">
@@ -478,6 +547,9 @@
     <!-- BOOT OVERLAY -->
     <div id="boot-overlay">
         <div class="boot-text">VIDEO</div>
+        <div class="diagonal-waves"></div>
+        <div class="warm-up"></div>
+        <div class="boot-glitch"></div>
     </div>
 
     <script>
@@ -1291,7 +1363,6 @@
                 const boot = document.getElementById('boot-overlay');
                 setTimeout(() => {
                     boot.classList.add('boot-off');
-                    // flash rápido
                     flash.classList.add('snap');
                     setTimeout(() => {
                         flash.classList.remove('snap');
@@ -1308,7 +1379,7 @@
                 currentScreen = 'home';
                 body.classList.remove('projects-mode', 'detail-mode');
                 showProjectsList();
-                bootSequence(); // inicia o boot
+                bootSequence();
             }
             init();
         })();
