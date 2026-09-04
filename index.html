@@ -1425,10 +1425,10 @@
         #screen-services .dos-dialog::before {
             content: '';
             position: absolute;
-            top: 4px;
-            left: 4px;
-            right: 4px;
-            bottom: 4px;
+            top: 12px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
             border: 2px solid #000000;
             pointer-events: none;
         }
@@ -1439,15 +1439,15 @@
 
         #screen-services .dos-dialog-title {
             position: absolute;
-            top: 4px;
+            top: 13px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             margin: 0;
-            padding: 0 14px;
+            padding: 0 12px;
             background: #FFFFFF;
             color: #000000;
-            font-size: 29px;
-            line-height: 1;
+            font-size: 24px;
+            line-height: 0.8;
             text-align: center;
             white-space: nowrap;
         }
@@ -2355,7 +2355,7 @@
             }
 
             const DOS_POPUP_CONTENT = [
-                "1. Community Setup\nServer structure, channels, roles and onboarding flows\n\n2. Community Management\nDaily operations, member engagement and community health\n\n3. Community Optimization\nIdentify operational gaps and improve community workflows\n\n4. Retention Analysis\nAnalyze member activity, churn patterns and engagement drop-offs\n\n5. Community Scaling\nProcesses and systems for managing growing communities",
+                "Community Setup\nServer structure, channels, roles and onboarding flows\n\nCommunity Management\nDaily operations, member engagement and community health\n\nCommunity Optimization\nIdentify operational gaps and improve community workflows\n\nRetention Analysis\nAnalyze member activity, churn patterns and engagement drop-offs\n\nCommunity Scaling\nProcesses and systems for managing growing communities",
                 "Community Growth\nGrowth strategies and acquisition campaigns\n\nEngagement Optimization\nIdentify engagement gaps and design activation campaigns\n\nRetention Optimization\nImprove recurring participation and reduce member churn\n\nAmbassador Programs\nProgram setup, coordination and community activation\n\nReferral Systems\nReferral campaign setup and management",
                 "Community Moderation\nReal-time moderation across Discord and Telegram\n\nModeration Systems\nRules, escalation flows and moderation procedures\n\nAnti-Scam Protection\nScam detection, reporting and preventive measures\n\nModerator Management\nModerator coordination, guidelines and team workflows\n\nIncident Management\nConflict resolution, escalations and community incidents",
                 "Discord Bot Development\nCustom bots and community utilities\n\nTelegram Bot Development\nCustom bots and automated workflows\n\nModeration Automation\nAutomated spam, scam and rule enforcement\n\nBot Integration\nConfiguration and integration of existing bots\n\nCommunity Automation\nRoles, tickets, verification and onboarding workflows",
@@ -2374,6 +2374,13 @@
 
                 const content = DOS_POPUP_CONTENT[i];
                 if (!content) return; // sem conteudo para este item
+
+                // clicar no mesmo botao fecha o popup
+                if (dosDialogOpen && dosDialog.dataset.index === String(i)) {
+                    dosCloseDialog();
+                    return;
+                }
+                dosDialog.dataset.index = i;
 
                 dosDialogTitle.textContent = 'Options';
                 dosDialogText.textContent = content;
