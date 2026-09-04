@@ -1950,7 +1950,13 @@
                     body.classList.remove('projects-mode', 'detail-mode');
                     if (screen === 'home') homeScreen.classList.add('active');
                     else if (screen === 'about') aboutScreen.classList.add('active');
-                    else if (screen === 'services') servicesScreen.classList.add('active');
+                    else if (screen === 'services') {
+                        servicesScreen.classList.add('active');
+                        // Resetar serviços: fechar popup, índice 0, atualizar seleção
+                        dosCloseDialog();
+                        dosIndex = 0;
+                        dosUpdate();
+                    }
                     else if (screen === 'projects') {
                         projectsScreen.classList.add('active');
                         body.classList.add('projects-mode');
@@ -1961,183 +1967,200 @@
                 });
             }
 
-            const PROJECTS = [{
-                name: 'CoralApp',
-                role: 'Community Manager',
-                duration: '2024 – 2024',
-                category: 'Wellness',
-                description: 'Web3 platform focused on community engagement and decentralized rewards. The project aims to connect users through gamified interactions within the blockchain ecosystem.',
-                url: '',
-                gif: 'coralapp.gif',
-                papel: ['Daily community management on Discord and Telegram', 'Creation of engagement campaigns', 'Retention metrics analysis', 'Moderation of AMAs and live events'],
-                fiz: ['Increased active member base by 40%', 'Implemented participation reward system', 'Organized 12+ community events', 'Reduced support response time by 60%'],
-                tags: ['Web3', 'Discord', 'Telegram', 'Gamification', 'Blockchain']
-            }, {
-                name: 'Binance',
-                role: 'Binance Angel',
-                duration: '2021 – 2022',
-                category: 'Exchange',
-                description: 'One of the largest cryptocurrency exchanges in the world. I moderated Portuguese-speaking communities, ensuring a safe and informative environment for users.',
-                url: '',
-                gif: 'binance.gif',
-                papel: ['Real-time chat moderation', 'Community rules enforcement', 'Support for new users', 'Reporting suspicious activities'],
-                fiz: ['Maintained compliance rate above 99%', 'Assisted in resolving 200+ monthly tickets', 'Identified and reported 50+ scam attempts', 'Collaborated on translating official announcements'],
-                tags: ['Exchange', 'Moderation', 'Support', 'Crypto', 'PT-BR']
-            }, {
-                name: 'Arena Games',
-                role: 'Community Lead',
-                duration: '2023',
-                category: 'Gaming',
-                description: 'Competitive gaming platform with blockchain integration. Active community of gamers and esports enthusiasts in the Web3 space.',
-                url: '',
-                gif: 'arenagames.gif',
-                papel: ['Leadership of moderator team', 'Organic growth strategy', 'Influencer partnerships', 'Crisis and conflict management'],
-                fiz: ['Grew community from 2k to 15k members', 'Closed partnerships with 8 streamers', 'Created ambassador program', 'Reduced churn rate by 25%'],
-                tags: ['Gaming', 'Esports', 'Web3', 'Leadership', 'Partnerships']
-            }, {
-                name: 'Bionic',
-                role: 'Moderator',
-                duration: '2022 – 2023',
-                category: 'Tech',
-                description: 'Tech infrastructure project focused on automation and productivity tools. Technical community of developers and early adopters.',
-                url: '',
-                gif: 'bionic.gif',
-                papel: ['Technical forum moderation', 'Integration support', 'Bug feedback for developers', 'Community documentation'],
-                fiz: ['Created FAQ with 50+ answers', 'Reduced repetitive tickets by 35%', 'Mapped 20+ critical bugs', 'Organized beta testing with 100 users'],
-                tags: ['Tech', 'Automation', 'Technical Support', 'QA', 'Documentation']
-            }, {
-                name: 'Reaktor',
-                role: 'Moderator',
-                duration: '2022',
-                category: 'DevOps',
-                description: 'DevOps tool for continuous deployment and monitoring. Community of devs and SREs looking to optimize pipelines.',
-                url: '',
-                gif: 'reaktor.gif',
-                papel: ['Building community from scratch', 'Onboarding new members', 'Creating technical content', 'Networking with senior devs'],
-                fiz: ['Launched community with 500 members in month 1', 'Produced 20+ tutorials and guides', 'Organized 6 technical workshops', 'Established direct feedback channel with founders'],
-                tags: ['DevOps', 'Community', 'Tutorials', 'Onboarding', 'Networking']
-            }, {
-                name: 'FortBlockGames',
-                role: 'Moderator',
-                duration: '2024 – now',
-                category: 'Gaming',
-                description: 'Block strategy game with play-to-earn economy. Global community of competitive players and content creators.',
-                url: '',
-                gif: 'fortblockgames.gif',
-                papel: ['Multilingual moderation', 'Tournament support', 'Creator management', 'Gameplay feedback analysis'],
-                fiz: ['Supported 5 official tournaments', 'Managed 15+ partner creators', 'Collected 300+ player feedbacks', 'Maintained NPS above 8.5'],
-                tags: ['Gaming', 'P2E', 'Tournaments', 'Creators', 'Multilingual']
-            }, {
-                name: 'BeeOS',
-                role: 'Community Manager',
-                duration: '2023',
-                category: 'OS',
-                description: 'Decentralized operating system focused on privacy and digital sovereignty. Community of early adopters and open source enthusiasts.',
-                url: '',
-                gif: 'beeos.gif',
-                papel: ['Global community management', 'Update communication', 'Beta testing coordination', 'Relationship with open source contributors'],
-                fiz: ['Coordinated beta with 1k testers', 'Reduced post-launch churn by 30%', 'Created bug bounty program', 'Increased contributions by 45%'],
-                tags: ['OS', 'Open Source', 'Privacy', 'Beta', 'Global']
-            }, {
-                name: 'Streamr',
-                role: 'Moderator',
-                duration: '2022 – 2023',
-                category: 'Streaming',
-                description: 'Real-time data streaming protocol. Community of developers and data engineers interested in decentralized data.',
-                url: '',
-                gif: 'streamr.gif',
-                papel: ['Developer community leadership', 'Educational content creation', 'Hackathon organization', 'Mentoring new contributors'],
-                fiz: ['Organized 3 hackathons with 500+ participants', 'Created introductory course accessed by 2k devs', 'Increased GitHub contributions by 60%', 'Established grants program'],
-                tags: ['Streaming', 'Data', 'Hackathon', 'DevRel', 'Mentorship']
-            }, {
-                name: 'Xend Finance',
-                role: 'Moderator',
-                duration: '2023',
-                category: 'DeFi',
-                description: 'DeFi savings and credit union platform. Community focused on financial inclusion and DeFi education.',
-                url: '',
-                gif: 'xend.gif',
-                papel: ['Moderation and financial education', 'Credit union support', 'Material translation', 'Educational webinars'],
-                fiz: ['Educated 1k+ users about DeFi', 'Supported 30+ credit unions', 'Translated 25+ technical articles', 'Organized 8 educational webinars'],
-                tags: ['DeFi', 'Education', 'Credit Unions', 'Moderation', 'Webinars']
-            }, {
-                name: 'Wicrypt',
-                role: 'Moderator',
-                duration: '2023 – 2024',
-                category: 'Network',
-                description: 'Decentralized WiFi sharing network. Community of hosts and users in emerging markets.',
-                url: '',
-                gif: 'wicrypt.gif',
-                papel: ['Host community management', 'User technical support', 'Acquisition campaigns', 'Retention and loyalty programs'],
-                fiz: ['Increased host base by 55%', 'Reduced host churn by 40%', 'Created referral program', 'Supported launch in 3 new countries'],
-                tags: ['Network', 'WiFi', 'Hosts', 'Acquisition', 'Retention']
-            }, {
-                name: 'PIPE',
-                role: 'Moderator',
-                duration: '2024',
-                category: 'Infra',
-                description: 'Data pipeline infrastructure for Web3. Technical community of data engineers and partner protocols.',
-                url: '',
-                gif: 'pipe.gif',
-                papel: ['Technical community building', 'Protocol partnerships', 'Documentation and tutorials', 'Technical events'],
-                fiz: ['Built community of 3k engineers', 'Closed 10+ technical partnerships', 'Produced 15+ whitepapers and guides', 'Organized summit with 200+ attendees'],
-                tags: ['Infra', 'Data', 'Partnerships', 'Documentation', 'Events']
-            }, {
-                name: 'TAP',
-                role: 'Moderator',
-                duration: '2022',
-                category: 'Payments',
-                description: 'Instant crypto payment solution. Community of merchants and end-users seeking digital payment adoption.',
-                url: '',
-                gif: 'tap.gif',
-                papel: ['Merchant support moderation', 'New partner onboarding', 'UX feedback', 'Fraud reporting'],
-                fiz: ['Onboarded 50+ merchants', 'Reduced KYC time by 25%', 'Identified 15+ fraud cases', 'Created best practices guide'],
-                tags: ['Payments', 'Merchants', 'KYC', 'Fraud', 'Onboarding']
-            }, {
-                name: 'Sheertopia',
-                role: 'Moderator',
-                duration: '2023 – now',
-                category: 'Metaverse',
-                description: 'Metaverse focused on immersive experiences and virtual economy. Community of creators, gamers, and virtual investors.',
-                url: '',
-                gif: 'sheertopia.gif',
-                papel: ['Strategic community leadership', 'Creator and builder management', 'Virtual economy and tokens', 'Events and immersive experiences'],
-                fiz: ['Grew community to 25k+ members', 'Managed 30+ official creators', 'Organized 10+ metaverse events', 'Increased transaction volume by 80%'],
-                tags: ['Metaverse', 'Creators', 'Virtual Economy', 'Events', 'Tokens']
-            }, {
-                name: "Lion's Share Group",
-                role: 'Affiliate Moderator',
-                duration: '2024',
-                category: 'Media',
-                description: 'Media and content group focused on crypto and finance education. Community of followers and content creators.',
-                url: '',
-                gif: 'lionssharegroup.gif',
-                papel: ['Creator community management', 'Content curation', 'Social media engagement', 'Media partnerships'],
-                fiz: ['Increased engagement by 70%', 'Coordinated 20+ content campaigns', 'Closed 5+ media partnerships', 'Created affiliate program'],
-                tags: ['Media', 'Creators', 'Content', 'Engagement', 'Affiliates']
-            }, {
-                name: 'Coinracer',
-                role: 'Head Mod',
-                duration: '2023',
-                category: 'Gaming',
-                description: 'Arcade racing game with NFT economy. Community of casual gamers and digital item collectors.',
-                url: '',
-                gif: 'coinracer.gif',
-                papel: ['Gamer community building', 'NFT and drops management', 'Player support', 'Community marketing'],
-                fiz: ['Launched community with 8k members', 'Coordinated 6 NFT drops', 'Supported 3 competitive seasons', 'Increased D7 retention by 35%'],
-                tags: ['Gaming', 'NFT', 'Arcade', 'Drops', 'Retention']
-            }, {
-                name: 'VS1',
-                role: 'Community Manager',
-                duration: '2022 – now',
-                category: 'Platform',
-                description: 'Services and tools platform for Web3 communities. Central hub for community managers and projects.',
-                url: '',
-                gif: 'vs1.gif',
-                papel: ['Community of managers management', 'Platform tools support', 'Product feedback', 'Educational resource creation'],
-                fiz: ['Maintained active community of 10k+ managers', 'Collected 500+ product feedbacks', 'Created 30+ templates and resources', 'Organized annual conference with 1k+ attendees'],
-                tags: ['Platform', 'Managers', 'Tools', 'Product', 'Conference']
-            }];
+            const PROJECTS = [
+                {
+                    name: 'CoralApp',
+                    role: 'Community Manager',
+                    duration: '2024 – 2024',
+                    category: 'Wellness',
+                    description: 'Web3 platform focused on community engagement and decentralized rewards. The project aims to connect users through gamified interactions within the blockchain ecosystem.',
+                    url: '',
+                    gif: 'coralapp.gif',
+                    papel: ['Daily community management on Discord and Telegram', 'Creation of engagement campaigns', 'Retention metrics analysis', 'Moderation of AMAs and live events'],
+                    fiz: ['Helped increase active member base by 40%', 'Helped implement participation reward system', 'Helped organize 12+ community events', 'Helped reduce support response time by 60%'],
+                    tags: ['Web3', 'Discord', 'Telegram', 'Gamification', 'Blockchain']
+                },
+                {
+                    name: 'Xend Finance',
+                    role: 'Moderator',
+                    duration: '2023',
+                    category: 'DeFi',
+                    description: 'DeFi savings and credit union platform. Community focused on financial inclusion and DeFi education.',
+                    url: '',
+                    gif: 'xend.gif',
+                    papel: ['Moderation and financial education', 'Credit union support', 'Material translation', 'Educational webinars'],
+                    fiz: ['Helped educate 1k+ users about DeFi', 'Helped support 30+ credit unions', 'Helped translate 25+ technical articles', 'Helped organize 8 educational webinars'],
+                    tags: ['DeFi', 'Education', 'Credit Unions', 'Moderation', 'Webinars']
+                },
+                {
+                    name: 'Binance',
+                    role: 'Binance Angel',
+                    duration: '2021 – 2022',
+                    category: 'Exchange',
+                    description: 'One of the largest cryptocurrency exchanges in the world. I moderated Portuguese-speaking communities, ensuring a safe and informative environment for users.',
+                    url: '',
+                    gif: 'binance.gif',
+                    papel: ['Real-time chat moderation', 'Community rules enforcement', 'Support for new users', 'Reporting suspicious activities'],
+                    fiz: ['Helped maintain compliance rate above 99%', 'Helped assist in resolving 200+ monthly tickets', 'Helped identify and report 50+ scam attempts', 'Helped collaborate on translating official announcements'],
+                    tags: ['Exchange', 'Moderation', 'Support', 'Crypto', 'PT-BR']
+                },
+                {
+                    name: 'Arena Games',
+                    role: 'Community Lead',
+                    duration: '2023',
+                    category: 'Gaming',
+                    description: 'Competitive gaming platform with blockchain integration. Active community of gamers and esports enthusiasts in the Web3 space.',
+                    url: '',
+                    gif: 'arenagames.gif',
+                    papel: ['Leadership of moderator team', 'Organic growth strategy', 'Influencer partnerships', 'Crisis and conflict management'],
+                    fiz: ['Helped grow community from 2k to 15k members', 'Helped close partnerships with 8 streamers', 'Helped create ambassador program', 'Helped reduce churn rate by 25%'],
+                    tags: ['Gaming', 'Esports', 'Web3', 'Leadership', 'Partnerships']
+                },
+                {
+                    name: 'Bionic',
+                    role: 'Moderator',
+                    duration: '2022 – 2023',
+                    category: 'Tech',
+                    description: 'Tech infrastructure project focused on automation and productivity tools. Technical community of developers and early adopters.',
+                    url: '',
+                    gif: 'bionic.gif',
+                    papel: ['Technical forum moderation', 'Integration support', 'Bug feedback for developers', 'Community documentation'],
+                    fiz: ['Helped create FAQ with 50+ answers', 'Helped reduce repetitive tickets by 35%', 'Helped map 20+ critical bugs', 'Helped organize beta testing with 100 users'],
+                    tags: ['Tech', 'Automation', 'Technical Support', 'QA', 'Documentation']
+                },
+                {
+                    name: 'Reaktor',
+                    role: 'Moderator',
+                    duration: '2022',
+                    category: 'DevOps',
+                    description: 'DevOps tool for continuous deployment and monitoring. Community of devs and SREs looking to optimize pipelines.',
+                    url: '',
+                    gif: 'reaktor.gif',
+                    papel: ['Building community from scratch', 'Onboarding new members', 'Creating technical content', 'Networking with senior devs'],
+                    fiz: ['Helped launch community with 500 members in month 1', 'Helped produce 20+ tutorials and guides', 'Helped organize 6 technical workshops', 'Helped establish direct feedback channel with founders'],
+                    tags: ['DevOps', 'Community', 'Tutorials', 'Onboarding', 'Networking']
+                },
+                {
+                    name: 'FortBlockGames',
+                    role: 'Moderator',
+                    duration: '2024 – now',
+                    category: 'Gaming',
+                    description: 'Block strategy game with play-to-earn economy. Global community of competitive players and content creators.',
+                    url: '',
+                    gif: 'fortblockgames.gif',
+                    papel: ['Multilingual moderation', 'Tournament support', 'Creator management', 'Gameplay feedback analysis'],
+                    fiz: ['Helped support 5 official tournaments', 'Helped manage 15+ partner creators', 'Helped collect 300+ player feedbacks', 'Helped maintain NPS above 8.5'],
+                    tags: ['Gaming', 'P2E', 'Tournaments', 'Creators', 'Multilingual']
+                },
+                {
+                    name: 'BeeOS',
+                    role: 'Community Manager',
+                    duration: '2023',
+                    category: 'OS',
+                    description: 'Decentralized operating system focused on privacy and digital sovereignty. Community of early adopters and open source enthusiasts.',
+                    url: '',
+                    gif: 'beeos.gif',
+                    papel: ['Global community management', 'Update communication', 'Beta testing coordination', 'Relationship with open source contributors'],
+                    fiz: ['Helped coordinate beta with 1k testers', 'Helped reduce post-launch churn by 30%', 'Helped create bug bounty program', 'Helped increase contributions by 45%'],
+                    tags: ['OS', 'Open Source', 'Privacy', 'Beta', 'Global']
+                },
+                {
+                    name: 'Streamr',
+                    role: 'Moderator',
+                    duration: '2022 – 2023',
+                    category: 'Streaming',
+                    description: 'Real-time data streaming protocol. Community of developers and data engineers interested in decentralized data.',
+                    url: '',
+                    gif: 'streamr.gif',
+                    papel: ['Developer community leadership', 'Educational content creation', 'Hackathon organization', 'Mentoring new contributors'],
+                    fiz: ['Helped organize 3 hackathons with 500+ participants', 'Helped create introductory course accessed by 2k devs', 'Helped increase GitHub contributions by 60%', 'Helped establish grants program'],
+                    tags: ['Streaming', 'Data', 'Hackathon', 'DevRel', 'Mentorship']
+                },
+                {
+                    name: 'Wicrypt',
+                    role: 'Moderator',
+                    duration: '2023 – 2024',
+                    category: 'Network',
+                    description: 'Decentralized WiFi sharing network. Community of hosts and users in emerging markets.',
+                    url: '',
+                    gif: 'wicrypt.gif',
+                    papel: ['Host community management', 'User technical support', 'Acquisition campaigns', 'Retention and loyalty programs'],
+                    fiz: ['Helped increase host base by 55%', 'Helped reduce host churn by 40%', 'Helped create referral program', 'Helped support launch in 3 new countries'],
+                    tags: ['Network', 'WiFi', 'Hosts', 'Acquisition', 'Retention']
+                },
+                {
+                    name: 'PIPE',
+                    role: 'Moderator',
+                    duration: '2024',
+                    category: 'Infra',
+                    description: 'Data pipeline infrastructure for Web3. Technical community of data engineers and partner protocols.',
+                    url: '',
+                    gif: 'pipe.gif',
+                    papel: ['Technical community building', 'Protocol partnerships', 'Documentation and tutorials', 'Technical events'],
+                    fiz: ['Helped build community of 3k engineers', 'Helped close 10+ technical partnerships', 'Helped produce 15+ whitepapers and guides', 'Helped organize summit with 200+ attendees'],
+                    tags: ['Infra', 'Data', 'Partnerships', 'Documentation', 'Events']
+                },
+                {
+                    name: 'TAP',
+                    role: 'Moderator',
+                    duration: '2022',
+                    category: 'Payments',
+                    description: 'Instant crypto payment solution. Community of merchants and end-users seeking digital payment adoption.',
+                    url: '',
+                    gif: 'tap.gif',
+                    papel: ['Merchant support moderation', 'New partner onboarding', 'UX feedback', 'Fraud reporting'],
+                    fiz: ['Helped onboard 50+ merchants', 'Helped reduce KYC time by 25%', 'Helped identify 15+ fraud cases', 'Helped create best practices guide'],
+                    tags: ['Payments', 'Merchants', 'KYC', 'Fraud', 'Onboarding']
+                },
+                {
+                    name: 'Sheertopia',
+                    role: 'Moderator',
+                    duration: '2023 – now',
+                    category: 'Metaverse',
+                    description: 'Metaverse focused on immersive experiences and virtual economy. Community of creators, gamers, and virtual investors.',
+                    url: '',
+                    gif: 'sheertopia.gif',
+                    papel: ['Strategic community leadership', 'Creator and builder management', 'Virtual economy and tokens', 'Events and immersive experiences'],
+                    fiz: ['Helped grow community to 25k+ members', 'Helped manage 30+ official creators', 'Helped organize 10+ metaverse events', 'Helped increase transaction volume by 80%'],
+                    tags: ['Metaverse', 'Creators', 'Virtual Economy', 'Events', 'Tokens']
+                },
+                {
+                    name: "Lion's Share Group",
+                    role: 'Affiliate Moderator',
+                    duration: '2024',
+                    category: 'Media',
+                    description: 'Media and content group focused on crypto and finance education. Community of followers and content creators.',
+                    url: '',
+                    gif: 'lionssharegroup.gif',
+                    papel: ['Creator community management', 'Content curation', 'Social media engagement', 'Media partnerships'],
+                    fiz: ['Helped increase engagement by 70%', 'Helped coordinate 20+ content campaigns', 'Helped close 5+ media partnerships', 'Helped create affiliate program'],
+                    tags: ['Media', 'Creators', 'Content', 'Engagement', 'Affiliates']
+                },
+                {
+                    name: 'Coinracer',
+                    role: 'Head Mod',
+                    duration: '2023',
+                    category: 'Gaming',
+                    description: 'Arcade racing game with NFT economy. Community of casual gamers and digital item collectors.',
+                    url: '',
+                    gif: 'coinracer.gif',
+                    papel: ['Gamer community building', 'NFT and drops management', 'Player support', 'Community marketing'],
+                    fiz: ['Helped launch community with 8k members', 'Helped coordinate 6 NFT drops', 'Helped support 3 competitive seasons', 'Helped increase D7 retention by 35%'],
+                    tags: ['Gaming', 'NFT', 'Arcade', 'Drops', 'Retention']
+                },
+                {
+                    name: 'VS1',
+                    role: 'Community Manager',
+                    duration: '2022 – now',
+                    category: 'Platform',
+                    description: 'Services and tools platform for Web3 communities. Central hub for community managers and projects.',
+                    url: '',
+                    gif: 'vs1.gif',
+                    papel: ['Community of managers management', 'Platform tools support', 'Product feedback', 'Educational resource creation'],
+                    fiz: ['Helped maintain active community of 10k+ managers', 'Helped collect 500+ product feedbacks', 'Helped create 30+ templates and resources', 'Helped organize annual conference with 1k+ attendees'],
+                    tags: ['Platform', 'Managers', 'Tools', 'Product', 'Conference']
+                }
+            ];
 
             const iconsArea = document.getElementById('projects-icons-area');
             const detailView = document.getElementById('projects-detail');
@@ -2361,8 +2384,8 @@
                 "Discord Bot Development\nCustom bots and community utilities\n\nTelegram Bot Development\nCustom bots and automated workflows\n\nModeration Automation\nAutomated spam, scam and rule enforcement\n\nBot Integration\nConfiguration and integration of existing bots\n\nCommunity Automation\nRoles, tickets, verification and onboarding workflows",
                 "User Support\nMember assistance and issue resolution\n\nTechnical Support\nTroubleshooting, integrations and technical issues\n\nTicket Operations\nTicket handling, categorization and escalation\n\nBug Triage\nCollect, reproduce and escalate user-reported issues\n\nOnboarding Systems\nNew-user flows, documentation and guidance",
                 "Community Documentation\nFAQs, guides and knowledge bases\n\nTechnical Guides\nTutorials and educational resources\n\nCommunity Education\nWeb3, product and ecosystem education\n\nLocalization\nCommunity announcements and content translation",
-                "AMA Management\nPlanning, moderation and post-event coordination\n\nCommunity Events\nPlanning and operational management\n\nTournament Operations\nTournament coordination and community engagement\n\nCreator Management\nCreator onboarding, coordination and partnerships\n\nInfluencer Partnerships\nOutreach, coordination and campaign support"
-];
+                "Partnerships\nCollaborations with similar projects to expand reach\n\nRaffles\nCreating and managing NFT raffles for our community\n\nEvents\nPlanning and executing community events\n\nTournaments\nOrganizing competitions and engaging players\n\nCreator Management\nManaging creators and content partnerships"
+            ];
 
             function dosOpen(i) {
                 // "Back" volta pra home
