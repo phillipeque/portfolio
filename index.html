@@ -1409,12 +1409,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 76%;
-            max-width: 840px;
+            width: 58%;
+            max-width: 620px;
+            min-height: 360px;
             background: #0000AA;
             border: 2px solid #FFFFFF;
             box-shadow: 10px 10px 0 #000000;
-            padding: 14px 18px;
+            padding: 32px 22px 20px;
             display: none;
             z-index: 5;
             color: #FFFFFF;
@@ -1427,20 +1428,26 @@
         }
 
         #screen-services .dos-dialog-title {
-            margin: 0 0 10px;
-            padding: 0;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+            padding: 0 14px;
+            background: #0000AA;
             color: #FFFFFF;
-            font-size: 34px;
+            font-size: 36px;
             line-height: 1;
             text-align: center;
+            white-space: nowrap;
         }
 
         #screen-services .dos-dialog-text {
             margin: 0;
             padding: 0;
             color: #FFFFFF;
-            font-size: 18px;
-            line-height: 1.4;
+            font-size: 22px;
+            line-height: 1.45;
             white-space: pre-line;
         }
 
@@ -2347,7 +2354,7 @@
 
                 // Community Management abre o popup estilo BIOS
                 if (i === 0) {
-                    dosDialogTitle.textContent = 'Community Management';
+                    dosDialogTitle.textContent = 'Options';
                     dosDialogText.textContent =
                         '1. Community Setup — Server structure, channels, roles and onboarding flows\n' +
                         '2. Community Management — Daily operations, member engagement and community health\n' +
