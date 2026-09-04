@@ -19,7 +19,6 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" as="style" />
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <style>
-        /* Todo o CSS original permanece */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100vh; background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
         #tv-container { position: relative; width: 100vw; height: 100vh; }
@@ -230,6 +229,63 @@
         #screen-services .dos-dialog-title { position: absolute; top: 13px; left: 50%; transform: translate(-50%, -50%); margin: 0; padding: 0 12px; background: #FFFFFF; color: #000000; font-size: 24px; line-height: 0.8; text-align: center; white-space: nowrap; }
         #screen-services .dos-dialog-text { margin: 0; padding: 0; color: #000000; font-size: 22px; line-height: 1.45; white-space: pre-line; }
         #screen-services .dos-dialog-hint { margin: 12px 0 0; padding: 0; color: #000000; font-size: 16px; line-height: 1; opacity: 0.8; text-align: center; }
+
+        /* ===== BOOT OVERLAY (TV ligando) ===== */
+        #boot-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 35;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+        #boot-overlay .boot-text {
+            position: absolute;
+            top: 12%;
+            right: 8%;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            text-shadow: 0 0 8px #00ff00, 0 0 16px #00ff00;
+            animation: blinkVideo 1s step-end infinite;
+        }
+        @keyframes blinkVideo {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        #boot-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.4) 2px, rgba(0,0,0,0.4) 4px);
+            animation: scanBoot 0.12s linear infinite;
+        }
+        @keyframes scanBoot {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 4px; }
+        }
+        #boot-overlay.boot-off {
+            animation: bootOff 0.5s forwards;
+        }
+        @keyframes bootOff {
+            0% { opacity: 1; }
+            15% { opacity: 1; background-color: #fff; } /* flash branco */
+            30% { background-color: #000; }
+            100% { opacity: 0; }
+        }
     </style>
     <base target="_blank">
 </head>
@@ -417,6 +473,11 @@
         <div id="scanlines"></div>
         <div id="scan-sweep"></div>
         <div id="tv-frame"></div>
+    </div>
+
+    <!-- BOOT OVERLAY -->
+    <div id="boot-overlay">
+        <div class="boot-text">VIDEO</div>
     </div>
 
     <script>
@@ -1225,12 +1286,29 @@
             setInterval(dosTickClock, 1000);
             dosUpdate();
 
+            // ===== BOOT SEQUENCE =====
+            function bootSequence() {
+                const boot = document.getElementById('boot-overlay');
+                setTimeout(() => {
+                    boot.classList.add('boot-off');
+                    // flash rápido
+                    flash.classList.add('snap');
+                    setTimeout(() => {
+                        flash.classList.remove('snap');
+                    }, 100);
+                    setTimeout(() => {
+                        boot.style.display = 'none';
+                    }, 600);
+                }, 3500);
+            }
+
             function init() {
                 document.querySelectorAll('.screen-container').forEach(el => el.classList.remove('active'));
                 homeScreen.classList.add('active');
                 currentScreen = 'home';
                 body.classList.remove('projects-mode', 'detail-mode');
                 showProjectsList();
+                bootSequence(); // inicia o boot
             }
             init();
         })();
