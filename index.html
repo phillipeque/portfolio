@@ -1409,18 +1409,28 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 58%;
-            max-width: 620px;
-            min-height: 360px;
+            width: 46%;
+            max-width: 480px;
+            min-height: 440px;
             background: #0000AA;
-            border: 2px solid #FFFFFF;
-            box-shadow: 10px 10px 0 #000000;
-            padding: 32px 22px 20px;
+            box-shadow: 10px 30px 0 #000000;
+            padding: 36px 22px 20px;
             display: none;
             z-index: 5;
             color: #FFFFFF;
             font-family: 'VT323', 'Courier New', monospace;
             box-sizing: border-box;
+        }
+
+        #screen-services .dos-dialog::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 2px solid #FFFFFF;
+            pointer-events: none;
         }
 
         #screen-services .dos-dialog.open {
@@ -1429,7 +1439,7 @@
 
         #screen-services .dos-dialog-title {
             position: absolute;
-            top: 0;
+            top: 5px;
             left: 50%;
             transform: translate(-50%, -50%);
             margin: 0;
