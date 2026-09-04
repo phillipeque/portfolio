@@ -1439,9 +1439,9 @@
 
         #screen-services .dos-dialog-title {
             position: absolute;
-            top: 5px;
+            top: 4px;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
             margin: 0;
             padding: 0 14px;
             background: #FFFFFF;
@@ -2354,6 +2354,16 @@
                 });
             }
 
+            const DOS_POPUP_CONTENT = [
+                "1. Community Setup\nServer structure, channels, roles and onboarding flows\n\n2. Community Management\nDaily operations, member engagement and community health\n\n3. Community Optimization\nIdentify operational gaps and improve community workflows\n\n4. Retention Analysis\nAnalyze member activity, churn patterns and engagement drop-offs\n\n5. Community Scaling\nProcesses and systems for managing growing communities",
+                "Community Growth\nGrowth strategies and acquisition campaigns\n\nEngagement Optimization\nIdentify engagement gaps and design activation campaigns\n\nRetention Optimization\nImprove recurring participation and reduce member churn\n\nAmbassador Programs\nProgram setup, coordination and community activation\n\nReferral Systems\nReferral campaign setup and management",
+                "Community Moderation\nReal-time moderation across Discord and Telegram\n\nModeration Systems\nRules, escalation flows and moderation procedures\n\nAnti-Scam Protection\nScam detection, reporting and preventive measures\n\nModerator Management\nModerator coordination, guidelines and team workflows\n\nIncident Management\nConflict resolution, escalations and community incidents",
+                "Discord Bot Development\nCustom bots and community utilities\n\nTelegram Bot Development\nCustom bots and automated workflows\n\nModeration Automation\nAutomated spam, scam and rule enforcement\n\nBot Integration\nConfiguration and integration of existing bots\n\nCommunity Automation\nRoles, tickets, verification and onboarding workflows",
+                "User Support\nMember assistance and issue resolution\n\nTechnical Support\nTroubleshooting, integrations and technical issues\n\nTicket Operations\nTicket handling, categorization and escalation\n\nBug Triage\nCollect, reproduce and escalate user-reported issues\n\nOnboarding Systems\nNew-user flows, documentation and guidance",
+                "Community Documentation\nFAQs, guides and knowledge bases\n\nTechnical Guides\nTutorials and educational resources\n\nCommunity Education\nWeb3, product and ecosystem education\n\nLocalization\nCommunity announcements and content translation",
+                "AMA Management\nPlanning, moderation and post-event coordination\n\nCommunity Events\nPlanning and operational management\n\nTournament Operations\nTournament coordination and community engagement\n\nCreator Management\nCreator onboarding, coordination and partnerships\n\nInfluencer Partnerships\nOutreach, coordination and campaign support"
+];
+
             function dosOpen(i) {
                 // "Back" volta pra home
                 if (i === menuItems.length - 1) {
@@ -2362,20 +2372,13 @@
                     return;
                 }
 
-                // Community Management abre o popup estilo BIOS
-                if (i === 0) {
-                    dosDialogTitle.textContent = 'Options';
-                    dosDialogText.textContent =
-                        '1. Community Setup — Server structure, channels, roles and onboarding flows\n' +
-                        '2. Community Management — Daily operations, member engagement and community health\n' +
-                        '3. Community Optimization — Identify operational gaps and improve community workflows\n' +
-                        '4. Retention Analysis — Analyze member activity, churn patterns and engagement drop-offs\n' +
-                        '5. Community Scaling — Processes and systems for managing growing communities';
-                    dosDialog.classList.add('open');
-                    dosDialogOpen = true;
-                }
+                const content = DOS_POPUP_CONTENT[i];
+                if (!content) return; // sem conteudo para este item
 
-                // Demais itens: nenhuma ação
+                dosDialogTitle.textContent = 'Options';
+                dosDialogText.textContent = content;
+                dosDialog.classList.add('open');
+                dosDialogOpen = true;
             }
 
             function dosCloseDialog() {
