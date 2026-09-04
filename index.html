@@ -998,6 +998,24 @@
             }
         }
 
+        /* ========== ANIMAÇÃO DE TREMBLE (SHAKE) PARA O GITHUB ========== */
+        @keyframes shake {
+            0% { transform: translateX(0) rotate(0deg); }
+            10% { transform: translateX(-6px) rotate(-3deg); }
+            20% { transform: translateX(6px) rotate(3deg); }
+            30% { transform: translateX(-4px) rotate(-2deg); }
+            40% { transform: translateX(4px) rotate(2deg); }
+            50% { transform: translateX(-2px) rotate(-1deg); }
+            60% { transform: translateX(2px) rotate(1deg); }
+            70% { transform: translateX(-1px) rotate(0deg); }
+            80% { transform: translateX(1px) rotate(0deg); }
+            90% { transform: translateX(0) rotate(0deg); }
+            100% { transform: translateX(0) rotate(0deg); }
+        }
+        .icon-img.shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
         @media (max-width: 768px) {
             body.projects-mode #tv-screen {
                 padding: 1% 4% 1% 4%;
@@ -1135,44 +1153,66 @@
             }
 
             #screen-services .control-panel {
-                padding: 12px 16px 10px;
+                width: 88%;
+                height: 78%;
+                padding-left: 18px;
+                padding-right: 18px;
             }
-            .control-panel .panel-titlebar {
-                margin: 0 -18px; /* Ajustado para mobile */
+            #screen-services .panel-titlebar {
+                height: 16px;
+                margin: 0 -18px;
                 border-radius: 6px 6px 0 0;
             }
-            .control-panel .panel-titlebar .title-text {
-                font-size: 36px;
-                padding: 2px 10px 2px 6px;
-            }
-            .control-panel .panel-titlebar {
-                border-bottom-width: 1px;
-            }
-            .control-panel .menu-area .menu-item {
-                font-size: 32.4px;
-                padding: 2px 6px;
-            }
-            .control-panel .clock-box {
+            #screen-services .panel-titlebar .title-text {
+                height: 14px;
+                margin: 0;
+                padding-left: 8px;
+                padding-right: 7px;
                 font-size: 24px;
-                padding: 4px 10px;
+                line-height: 12px;
+                border: none;
+                border-radius: 4px 4px 0 0;
             }
-            .control-panel .panel-footer {
-                font-size: 28.8px;
-                margin-top: 12px;
-                padding-top: 6px;
+            #screen-services .menu-area {
+                top: 32px;
             }
-            .dos-dialog {
+            #screen-services .menu-area .menu-item {
+                height: 21.6px;
+                padding: 0 2px;
+                font-size: 21.6px;
+                line-height: 21.6px;
+            }
+            #screen-services .menu-area .menu-gap {
+                height: 15px;
+            }
+            #screen-services .clock-box {
+                top: 340px;
+                right: 3%;
+                min-width: 198px;
+                height: 46.5px;
+                padding: 3px 10px 0;
+                font-size: 22.5px;
+                line-height: 18px;
+            }
+            #screen-services .panel-footer {
+                flex-basis: 20px;
+                height: 20px;
+                padding-bottom: 5px;
+                font-size: 24px;
+                line-height: 16px;
+            }
+            #screen-services .dos-dialog {
                 width: 82%;
                 padding: 12px 14px;
             }
-            .dos-dialog-title {
+            #screen-services .dos-dialog-title {
                 font-size: 22px;
             }
-            .dos-dialog-text {
-                font-size: 27px;
+            #screen-services .dos-dialog-text {
+                font-size: 18px;
             }
-            .dos-dialog-hint {
-                font-size: 24px;
+            #screen-services .dos-dialog-hint {
+                font-size: 16px;
             }
         }
 
@@ -1220,11 +1260,11 @@
         #screen-services .panel-titlebar {
             flex: 0 0 auto;
             height: 26px;
-            margin: 0 -28px; /* CORRIGIDO: para alcançar as bordas */
+            margin: 0 -28px;
             padding: 0;
             background: #FFFFFF;
             border-bottom: 1px solid #FFFFFF;
-            border-radius: 6px 6px 0 0; /* CORRIGIDO: arredondar cantos superiores */
+            border-radius: 6px 6px 0 0;
             font-size: 0;
             line-height: 1;
             box-sizing: border-box;
@@ -1410,82 +1450,6 @@
             font-size: 18px;
             line-height: 1;
             opacity: 0.8;
-        }
-
-        @media (max-width: 768px) {
-            #screen-services .control-panel {
-                width: 88%;
-                height: 78%;
-                padding-left: 18px;
-                padding-right: 18px;
-            }
-
-            #screen-services .panel-titlebar {
-                height: 16px;
-                margin: 0 -18px; /* CORRIGIDO: para mobile */
-                border-radius: 6px 6px 0 0;
-            }
-
-            #screen-services .panel-titlebar .title-text {
-                height: 14px;
-                margin: 0;
-                padding-left: 8px;
-                padding-right: 7px;
-                font-size: 24px;
-                line-height: 12px;
-                border: none;
-                border-radius: 4px 4px 0 0;
-            }
-
-            #screen-services .menu-area {
-                top: 32px;
-            }
-
-            #screen-services .menu-area .menu-item {
-                height: 21.6px;
-                padding: 0 2px;
-                font-size: 21.6px;
-                line-height: 21.6px;
-            }
-
-            #screen-services .menu-area .menu-gap {
-                height: 15px;
-            }
-
-            #screen-services .clock-box {
-                top: 340px;
-                right: 3%;
-                min-width: 198px;
-                height: 46.5px;
-                padding: 3px 10px 0;
-                font-size: 22.5px;
-                line-height: 18px;
-            }
-
-            #screen-services .panel-footer {
-                flex-basis: 20px;
-                height: 20px;
-                padding-bottom: 5px;
-                font-size: 24px;
-                line-height: 16px;
-            }
-
-            #screen-services .dos-dialog {
-                width: 82%;
-                padding: 12px 14px;
-            }
-
-            #screen-services .dos-dialog-title {
-                font-size: 22px;
-            }
-
-            #screen-services .dos-dialog-text {
-                font-size: 18px;
-            }
-
-            #screen-services .dos-dialog-hint {
-                font-size: 16px;
-            }
         }
     </style>
     <base target="_blank">
@@ -2240,7 +2204,12 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'github') {
-                        window.open('https://github.com/phillipeque', '_blank', 'noopener,noreferrer');
+                        // ========== ALTERAÇÃO TEMPORÁRIA ==========
+                        // Remove o link e adiciona um shake
+                        this.classList.remove('shake');
+                        void this.offsetWidth; // força reflow para reiniciar animação
+                        this.classList.add('shake');
+                        // Não faz mais nada (não abre link)
                     } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
@@ -2366,17 +2335,15 @@
             }
 
             function dosOpen(i) {
+                // ========== ALTERAÇÃO TEMPORÁRIA ==========
+                // Apenas o item "Back" (índice = menuItems.length - 1) funciona
                 if (i === menuItems.length - 1) {
                     dosDialogOpen = false;
                     navigateTo('home');
                     return;
                 }
-                const svc = DOS_SERVICES[i];
-                if (!svc) return;
-                dosDialogTitle.textContent = svc.name;
-                dosDialogText.textContent = svc.text;
-                dosDialog.classList.add('open');
-                dosDialogOpen = true;
+                // Todos os outros itens NÃO FAZEM NADA (nem abrem o diálogo)
+                // Simplesmente não executa nenhuma ação.
             }
 
             function dosCloseDialog() {
