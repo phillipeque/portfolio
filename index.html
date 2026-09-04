@@ -1451,45 +1451,6 @@
             line-height: 1;
             opacity: 0.8;
         }
-            /* 1. Curvatura e profundidade da tela */
-        .retro-window {
-            border-radius: 40px 40px 55px 55px; /* Cantos mais arredondados em baixo */
-            overflow: hidden;                   /* Impede o conteúdo de vazar */
-            transform: perspective(1200px) rotateX(1.8deg) rotateY(-0.8deg);
-            transform-origin: center center;
-            transition: border-radius 0.4s ease, transform 0.4s ease;
-            /* Mantém a sombra antiga, mas adiciona um brilho interno sutil */
-            box-shadow: 
-                inset 0 0 60px rgba(0, 0, 0, 0.3),   /* Escurece bordas internas */
-                inset 0 0 15px rgba(0, 0, 0, 0.1),
-                4px 4px 0 rgba(0, 0, 0, 0.3);        /* Sombra externa original */
-        }
-        
-        /* 2. Vinheta de curvatura (sobreposição central mais clara, bordas escuras) */
-        .retro-window::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;    /* Permite clicar nos botões através dela */
-            z-index: 35;             /* Fica acima do conteúdo, mas ABAIXO da moldura #tv-frame (z-index 40) */
-            background: radial-gradient(ellipse at center, 
-                transparent 55%, 
-                rgba(0, 0, 0, 0.15) 75%, 
-                rgba(0, 0, 0, 0.55) 100%
-            );
-            border-radius: inherit;  /* Herda o arredondamento da tela */
-        }
-        
-        /* 3. (Opcional) Ajuste fino nos modos de tela cheia/projetos para não quebrar o layout */
-        body.projects-mode .retro-window {
-            border-radius: 25px 25px 35px 35px;
-            transform: perspective(1200px) rotateX(1.2deg) rotateY(-0.5deg);
-        }
-        
-        body.detail-mode .retro-window {
-            border-radius: 30px 30px 40px 40px;
-            transform: perspective(1200px) rotateX(1.5deg) rotateY(-0.5deg);
-        }
     </style>
     <base target="_blank">
 </head>
