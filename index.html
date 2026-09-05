@@ -158,80 +158,29 @@
         @keyframes shake { 0% { transform: translateX(0) rotate(0deg); } 10% { transform: translateX(-6px) rotate(-3deg); } 20% { transform: translateX(6px) rotate(3deg); } 30% { transform: translateX(-4px) rotate(-2deg); } 40% { transform: translateX(4px) rotate(2deg); } 50% { transform: translateX(-2px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(1deg); } 70% { transform: translateX(-1px) rotate(0deg); } 80% { transform: translateX(1px) rotate(0deg); } 90% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(0) rotate(0deg); } }
         .icon-img.shake { animation: shake 0.4s ease-in-out; }
 
-        /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE ===== */
+        /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE, SEM MUDANÇAS VISUAIS ===== */
         @media (max-width: 768px) {
+            /* Melhorias de toque e interação */
             html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
             .icon-img, .retro-btn, .detail-btn, .detail-btn-secondary, .explorer-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-            .explorer-item:hover { transform: none; }
+            .explorer-item:hover { transform: none; } /* remove hover em mobile para evitar efeito fantasma */
             .explorer-item:active { transform: scale(0.96); }
+            
+            /* Ajuste de padding interno para telas menores, mas sem alterar larguras ou margens principais */
             .window-content { padding: 12px 10px; }
             .window-title { font-size: 13px; }
             .window-footer { font-size: 9px; padding: 8px; }
         }
+
         @media (max-width: 480px) {
             .window-content { padding: 10px 6px; }
             .window-title { font-size: 11px; }
             .window-footer { font-size: 8px; padding: 6px; }
         }
 
-        /* ===== EFEITO CRT SPHERE (NOVO) ===== */
-        #crt-glass {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            filter: url(#crtSphere);
-            will-change: filter;
-        }
+        /* ===== FIM CORREÇÕES MOBILE ===== */
 
-        /* Vinheta — escurece as bordas simulando a curvatura do vidro */
-        #crt-glass::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 20;
-            pointer-events: none;
-            background: radial-gradient(
-                ellipse at center,
-                rgba(0,0,0,0) 45%,
-                rgba(0,0,0,0.18) 75%,
-                rgba(0,0,0,0.55) 100%
-            );
-        }
-
-        /* Sombreamento extra nos 4 cantos, mais forte que a vinheta central */
-        #crt-glass::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 21;
-            pointer-events: none;
-            background:
-                radial-gradient(circle at 0% 0%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 30%),
-                radial-gradient(circle at 100% 0%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 30%),
-                radial-gradient(circle at 0% 100%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 30%),
-                radial-gradient(circle at 100% 100%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 30%);
-        }
-
-        /* Brilho especular sutil, como reflexo de vidro curvo */
-        #crt-glass .glass-shine {
-            position: absolute;
-            top: -8%; left: -8%;
-            width: 55%; height: 45%;
-            z-index: 22;
-            pointer-events: none;
-            background: radial-gradient(
-                ellipse at 30% 20%,
-                rgba(255,255,255,0.08) 0%,
-                rgba(255,255,255,0.02) 40%,
-                rgba(255,255,255,0) 70%
-            );
-        }
-
-        /* ===== FIM EFEITO CRT SPHERE ===== */
-
-        /* ===== CSS ORIGINAL PARA SERVICES ===== */
+        /* ===== CSS ORIGINAL PARA SERVICES (mantido) ===== */
         #screen-services { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 26; background: #0000AA; color: #FFFFFF; font-family: 'VT323', 'Courier New', monospace; padding: 0; margin: 0; text-align: left; text-shadow: none; user-select: none; overflow: hidden; display: none; align-items: center; justify-content: center; box-sizing: border-box; }
         #screen-services.active { display: flex; }
         #screen-services .control-panel { position: relative; width: 62%; height: 68%; margin: 0; padding: 0 28px; background: #0000AA; border: 2px solid #FFFFFF; border-radius: 6px; display: flex; flex-direction: column; box-sizing: border-box; overflow: hidden; }
@@ -257,216 +206,191 @@
     <base target="_blank">
 </head>
 <body>
-    <!-- Filtro CRT Sphere — usa data-URIs em vez de referência local (mais confiável) -->
-    <svg width="0" height="0" style="position:absolute; overflow:hidden;">
-        <defs>
-            <filter id="crtSphere" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
-                <feImage
-                    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%237f0000'/%3E%3Cstop offset='0.5' stop-color='%23000000'/%3E%3Cstop offset='1' stop-color='%23ff0000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3C/svg%3E"
-                    x="0%" y="0%" width="100%" height="100%"
-                    preserveAspectRatio="none"
-                    result="mapX" />
-                <feImage
-                    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23007f00'/%3E%3Cstop offset='0.5' stop-color='%23000000'/%3E%3Cstop offset='1' stop-color='%2300ff00'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3C/svg%3E"
-                    x="0%" y="0%" width="100%" height="100%"
-                    preserveAspectRatio="none"
-                    result="mapY" />
-                <feBlend in="mapX" in2="mapY" mode="screen" result="dispMap" />
-                <feDisplacementMap in="SourceGraphic" in2="dispMap" scale="26" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-        </defs>
-    </svg>
-
-    <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+    <!-- O HTML permanece exatamente o mesmo – não houve alteração na estrutura -->
     <div id="tv-container">
-        <div id="crt-glass">
-            <canvas id="background-canvas"></canvas>
-            <div id="tv-static"></div>
-            <div id="tv-screen">
-                <div id="flash-overlay"></div>
-                <div class="retro-window">
-                    <div class="window-titlebar">
-                        <div class="window-title">PORTFOLIO</div>
+        <canvas id="background-canvas"></canvas>
+        <div id="tv-static"></div>
+        <div id="tv-screen">
+            <div id="flash-overlay"></div>
+            <div class="retro-window">
+                <div class="window-titlebar">
+                    <div class="window-title">PORTFOLIO</div>
+                </div>
+                <div class="window-content">
+                    <div id="screen-home" class="screen-container active">
+                        <div class="icon-grid">
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="about" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="ABOUT" />
+                                <span class="icon-label label-orange">ABOUT</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
+                                <span class="icon-label label-black">PROJECTS</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Crect x='14' y='16' width='36' height='4' fill='%23000'/%3E%3Crect x='14' y='30' width='36' height='4' fill='%23000'/%3E%3Crect x='14' y='44' width='36' height='4' fill='%23000'/%3E%3Crect x='24' y='14' width='8' height='8' fill='%23000'/%3E%3Crect x='36' y='28' width='8' height='8' fill='%23000'/%3E%3Crect x='30' y='42' width='8' height='8' fill='%23000'/%3E%3C/svg%3E" alt="SERVICES" />
+                                <span class="icon-label label-green">SERVICES</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
+                                <span class="icon-label label-red">GITHUB</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
+                                <span class="icon-label label-blue">SOCIALS</span>
+                            </div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
+                                <span class="icon-label label-purple">CONTACT</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="window-content">
-                        <div id="screen-home" class="screen-container active">
-                            <div class="icon-grid">
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="about" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E?%3C/text%3E%3C/svg%3E" alt="ABOUT" />
-                                    <span class="icon-label label-orange">ABOUT</span>
+                    <div id="screen-about" class="screen-container">
+                        <div class="about-layout">
+                            <div class="about-avatar-box">
+                                <div class="avatar-frame">
+                                    <img src="pngs/avatar.png" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' fill='%23808080' stroke='%23000' stroke-width='2'/%3E%3Ctext x='60' y='70' text-anchor='middle' font-size='48' fill='%23000'%3E?%3C/text%3E%3C/svg%3E'" />
                                 </div>
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="projects" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E📁%3C/text%3E%3C/svg%3E" alt="PROJECTS" />
-                                    <span class="icon-label label-black">PROJECTS</span>
-                                </div>
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="services" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Crect x='14' y='16' width='36' height='4' fill='%23000'/%3E%3Crect x='14' y='30' width='36' height='4' fill='%23000'/%3E%3Crect x='14' y='44' width='36' height='4' fill='%23000'/%3E%3Crect x='24' y='14' width='8' height='8' fill='%23000'/%3E%3Crect x='36' y='28' width='8' height='8' fill='%23000'/%3E%3Crect x='30' y='42' width='8' height='8' fill='%23000'/%3E%3C/svg%3E" alt="SERVICES" />
-                                    <span class="icon-label label-green">SERVICES</span>
-                                </div>
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="github" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='32'%3E%3Ctspan fill='%23000'%3E%26lt;%3C/tspan%3E%3Ctspan fill='%23ff9900'%3E/%3C/tspan%3E%3Ctspan fill='%23000'%3E%26gt;%3C/tspan%3E%3C/text%3E%3C/svg%3E" alt="GITHUB" />
-                                    <span class="icon-label label-red">GITHUB</span>
-                                </div>
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="socials" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E@%3C/text%3E%3C/svg%3E" alt="SOCIALS" />
-                                    <span class="icon-label label-blue">SOCIALS</span>
-                                </div>
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
-                                    <span class="icon-label label-purple">CONTACT</span>
+                                <span class="avatar-caption">PROFILE_PIC.PNG</span>
+                            </div>
+                            <div class="about-bio-box">
+                                <div class="bio-titlebar"><span class="bio-title">README.TXT</span></div>
+                                <div class="bio-content">
+                                    <p><span class="bio-cursor">_</span> Hey, I'm Phillipe — a community builder, manager, and moderator driven by passion. Beyond managing people and dynamics, I specialize in developing custom tools and automation to streamline operations, optimize workflows, and enhance community engagement — including building tailored bots for Discord and Telegram.</p>
+                                    <p>I've built communities from scratch and stepped into existing ones to identify gaps, fix broken systems, and keep everything running seamlessly. I thrive on digging into details, building the right infrastructure, and turning chaotic spaces into well-structured, engaging environments.</p>
                                 </div>
                             </div>
                         </div>
-                        <div id="screen-about" class="screen-container">
-                            <div class="about-layout">
-                                <div class="about-avatar-box">
-                                    <div class="avatar-frame">
-                                        <img src="pngs/avatar.png" alt="Avatar" class="avatar-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' fill='%23808080' stroke='%23000' stroke-width='2'/%3E%3Ctext x='60' y='70' text-anchor='middle' font-size='48' fill='%23000'%3E?%3C/text%3E%3C/svg%3E'" />
-                                    </div>
-                                    <span class="avatar-caption">PROFILE_PIC.PNG</span>
-                                </div>
-                                <div class="about-bio-box">
-                                    <div class="bio-titlebar"><span class="bio-title">README.TXT</span></div>
-                                    <div class="bio-content">
-                                        <p><span class="bio-cursor">_</span> Hey, I'm Phillipe — a community builder, manager, and moderator driven by passion. Beyond managing people and dynamics, I specialize in developing custom tools and automation to streamline operations, optimize workflows, and enhance community engagement — including building tailored bots for Discord and Telegram.</p>
-                                        <p>I've built communities from scratch and stepped into existing ones to identify gaps, fix broken systems, and keep everything running seamlessly. I thrive on digging into details, building the right infrastructure, and turning chaotic spaces into well-structured, engaging environments.</p>
-                                    </div>
-                                </div>
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <span class="icon-label label-black">BACK</span>
                             </div>
-                            <div class="icon-grid about-grid" style="margin-top: 16px;">
-                                <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
-                                    <span class="icon-label label-black">BACK</span>
-                                </div>
-                                <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            </div>
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
-                        <div id="screen-projects" class="screen-container">
-                            <div class="explorer-window">
-                                <div class="explorer-toolbar">
-                                    <div class="explorer-toolbar-btn disabled">◄</div>
-                                    <div class="explorer-toolbar-btn disabled">▲</div>
-                                    <div class="explorer-address"><span id="projects-address-text">📁 C:\PORTFOLIO\PROJECTS\</span></div>
+                    </div>
+                    <div id="screen-projects" class="screen-container">
+                        <div class="explorer-window">
+                            <div class="explorer-toolbar">
+                                <div class="explorer-toolbar-btn disabled">◄</div>
+                                <div class="explorer-toolbar-btn disabled">▲</div>
+                                <div class="explorer-address"><span id="projects-address-text">📁 C:\PORTFOLIO\PROJECTS\</span></div>
+                            </div>
+                            <div class="explorer-icons-area" id="projects-icons-area"></div>
+                            <div class="explorer-detail" id="projects-detail" style="display:none;">
+                                <div class="win95-titlebar">
+                                    <span class="win95-title" id="detail-header-title"></span>
                                 </div>
-                                <div class="explorer-icons-area" id="projects-icons-area"></div>
-                                <div class="explorer-detail" id="projects-detail" style="display:none;">
-                                    <div class="win95-titlebar">
-                                        <span class="win95-title" id="detail-header-title"></span>
-                                    </div>
-                                    <div class="detail-header-card">
-                                        <img class="detail-header-icon" id="detail-icon" src="" alt="" />
-                                        <div class="detail-header-info">
-                                            <div class="detail-header-name" id="detail-name"></div>
-                                            <div class="detail-header-meta">
-                                                <span id="detail-category"></span> &nbsp;|&nbsp; 
-                                                <span id="detail-duration"></span> &nbsp;|&nbsp; 
-                                                <span id="detail-role"></span>
-                                            </div>
+                                <div class="detail-header-card">
+                                    <img class="detail-header-icon" id="detail-icon" src="" alt="" />
+                                    <div class="detail-header-info">
+                                        <div class="detail-header-name" id="detail-name"></div>
+                                        <div class="detail-header-meta">
+                                            <span id="detail-category"></span> &nbsp;|&nbsp; 
+                                            <span id="detail-duration"></span> &nbsp;|&nbsp; 
+                                            <span id="detail-role"></span>
                                         </div>
                                     </div>
-                                    <div class="win95-groupbox">
-                                        <span class="win95-groupbox-legend">ABOUT THE PROJECT</span>
-                                        <p class="detail-about-text" id="detail-description"></p>
-                                    </div>
-                                    <div class="win95-groupbox">
-                                        <span class="win95-groupbox-legend">MY ROLE</span>
-                                        <ul class="detail-list" id="detail-papel"></ul>
-                                    </div>
-                                    <div class="win95-groupbox">
-                                        <span class="win95-groupbox-legend">IMPACT</span>
-                                        <ul class="detail-list" id="detail-fiz"></ul>
-                                    </div>
-                                    <div class="win95-groupbox">
-                                        <span class="win95-groupbox-legend">TAGS</span>
-                                        <div class="detail-tags" id="detail-tags"></div>
-                                    </div>
                                 </div>
-                                <div class="explorer-statusbar">
-                                    <span id="projects-count">16 object(s)</span>
-                                    <span id="projects-selected">Click to open</span>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">ABOUT THE PROJECT</span>
+                                    <p class="detail-about-text" id="detail-description"></p>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">MY ROLE</span>
+                                    <ul class="detail-list" id="detail-papel"></ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">IMPACT</span>
+                                    <ul class="detail-list" id="detail-fiz"></ul>
+                                </div>
+                                <div class="win95-groupbox">
+                                    <span class="win95-groupbox-legend">TAGS</span>
+                                    <div class="detail-tags" id="detail-tags"></div>
                                 </div>
                             </div>
-                            <div class="icon-grid about-grid" style="margin-top: 16px;">
-                                <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
-                                    <span class="icon-label label-black">BACK</span>
-                                </div>
-                                <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="explorer-statusbar">
+                                <span id="projects-count">16 object(s)</span>
+                                <span id="projects-selected">Click to open</span>
                             </div>
                         </div>
-                        <div id="screen-email" class="screen-container">
-                            <div class="contact-form-box">
-                                <div class="form-titlebar"><span class="form-title">CONTACT.TXT</span></div>
-                                <div class="contact-form-content">
-                                    <form id="email-form" novalidate>
-                                        <label for="user-email">YOUR EMAIL</label>
-                                        <input type="email" id="user-email" name="email" placeholder="your@email.com" />
-                                        <label for="subject">SUBJECT</label>
-                                        <input type="text" id="subject" name="subject" placeholder="Subject" />
-                                        <label for="message">MESSAGE</label>
-                                        <textarea id="message" name="message" placeholder="Write your message..."></textarea>
-                                        <div class="form-actions">
-                                            <button type="submit" class="retro-btn" id="send-btn">SEND</button>
-                                        </div>
-                                        <div id="form-feedback"></div>
-                                    </form>
-                                </div>
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <span class="icon-label label-black">BACK</span>
                             </div>
-                            <div class="icon-grid about-grid" style="margin-top: 16px;">
-                                <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                                <div class="icon-item">
-                                    <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
-                                    <span class="icon-label label-black">BACK</span>
-                                </div>
-                                <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
-                            </div>
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
                     </div>
-                    <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
-                </div>
-
-                <div id="screen-services" class="screen-container">
-                    <div class="control-panel">
-                        <div class="panel-titlebar"><span class="title-text">Services Panel</span></div>
-                        <div class="panel-content">
-                            <div class="menu-area">
-                                <div class="menu-item selected">Community Management</div>
-                                <div class="menu-item">Growth</div>
-                                <div class="menu-item">Moderation</div>
-                                <div class="menu-item">Automation & Tools</div>
-                                <div class="menu-item">Support</div>
-                                <div class="menu-item">Content</div>
-                                <div class="menu-item">Events & Partnerships</div>
-                                <div class="menu-gap"></div>
-                                <div class="menu-item">Back</div>
-                            </div>
-                            <div class="clock-box">
-                                <div class="clock-time" id="dos-clock-time">9:26:56 PM</div>
-                                <div class="clock-date" id="dos-clock-date">6/2/90</div>
+                    <div id="screen-email" class="screen-container">
+                        <div class="contact-form-box">
+                            <div class="form-titlebar"><span class="form-title">CONTACT.TXT</span></div>
+                            <div class="contact-form-content">
+                                <form id="email-form" novalidate>
+                                    <label for="user-email">YOUR EMAIL</label>
+                                    <input type="email" id="user-email" name="email" placeholder="your@email.com" />
+                                    <label for="subject">SUBJECT</label>
+                                    <input type="text" id="subject" name="subject" placeholder="Subject" />
+                                    <label for="message">MESSAGE</label>
+                                    <textarea id="message" name="message" placeholder="Write your message..."></textarea>
+                                    <div class="form-actions">
+                                        <button type="submit" class="retro-btn" id="send-btn">SEND</button>
+                                    </div>
+                                    <div id="form-feedback"></div>
+                                </form>
                             </div>
                         </div>
-                        <div class="panel-footer">
-                            <span>Select: ↓ ↑</span>
-                            <span>Open: ↵</span>
+                        <div class="icon-grid about-grid" style="margin-top: 16px;">
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
+                            <div class="icon-item">
+                                <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                                <span class="icon-label label-black">BACK</span>
+                            </div>
+                            <div class="ghost icon-item" style="visibility:hidden; pointer-events:none;"></div>
                         </div>
-                    </div>
-                    <div class="dos-dialog" id="dos-dialog">
-                        <div class="dos-dialog-title" id="dos-dialog-title"></div>
-                        <div class="dos-dialog-text" id="dos-dialog-text"></div>
-                        <div class="dos-dialog-hint">Press any key or click to close</div>
                     </div>
                 </div>
-            </div> <!-- fecha #tv-screen -->
+                <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
+            </div>
 
-            <div id="scanlines"></div>
-            <div id="scan-sweep"></div>
-            <div class="glass-shine"></div>
-        </div> <!-- fecha #crt-glass -->
-
+            <div id="screen-services" class="screen-container">
+                <div class="control-panel">
+                    <div class="panel-titlebar"><span class="title-text">Services Panel</span></div>
+                    <div class="panel-content">
+                        <div class="menu-area">
+                            <div class="menu-item selected">Community Management</div>
+                            <div class="menu-item">Growth</div>
+                            <div class="menu-item">Moderation</div>
+                            <div class="menu-item">Automation & Tools</div>
+                            <div class="menu-item">Support</div>
+                            <div class="menu-item">Content</div>
+                            <div class="menu-item">Events & Partnerships</div>
+                            <div class="menu-gap"></div>
+                            <div class="menu-item">Back</div>
+                        </div>
+                        <div class="clock-box">
+                            <div class="clock-time" id="dos-clock-time">9:26:56 PM</div>
+                            <div class="clock-date" id="dos-clock-date">6/2/90</div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <span>Select: ↓ ↑</span>
+                        <span>Open: ↵</span>
+                    </div>
+                </div>
+                <div class="dos-dialog" id="dos-dialog">
+                    <div class="dos-dialog-title" id="dos-dialog-title"></div>
+                    <div class="dos-dialog-text" id="dos-dialog-text"></div>
+                    <div class="dos-dialog-hint">Press any key or click to close</div>
+                </div>
+            </div>
+        </div>
+        <div id="scanlines"></div>
+        <div id="scan-sweep"></div>
         <div id="tv-frame"></div>
-    </div> <!-- fecha #tv-container -->
+    </div>
 
     <script>
         // ===== JAVASCRIPT ORIGINAL – NENHUMA ALTERAÇÃO =====
