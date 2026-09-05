@@ -158,29 +158,75 @@
         @keyframes shake { 0% { transform: translateX(0) rotate(0deg); } 10% { transform: translateX(-6px) rotate(-3deg); } 20% { transform: translateX(6px) rotate(3deg); } 30% { transform: translateX(-4px) rotate(-2deg); } 40% { transform: translateX(4px) rotate(2deg); } 50% { transform: translateX(-2px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(1deg); } 70% { transform: translateX(-1px) rotate(0deg); } 80% { transform: translateX(1px) rotate(0deg); } 90% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(0) rotate(0deg); } }
         .icon-img.shake { animation: shake 0.4s ease-in-out; }
 
-        /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE, SEM MUDANÇAS VISUAIS ===== */
+        /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE ===== */
         @media (max-width: 768px) {
-            /* Melhorias de toque e interação */
             html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
             .icon-img, .retro-btn, .detail-btn, .detail-btn-secondary, .explorer-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-            .explorer-item:hover { transform: none; } /* remove hover em mobile para evitar efeito fantasma */
+            .explorer-item:hover { transform: none; }
             .explorer-item:active { transform: scale(0.96); }
-            
-            /* Ajuste de padding interno para telas menores, mas sem alterar larguras ou margens principais */
             .window-content { padding: 12px 10px; }
             .window-title { font-size: 13px; }
             .window-footer { font-size: 9px; padding: 8px; }
         }
-
         @media (max-width: 480px) {
             .window-content { padding: 10px 6px; }
             .window-title { font-size: 11px; }
             .window-footer { font-size: 8px; padding: 6px; }
         }
 
-        /* ===== FIM CORREÇÕES MOBILE ===== */
+        /* ===== EFEITO CRT BULGE ===== */
+        /* 1. Sombreamento radial (curvatura de vidro) */
+        #tv-screen::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 32;
+            pointer-events: none;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255,255,255,0.06) 0%,
+                rgba(255,255,255,0.02) 25%,
+                rgba(0,0,0,0) 50%,
+                rgba(0,0,0,0.25) 85%,
+                rgba(0,0,0,0.55) 100%
+            );
+            border-radius: 50% / 8%;
+        }
 
-        /* ===== CSS ORIGINAL PARA SERVICES (mantido) ===== */
+        /* 2. Brilho especular no canto superior-esquerdo */
+        #tv-screen::after {
+            content: '';
+            position: absolute;
+            top: -5%; left: -5%;
+            width: 55%; height: 45%;
+            z-index: 33;
+            pointer-events: none;
+            background: radial-gradient(
+                ellipse at 30% 20%,
+                rgba(255,255,255,0.10) 0%,
+                rgba(255,255,255,0.03) 40%,
+                rgba(255,255,255,0) 70%
+            );
+        }
+
+        /* 3. Perspectiva para dar profundidade (estufamento) */
+        #tv-container {
+            perspective: 900px;
+        }
+        .retro-window, #screen-services {
+            transform: perspective(1400px) scale(1);
+            transform-style: preserve-3d;
+        }
+
+        /* 4. Curvatura via SVG filter no frame externo */
+        #tv-frame {
+            filter: url(#crtBulge);
+        }
+
+        /* ===== FIM EFEITO CRT BULGE ===== */
+
+        /* ===== CSS ORIGINAL PARA SERVICES ===== */
         #screen-services { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 26; background: #0000AA; color: #FFFFFF; font-family: 'VT323', 'Courier New', monospace; padding: 0; margin: 0; text-align: left; text-shadow: none; user-select: none; overflow: hidden; display: none; align-items: center; justify-content: center; box-sizing: border-box; }
         #screen-services.active { display: flex; }
         #screen-services .control-panel { position: relative; width: 62%; height: 68%; margin: 0; padding: 0 28px; background: #0000AA; border: 2px solid #FFFFFF; border-radius: 6px; display: flex; flex-direction: column; box-sizing: border-box; overflow: hidden; }
@@ -206,7 +252,15 @@
     <base target="_blank">
 </head>
 <body>
-    <!-- O HTML permanece exatamente o mesmo – não houve alteração na estrutura -->
+    <!-- SVG invisível para o filtro CRT Bulge -->
+    <svg style="position:absolute; width:0; height:0;">
+        <filter id="crtBulge">
+            <feTurbulence type="fractalNoise" baseFrequency="0.002 0.003" numOctaves="1" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
+
+    <!-- ===== CONTEÚDO PRINCIPAL (INALTERADO) ===== -->
     <div id="tv-container">
         <canvas id="background-canvas"></canvas>
         <div id="tv-static"></div>
