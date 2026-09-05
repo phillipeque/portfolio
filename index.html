@@ -139,12 +139,12 @@
         .detail-header-meta span { color: #000080; font-weight: bold; }
         .win95-groupbox { background: #c0c0c0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; padding: 14px 12px 10px; margin-bottom: 10px; position: relative; }
         .win95-groupbox-legend { position: absolute; top: -8px; left: 10px; background: #c0c0c0; padding: 0 6px; font-size: 11px; font-weight: bold; letter-spacing: 1px; color: #000080; text-shadow: none; user-select: none; }
-        .detail-about-text { font-size: 12px; line-height: 1.7; color: #000; text-align: left; user-select: text; }
+        .detail-about-text { font-size: 12px; line-height: 1.7; color: #000; text-align: left; user-select: text; word-break: break-word; overflow-wrap: break-word; }
         .detail-list { list-style: none; padding: 0; margin: 0; }
-        .detail-list li { font-size: 12px; line-height: 1.6; color: #000; padding: 3px 0 3px 18px; position: relative; user-select: text; }
+        .detail-list li { font-size: 12px; line-height: 1.6; color: #000; padding: 3px 0 3px 18px; position: relative; user-select: text; word-break: break-word; overflow-wrap: break-word; }
         .detail-list li::before { content: '►'; position: absolute; left: 2px; top: 3px; font-size: 8px; color: #000080; }
         .detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-        .detail-tag { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000; padding: 2px 8px; font-size: 10px; font-weight: bold; letter-spacing: 0.5px; color: #000; user-select: none; }
+        .detail-tag { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000; padding: 2px 8px; font-size: 10px; font-weight: bold; letter-spacing: 0.5px; color: #000; user-select: none; word-break: break-word; }
         .detail-actions { display: flex; justify-content: flex-end; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #808080; border-bottom: 1px solid #ffffff; }
         .detail-actions-right { display: flex; gap: 8px; }
         .detail-btn { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000; padding: 4px 14px; font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold; color: #000; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; user-select: none; }
@@ -160,25 +160,19 @@
 
         /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE, SEM MUDANÇAS VISUAIS ===== */
         @media (max-width: 768px) {
-            /* Melhorias de toque e interação */
             html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
             .icon-img, .retro-btn, .detail-btn, .detail-btn-secondary, .explorer-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-            .explorer-item:hover { transform: none; } /* remove hover em mobile para evitar efeito fantasma */
+            .explorer-item:hover { transform: none; }
             .explorer-item:active { transform: scale(0.96); }
-            
-            /* Ajuste de padding interno para telas menores, mas sem alterar larguras ou margens principais */
             .window-content { padding: 12px 10px; }
             .window-title { font-size: 13px; }
             .window-footer { font-size: 9px; padding: 8px; }
         }
-
         @media (max-width: 480px) {
             .window-content { padding: 10px 6px; }
             .window-title { font-size: 11px; }
             .window-footer { font-size: 8px; padding: 6px; }
         }
-
-        /* ===== FIM CORREÇÕES MOBILE ===== */
 
         /* ===== CSS ORIGINAL PARA SERVICES (mantido) ===== */
         #screen-services { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 26; background: #0000AA; color: #FFFFFF; font-family: 'VT323', 'Courier New', monospace; padding: 0; margin: 0; text-align: left; text-shadow: none; user-select: none; overflow: hidden; display: none; align-items: center; justify-content: center; box-sizing: border-box; }
@@ -206,7 +200,6 @@
     <base target="_blank">
 </head>
 <body>
-    <!-- O HTML permanece exatamente o mesmo – não houve alteração na estrutura -->
     <div id="tv-container">
         <canvas id="background-canvas"></canvas>
         <div id="tv-static"></div>
@@ -393,7 +386,7 @@
     </div>
 
     <script>
-        // ===== JAVASCRIPT ORIGINAL – NENHUMA ALTERAÇÃO =====
+        // ===== BACKGROUND CANVAS (ORIGINAL) =====
         (function() {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
@@ -587,6 +580,7 @@
             loop();
         })();
 
+        // ===== SCAN SWEEP =====
         (function() {
             const sweep = document.getElementById('scan-sweep');
             if (!sweep) return;
@@ -605,6 +599,7 @@
             scheduleSweep();
         })();
 
+        // ===== MAIN APP =====
         (function() {
             const homeScreen = document.getElementById('screen-home');
             const aboutScreen = document.getElementById('screen-about');
@@ -932,12 +927,17 @@
                 if (project.url) {
                     window.open(project.url, '_blank', 'noopener,noreferrer');
                 }
+
+                // Aplica as classes de layout ANTES de preencher o conteúdo
                 if (iconsArea) iconsArea.style.display = 'none';
                 if (detailView) detailView.style.display = 'block';
-                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\' + project.name;
+                body.classList.add('detail-mode');
+                body.classList.remove('projects-mode');
+                // Força reflow para que as dimensões finais sejam aplicadas
+                void body.offsetHeight;
 
+                // Preenche os dados
                 document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
-
                 document.getElementById('detail-icon').src = 'logos/' + project.gif;
                 document.getElementById('detail-name').textContent = project.name;
                 document.getElementById('detail-category').textContent = project.category;
@@ -973,8 +973,6 @@
                 if (projectsCount) projectsCount.textContent = '1 object(s)';
                 if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
                 isDetailOpen = true;
-                body.classList.add('detail-mode');
-                body.classList.remove('projects-mode');
             }
 
             function closeProjectDetail(animate = true) {
@@ -985,6 +983,7 @@
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
             }
 
+            // ===== EVENTOS DOS ÍCONES =====
             document.querySelectorAll('.icon-img').forEach(img => {
                 img.addEventListener('click', function(e) {
                     const target = this.dataset.target;
@@ -995,9 +994,13 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'github') {
+                        // Shake apenas no clique, com remoção após a animação
                         this.classList.remove('shake');
                         void this.offsetWidth;
                         this.classList.add('shake');
+                        setTimeout(() => {
+                            this.classList.remove('shake');
+                        }, 400);
                     } else if (target === 'back') {
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
@@ -1007,6 +1010,7 @@
                 });
             });
 
+            // ===== CONSTRÓI LISTA DE PROJETOS =====
             if (iconsArea) {
                 PROJECTS.forEach((project) => {
                     const item = document.createElement('div');
@@ -1046,6 +1050,7 @@
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
             }
 
+            // ===== FORMULÁRIO DE CONTATO =====
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
             const sendBtn = document.getElementById('send-btn');
@@ -1099,6 +1104,7 @@
                 feedback.style.color = '#c41e3a';
             }
 
+            // ===== SERVICOS (DOS) =====
             const DOS_SERVICES = [
                 { name: 'Community Management', text: 'Strategies for building and engaging communities.' },
                 { name: 'Growth', text: 'Scaling communities and increasing active members.' },
@@ -1199,6 +1205,7 @@
             setInterval(dosTickClock, 1000);
             dosUpdate();
 
+            // ===== INICIALIZAÇÃO =====
             function init() {
                 document.querySelectorAll('.screen-container').forEach(el => el.classList.remove('active'));
                 homeScreen.classList.add('active');
