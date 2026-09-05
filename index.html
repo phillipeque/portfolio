@@ -174,15 +174,6 @@
             .window-footer { font-size: 8px; padding: 6px; }
         }
 
-        /* ===== CLASSE PARA DESATIVAR TRANSIÇÕES TEMPORARIAMENTE ===== */
-        .no-transition .retro-window,
-        .no-transition .window-content,
-        .no-transition #tv-screen,
-        .no-transition .explorer-icons-area,
-        .no-transition .explorer-detail {
-            transition: none !important;
-        }
-
         /* ===== CSS ORIGINAL PARA SERVICES (mantido) ===== */
         #screen-services { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 26; background: #0000AA; color: #FFFFFF; font-family: 'VT323', 'Courier New', monospace; padding: 0; margin: 0; text-align: left; text-shadow: none; user-select: none; overflow: hidden; display: none; align-items: center; justify-content: center; box-sizing: border-box; }
         #screen-services.active { display: flex; }
@@ -937,19 +928,15 @@
                     window.open(project.url, '_blank', 'noopener,noreferrer');
                 }
 
-                // Desativa transições temporariamente
-                body.classList.add('no-transition');
-
-                // Aplica as classes de layout
+                // Aplica as classes de layout ANTES de preencher o conteúdo
                 if (iconsArea) iconsArea.style.display = 'none';
                 if (detailView) detailView.style.display = 'block';
                 body.classList.add('detail-mode');
                 body.classList.remove('projects-mode');
-
                 // Força reflow para que as dimensões finais sejam aplicadas
                 void body.offsetHeight;
 
-                // Preenche todo o conteúdo
+                // Preenche os dados
                 document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
                 document.getElementById('detail-icon').src = 'logos/' + project.gif;
                 document.getElementById('detail-name').textContent = project.name;
@@ -986,11 +973,6 @@
                 if (projectsCount) projectsCount.textContent = '1 object(s)';
                 if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
                 isDetailOpen = true;
-
-                // Reativa transições no próximo frame, após o conteúdo estar estático
-                requestAnimationFrame(() => {
-                    body.classList.remove('no-transition');
-                });
             }
 
             function closeProjectDetail(animate = true) {
@@ -1012,7 +994,7 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'github') {
-                        // Shake apenas no clique, removendo após a animação
+                        // Shake apenas no clique, com remoção após a animação
                         this.classList.remove('shake');
                         void this.offsetWidth;
                         this.classList.add('shake');
