@@ -249,8 +249,9 @@
                             <div class="about-bio-box">
                                 <div class="bio-titlebar"><span class="bio-title">README.TXT</span></div>
                                 <div class="bio-content">
-                                    <p><span class="bio-cursor">_</span> Hey, I'm Phillipe — a community builder, manager, and moderator driven by passion. Beyond managing people and dynamics, I specialize in developing custom tools and automation to streamline operations, optimize workflows, and enhance community engagement — including building tailored bots for Discord and Telegram.</p>
+                                    <p><span class="bio-cursor">_</span> Hey, I'm Phillipe — a community builder, manager, and moderator driven by passion. Beyond managing people and dynamics, I specialize in developing custom tools and automation to streamline operations, optimize workflows, and enhance community engagement — including building tailored bots for Discord and Telegram. With over 6 years of experience across more than 20 communities, I've learned that every space has its own rhythm.</p>
                                     <p>I've built communities from scratch and stepped into existing ones to identify gaps, fix broken systems, and keep everything running seamlessly. I thrive on digging into details, building the right infrastructure, and turning chaotic spaces into well-structured, engaging environments.</p>
+                                    <p>My approach blends strategy with empathy — I don't just enforce rules or set up channels. I listen, adapt, and create systems that actually work for the people inside them. When I'm not architecting communities, I'm probably experimenting with new automation tools, contributing to open-source projects, or thinking about how to make the next community even better.</p>
                                 </div>
                             </div>
                         </div>
@@ -651,6 +652,9 @@
             }
 
             function triggerTransition(callback) {
+                // Remove qualquer seleção de texto antes da transição
+                window.getSelection().removeAllRanges();
+
                 retroWindow.classList.add('rolling');
                 flash.classList.add('snap');
                 setTimeout(() => {
@@ -928,15 +932,12 @@
                     window.open(project.url, '_blank', 'noopener,noreferrer');
                 }
 
-                // Aplica as classes de layout ANTES de preencher o conteúdo
                 if (iconsArea) iconsArea.style.display = 'none';
                 if (detailView) detailView.style.display = 'block';
                 body.classList.add('detail-mode');
                 body.classList.remove('projects-mode');
-                // Força reflow para que as dimensões finais sejam aplicadas
                 void body.offsetHeight;
 
-                // Preenche os dados
                 document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
                 document.getElementById('detail-icon').src = 'logos/' + project.gif;
                 document.getElementById('detail-name').textContent = project.name;
@@ -994,7 +995,15 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'github') {
-                        // Shake apenas no clique, com remoção após a animação
+                        // Shake no GitHub
+                        this.classList.remove('shake');
+                        void this.offsetWidth;
+                        this.classList.add('shake');
+                        setTimeout(() => {
+                            this.classList.remove('shake');
+                        }, 400);
+                    } else if (target === 'socials') {
+                        // Shake no Socials (mesmo efeito)
                         this.classList.remove('shake');
                         void this.offsetWidth;
                         this.classList.add('shake');
@@ -1002,6 +1011,8 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'back') {
+                        // Remove seleção de texto ao voltar
+                        window.getSelection().removeAllRanges();
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
                     } else if (target === 'services') {
