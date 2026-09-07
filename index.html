@@ -151,10 +151,117 @@
         .detail-btn:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
         .detail-btn-secondary { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000; padding: 4px 14px; font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold; color: #000; cursor: pointer; user-select: none; }
         .detail-btn-secondary:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
-        #scan-sweep { position: absolute; top: -30px; left: 0; width: 100%; height: 22px; z-index: 35; pointer-events: none; opacity: 0; background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(200,225,255,0.12) 20%, rgba(255,255,255,0.55) 45%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.55) 55%, rgba(200,225,255,0.12) 80%, rgba(255,255,255,0) 100%); mix-blend-mode: screen; filter: blur(0.5px); }
-        #scan-sweep::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(to right, rgba(255,255,255,0.9) 0px, rgba(255,255,255,0.9) 1px, transparent 1px, transparent 3px); opacity: 0.35; mix-blend-mode: screen; }
-        #scan-sweep.sweeping { animation: scanSweepMove 2.8s linear; }
-        @keyframes scanSweepMove { 0% { top: -30px; opacity: 0; } 4% { opacity: 1; } 50% { opacity: 1; } 94% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+        
+        /* ===== SCANLINE REALISTA ===== */
+        #scan-sweep {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            z-index: 35;
+            pointer-events: none;
+            opacity: 0;
+            background: 
+                linear-gradient(to bottom,
+                    rgba(255,255,255,0) 0%,
+                    rgba(200,225,255,0.05) 15%,
+                    rgba(255,255,255,0.15) 30%,
+                    rgba(255,255,255,0.6) 45%,
+                    rgba(255,255,255,0.9) 50%,
+                    rgba(255,255,255,0.6) 55%,
+                    rgba(255,255,255,0.15) 70%,
+                    rgba(200,225,255,0.05) 85%,
+                    rgba(255,255,255,0) 100%
+                );
+            mix-blend-mode: screen;
+            filter: blur(1px);
+        }
+        
+        #scan-sweep::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.4) 0px,
+                rgba(255,255,255,0.4) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            opacity: 0.5;
+            mix-blend-mode: screen;
+        }
+        
+        #scan-sweep::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(255,255,255,0.3) 0%,
+                rgba(255,255,255,0) 10%,
+                rgba(255,255,255,0) 90%,
+                rgba(255,255,255,0.3) 100%
+            );
+            mix-blend-mode: screen;
+        }
+        
+        #scan-sweep.sweeping {
+            animation: scanSweepMove 3.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes scanSweepMove {
+            0% {
+                top: -120px;
+                opacity: 0;
+                transform: scaleY(0.8);
+            }
+            2% {
+                opacity: 0.9;
+                transform: scaleY(1.1);
+            }
+            15% {
+                opacity: 0.85;
+                transform: scaleY(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scaleY(0.95);
+            }
+            85% {
+                opacity: 0.85;
+                transform: scaleY(1.05);
+            }
+            98% {
+                opacity: 0.9;
+                transform: scaleY(0.9);
+            }
+            100% {
+                top: 100%;
+                opacity: 0;
+                transform: scaleY(0.8);
+            }
+        }
+        
+        .scanline-active .retro-window {
+            animation: contentDistortion 0.3s ease-out;
+        }
+        
+        @keyframes contentDistortion {
+            0% { transform: scaleX(1); }
+            25% { transform: scaleX(0.99) skewX(0.5deg); }
+            50% { transform: scaleX(1.01); }
+            75% { transform: scaleX(0.995); }
+            100% { transform: scaleX(1); }
+        }
+        
         @keyframes shake { 0% { transform: translateX(0) rotate(0deg); } 10% { transform: translateX(-6px) rotate(-3deg); } 20% { transform: translateX(6px) rotate(3deg); } 30% { transform: translateX(-4px) rotate(-2deg); } 40% { transform: translateX(4px) rotate(2deg); } 50% { transform: translateX(-2px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(1deg); } 70% { transform: translateX(-1px) rotate(0deg); } 80% { transform: translateX(1px) rotate(0deg); } 90% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(0) rotate(0deg); } }
         .icon-img.shake { animation: shake 0.4s ease-in-out; }
 
@@ -387,6 +494,41 @@
     </div>
 
     <script>
+        // ===== PRÉ-CARREGAMENTO DA FONTE VT323 PARA SERVICES =====
+        (function() {
+            // Força o carregamento da fonte VT323 imediatamente
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(function() {
+                    // Verifica se a fonte VT323 está carregada
+                    if (document.fonts.check('24px VT323')) {
+                        console.log('VT323 font loaded');
+                    } else {
+                        // Se não estiver carregada, força o carregamento
+                        document.fonts.load('24px VT323').then(function() {
+                            console.log('VT323 font force-loaded');
+                        });
+                    }
+                });
+            }
+            
+            // Fallback: tenta carregar a fonte usando um elemento invisível
+            const fontPreload = document.createElement('div');
+            fontPreload.style.fontFamily = 'VT323';
+            fontPreload.style.fontSize = '24px';
+            fontPreload.style.position = 'absolute';
+            fontPreload.style.visibility = 'hidden';
+            fontPreload.style.pointerEvents = 'none';
+            fontPreload.textContent = 'Preloading VT323 font...';
+            document.body.appendChild(fontPreload);
+            
+            // Remove o elemento após o carregamento
+            setTimeout(function() {
+                if (fontPreload.parentNode) {
+                    fontPreload.parentNode.removeChild(fontPreload);
+                }
+            }, 2000);
+        })();
+
         // ===== BACKGROUND CANVAS (ORIGINAL) =====
         (function() {
             const canvas = document.getElementById('background-canvas');
@@ -581,7 +723,7 @@
             loop();
         })();
 
-        // ===== SCAN SWEEP =====
+        // ===== SCAN SWEEP REALISTA =====
         (function() {
             const sweep = document.getElementById('scan-sweep');
             if (!sweep) return;
@@ -589,14 +731,38 @@
             function triggerSweep() {
                 sweep.classList.remove('sweeping');
                 void sweep.offsetWidth;
+                
+                const duration = 2.8 + Math.random() * 2;
+                sweep.style.animationDuration = duration + 's';
+                
+                const intensity = 0.7 + Math.random() * 0.5;
+                sweep.style.opacity = intensity;
+                
+                // Adiciona distorção ao conteúdo
+                const retroWindow = document.querySelector('.retro-window');
+                if (retroWindow) {
+                    retroWindow.classList.add('scanline-active');
+                    setTimeout(() => {
+                        retroWindow.classList.remove('scanline-active');
+                    }, 300);
+                }
+                
                 sweep.classList.add('sweeping');
             }
-            sweep.addEventListener('animationend', function() { sweep.classList.remove('sweeping'); });
+            
+            sweep.addEventListener('animationend', function() {
+                sweep.classList.remove('sweeping');
+                sweep.style.opacity = 0;
+            });
 
             function scheduleSweep() {
-                const delay = 15000 + Math.random() * 10000;
-                setTimeout(function() { triggerSweep(); scheduleSweep(); }, delay);
+                const delay = 12000 + Math.random() * 18000;
+                setTimeout(function() { 
+                    triggerSweep(); 
+                    scheduleSweep(); 
+                }, delay);
             }
+            
             scheduleSweep();
         })();
 
@@ -652,7 +818,6 @@
             }
 
             function triggerTransition(callback) {
-                // Remove qualquer seleção de texto antes da transição
                 window.getSelection().removeAllRanges();
 
                 retroWindow.classList.add('rolling');
@@ -739,6 +904,30 @@
                 tags: ['Blockchain', 'Wellness', 'Fitness', 'Health', 'Tokenomics', 'Marketplace', 'Community Engagement', 'Data Ownership']
             },
             {
+                name: 'Arena Games',
+                role: 'Community Lead',
+                duration: '2023',
+                category: 'Gaming',
+                description: 'A Web3 gaming platform featuring its own games alongside titles from other creators. Players could discover and play games within the ecosystem while earning rewards through the platform’s native token.',
+                url: '',
+                gif: 'arenagames.gif',
+                papel: [
+                    'Built and managed the community from its early stages',
+                    'Acted as a bridge between leadership and the community, making key team members more accessible',
+                    'Coordinated community events across games in the company\'s library',
+                    'Recruited community and team members through my professional network',
+                    'Focused on community retention, engagement, and long-term health'
+                ],
+                fiz: [
+                    'Helped build the community from the ground up',
+                    'Contributed to increasing community retention by approximately 80%',
+                    'Established stronger communication between leadership and community members',
+                    'Brought skilled contributors into the team through targeted network referrals',
+                    'Coordinated community events across multiple titles in the company\'s game ecosystem'
+                ],
+                tags: ['Web3', 'Gaming', 'Platform', 'Rewards', 'Token', 'Ecosystem', 'Multi-game']
+            },
+            {
                 name: 'Xend Finance',
                 role: 'Moderator',
                 duration: '2023',
@@ -759,6 +948,28 @@
                     'Assisted in organizing online educational events'
                 ],
                 tags: ['DeFi', 'Credit Unions', 'Cooperatives', 'Savings', 'Stablecoins', 'Esusu', 'Blockchain', 'Financial Inclusion']
+            },
+            {
+                name: 'Reaktor',
+                role: 'Moderator',
+                duration: '2022',
+                category: 'DevOps',
+                description: 'A Web3 game distribution platform built around free-to-play games and in-game content. Reaktor Arcade aimed to remove payment and personal-data barriers while using blockchain technology to support digital ownership.',
+                url: '',
+                gif: 'reaktor.gif',
+                papel: [
+                    'Built the community from scratch, attracting the first members',
+                    'Created technical content and tutorials for new users',
+                    'Organized workshops and networking events',
+                    'Maintained direct contact with founders to align expectations'
+                ],
+                fiz: [
+                    'Launched the community with hundreds of members in the first month',
+                    'Produced dozens of guides and educational materials',
+                    'Conducted technical workshops with good participation',
+                    'Established a direct feedback channel with leadership'
+                ],
+                tags: ['Web3', 'Gaming', 'Distribution', 'Free-to-Play', 'Digital Ownership', 'Blockchain', 'Arcade']
             },
             {
                 name: 'PiratePets',
@@ -785,30 +996,6 @@
                 tags: ['Gaming', 'NFT', 'Move-to-Earn', 'Play-to-Earn', 'AR', 'Find-to-Earn', 'Blockchain']
             },
             {
-                name: 'Arena Games',
-                role: 'Community Lead',
-                duration: '2023',
-                category: 'Gaming',
-                description: 'A Web3 gaming platform featuring its own games alongside titles from other creators. Players could discover and play games within the ecosystem while earning rewards through the platform’s native token.',
-                url: '',
-                gif: 'arenagames.gif',
-                papel: [
-                    'Built and managed the community from its early stages',
-                    'Acted as a bridge between leadership and the community, making key team members more accessible',
-                    'Coordinated community events across games in the company\'s library',
-                    'Recruited community and team members through my professional network',
-                    'Focused on community retention, engagement, and long-term health'
-                ],
-                fiz: [
-                    'Helped build the community from the ground up',
-                    'Contributed to increasing community retention by approximately 80%',
-                    'Established stronger communication between leadership and community members',
-                    'Brought skilled contributors into the team through targeted network referrals',
-                    'Coordinated community events across multiple titles in the company\'s game ecosystem'
-                ],
-                tags: ['Web3', 'Gaming', 'Platform', 'Rewards', 'Token', 'Ecosystem', 'Multi-game']
-            },
-            {
                 name: 'Bionic',
                 role: 'Moderator',
                 duration: '2022 – 2023',
@@ -829,28 +1016,6 @@
                     'Improved overall user experience on the platform'
                 ],
                 tags: ['Crypto', 'Investment', 'Copy Trading', 'AI', 'Bots', 'Algorithmic Trading', 'Hedge Funds', 'Diversified']
-            },
-            {
-                name: 'Reaktor',
-                role: 'Moderator',
-                duration: '2022',
-                category: 'DevOps',
-                description: 'A Web3 game distribution platform built around free-to-play games and in-game content. Reaktor Arcade aimed to remove payment and personal-data barriers while using blockchain technology to support digital ownership.',
-                url: '',
-                gif: 'reaktor.gif',
-                papel: [
-                    'Built the community from scratch, attracting the first members',
-                    'Created technical content and tutorials for new users',
-                    'Organized workshops and networking events',
-                    'Maintained direct contact with founders to align expectations'
-                ],
-                fiz: [
-                    'Launched the community with hundreds of members in the first month',
-                    'Produced dozens of guides and educational materials',
-                    'Conducted technical workshops with good participation',
-                    'Established a direct feedback channel with leadership'
-                ],
-                tags: ['Web3', 'Gaming', 'Distribution', 'Free-to-Play', 'Digital Ownership', 'Blockchain', 'Arcade']
             },
             {
                 name: 'FortBlockGames',
