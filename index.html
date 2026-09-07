@@ -652,9 +652,7 @@
             }
 
             function triggerTransition(callback) {
-                // Remove qualquer seleção de texto antes da transição
                 window.getSelection().removeAllRanges();
-
                 retroWindow.classList.add('rolling');
                 flash.classList.add('snap');
                 setTimeout(() => {
@@ -677,6 +675,20 @@
                 return Promise.resolve();
             }
 
+            // Pré-carrega a fonte VT323 ao carregar a página
+            function preloadServicesFont() {
+                if (document.fonts && document.fonts.load) {
+                    document.fonts.load('1em VT323').then(() => {
+                        // Aplica a fonte no elemento services para garantir que já esteja carregada
+                        if (servicesScreen) {
+                            servicesScreen.style.fontFamily = 'VT323, "Courier New", monospace';
+                        }
+                    }).catch(() => {});
+                }
+            }
+            // Chama o pré-carregamento imediatamente
+            preloadServicesFont();
+
             function navigateTo(screen) {
                 if (screen === currentScreen || transitioning) return;
                 transitioning = true;
@@ -693,6 +705,8 @@
                         else if (screen === 'about') aboutScreen.classList.add('active');
                         else if (screen === 'services') {
                             servicesScreen.classList.add('active');
+                            // Garante que a fonte já está aplicada
+                            servicesScreen.style.fontFamily = 'VT323, "Courier New", monospace';
                             dosCloseDialog();
                             dosIndex = 0;
                             dosUpdate();
@@ -715,74 +729,30 @@
             }
 
             const PROJECTS = [
+            // ORDEM: Coinracer, Arena Games, Xend Finance, Reaktor, depois o restante (mantendo a ordem original para os demais)
             {
-                name: 'CoralApp',
-                role: 'Moderator',
-                duration: '2024 – 2024',
-                category: 'Wellness',
-                description: 'A blockchain-powered fitness and wellness platform combining health tracking, community features, creator content, and a marketplace. Users could earn CRL tokens through activities, challenges, content, and community engagement while retaining ownership of their health data.',
-                url: '',
-                gif: 'coralapp.gif',
-                papel: [
-                    'Managed the Brazilian community for CoralApp',
-                    'Translated and localized content and announcements for Brazilian users',
-                    'Acted as a bridge between Brazilian members and the global team',
-                    'Collected community feedback and relayed it to the project team',
-                    'Provided support for Brazilian users with questions and issues'
-                ],
-                fiz: [
-                    'Made the project more accessible to Portuguese-speaking users',
-                    'Strengthened the Brazilian community\'s presence within the ecosystem',
-                    'Improved communication between BR members and the international team',
-                    'Helped create a more welcoming environment for new Brazilian users'
-                ],
-                tags: ['Blockchain', 'Wellness', 'Fitness', 'Health', 'Tokenomics', 'Marketplace', 'Community Engagement', 'Data Ownership']
-            },
-            {
-                name: 'Xend Finance',
-                role: 'Moderator',
+                name: 'Coinracer',
+                role: 'Head Mod',
                 duration: '2023',
-                category: 'DeFi',
-                description: 'A DeFi platform built for credit unions and cooperatives, providing blockchain-based savings products in stable currencies. It supported personal savings, Esusu cycles, and cooperative savings with interest-bearing deposits.',
-                url: '',
-                gif: 'xend.gif',
-                papel: [
-                    'Moderated the community with a focus on financial education',
-                    'Supported credit unions and general users',
-                    'Translated technical and educational materials',
-                    'Participated in educational webinars to explain DeFi concepts'
-                ],
-                fiz: [
-                    'Helped educate hundreds of users about DeFi',
-                    'Collaborated with credit unions to facilitate product understanding',
-                    'Contributed to translating articles and guides',
-                    'Assisted in organizing online educational events'
-                ],
-                tags: ['DeFi', 'Credit Unions', 'Cooperatives', 'Savings', 'Stablecoins', 'Esusu', 'Blockchain', 'Financial Inclusion']
-            },
-            {
-                name: 'PiratePets',
-                role: 'LATAM Ambassador',
-                duration: '2024 – 2024',
                 category: 'Gaming',
-                description: 'PiratePes is a find-to-earn NFT game that combines move-to-earn, play-to-earn, and AR elements within a single ecosystem.',
+                description: 'A crypto racing game built around NFT-based cars and digital ownership. Players needed an NFT car to access the game and could compete within its blockchain-powered racing ecosystem.',
                 url: '',
-                gif: 'piratepets.gif',
+                gif: 'coinracer.gif',
                 papel: [
-                    'Led the LATAM community as a regional ambassador',
-                    'Connected LATAM members with the wider project community',
-                    'Translated and localized project information for Portuguese-speaking users',
-                    'Collected community feedback and communicated it to the project team',
-                    'Supported regional engagement and community initiatives'
+                    'Led the Brazilian community as Head Moderator',
+                    'Translated official content and announcements for the Brazilian audience',
+                    'Acted as the main bridge between Brazilian members and the global project',
+                    'Collected, organized, and communicated feedback from the Brazilian community',
+                    'Supported Brazilian users across community operations and project initiatives'
                 ],
                 fiz: [
-                    'Helped establish and strengthen the project\'s LATAM presence',
-                    'Improved communication between LATAM members and the global community',
-                    'Made project information more accessible to Portuguese speakers',
-                    'Created a direct feedback channel between the LATAM community and the project',
-                    'Increased regional participation and engagement'
+                    'Built the Brazilian community into the largest regional community within the project',
+                    'Established a stronger connection between Brazilian players and the global team',
+                    'Made project information more accessible to Portuguese-speaking users',
+                    'Created a reliable feedback channel between the BR community and the project',
+                    'Increased the visibility and participation of the Brazilian community within the wider ecosystem'
                 ],
-                tags: ['Gaming', 'NFT', 'Move-to-Earn', 'Play-to-Earn', 'AR', 'Find-to-Earn', 'Blockchain']
+                tags: ['Gaming', 'Racing', 'NFT', 'Digital Ownership', 'Blockchain', 'Competition']
             },
             {
                 name: 'Arena Games',
@@ -809,26 +779,26 @@
                 tags: ['Web3', 'Gaming', 'Platform', 'Rewards', 'Token', 'Ecosystem', 'Multi-game']
             },
             {
-                name: 'Bionic',
+                name: 'Xend Finance',
                 role: 'Moderator',
-                duration: '2022 – 2023',
-                category: 'Tech',
-                description: 'A crypto-focused investment platform combining copy trading, hedge funds, AI, bots, and algorithmic trading. Its model gave token holders exposure to diversified trading strategies across cryptocurrency and traditional financial markets.',
+                duration: '2023',
+                category: 'DeFi',
+                description: 'A DeFi platform built for credit unions and cooperatives, providing blockchain-based savings products in stable currencies. It supported personal savings, Esusu cycles, and cooperative savings with interest-bearing deposits.',
                 url: '',
-                gif: 'bionic.gif',
+                gif: 'xend.gif',
                 papel: [
-                    'Moderated technical forums and support channels',
-                    'Helped users with integrations and configurations',
-                    'Reported bugs and suggestions to the development team',
-                    'Created community documentation for frequently asked questions'
+                    'Moderated the community with a focus on financial education',
+                    'Supported credit unions and general users',
+                    'Translated technical and educational materials',
+                    'Participated in educational webinars to explain DeFi concepts'
                 ],
                 fiz: [
-                    'Helped reduce repetitive tickets with a clear FAQ',
-                    'Identified and reported several critical bugs',
-                    'Collaborated on beta testing with dozens of users',
-                    'Improved overall user experience on the platform'
+                    'Helped educate hundreds of users about DeFi',
+                    'Collaborated with credit unions to facilitate product understanding',
+                    'Contributed to translating articles and guides',
+                    'Assisted in organizing online educational events'
                 ],
-                tags: ['Crypto', 'Investment', 'Copy Trading', 'AI', 'Bots', 'Algorithmic Trading', 'Hedge Funds', 'Diversified']
+                tags: ['DeFi', 'Credit Unions', 'Cooperatives', 'Savings', 'Stablecoins', 'Esusu', 'Blockchain', 'Financial Inclusion']
             },
             {
                 name: 'Reaktor',
@@ -851,6 +821,76 @@
                     'Established a direct feedback channel with leadership'
                 ],
                 tags: ['Web3', 'Gaming', 'Distribution', 'Free-to-Play', 'Digital Ownership', 'Blockchain', 'Arcade']
+            },
+            // Os demais projetos mantidos na ordem original
+            {
+                name: 'CoralApp',
+                role: 'Moderator',
+                duration: '2024 – 2024',
+                category: 'Wellness',
+                description: 'A blockchain-powered fitness and wellness platform combining health tracking, community features, creator content, and a marketplace. Users could earn CRL tokens through activities, challenges, content, and community engagement while retaining ownership of their health data.',
+                url: '',
+                gif: 'coralapp.gif',
+                papel: [
+                    'Managed the Brazilian community for CoralApp',
+                    'Translated and localized content and announcements for Brazilian users',
+                    'Acted as a bridge between Brazilian members and the global team',
+                    'Collected community feedback and relayed it to the project team',
+                    'Provided support for Brazilian users with questions and issues'
+                ],
+                fiz: [
+                    'Made the project more accessible to Portuguese-speaking users',
+                    'Strengthened the Brazilian community\'s presence within the ecosystem',
+                    'Improved communication between BR members and the international team',
+                    'Helped create a more welcoming environment for new Brazilian users'
+                ],
+                tags: ['Blockchain', 'Wellness', 'Fitness', 'Health', 'Tokenomics', 'Marketplace', 'Community Engagement', 'Data Ownership']
+            },
+            {
+                name: 'PiratePets',
+                role: 'LATAM Ambassador',
+                duration: '2024 – 2024',
+                category: 'Gaming',
+                description: 'PiratePes is a find-to-earn NFT game that combines move-to-earn, play-to-earn, and AR elements within a single ecosystem.',
+                url: '',
+                gif: 'piratepets.gif',
+                papel: [
+                    'Led the LATAM community as a regional ambassador',
+                    'Connected LATAM members with the wider project community',
+                    'Translated and localized project information for Portuguese-speaking users',
+                    'Collected community feedback and communicated it to the project team',
+                    'Supported regional engagement and community initiatives'
+                ],
+                fiz: [
+                    'Helped establish and strengthen the project\'s LATAM presence',
+                    'Improved communication between LATAM members and the global community',
+                    'Made project information more accessible to Portuguese speakers',
+                    'Created a direct feedback channel between the LATAM community and the project',
+                    'Increased regional participation and engagement'
+                ],
+                tags: ['Gaming', 'NFT', 'Move-to-Earn', 'Play-to-Earn', 'AR', 'Find-to-Earn', 'Blockchain']
+            },
+            {
+                name: 'Bionic',
+                role: 'Moderator',
+                duration: '2022 – 2023',
+                category: 'Tech',
+                description: 'A crypto-focused investment platform combining copy trading, hedge funds, AI, bots, and algorithmic trading. Its model gave token holders exposure to diversified trading strategies across cryptocurrency and traditional financial markets.',
+                url: '',
+                gif: 'bionic.gif',
+                papel: [
+                    'Moderated technical forums and support channels',
+                    'Helped users with integrations and configurations',
+                    'Reported bugs and suggestions to the development team',
+                    'Created community documentation for frequently asked questions'
+                ],
+                fiz: [
+                    'Helped reduce repetitive tickets with a clear FAQ',
+                    'Identified and reported several critical bugs',
+                    'Collaborated on beta testing with dozens of users',
+                    'Improved overall user experience on the platform'
+                ],
+                tags: ['Crypto', 'Investment', 'Copy Trading', 'AI', 'Bots', 'Algorithmic Trading', 'Hedge Funds', 'Diversified']
             },
             {
                 name: 'FortBlockGames',
@@ -1032,30 +1072,6 @@
                 tags: ['Media', 'Community Management', 'Crypto', 'Education', 'Market Insights', 'Web3', 'Moderation']
             },
             {
-                name: 'Coinracer',
-                role: 'Head Mod',
-                duration: '2023',
-                category: 'Gaming',
-                description: 'A crypto racing game built around NFT-based cars and digital ownership. Players needed an NFT car to access the game and could compete within its blockchain-powered racing ecosystem.',
-                url: '',
-                gif: 'coinracer.gif',
-                papel: [
-                    'Led the Brazilian community as Head Moderator',
-                    'Translated official content and announcements for the Brazilian audience',
-                    'Acted as the main bridge between Brazilian members and the global project',
-                    'Collected, organized, and communicated feedback from the Brazilian community',
-                    'Supported Brazilian users across community operations and project initiatives'
-                ],
-                fiz: [
-                    'Built the Brazilian community into the largest regional community within the project',
-                    'Established a stronger connection between Brazilian players and the global team',
-                    'Made project information more accessible to Portuguese-speaking users',
-                    'Created a reliable feedback channel between the BR community and the project',
-                    'Increased the visibility and participation of the Brazilian community within the wider ecosystem'
-                ],
-                tags: ['Gaming', 'Racing', 'NFT', 'Digital Ownership', 'Blockchain', 'Competition']
-            },
-            {
                 name: 'VS1',
                 role: 'Community Lead',
                 duration: '2022 – now',
@@ -1167,7 +1183,6 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'github') {
-                        // Shake no GitHub
                         this.classList.remove('shake');
                         void this.offsetWidth;
                         this.classList.add('shake');
@@ -1175,7 +1190,6 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'socials') {
-                        // Shake no Socials (mesmo efeito)
                         this.classList.remove('shake');
                         void this.offsetWidth;
                         this.classList.add('shake');
@@ -1183,7 +1197,6 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'back') {
-                        // Remove seleção de texto ao voltar
                         window.getSelection().removeAllRanges();
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
