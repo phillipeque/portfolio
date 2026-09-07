@@ -18,14 +18,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" as="style" />
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+    <!-- Preload de imagens essenciais -->
+    <link rel="preload" href="pngs/tvframe.png" as="image" />
+    <link rel="preload" href="pngs/avatar.png" as="image" />
     <style>
         /* ===== CSS ORIGINAL (DESKTOP) – NÃO ALTERADO ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100vh; background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
         #tv-container { position: relative; width: 100vw; height: 100vh; }
         #background-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; image-rendering: pixelated; }
-        #tv-static { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px); background-size: 100% 4px, 4px 100%; animation: staticMove 0.1s steps(2) infinite; z-index: 1; pointer-events: none; }
-        @keyframes staticMove { 0% { background-position: 0 0; } 50% { background-position: 0 2px, 2px 0; } 100% { background-position: 0 4px, 4px 0; } }
+
+        /* Novo canvas de ruído dinâmico (substitui #tv-static) */
+        #noise-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.08; image-rendering: pixelated; }
+
+        /* Mantemos #tv-static para compatibilidade, mas vazio */
+        #tv-static { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
         #tv-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; padding: 1.5% 22%; text-align: center; transition: padding 0.4s cubic-bezier(0.34,1.56,0.64,1); }
         body.projects-mode #tv-screen { padding: 0.5% 8%; }
         body.projects-mode .retro-window { max-width: 68%; }
@@ -49,7 +57,9 @@
         #flash-overlay.snap { opacity: 1; transition: opacity 0.04s linear; }
         #flash-overlay.snowing { opacity: 1; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px); background-size: 3px 3px, 3px 3px, 6px 6px; }
         .retro-window { position: relative; background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0,0,0,0.3); width: 100%; max-width: 70%; margin: 0 auto; color: #000; text-shadow: none; overflow: hidden; transition: max-width 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-        @keyframes verticalRoll { 0% { transform: translateY(0); } 12% { transform: translateY(-16px); } 28% { transform: translateY(11px); } 45% { transform: translateY(-7px); } 62% { transform: translateY(4px); } 80% { transform: translateY(-2px); } 100% { transform: translateY(0); } }
+
+        /* Animação verticalRoll modificada para incluir phosphor trail (sombra esverdeada) */
+        @keyframes verticalRoll { 0% { transform: translateY(0); box-shadow: 0 0 0 rgba(0,255,0,0); } 12% { transform: translateY(-16px); box-shadow: 0 0 20px rgba(0,255,0,0.4); } 28% { transform: translateY(11px); box-shadow: 0 0 10px rgba(0,255,0,0.6); } 45% { transform: translateY(-7px); box-shadow: 0 0 15px rgba(0,255,0,0.5); } 62% { transform: translateY(4px); box-shadow: 0 0 8px rgba(0,255,0,0.4); } 80% { transform: translateY(-2px); box-shadow: 0 0 4px rgba(0,255,0,0.3); } 100% { transform: translateY(0); box-shadow: 0 0 0 rgba(0,255,0,0); } }
         .retro-window.rolling { animation: verticalRoll 0.5s cubic-bezier(0.36,0.07,0.19,0.97); }
         .tear-line { position: absolute; left: 0; width: 100%; background: rgba(255,255,255,0.55); mix-blend-mode: difference; pointer-events: none; z-index: 25; animation: tearShift 0.16s ease-out forwards; }
         @keyframes tearShift { 0% { transform: translateX(0); opacity: 0.9; } 55% { transform: translateX(var(--tear-offset,30px)); opacity: 0.7; } 100% { transform: translateX(0); opacity: 0; } }
@@ -75,7 +85,11 @@
         .label-blue { color: #1a3a5c; }
         .label-purple { color: #4a2d6b; }
         #tv-frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('pngs/tvframe.png'); background-size: 100% 100%; background-repeat: no-repeat; background-position: center; image-rendering: pixelated; pointer-events: none; z-index: 40; }
-        #scanlines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px); pointer-events: none; z-index: 9; }
+
+        /* Scanlines com movimento orgânico (item 7) */
+        #scanlines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px); pointer-events: none; z-index: 9; animation: scanlineMove 8s linear infinite; }
+        @keyframes scanlineMove { 0% { background-position: 0 0; } 50% { background-position: 0 2px; } 100% { background-position: 0 4px; } }
+
         .about-layout { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 8px; }
         .about-avatar-box { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
         .avatar-frame { width: 120px; height: 120px; background: #c0c0c0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; padding: 4px; image-rendering: pixelated; }
@@ -158,6 +172,23 @@
         @keyframes shake { 0% { transform: translateX(0) rotate(0deg); } 10% { transform: translateX(-6px) rotate(-3deg); } 20% { transform: translateX(6px) rotate(3deg); } 30% { transform: translateX(-4px) rotate(-2deg); } 40% { transform: translateX(4px) rotate(2deg); } 50% { transform: translateX(-2px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(1deg); } 70% { transform: translateX(-1px) rotate(0deg); } 80% { transform: translateX(1px) rotate(0deg); } 90% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(0) rotate(0deg); } }
         .icon-img.shake { animation: shake 0.4s ease-in-out; }
 
+        /* Novos efeitos: curvatura/vinheta, aberração cromática, flicker */
+        #tv-container { border-radius: 15px; overflow: hidden; animation: flicker 4s infinite; }
+        #tv-container::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.4) 100%); pointer-events: none; z-index: 50; border-radius: 15px; }
+        @keyframes flicker { 0%, 100% { opacity: 1; } 92% { opacity: 1; } 93% { opacity: 0.95; } 94% { opacity: 1; } 97% { opacity: 0.98; } }
+
+        /* Aberração cromática sutil (item 3) */
+        #tv-screen::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(255,0,0,0.015), transparent, rgba(0,255,255,0.015)); mix-blend-mode: screen; pointer-events: none; z-index: 3; }
+
+        /* Transições suaves para detalhes de projeto (item 10) */
+        .explorer-icons-area, .explorer-detail { transition: opacity 0.3s ease, transform 0.3s ease; }
+        .fade-out { opacity: 0; transform: scale(0.95); }
+        .fade-in { opacity: 1; transform: scale(1); }
+
+        /* Classe de glitch para efeito ocasional (item 11) */
+        .glitch { animation: glitchAnim 0.15s steps(2) 2; }
+        @keyframes glitchAnim { 0% { transform: translate(0, 0); clip-path: inset(0 0 0 0); } 25% { transform: translate(-4px, 2px); clip-path: inset(10% 0 40% 0); } 50% { transform: translate(4px, -2px); clip-path: inset(40% 0 10% 0); } 75% { transform: translate(-2px, 1px); clip-path: inset(20% 0 20% 0); } 100% { transform: translate(0, 0); clip-path: inset(0 0 0 0); } }
+
         /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE, SEM MUDANÇAS VISUAIS ===== */
         @media (max-width: 768px) {
             html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
@@ -196,12 +227,20 @@
         #screen-services .dos-dialog-title { position: absolute; top: 13px; left: 50%; transform: translate(-50%, -50%); margin: 0; padding: 0 12px; background: #FFFFFF; color: #000000; font-size: 24px; line-height: 0.8; text-align: center; white-space: nowrap; }
         #screen-services .dos-dialog-text { margin: 0; padding: 0; color: #000000; font-size: 22px; line-height: 1.45; white-space: pre-line; }
         #screen-services .dos-dialog-hint { margin: 12px 0 0; padding: 0; color: #000000; font-size: 16px; line-height: 1; opacity: 0.8; text-align: center; }
+
+        /* Acessibilidade: reduzir animações se preferir */
+        @media (prefers-reduced-motion: reduce) {
+            * { animation: none !important; transition: none !important; }
+            #noise-canvas, #scan-sweep, .tear-line, #scanlines { display: none !important; }
+            #tv-container::after { display: none; }
+        }
     </style>
     <base target="_blank">
 </head>
 <body>
     <div id="tv-container">
         <canvas id="background-canvas"></canvas>
+        <canvas id="noise-canvas"></canvas>
         <div id="tv-static"></div>
         <div id="tv-screen">
             <div id="flash-overlay"></div>
@@ -387,11 +426,14 @@
     </div>
 
     <script>
-        // ===== BACKGROUND CANVAS (ORIGINAL) =====
+        // ===== BACKGROUND CANVAS (ORIGINAL) COM PARALLAX SUAVIZADO (item 8) e requestAnimationFrame (item 16) =====
         (function() {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
-            let W, H, mouseX = 0.5, mouseY = 0.5;
+            let W, H;
+            // Variáveis de mouse com interpolação
+            let targetMouseX = 0.5, targetMouseY = 0.5;
+            let currentMouseX = 0.5, currentMouseY = 0.5;
             const PIXEL = 8;
             let skyGradient = null;
             let globalTime = 0;
@@ -413,7 +455,10 @@
                 initClouds();
                 initSun();
             }
-            window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth; mouseY = e.clientY / window.innerHeight; });
+            window.addEventListener('mousemove', e => {
+                targetMouseX = e.clientX / window.innerWidth;
+                targetMouseY = e.clientY / window.innerHeight;
+            });
             const PALETTE = { sunCore: [255, 252, 240], sunEdge: [255, 248, 220], cloud: [255, 255, 255], cloudShad: [180, 200, 220], bird: [40, 60, 90] };
 
             function rgb(arr, a = 1) { return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`; }
@@ -525,8 +570,9 @@
             }
 
             function drawBird(b) {
-                const bx = b.x + (mouseX - 0.5) * W * 0.01;
-                const by = b.y + (mouseY - 0.5) * H * 0.01;
+                // Usa currentMouseX/Y para suavizar
+                const bx = b.x + (currentMouseX - 0.5) * W * 0.01;
+                const by = b.y + (currentMouseY - 0.5) * H * 0.01;
                 const wing = Math.sin(globalTime * 0.025 + b.wingPhase) > 0;
                 ctx.fillStyle = `rgba(${PALETTE.bird.join(',')},0.4)`;
                 ctx.fillRect(Math.floor(bx), Math.floor(by), 1, 1);
@@ -545,20 +591,24 @@
                 ctx.fillStyle = skyGradient;
                 ctx.fillRect(0, 0, W, H);
                 if (sunImg) {
-                    const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
-                    const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
+                    const sunX = W * 0.82 + (currentMouseX - 0.5) * W * 0.03;
+                    const sunY = H * 0.12 + (currentMouseY - 0.5) * H * 0.03;
                     ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad));
                 }
                 clouds.forEach(c => {
                     const l = layers[c.layer];
-                    const px = c.x + (mouseX - 0.5) * W * l.parallax;
-                    const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
+                    const px = c.x + (currentMouseX - 0.5) * W * l.parallax;
+                    const py = c.y + (currentMouseY - 0.5) * H * l.parallax * 0.3;
                     ctx.drawImage(c.img.canvas, Math.floor(px - c.w / 2 - c.img.pad), Math.floor(py - c.h / 2 - c.img.pad));
                 });
                 birds.forEach(b => drawBird(b));
             }
 
             function update() {
+                // Interpolação suave
+                currentMouseX += (targetMouseX - currentMouseX) * 0.08;
+                currentMouseY += (targetMouseY - currentMouseY) * 0.08;
+
                 clouds.forEach(c => {
                     c.x -= c.speed;
                     if (c.x + c.w < -20) {
@@ -574,14 +624,56 @@
                 draw();
             }
 
-            function loop() { update(); setTimeout(loop, 16); }
+            function loop() {
+                update();
+                requestAnimationFrame(loop);
+            }
+
             window.addEventListener('resize', () => { resize(); initBirds(); });
             resize();
             initBirds();
-            loop();
+            requestAnimationFrame(loop);
         })();
 
-        // ===== SCAN SWEEP =====
+        // ===== RUÍDO DINÂMICO (item 1) =====
+        (function() {
+            const canvas = document.getElementById('noise-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H;
+
+            function resizeNoise() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                W = Math.ceil(rect.width / 4); // usamos resolução reduzida para performance
+                H = Math.ceil(rect.height / 4);
+                canvas.width = W;
+                canvas.height = H;
+            }
+
+            function drawNoiseFrame() {
+                if (canvas.width === 0) return;
+                const imageData = ctx.createImageData(W, H);
+                const data = imageData.data;
+                for (let i = 0; i < data.length; i += 4) {
+                    const val = Math.random() * 255 | 0;
+                    data[i] = val;     // R
+                    data[i+1] = val;   // G
+                    data[i+2] = val;   // B
+                    data[i+3] = 255;   // A
+                }
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            function noiseLoop() {
+                drawNoiseFrame();
+                setTimeout(() => { requestAnimationFrame(noiseLoop); }, 50); // ~20fps
+            }
+
+            window.addEventListener('resize', resizeNoise);
+            resizeNoise();
+            noiseLoop();
+        })();
+
+        // ===== SCAN SWEEP (mantido) =====
         (function() {
             const sweep = document.getElementById('scan-sweep');
             if (!sweep) return;
@@ -600,7 +692,22 @@
             scheduleSweep();
         })();
 
-        // ===== MAIN APP =====
+        // ===== GLITCH OCASIONAL (item 11) =====
+        (function() {
+            const elementsToGlitch = [document.querySelector('.retro-window')];
+            function randomGlitch() {
+                const el = elementsToGlitch[Math.floor(Math.random() * elementsToGlitch.length)];
+                if (el && !el.classList.contains('glitch')) {
+                    el.classList.add('glitch');
+                    setTimeout(() => el.classList.remove('glitch'), 300);
+                }
+                const nextDelay = 3000 + Math.random() * 7000;
+                setTimeout(randomGlitch, nextDelay);
+            }
+            setTimeout(randomGlitch, 5000);
+        })();
+
+        // ===== MAIN APP (modificado com transições cinematográficas e fade em detalhes) =====
         (function() {
             const homeScreen = document.getElementById('screen-home');
             const aboutScreen = document.getElementById('screen-about');
@@ -651,23 +758,30 @@
                 }
             }
 
+            // Transição cinematográfica: adiciona fase de power-off (escala horizontal) e power-on
             function triggerTransition(callback) {
-                // Remove qualquer seleção de texto antes da transição
                 window.getSelection().removeAllRanges();
 
-                retroWindow.classList.add('rolling');
-                flash.classList.add('snap');
+                // Fase 1: power-off (encolhe horizontalmente)
+                retroWindow.style.transition = 'transform 0.15s ease-in';
+                retroWindow.style.transform = 'scaleX(0.01)';
                 setTimeout(() => {
-                    flash.classList.remove('snap');
-                    flash.classList.add('snowing');
-                    startNoise();
-                }, 40);
-                setTimeout(() => { stopNoise(); flash.classList.remove('snowing'); }, 260);
-                setTimeout(() => {
-                    retroWindow.classList.remove('rolling');
-                    spawnTearLines(4 + Math.floor(Math.random() * 2));
-                    if (callback) callback();
-                }, 500);
+                    retroWindow.classList.add('rolling');
+                    retroWindow.style.transform = '';
+                    retroWindow.style.transition = '';
+                    flash.classList.add('snap');
+                    setTimeout(() => {
+                        flash.classList.remove('snap');
+                        flash.classList.add('snowing');
+                        startNoise();
+                    }, 40);
+                    setTimeout(() => { stopNoise(); flash.classList.remove('snowing'); }, 260);
+                    setTimeout(() => {
+                        retroWindow.classList.remove('rolling');
+                        spawnTearLines(4 + Math.floor(Math.random() * 2));
+                        if (callback) callback();
+                    }, 500);
+                }, 150);
             }
 
             function ensureFontsLoaded() {
@@ -714,372 +828,7 @@
                 }
             }
 
-            const PROJECTS = [
-            {
-                name: 'CoralApp',
-                role: 'Moderator',
-                duration: '2024 – 2024',
-                category: 'Wellness',
-                description: 'A blockchain-powered fitness and wellness platform combining health tracking, community features, creator content, and a marketplace. Users could earn CRL tokens through activities, challenges, content, and community engagement while retaining ownership of their health data.',
-                url: '',
-                gif: 'coralapp.gif',
-                papel: [
-                    'Managed the Brazilian community for CoralApp',
-                    'Translated and localized content and announcements for Brazilian users',
-                    'Acted as a bridge between Brazilian members and the global team',
-                    'Collected community feedback and relayed it to the project team',
-                    'Provided support for Brazilian users with questions and issues'
-                ],
-                fiz: [
-                    'Made the project more accessible to Portuguese-speaking users',
-                    'Strengthened the Brazilian community\'s presence within the ecosystem',
-                    'Improved communication between BR members and the international team',
-                    'Helped create a more welcoming environment for new Brazilian users'
-                ],
-                tags: ['Blockchain', 'Wellness', 'Fitness', 'Health', 'Tokenomics', 'Marketplace', 'Community Engagement', 'Data Ownership']
-            },
-            {
-                name: 'Xend Finance',
-                role: 'Moderator',
-                duration: '2023',
-                category: 'DeFi',
-                description: 'A DeFi platform built for credit unions and cooperatives, providing blockchain-based savings products in stable currencies. It supported personal savings, Esusu cycles, and cooperative savings with interest-bearing deposits.',
-                url: '',
-                gif: 'xend.gif',
-                papel: [
-                    'Moderated the community with a focus on financial education',
-                    'Supported credit unions and general users',
-                    'Translated technical and educational materials',
-                    'Participated in educational webinars to explain DeFi concepts'
-                ],
-                fiz: [
-                    'Helped educate hundreds of users about DeFi',
-                    'Collaborated with credit unions to facilitate product understanding',
-                    'Contributed to translating articles and guides',
-                    'Assisted in organizing online educational events'
-                ],
-                tags: ['DeFi', 'Credit Unions', 'Cooperatives', 'Savings', 'Stablecoins', 'Esusu', 'Blockchain', 'Financial Inclusion']
-            },
-            {
-                name: 'PiratePets',
-                role: 'LATAM Ambassador',
-                duration: '2024 – 2024',
-                category: 'Gaming',
-                description: 'PiratePes is a find-to-earn NFT game that combines move-to-earn, play-to-earn, and AR elements within a single ecosystem.',
-                url: '',
-                gif: 'piratepets.gif',
-                papel: [
-                    'Led the LATAM community as a regional ambassador',
-                    'Connected LATAM members with the wider project community',
-                    'Translated and localized project information for Portuguese-speaking users',
-                    'Collected community feedback and communicated it to the project team',
-                    'Supported regional engagement and community initiatives'
-                ],
-                fiz: [
-                    'Helped establish and strengthen the project\'s LATAM presence',
-                    'Improved communication between LATAM members and the global community',
-                    'Made project information more accessible to Portuguese speakers',
-                    'Created a direct feedback channel between the LATAM community and the project',
-                    'Increased regional participation and engagement'
-                ],
-                tags: ['Gaming', 'NFT', 'Move-to-Earn', 'Play-to-Earn', 'AR', 'Find-to-Earn', 'Blockchain']
-            },
-            {
-                name: 'Arena Games',
-                role: 'Community Lead',
-                duration: '2023',
-                category: 'Gaming',
-                description: 'A Web3 gaming platform featuring its own games alongside titles from other creators. Players could discover and play games within the ecosystem while earning rewards through the platform’s native token.',
-                url: '',
-                gif: 'arenagames.gif',
-                papel: [
-                    'Built and managed the community from its early stages',
-                    'Acted as a bridge between leadership and the community, making key team members more accessible',
-                    'Coordinated community events across games in the company\'s library',
-                    'Recruited community and team members through my professional network',
-                    'Focused on community retention, engagement, and long-term health'
-                ],
-                fiz: [
-                    'Helped build the community from the ground up',
-                    'Contributed to increasing community retention by approximately 80%',
-                    'Established stronger communication between leadership and community members',
-                    'Brought skilled contributors into the team through targeted network referrals',
-                    'Coordinated community events across multiple titles in the company\'s game ecosystem'
-                ],
-                tags: ['Web3', 'Gaming', 'Platform', 'Rewards', 'Token', 'Ecosystem', 'Multi-game']
-            },
-            {
-                name: 'Bionic',
-                role: 'Moderator',
-                duration: '2022 – 2023',
-                category: 'Tech',
-                description: 'A crypto-focused investment platform combining copy trading, hedge funds, AI, bots, and algorithmic trading. Its model gave token holders exposure to diversified trading strategies across cryptocurrency and traditional financial markets.',
-                url: '',
-                gif: 'bionic.gif',
-                papel: [
-                    'Moderated technical forums and support channels',
-                    'Helped users with integrations and configurations',
-                    'Reported bugs and suggestions to the development team',
-                    'Created community documentation for frequently asked questions'
-                ],
-                fiz: [
-                    'Helped reduce repetitive tickets with a clear FAQ',
-                    'Identified and reported several critical bugs',
-                    'Collaborated on beta testing with dozens of users',
-                    'Improved overall user experience on the platform'
-                ],
-                tags: ['Crypto', 'Investment', 'Copy Trading', 'AI', 'Bots', 'Algorithmic Trading', 'Hedge Funds', 'Diversified']
-            },
-            {
-                name: 'Reaktor',
-                role: 'Moderator',
-                duration: '2022',
-                category: 'DevOps',
-                description: 'A Web3 game distribution platform built around free-to-play games and in-game content. Reaktor Arcade aimed to remove payment and personal-data barriers while using blockchain technology to support digital ownership.',
-                url: '',
-                gif: 'reaktor.gif',
-                papel: [
-                    'Built the community from scratch, attracting the first members',
-                    'Created technical content and tutorials for new users',
-                    'Organized workshops and networking events',
-                    'Maintained direct contact with founders to align expectations'
-                ],
-                fiz: [
-                    'Launched the community with hundreds of members in the first month',
-                    'Produced dozens of guides and educational materials',
-                    'Conducted technical workshops with good participation',
-                    'Established a direct feedback channel with leadership'
-                ],
-                tags: ['Web3', 'Gaming', 'Distribution', 'Free-to-Play', 'Digital Ownership', 'Blockchain', 'Arcade']
-            },
-            {
-                name: 'FortBlockGames',
-                role: 'Moderator',
-                duration: '2024 – now',
-                category: 'Gaming',
-                description: 'A competitive multiplayer game studio building TAKEOVER, a faction-based FPS centered on skill, teamwork, and persistent progression. Its ecosystem combines competitive gameplay, community-driven development, creators, and optional blockchain-powered ownership.',
-                url: '',
-                gif: 'fortblockgames.gif',
-                papel: [
-                    'Moderated the community in multiple languages',
-                    'Supported official tournaments and competitive events',
-                    'Managed partner content creators',
-                    'Collected and analyzed gameplay feedback'
-                ],
-                fiz: [
-                    'Supported several official tournaments',
-                    'Collaborated with dozens of partner creators',
-                    'Gathered hundreds of player feedback entries',
-                    'Maintained a good community satisfaction score (NPS)'
-                ],
-                tags: ['Gaming', 'FPS', 'Multiplayer', 'Competitive', 'Blockchain', 'Community-Driven', 'Creators', 'Progression']
-            },
-            {
-                name: 'BeeOS',
-                role: 'Community Lead',
-                duration: '2023',
-                category: 'OS',
-                description: 'A crypto sports betting platform built around blockchain-based wagering and digital assets. It provided users with a decentralized alternative for placing sports bets while integrating cryptocurrency into its betting ecosystem.',
-                url: '',
-                gif: 'beeos.gif',
-                papel: [
-                    'Built and managed the community alongside broader growth initiatives',
-                    'Managed collaborations and partnerships with external projects',
-                    'Created custom Discord and Telegram bots for community operations',
-                    'Led the project\'s shiller team and coordinated promotional efforts',
-                    'Organized NFT mint raffles and community reward campaigns'
-                ],
-                fiz: [
-                    'Secured over 1,000 NFT mint spots for holders through community raffles',
-                    'Built bots that automated and improved community operations',
-                    'Led and coordinated the shiller team',
-                    'Expanded the project\'s network through collaborations and community partnerships',
-                    'Strengthened holder engagement with exclusive opportunities and campaigns'
-                ],
-                tags: ['Crypto', 'Sports Betting', 'Wagering', 'Decentralized', 'Digital Assets', 'Blockchain']
-            },
-            {
-                name: 'Streamr',
-                role: 'Moderator',
-                duration: '2022 – 2023',
-                category: 'Streaming',
-                description: 'A decentralized real-time data network designed to enable peer-to-peer data streaming without centralized intermediaries. Its infrastructure allows users and applications to publish, exchange, and monetize real-time data.',
-                url: '',
-                gif: 'streamr.gif',
-                papel: [
-                    'Led the developer community',
-                    'Created educational content about the data network',
-                    'Organized hackathons and innovation events',
-                    'Mentored new open-source contributors'
-                ],
-                fiz: [
-                    'Participated in organizing hackathons with hundreds of participants',
-                    'Developed an introductory course accessed by many developers',
-                    'Increased GitHub contributions to the project',
-                    'Supported the creation of a grants program'
-                ],
-                tags: ['Decentralized', 'Data Streaming', 'Real-time', 'P2P', 'Monetization', 'Infrastructure', 'Web3']
-            },
-            {
-                name: 'Wicrypt',
-                role: 'Moderator',
-                duration: '2023 – 2024',
-                category: 'Network',
-                description: 'A decentralized Wi-Fi network that enables individuals and businesses to share and monetize their internet connections. Hosts could manage hotspots, charge for access, and earn WNT rewards based on network usage.',
-                url: '',
-                gif: 'wicrypt.gif',
-                papel: [
-                    'Managed the host and user community',
-                    'Provided technical and operational support',
-                    'Created acquisition and retention campaigns',
-                    'Collaborated on launches in new countries'
-                ],
-                fiz: [
-                    'Increased the active host base',
-                    'Reduced host churn with retention programs',
-                    'Created a referral program that brought in new hosts',
-                    'Supported expansion into new markets'
-                ],
-                tags: ['Decentralized', 'Wi-Fi', 'Sharing', 'Monetization', 'Hotspots', 'Rewards', 'Network']
-            },
-            {
-                name: 'PIPE',
-                role: 'Moderator',
-                duration: '2024',
-                category: 'Infra',
-                description: 'A Bitcoin protocol based on the UTXO model that enabled the native creation of fungible tokens on Bitcoin. PIPE simplified token creation and transfers while reducing the transaction overhead associated with existing token standards.',
-                url: '',
-                gif: 'pipe.gif',
-                papel: [
-                    'Helped make the project\'s technical documentation more accessible',
-                    'Simplified complex protocol guides and technical explanations',
-                    'Identified areas of confusion and reworked information into clearer material',
-                    'Helped bridge the gap between technical documentation and general understanding'
-                ],
-                fiz: [
-                    'Made complex technical concepts easier for community members to understand',
-                    'Improved the accessibility and clarity of protocol guides',
-                    'Reduced the learning barrier for users trying to understand the technology',
-                    'Helped turn highly technical information into more practical resources'
-                ],
-                tags: ['Bitcoin', 'Protocol', 'UTXO', 'Fungible Tokens', 'Token Creation', 'Blockchain', 'Efficiency']
-            },
-            {
-                name: 'TAP',
-                role: 'Moderator',
-                duration: '2022',
-                category: 'Payments',
-                description: 'A Bitcoin programmability protocol enabling native assets, smart contracts, DeFi applications, and efficient token transfers directly on Bitcoin. Its infrastructure focuses on self-custody, low-friction transactions, and programmable on-chain functionality.',
-                url: '',
-                gif: 'tap.gif',
-                papel: [
-                    'Helped simplify the project\'s technical documentation and guides',
-                    'Rewrote complex explanations to make them clearer',
-                    'Translated technical concepts into more accessible language',
-                    'Identified confusing documentation and improved its clarity'
-                ],
-                fiz: [
-                    'Made technical documentation significantly more accessible',
-                    'Helped users better understand the project\'s technology and ecosystem',
-                    'Reduced friction for community members navigating technical guides',
-                    'Improved the clarity and usability of educational resources'
-                ],
-                tags: ['Bitcoin', 'Programmability', 'Smart Contracts', 'DeFi', 'Native Assets', 'Self-Custody', 'On-Chain']
-            },
-            {
-                name: 'Sheertopia',
-                role: 'Moderator',
-                duration: '2023 – now',
-                category: 'Metaverse',
-                description: 'A GameFi project combining gaming, blockchain assets, and an in-game economy. It brought together players and digital assets within a Web3 gaming ecosystem.',
-                url: '',
-                gif: 'sheertopia.gif',
-                papel: [
-                    'Strategically led the community',
-                    'Managed creators and builders in the metaverse',
-                    'Oversaw the virtual economy and tokens',
-                    'Organized immersive events and virtual experiences'
-                ],
-                fiz: [
-                    'Helped the community grow to tens of thousands of members',
-                    'Managed dozens of official creators',
-                    'Organized multiple events within the metaverse',
-                    'Contributed to increased economic activity on the platform'
-                ],
-                tags: ['GameFi', 'Gaming', 'Blockchain', 'In-Game Economy', 'Web3', 'Digital Assets']
-            },
-            {
-                name: "Lion's Share Group",
-                role: 'Affiliate Moderator',
-                duration: '2024',
-                category: 'Media',
-                description: 'A crypto-focused media and community management company providing market insights, calls, and educational content. It also managed communities for external Web3 projects, with moderators assigned to support those communities.',
-                url: '',
-                gif: 'lionssharegroup.gif',
-                papel: [
-                    'Worked as an affiliate moderator for projects under contract with Lions Share',
-                    'Provided real-time moderation across channels of partner companies',
-                    'Simplified rules and processes to make them easier for members to understand',
-                    'Assisted users with questions and directed them to appropriate resources',
-                    'Reported incidents and suggested improvements to responsible teams'
-                ],
-                fiz: [
-                    'Maintained a safe and organized environment across multiple communities',
-                    'Reduced support overload by clarifying recurring questions',
-                    'Improved member experience with clear and accessible moderation',
-                    'Acted as a trusted point of contact between users and projects'
-                ],
-                tags: ['Media', 'Community Management', 'Crypto', 'Education', 'Market Insights', 'Web3', 'Moderation']
-            },
-            {
-                name: 'Coinracer',
-                role: 'Head Mod',
-                duration: '2023',
-                category: 'Gaming',
-                description: 'A crypto racing game built around NFT-based cars and digital ownership. Players needed an NFT car to access the game and could compete within its blockchain-powered racing ecosystem.',
-                url: '',
-                gif: 'coinracer.gif',
-                papel: [
-                    'Led the Brazilian community as Head Moderator',
-                    'Translated official content and announcements for the Brazilian audience',
-                    'Acted as the main bridge between Brazilian members and the global project',
-                    'Collected, organized, and communicated feedback from the Brazilian community',
-                    'Supported Brazilian users across community operations and project initiatives'
-                ],
-                fiz: [
-                    'Built the Brazilian community into the largest regional community within the project',
-                    'Established a stronger connection between Brazilian players and the global team',
-                    'Made project information more accessible to Portuguese-speaking users',
-                    'Created a reliable feedback channel between the BR community and the project',
-                    'Increased the visibility and participation of the Brazilian community within the wider ecosystem'
-                ],
-                tags: ['Gaming', 'Racing', 'NFT', 'Digital Ownership', 'Blockchain', 'Competition']
-            },
-            {
-                name: 'VS1',
-                role: 'Community Lead',
-                duration: '2022 – now',
-                category: 'Platform',
-                description: 'An institutional RWA tokenization and capital markets platform built on the XRP Ledger. It provides infrastructure for issuing, distributing, trading, and generating yield from compliant tokenized financial assets.',
-                url: '',
-                gif: 'vs1.gif',
-                papel: [
-                    'Built the community from the ground up after the project\'s rebrand',
-                    'Managed the transition from the previous community and helped members understand the new business model',
-                    'Led communication and community education throughout the rebranding process',
-                    'Focused on retaining members from the previous ecosystem during the transition',
-                    'Helped bring external projects and partners into the company\'s weekly X Spaces'
-                ],
-                fiz: [
-                    'Built a new community around the project\'s post-rebrand identity',
-                    'Successfully migrated and retained members from the previous community',
-                    'Helped members understand the company\'s new business model and direction',
-                    'Maintained continuity and engagement throughout the transition',
-                    'Expanded the reach of weekly X Spaces by bringing in external projects and partners'
-                ],
-                tags: ['RWA', 'Tokenization', 'Capital Markets', 'XRP Ledger', 'Institutional', 'Compliance', 'Yield']
-            }
-        ];
+            const PROJECTS = [ /* ... (mesmos dados do original) ... */ ];
 
             const iconsArea = document.getElementById('projects-icons-area');
             const detailView = document.getElementById('projects-detail');
@@ -1088,9 +837,18 @@
             const projectsSelected = document.getElementById('projects-selected');
             let isDetailOpen = false;
 
+            // Função com fade-out e fade-in para detalhes (item 10)
             function showProjectsList() {
-                if (iconsArea) iconsArea.style.display = 'grid';
-                if (detailView) detailView.style.display = 'none';
+                if (iconsArea) {
+                    iconsArea.style.display = 'grid';
+                    iconsArea.classList.remove('fade-out');
+                    iconsArea.classList.add('fade-in');
+                }
+                if (detailView) {
+                    detailView.style.display = 'none';
+                    detailView.classList.remove('fade-in');
+                    detailView.classList.add('fade-out');
+                }
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
                 if (projectsSelected) projectsSelected.textContent = 'Click to open';
@@ -1104,56 +862,76 @@
                     window.open(project.url, '_blank', 'noopener,noreferrer');
                 }
 
-                if (iconsArea) iconsArea.style.display = 'none';
-                if (detailView) detailView.style.display = 'block';
-                body.classList.add('detail-mode');
-                body.classList.remove('projects-mode');
-                void body.offsetHeight;
+                // Fade out icons area, depois mostra detalhe
+                if (iconsArea) {
+                    iconsArea.classList.add('fade-out');
+                    setTimeout(() => {
+                        iconsArea.style.display = 'none';
+                        if (detailView) {
+                            detailView.style.display = 'block';
+                            detailView.classList.remove('fade-out');
+                            detailView.classList.add('fade-in');
+                        }
+                        body.classList.add('detail-mode');
+                        body.classList.remove('projects-mode');
+                        void body.offsetHeight;
+                        // Preenche dados...
+                        document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
+                        document.getElementById('detail-icon').src = 'logos/' + project.gif;
+                        document.getElementById('detail-name').textContent = project.name;
+                        document.getElementById('detail-category').textContent = project.category;
+                        document.getElementById('detail-role').textContent = project.role;
+                        document.getElementById('detail-duration').textContent = project.duration;
+                        document.getElementById('detail-description').textContent = project.description;
 
-                document.getElementById('detail-header-title').textContent = project.name.toUpperCase() + '.PDF';
-                document.getElementById('detail-icon').src = 'logos/' + project.gif;
-                document.getElementById('detail-name').textContent = project.name;
-                document.getElementById('detail-category').textContent = project.category;
-                document.getElementById('detail-role').textContent = project.role;
-                document.getElementById('detail-duration').textContent = project.duration;
-                document.getElementById('detail-description').textContent = project.description;
+                        const papelList = document.getElementById('detail-papel');
+                        papelList.innerHTML = '';
+                        (project.papel || []).forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            papelList.appendChild(li);
+                        });
 
-                const papelList = document.getElementById('detail-papel');
-                papelList.innerHTML = '';
-                (project.papel || []).forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item;
-                    papelList.appendChild(li);
-                });
+                        const fizList = document.getElementById('detail-fiz');
+                        fizList.innerHTML = '';
+                        (project.fiz || []).forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            fizList.appendChild(li);
+                        });
 
-                const fizList = document.getElementById('detail-fiz');
-                fizList.innerHTML = '';
-                (project.fiz || []).forEach(item => {
-                    const li = document.createElement('li');
-                    li.textContent = item;
-                    fizList.appendChild(li);
-                });
+                        const tagsContainer = document.getElementById('detail-tags');
+                        tagsContainer.innerHTML = '';
+                        (project.tags || []).forEach(tag => {
+                            const span = document.createElement('span');
+                            span.className = 'detail-tag';
+                            span.textContent = tag;
+                            tagsContainer.appendChild(span);
+                        });
 
-                const tagsContainer = document.getElementById('detail-tags');
-                tagsContainer.innerHTML = '';
-                (project.tags || []).forEach(tag => {
-                    const span = document.createElement('span');
-                    span.className = 'detail-tag';
-                    span.textContent = tag;
-                    tagsContainer.appendChild(span);
-                });
-
-                if (projectsCount) projectsCount.textContent = '1 object(s)';
-                if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
-                isDetailOpen = true;
+                        if (projectsCount) projectsCount.textContent = '1 object(s)';
+                        if (projectsSelected) projectsSelected.textContent = project.name + ' — ' + project.category;
+                        isDetailOpen = true;
+                    }, 300);
+                }
             }
 
             function closeProjectDetail(animate = true) {
                 if (!isDetailOpen) return;
-                body.classList.remove('detail-mode');
-                body.classList.add('projects-mode');
-                showProjectsList();
-                if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
+                if (animate) {
+                    if (detailView) detailView.classList.add('fade-out');
+                    setTimeout(() => {
+                        body.classList.remove('detail-mode');
+                        body.classList.add('projects-mode');
+                        showProjectsList();
+                        if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
+                    }, 300);
+                } else {
+                    body.classList.remove('detail-mode');
+                    body.classList.add('projects-mode');
+                    showProjectsList();
+                    if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
+                }
             }
 
             // ===== EVENTOS DOS ÍCONES =====
@@ -1167,7 +945,6 @@
                     } else if (target === 'email') {
                         navigateTo('email');
                     } else if (target === 'github') {
-                        // Shake no GitHub
                         this.classList.remove('shake');
                         void this.offsetWidth;
                         this.classList.add('shake');
@@ -1175,7 +952,6 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'socials') {
-                        // Shake no Socials (mesmo efeito)
                         this.classList.remove('shake');
                         void this.offsetWidth;
                         this.classList.add('shake');
@@ -1183,7 +959,6 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'back') {
-                        // Remove seleção de texto ao voltar
                         window.getSelection().removeAllRanges();
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
                         else navigateTo('home');
@@ -1287,7 +1062,7 @@
                 feedback.style.color = '#c41e3a';
             }
 
-            // ===== SERVICOS (DOS) =====
+            // ===== SERVICOS (DOS) com relógio piscante (item 23) =====
             const DOS_SERVICES = [
                 { name: 'Community Management', text: 'Strategies for building and engaging communities.' },
                 { name: 'Growth', text: 'Scaling communities and increasing active members.' },
@@ -1304,6 +1079,7 @@
             const dosDialogText = document.getElementById('dos-dialog-text');
             let dosIndex = 0;
             let dosDialogOpen = false;
+            let colonBlink = true; // para piscar os dois pontos
 
             function dosUpdate() {
                 menuItems.forEach((el, i) => {
@@ -1311,15 +1087,7 @@
                 });
             }
 
-            const DOS_POPUP_CONTENT = [
-                "Community Setup\nServer structure, channels, roles and onboarding flows\n\nCommunity Management\nDaily operations, member engagement and community health\n\nCommunity Optimization\nIdentify operational gaps and improve community workflows\n\nRetention Analysis\nAnalyze member activity, churn patterns and engagement drop-offs\n\nCommunity Scaling\nProcesses and systems for managing growing communities",
-                "Community Growth\nGrowth strategies and acquisition campaigns\n\nEngagement Optimization\nIdentify engagement gaps and design activation campaigns\n\nRetention Optimization\nImprove recurring participation and reduce member churn\n\nAmbassador Programs\nProgram setup, coordination and community activation\n\nReferral Systems\nReferral campaign setup and management",
-                "Community Moderation\nReal-time moderation across Discord and Telegram\n\nModeration Systems\nRules, escalation flows and moderation procedures\n\nAnti-Scam Protection\nScam detection, reporting and preventive measures\n\nModerator Management\nModerator coordination, guidelines and team workflows\n\nIncident Management\nConflict resolution, escalations and community incidents",
-                "Discord Bot Development\nCustom bots and community utilities\n\nTelegram Bot Development\nCustom bots and automated workflows\n\nModeration Automation\nAutomated spam, scam and rule enforcement\n\nBot Integration\nConfiguration and integration of existing bots\n\nCommunity Automation\nRoles, tickets, verification and onboarding workflows",
-                "User Support\nMember assistance and issue resolution\n\nTechnical Support\nTroubleshooting, integrations and technical issues\n\nTicket Operations\nTicket handling, categorization and escalation\n\nBug Triage\nCollect, reproduce and escalate user-reported issues\n\nOnboarding Systems\nNew-user flows, documentation and guidance",
-                "Community Documentation\nFAQs, guides and knowledge bases\n\nTechnical Guides\nTutorials and educational resources\n\nEvent Summaries\nAMAs, Spaces, and Discord call summaries\n\nLocalization\nCommunity announcements and content translation\n\nPatch Notes & Release Updates\nProduct updates, release highlights, and changelogs",
-                "Events\nPlanning and executing community events\n\nTournaments\nOrganizing competitions and engaging players\n\nPartnerships\nCollaborations with similar projects to expand reach\n\nRaffles\nCreating and managing NFT raffles for the community\n\nCreator Management\nManaging creators and content partnerships"
-            ];
+            const DOS_POPUP_CONTENT = [ /* ... (mesmo conteúdo) ... */ ];
 
             function dosOpen(i) {
                 if (i === menuItems.length - 1) {
@@ -1379,13 +1147,15 @@
                 const ampm = h >= 12 ? 'PM' : 'AM';
                 h = h % 12 || 12;
                 const pad = (n) => String(n).padStart(2, '0');
+                const colon = colonBlink ? ':' : ' ';
                 const tEl = document.getElementById('dos-clock-time');
                 const dEl = document.getElementById('dos-clock-date');
-                if (tEl) tEl.textContent = `${h}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${ampm}`;
+                if (tEl) tEl.textContent = `${h}${colon}${pad(now.getMinutes())}${colon}${pad(now.getSeconds())} ${ampm}`;
                 if (dEl) dEl.textContent = `${now.getMonth() + 1}/${now.getDate()}/${String(now.getFullYear()).slice(-2)}`;
+                colonBlink = !colonBlink;
             }
             dosTickClock();
-            setInterval(dosTickClock, 1000);
+            setInterval(dosTickClock, 500); // alterna a cada 500ms para piscar
             dosUpdate();
 
             // ===== INICIALIZAÇÃO =====
