@@ -1444,7 +1444,7 @@
             setInterval(dosTickClock, 1000);
             dosUpdate();
 
-          // ===== SOCIALS BALLOON =====
+         // ===== SOCIALS BALLOON =====
 (function() {
     const overlay = document.getElementById('socials-overlay');
     const canvas = document.getElementById('balloon-canvas');
@@ -1481,94 +1481,140 @@
         return `rgb(${Math.min(255, Math.round(arr[0] * f))},${Math.min(255, Math.round(arr[1] * f))},${Math.min(255, Math.round(arr[2] * f))})`;
     }
 
+    function lerp(a, b, k) { return a + (b - a) * k; }
+
+    // ---------- NOVA ARTE DO BALÃO ----------
     function buildBalloonArt() {
         const c = document.createElement('canvas');
         c.width = ART_W; c.height = ART_H;
         const x = c.getContext('2d');
         x.imageSmoothingEnabled = false;
-        const cx = CENTER_X, cy = 21, rx = 21, ry = 18;
 
-        // bandeirinha no topo
-        x.fillStyle = '#808080';
+        const cx = CENTER_X, cy = 21, rx = 21, ry = 19;
+
+        // bandeirinhas no topo (mini bunting, tema festa junina)
+        x.fillStyle = '#7a7a7a';
         x.fillRect(cx, 0, 1, 3);
-        x.fillStyle = '#c73e2c';
-        x.fillRect(cx + 1, 0, 4, 1);
-        x.fillRect(cx + 1, 1, 2, 1);
-        x.fillRect(cx + 1, 2, 1, 1);
+        const flagColors = ['#c73e2c', '#f5d364', '#2f8f5b'];
+        for (let i = 0; i < 3; i++) {
+            x.fillStyle = flagColors[i];
+            const fx = cx - 4 + i * 4;
+            x.fillRect(fx, 0, 3, 1);
+            x.fillRect(fx, 1, 2, 1);
+            x.fillRect(fx, 2, 1, 1);
+        }
 
-        const RED = [206, 74, 54], CREAM = [245, 211, 100];
+        // paleta: 3 cores de gomo alternadas (creme, vermelho, dourado)
+        const PALETTE = [
+            [247, 220, 150], // creme
+            [201, 61, 46],   // vermelho
+            [237, 168, 60],  // dourado
+        ];
+        const GAP = 6.5; // largura angular aproximada de cada gomo em px na base
 
-        // envelope com listras sombreadas
         for (let y = 0; y < ART_H; y++) {
             for (let px = 0; px < ART_W; px++) {
                 const dx = (px - cx) / rx, dy = (y - cy) / ry;
                 const d2 = dx * dx + dy * dy;
                 if (d2 > 1) continue;
 
-                const stripe = Math.floor(px / 6);
-                const inStripe = px - stripe * 6; // 0..5
-                const base = (stripe % 2 === 0) ? CREAM : RED;
+                // curvatura da esfera pra achar a "largura" real do gomo nesta linha
+                const halfWidthAtY = rx * Math.sqrt(Math.max(0, 1 - dy * dy));
+                if (halfWidthAtY < 0.001) continue;
 
+                const gomoIdx = Math.floor((px - (cx - halfWidthAtY)) / GAP);
+                const localPos = ((px - (cx - halfWidthAtY)) % GAP) / GAP; // 0..1 dentro do gomo
+                const color = PALETTE[((gomoIdx % 3) + 3) % 3];
+
+                // sombreado cilíndrico: cada gomo tem seu próprio "pico" de luz
                 let f = 1;
-                if (inStripe === 0 || inStripe === 5) f *= 0.80;   // costura entre faixas
-                f *= (1 - dy * 0.20);                              // mais escuro embaixo
-                if (dx < -0.3) f *= 1.10;                          // luz vinda da esquerda
-                if (dx > 0.4) f *= 0.82;                           // sombra à direita
-                if (d2 > 0.84) f *= 0.55;                          // borda do envelope
+                const distFromCenterOfGomo = Math.abs(localPos - 0.5) * 2; // 0 no centro, 1 nas bordas
+                f *= lerp(1.15, 0.62, distFromCenterOfGomo); // luz no meio do gomo, sombra nas costuras
+                f *= (1 - dy * 0.22);                        // mais escuro embaixo
+                if (dx < -0.15) f *= 1.06;                   // leve reforço de luz vindo da esquerda geral
+                if (d2 > 0.86) f *= 0.6;                     // silhueta mais escura na borda
 
-                x.fillStyle = shade(base, f);
+                x.fillStyle = shade(color, f);
                 x.fillRect(px, y, 1, 1);
 
-                // brilho superior-esquerdo
-                if (dy < -0.35 && dx < -0.05 && d2 < 0.6) {
-                    x.fillStyle = 'rgba(255,255,255,0.28)';
+                // costura entre gomos
+                if (localPos < 0.06 || localPos > 0.94) {
+                    x.fillStyle = 'rgba(0,0,0,0.18)';
+                    x.fillRect(px, y, 1, 1);
+                }
+
+                // brilho especular superior-esquerdo
+                if (dy < -0.4 && dx < 0 && d2 < 0.55) {
+                    x.fillStyle = 'rgba(255,255,255,0.22)';
                     x.fillRect(px, y, 1, 1);
                 }
             }
         }
 
-        // saia (cone invertido sob o envelope)
-        x.fillStyle = '#7a2418';
-        for (let i = 0; i <= 4; i++) {
-            const wHalf = 9 - i;
-            x.fillRect(cx - wHalf, 40 + i, wHalf * 2, 1);
+        // faixa decorativa no equador com losangos
+        const eqY = cy + 1;
+        for (let px = 0; px < ART_W; px++) {
+            const dx = (px - cx) / rx;
+            if (Math.abs(dx) > 0.97) continue;
+            const inDiamond = ((px + eqY) % 4 === 0);
+            x.fillStyle = inDiamond ? '#f5f0d8' : '#3a5c3f';
+            x.fillRect(px, eqY, 1, 1);
         }
 
-        // cordas da saia até o aro do cesto — mais finas e mais altas (subiram 80%)
+        // saia com pontas (estilo pétala) em vez de cone liso
+        const skirtY = 40;
+        const petalW = 4;
+        for (let px = cx - 9; px <= cx + 9; px++) {
+            const petalPhase = Math.abs(((px - (cx - 9)) % petalW) - petalW / 2) / (petalW / 2);
+            const depth = Math.round(petalPhase * 3);
+            for (let i = 0; i <= depth; i++) {
+                const distFromCenter = Math.abs(px - cx) / 9;
+                x.fillStyle = shade([120, 40, 30], 1 - distFromCenter * 0.35);
+                x.fillRect(px, skirtY + i, 1, 1);
+            }
+        }
+
+        // cordas da saia até o aro do cesto
         x.fillStyle = '#5a3a1a';
         for (let i = 0; i <= 13; i++) {
             x.fillRect(cx - 8 + Math.round(i / 13), 38 + i, 1, 1);
             x.fillRect(cx + 8 - Math.round(i / 13), 38 + i, 1, 1);
         }
 
-        // cesto: aro + trama
-        x.fillStyle = '#a8743c';
-        x.fillRect(cx - 9, 48, 18, 2);            // aro
-        x.fillStyle = '#8a5a2b';
-        x.fillRect(cx - 8, 50, 16, 8);            // corpo
-        x.fillStyle = '#6b4423';
-        for (let i = 0; i < 4; i++) x.fillRect(cx - 8, 51 + i * 2, 16, 1); // tábuas horizontais
-        for (let i = 0; i < 8; i++) {                                        // pontos verticais (trama)
-            const vx = cx - 8 + i * 2 + ((i % 2 === 0) ? 0 : 1);
-            x.fillRect(vx, 51, 1, 1); x.fillRect(vx, 53, 1, 1);
-            x.fillRect(vx, 55, 1, 1); x.fillRect(vx, 57, 1, 1);
+        // cesto: aro + trama em xadrez (mais definida que antes)
+        x.fillStyle = '#b98244';
+        x.fillRect(cx - 9, 48, 18, 2); // aro superior
+        x.fillStyle = 'rgba(0,0,0,0.15)';
+        x.fillRect(cx - 9, 49, 18, 1); // sombra sob o aro
+
+        for (let row = 0; row < 8; row++) {
+            const ry2 = 50 + row;
+            for (let col = 0; col < 16; col++) {
+                const cx2 = cx - 8 + col;
+                const weave = (row + col) % 2 === 0;
+                x.fillStyle = weave ? '#9c6a34' : '#7a4f24';
+                x.fillRect(cx2, ry2, 1, 1);
+            }
         }
         x.fillStyle = '#5a3a1a';
         x.fillRect(cx - 8, BASKET_BOTTOM - 1, 16, 1); // base escura
+        x.fillStyle = '#c99a52';
+        x.fillRect(cx - 9, BASKET_BOTTOM, 18, 1); // realce inferior
 
         // sacos de areia pendurados nas laterais, conectados à cesta
         [[cx - 11, 52], [cx + 10, 52]].forEach(([sx, sy]) => {
             x.fillStyle = '#c9a227'; x.fillRect(sx, sy, 2, 4);
             x.fillStyle = '#8f7318'; x.fillRect(sx, sy + 3, 2, 1);
-            // corda da cesta ao saco (horizontal)
+            x.fillStyle = 'rgba(255,255,255,0.25)'; x.fillRect(sx, sy, 1, 1); // brilho
             x.fillStyle = '#5a3a1a';
-            if (sx < cx) { x.fillRect(sx, 51, cx - 8 - sx, 1); } // esquerda
-            else { x.fillRect(cx + 8, 51, sx - (cx + 8), 1); } // direita
-            x.fillRect(sx, 50, 1, 2); // pequena ligação vertical
+            if (sx < cx) { x.fillRect(sx, 51, cx - 8 - sx, 1); }
+            else { x.fillRect(cx + 8, 51, sx - (cx + 8), 1); }
+            x.fillRect(sx, 50, 1, 2);
         });
 
         return c;
     }
+    // ---------- FIM DA NOVA ARTE ----------
 
     function resize() {
         const rect = canvas.parentElement.getBoundingClientRect();
@@ -1590,12 +1636,11 @@
     function drawFlame(cx, cy, cos, sin) {
         const flick = Math.sin(t * 0.25) * 1.4 + Math.sin(t * 0.11 + 1.3) * 1.0;
         const fh = Math.max(2, Math.round(4 + flick));
-        const lx = 0, ly = 44 - CENTER_Y; // posição local do queimador
+        const lx = 0, ly = 44 - CENTER_Y;
         const fx = cx + (lx * cos - ly * sin);
         const fy = cy + (lx * sin + ly * cos);
 
-        // brilho
-        ctx.fillStyle = 'rgba(255,180,60,0.25)';
+        ctx.fillStyle = 'rgba(255,180,60,0.28)';
         ctx.fillRect(Math.round(fx) - 2, Math.round(fy) - 1, 5, 3);
 
         for (let i = 0; i < fh; i++) {
@@ -1604,7 +1649,6 @@
             ctx.fillStyle = i < fh * 0.5 ? '#e25822' : '#f4842b';
             ctx.fillRect(Math.round(fx) - Math.floor(w / 2), yy, w, 1);
         }
-        // miolo amarelo
         ctx.fillStyle = '#ffd23f';
         ctx.fillRect(Math.round(fx), Math.round(fy), 1, 1);
         if (fh > 3) ctx.fillRect(Math.round(fx), Math.round(fy) - 1, 1, 1);
@@ -1626,7 +1670,6 @@
             const startY = H + 30;
             cy = startY + (targetY - startY) * ease;
             if (p >= 1) cy += Math.sin(t * 0.03) * 0.8;
-            // Adicionar classe 'at-top' apenas quando estiver totalmente no topo
             if (p >= 1) {
                 if (!overlay.classList.contains('at-top')) overlay.classList.add('at-top');
             } else {
@@ -1640,7 +1683,6 @@
 
         ctx.clearRect(0, 0, W, H);
 
-        // balão: shear em fatias
         const baseX = Math.round(cx);
         const baseY = Math.round(cy);
         for (let i = 0; i < ART_W; i++) {
@@ -1651,7 +1693,6 @@
         const cos = Math.cos(angle), sin = Math.sin(angle);
         const basketY = BASKET_BOTTOM - CENTER_Y;
 
-        // fogo piscando
         drawFlame(cx, cy, cos, sin);
 
         hangButtons.forEach(b => {
@@ -1681,7 +1722,7 @@
         balloonArt = buildBalloonArt();
         riseStart = performance.now();
         descending = false;
-        overlay.classList.remove('at-top'); // esconder back button no início
+        overlay.classList.remove('at-top');
         rafId = requestAnimationFrame(frame);
     }
 
@@ -1706,7 +1747,6 @@
     window.openSocials = function() {
         if (socialsOpen) return;
         socialsOpen = true;
-        // Fade out do menu (CSS transition)
         body.classList.add('socials-mode');
         setTimeout(() => {
             homeScreen.classList.remove('active');
@@ -1720,7 +1760,6 @@
         descending = true;
         descendStart = performance.now();
         descendFrom = lastCy;
-        // Esconder botão back imediatamente ao clicar
         overlay.classList.remove('at-top');
     };
 })();
