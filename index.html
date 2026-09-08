@@ -206,14 +206,17 @@
             background: #c0c0c0; color: #000;
             border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff;
             box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 3px 3px 0 rgba(0,0,0,0.3);
-            font-family: 'Courier New', monospace; font-size: 22px; font-weight: bold;
             text-decoration: none; cursor: pointer; pointer-events: auto; user-select: none;
             opacity: 1; transition: opacity 0.3s ease;
         }
+        #social-links a img {
+            width: 32px; height: 32px; object-fit: contain; image-rendering: pixelated;
+        }
         #social-links a:hover { background: #dfdfdf; }
         #social-links a:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
-        .socials-back-area { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
-        #socials-overlay.risen .socials-back-area { opacity: 1; pointer-events: auto; }
+        
+        .socials-back-area { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.2s ease; pointer-events: none; }
+        #socials-overlay.at-top .socials-back-area { opacity: 1; pointer-events: auto; }
         .socials-back-area .icon-item { cursor: pointer; }
 
         body.socials-mode .retro-window { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
@@ -376,9 +379,15 @@
             <div id="socials-overlay">
                 <canvas id="balloon-canvas"></canvas>
                 <div id="social-links">
-                    <a id="soc-x"        href="https://x.com/SEU_PERFIL"      target="_blank" rel="noopener noreferrer" title="X">𝕏</a>
-                    <a id="soc-discord"  href="https://discord.gg/SEU_SERVER" target="_blank" rel="noopener noreferrer" title="Discord">◕‿◕</a>
-                    <a id="soc-telegram" href="https://t.me/SEU_CANAL"        target="_blank" rel="noopener noreferrer" title="Telegram">✈</a>
+                    <a id="soc-x" href="https://x.com/SEU_PERFIL" target="_blank" rel="noopener noreferrer" title="X">
+                        <img src="logos/x.png" alt="X" />
+                    </a>
+                    <a id="soc-discord" href="https://discord.gg/SEU_SERVER" target="_blank" rel="noopener noreferrer" title="Discord">
+                        <img src="logos/discord.png" alt="Discord" />
+                    </a>
+                    <a id="soc-telegram" href="https://t.me/SEU_CANAL" target="_blank" rel="noopener noreferrer" title="Telegram">
+                        <img src="logos/telegram.png" alt="Telegram" />
+                    </a>
                 </div>
                 <div class="socials-back-area">
                     <div class="icon-item">
@@ -1617,7 +1626,12 @@
             const startY = H + 30;
             cy = startY + (targetY - startY) * ease;
             if (p >= 1) cy += Math.sin(t * 0.03) * 0.8;
-            if (p >= 0.35 && !overlay.classList.contains('risen')) overlay.classList.add('risen');
+            // Adicionar classe 'at-top' apenas quando estiver totalmente no topo
+            if (p >= 1) {
+                if (!overlay.classList.contains('at-top')) overlay.classList.add('at-top');
+            } else {
+                overlay.classList.remove('at-top');
+            }
             angle = Math.sin(t * 0.015) * 0.05;
         }
 
@@ -1667,7 +1681,7 @@
         balloonArt = buildBalloonArt();
         riseStart = performance.now();
         descending = false;
-        overlay.classList.add('risen'); // botões sempre visíveis durante a subida
+        overlay.classList.remove('at-top'); // esconder back button no início
         rafId = requestAnimationFrame(frame);
     }
 
@@ -1679,7 +1693,7 @@
     function finishClose() {
         stopBalloon();
         overlay.classList.remove('active');
-        overlay.classList.remove('risen'); // remove risen apenas ao finalizar o fechamento
+        overlay.classList.remove('at-top');
         body.classList.remove('socials-mode');
         homeScreen.classList.add('active');
         currentScreen = 'home';
@@ -1706,7 +1720,8 @@
         descending = true;
         descendStart = performance.now();
         descendFrom = lastCy;
-        // Não remove risen aqui, para manter os botões visíveis durante a descida
+        // Esconder botão back imediatamente ao clicar
+        overlay.classList.remove('at-top');
     };
 })();
 
