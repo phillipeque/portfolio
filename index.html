@@ -387,7 +387,7 @@
     </div>
 
     <script>
-        // ===== BACKGROUND CANVAS (ORIGINAL) =====
+        // ===== BACKGROUND CANVAS (AJUSTADO - MENOS NUVENS E MAIS DISTRIBUIDAS) =====
         (function() {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
@@ -485,10 +485,12 @@
                 });
                 return { canvas: c, pad: pad };
             }
+            
+            // REDUZIDO: menos camadas e menos nuvens por camada
             const layers = [
-                { count: 2, speed: 0.04, parallax: 0.02, yRange: [0.08, 0.20], scale: [1.8, 2.8], opacity: [0.30, 0.45] },
-                { count: 2, speed: 0.12, parallax: 0.06, yRange: [0.20, 0.40], scale: [1.3, 2.0], opacity: [0.45, 0.65] },
-                { count: 2, speed: 0.30, parallax: 0.14, yRange: [0.40, 0.65], scale: [1.0, 1.8], opacity: [0.60, 0.85] },
+                { count: 1, speed: 0.03, parallax: 0.02, yRange: [0.08, 0.18], scale: [2.0, 2.8], opacity: [0.25, 0.40] },
+                { count: 1, speed: 0.10, parallax: 0.05, yRange: [0.22, 0.38], scale: [1.5, 2.0], opacity: [0.40, 0.55] },
+                { count: 1, speed: 0.25, parallax: 0.12, yRange: [0.42, 0.60], scale: [1.2, 1.6], opacity: [0.55, 0.70] },
             ];
             let clouds = [];
 
@@ -497,14 +499,14 @@
                 layers.forEach((l, li) => {
                     for (let i = 0; i < l.count; i++) {
                         const scale = l.scale[0] + Math.random() * (l.scale[1] - l.scale[0]);
-                        const w = Math.floor((40 + Math.random() * 30) * scale * (W / 250));
-                        const h = Math.floor((12 + Math.random() * 10) * scale * (W / 250));
+                        const w = Math.floor((40 + Math.random() * 25) * scale * (W / 280));
+                        const h = Math.floor((12 + Math.random() * 8) * scale * (W / 280));
                         const opacity = l.opacity[0] + Math.random() * (l.opacity[1] - l.opacity[0]);
                         clouds.push({
                             layer: li,
-                            x: Math.random() * W * 1.5 - W * 0.25,
+                            x: Math.random() * W * 1.3 - W * 0.15,
                             y: H * (l.yRange[0] + Math.random() * (l.yRange[1] - l.yRange[0])),
-                            w, h, speed: l.speed * (0.8 + Math.random() * 0.4),
+                            w, h, speed: l.speed * (0.8 + Math.random() * 0.3),
                             img: createCloudCanvas(w, h, opacity),
                         });
                     }
@@ -514,7 +516,7 @@
 
             function initBirds() {
                 birds = [];
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 2; i++) {
                     birds.push({
                         x: Math.random() * W,
                         y: H * (0.15 + Math.random() * 0.25),
@@ -562,7 +564,7 @@
                 clouds.forEach(c => {
                     c.x -= c.speed;
                     if (c.x + c.w < -20) {
-                        c.x = W + 10 + Math.random() * 50;
+                        c.x = W + 10 + Math.random() * 40;
                         c.y = H * (layers[c.layer].yRange[0] + Math.random() * (layers[c.layer].yRange[1] - layers[c.layer].yRange[0]));
                     }
                 });
@@ -675,18 +677,15 @@
                 return Promise.resolve();
             }
 
-            // Pré-carrega a fonte VT323 ao carregar a página
             function preloadServicesFont() {
                 if (document.fonts && document.fonts.load) {
                     document.fonts.load('1em VT323').then(() => {
-                        // Aplica a fonte no elemento services para garantir que já esteja carregada
                         if (servicesScreen) {
                             servicesScreen.style.fontFamily = 'VT323, "Courier New", monospace';
                         }
                     }).catch(() => {});
                 }
             }
-            // Chama o pré-carregamento imediatamente
             preloadServicesFont();
 
             function navigateTo(screen) {
@@ -705,7 +704,6 @@
                         else if (screen === 'about') aboutScreen.classList.add('active');
                         else if (screen === 'services') {
                             servicesScreen.classList.add('active');
-                            // Garante que a fonte já está aplicada
                             servicesScreen.style.fontFamily = 'VT323, "Courier New", monospace';
                             dosCloseDialog();
                             dosIndex = 0;
@@ -759,7 +757,7 @@
                 role: 'Community Lead',
                 duration: '2023',
                 category: 'Gaming',
-                description: 'A Web3 gaming platform featuring its own games alongside titles from other creators. Players could discover and play games within the ecosystem while earning rewards through the platform’s native token.',
+                description: 'A Web3 gaming platform featuring its own games alongside titles from other creators. Players could discover and play games within the ecosystem while earning rewards through the platform\'s native token.',
                 url: '',
                 gif: 'arenagames.gif',
                 papel: [
