@@ -708,16 +708,6 @@
                 }, 500);
             }
 
-            // Função de transição apenas com fade (para Socials)
-            function fadeTransition(callback) {
-                window.getSelection().removeAllRanges();
-                retroWindow.style.opacity = '0';
-                setTimeout(() => {
-                    if (callback) callback();
-                    retroWindow.style.opacity = '1';
-                }, 400);
-            }
-
             function ensureFontsLoaded() {
                 if (document.fonts && document.fonts.ready) {
                     return document.fonts.ready;
@@ -1516,8 +1506,6 @@
                 if (dx < -0.3) f *= 1.10;                          // luz vinda da esquerda
                 if (dx > 0.4) f *= 0.82;                           // sombra à direita
                 if (d2 > 0.84) f *= 0.55;                          // borda do envelope
-                // faixa decorativa horizontal
-                if (y >= Math.round(cy + ry * 0.60) && y <= Math.round(cy + ry * 0.78)) f *= 0.72;
 
                 x.fillStyle = shade(base, f);
                 x.fillRect(px, y, 1, 1);
@@ -1537,11 +1525,11 @@
             x.fillRect(cx - wHalf, 40 + i, wHalf * 2, 1);
         }
 
-        // cordas da saia até o aro do cesto — pixel a pixel (mais grossas e visíveis)
+        // cordas da saia até o aro do cesto — mais finas e mais altas (subiram 80%)
         x.fillStyle = '#5a3a1a';
-        for (let i = 0; i <= 7; i++) {
-            x.fillRect(cx - 8 + Math.round(i / 7), 44 + i, 2, 1);
-            x.fillRect(cx + 8 - Math.round(i / 7), 44 + i, 2, 1);
+        for (let i = 0; i <= 13; i++) {
+            x.fillRect(cx - 8 + Math.round(i / 13), 38 + i, 1, 1);
+            x.fillRect(cx + 8 - Math.round(i / 13), 38 + i, 1, 1);
         }
 
         // cesto: aro + trama
@@ -1690,14 +1678,13 @@
 
     function finishClose() {
         stopBalloon();
-        fadeTransition(() => {
-            overlay.classList.remove('active');
-            body.classList.remove('socials-mode');
-            homeScreen.classList.add('active');
-            currentScreen = 'home';
-            socialsOpen = false;
-            descending = false;
-        });
+        overlay.classList.remove('active');
+        overlay.classList.remove('risen'); // remove risen apenas ao finalizar o fechamento
+        body.classList.remove('socials-mode');
+        homeScreen.classList.add('active');
+        currentScreen = 'home';
+        socialsOpen = false;
+        descending = false;
     }
 
     window.addEventListener('resize', () => { if (socialsOpen) resize(); });
@@ -1705,12 +1692,13 @@
     window.openSocials = function() {
         if (socialsOpen) return;
         socialsOpen = true;
-        fadeTransition(() => {
+        // Fade out do menu (CSS transition)
+        body.classList.add('socials-mode');
+        setTimeout(() => {
             homeScreen.classList.remove('active');
-            body.classList.add('socials-mode');
             overlay.classList.add('active');
             startBalloon();
-        });
+        }, 400);
     };
 
     window.closeSocials = function() {
@@ -1718,7 +1706,7 @@
         descending = true;
         descendStart = performance.now();
         descendFrom = lastCy;
-        overlay.classList.remove('risen'); // remove apenas quando começa a descer (mas botões ficam até o fim? ajustado no CSS)
+        // Não remove risen aqui, para manter os botões visíveis durante a descida
     };
 })();
 
