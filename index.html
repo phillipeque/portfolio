@@ -158,99 +158,20 @@
         @keyframes shake { 0% { transform: translateX(0) rotate(0deg); } 10% { transform: translateX(-6px) rotate(-3deg); } 20% { transform: translateX(6px) rotate(3deg); } 30% { transform: translateX(-4px) rotate(-2deg); } 40% { transform: translateX(4px) rotate(2deg); } 50% { transform: translateX(-2px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(1deg); } 70% { transform: translateX(-1px) rotate(0deg); } 80% { transform: translateX(1px) rotate(0deg); } 90% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(0) rotate(0deg); } }
         .icon-img.shake { animation: shake 0.4s ease-in-out; }
 
-        /* ===== MODAL SOCIALS ===== */
-        #socials-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 60;
-            background: rgba(0, 0, 0, 0.55);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        #socials-overlay.open { display: flex; }
-        .socials-dialog {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0,0,0,0.3);
-            width: 320px;
-            max-width: 85vw;
-            font-family: 'Courier New', monospace;
-            color: #000;
-        }
-        .socials-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 4px 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            user-select: none;
-        }
-        .socials-title {
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #000000;
-        }
-        .socials-close-btn {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 13px;
-            color: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            padding: 0;
-        }
-        .socials-close-btn:active {
-            border-color: #808080 #ffffff #ffffff #808080;
-        }
-        .socials-content {
-            padding: 16px;
-        }
-        .socials-hint {
-            font-size: 11px;
-            margin-bottom: 12px;
-            color: #555;
-            letter-spacing: 0.5px;
-        }
-        .socials-link {
-            display: block;
-            padding: 8px 12px;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            background: #ffffff;
-            color: #000080;
-            text-decoration: none;
-            margin-bottom: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.05s linear;
-        }
-        .socials-link:last-child { margin-bottom: 0; }
-        .socials-link:hover {
-            border-color: #808080 #ffffff #ffffff #808080;
-            background: #efefef;
-        }
-        .socials-link:active {
-            border-color: #808080 #ffffff #ffffff #808080;
-            background: #ddd;
-        }
+        /* ===== MODO NOTURNO (SOCIALS) – CORRIGIDO ===== */
+        /* Removido pointer-events global, agora apenas no modo noturno */
+        body.night-mode #tv-screen { pointer-events: none; padding: 0; }
+        body.night-mode .retro-window { display: none; }
+        body.night-mode #night-hint { display: block; pointer-events: auto; } /* agora clicável */
+        #night-hint { position: absolute; bottom: 4%; left: 50%; transform: translateX(-50%); z-index: 44; display: none; background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 3px 3px 0 rgba(0,0,0,0.4); padding: 7px 16px; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #000; cursor: pointer; user-select: none; white-space: nowrap; }
+        #night-hint:active { border-color: #808080 #ffffff #ffffff #808080; }
+        /* Estrelas sociais e caixinha */
+        #star-box { position: absolute; z-index: 46; width: 230px; display: none; background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0,0,0,0.4); }
+        #star-box.open { display: block; }
+        #star-box .win95-titlebar { display: flex; justify-content: space-between; align-items: center; }
+        #star-box-close { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; width: 18px; height: 18px; font-family: 'Courier New', monospace; font-weight: bold; font-size: 12px; line-height: 1; cursor: pointer; color: #000; padding: 0; }
+        #star-box-close:active { border-color: #808080 #ffffff #ffffff #808080; }
+        .star-box-body { padding: 10px 12px; font-size: 12px; line-height: 1.6; color: #000; text-align: left; }
 
         /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE, SEM MUDANÇAS VISUAIS ===== */
         @media (max-width: 768px) {
@@ -261,13 +182,11 @@
             .window-content { padding: 12px 10px; }
             .window-title { font-size: 13px; }
             .window-footer { font-size: 9px; padding: 8px; }
-            .socials-dialog { width: 280px; }
         }
         @media (max-width: 480px) {
             .window-content { padding: 10px 6px; }
             .window-title { font-size: 11px; }
             .window-footer { font-size: 8px; padding: 6px; }
-            .socials-dialog { width: 240px; }
             .socials-link { font-size: 11px; padding: 6px 10px; }
         }
 
@@ -295,6 +214,7 @@
         #screen-services .dos-dialog-hint { margin: 12px 0 0; padding: 0; color: #000000; font-size: 16px; line-height: 1; opacity: 0.8; text-align: center; }
     </style>
     <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -446,6 +366,8 @@
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
 
+            <div id="night-hint">&#9790; SOCIALS &mdash; CLICK THE BRIGHT STARS &middot; TAP HERE OR [ESC] TO GO BACK</div>
+
             <div id="screen-services" class="screen-container">
                 <div class="control-panel">
                     <div class="panel-titlebar"><span class="title-text">Services Panel</span></div>
@@ -483,54 +405,62 @@
         <div id="tv-frame"></div>
     </div>
 
-    <!-- Modal de Socials -->
-    <div id="socials-overlay">
-        <div class="socials-dialog">
-            <div class="socials-titlebar">
-                <span class="socials-title">SOCIALS</span>
-                <button class="socials-close-btn" id="socials-close">×</button>
-            </div>
-            <div class="socials-content">
-                <div class="socials-hint">Find me on:</div>
-                <a href="#" class="socials-link" data-social="twitter">🐦 Twitter / X</a>
-                <a href="#" class="socials-link" data-social="discord">💬 Discord</a>
-                <a href="#" class="socials-link" data-social="telegram">📱 Telegram</a>
-                <a href="#" class="socials-link" data-social="linkedin">💼 LinkedIn</a>
-            </div>
+    <!-- Caixinha flutuante das estrelas sociais -->
+    <div id="star-box">
+        <div class="win95-titlebar">
+            <span class="win95-title" id="star-box-title">STAR</span>
+            <button id="star-box-close" title="Close">×</button>
         </div>
+        <div class="star-box-body"><span id="star-box-text"></span></div>
     </div>
 
     <script>
-        // ===== BACKGROUND CANVAS (AJUSTADO - MENOS NUVENS E MAIS DISTRIBUIDAS) =====
+        // ===== BACKGROUND CANVAS (DIA → NOITE) =====
         (function() {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
-            let W, H, mouseX = 0.5, mouseY = 0.5;
+            let W = 0, H = 0, mouseX = 0.5, mouseY = 0.5;
             const PIXEL = 8;
-            let skyGradient = null;
             let globalTime = 0;
-            let sunImg = null;
+            let sunImg = null, moonImg = null;
+            let nightProgress = 0;
+            let nightTarget = 0;
 
-            function resize() {
-                const rect = canvas.parentElement.getBoundingClientRect();
-                W = Math.ceil(rect.width / PIXEL);
-                H = Math.ceil(rect.height / PIXEL);
-                canvas.width = W;
-                canvas.height = H;
-                skyGradient = ctx.createLinearGradient(0, 0, 0, H);
-                skyGradient.addColorStop(0, 'rgb(26,58,107)');
-                skyGradient.addColorStop(0.25, 'rgb(45,90,160)');
-                skyGradient.addColorStop(0.50, 'rgb(74,144,217)');
-                skyGradient.addColorStop(0.75, 'rgb(135,206,235)');
-                skyGradient.addColorStop(0.92, 'rgb(200,230,245)');
-                skyGradient.addColorStop(1, 'rgb(232,244,252)');
-                initClouds();
-                initSun();
-            }
+            window.__setNight = function(v) {
+                nightTarget = v ? 1 : 0;
+                if (!v) hideStarBox();
+            };
+
             window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth; mouseY = e.clientY / window.innerHeight; });
-            const PALETTE = { sunCore: [255, 252, 240], sunEdge: [255, 248, 220], cloud: [255, 255, 255], cloudShad: [180, 200, 220], bird: [40, 60, 90] };
+
+            const DAY_STOPS = [
+                [0.00, [26, 58, 107]], [0.25, [45, 90, 160]], [0.50, [74, 144, 217]],
+                [0.75, [135, 206, 235]], [0.92, [200, 230, 245]], [1.00, [232, 244, 252]]
+            ];
+            const NIGHT_STOPS = [
+                [0.00, [4, 6, 18]], [0.30, [8, 13, 36]], [0.60, [14, 23, 54]],
+                [0.85, [22, 35, 72]], [1.00, [40, 58, 102]]
+            ];
+
+            const PALETTE = {
+                sunCore: [255, 252, 240], sunEdge: [255, 248, 220],
+                cloud: [255, 255, 255], cloudShad: [180, 200, 220], bird: [40, 60, 90],
+                moonCore: [238, 242, 252], moonShad: [202, 212, 234], moonGlow: [150, 180, 255]
+            };
 
             function rgb(arr, a = 1) { return `rgba(${arr[0]},${arr[1]},${arr[2]},${a})`; }
+            function lerp(a, b, t) { return a + (b - a) * t; }
+
+            function buildSky(p) {
+                const g = ctx.createLinearGradient(0, 0, 0, H);
+                for (let i = 0; i < DAY_STOPS.length; i++) {
+                    const r = Math.round(lerp(DAY_STOPS[i][1][0], NIGHT_STOPS[i][1][0], p));
+                    const gg = Math.round(lerp(DAY_STOPS[i][1][1], NIGHT_STOPS[i][1][1], p));
+                    const b = Math.round(lerp(DAY_STOPS[i][1][2], NIGHT_STOPS[i][1][2], p));
+                    g.addColorStop(DAY_STOPS[i][0], `rgb(${r},${gg},${b})`);
+                }
+                return g;
+            }
 
             function pixelCircleOffscreen(x, cx, cy, r, colorStr) {
                 const r2 = r * r;
@@ -561,6 +491,28 @@
                 pixelCircleOffscreen(x, cx, cy, sunR, rgb(PALETTE.sunCore, 0.95));
                 pixelCircleOffscreen(x, cx, cy, sunR * 0.7, rgb(PALETTE.sunEdge, 0.7));
                 sunImg = { canvas: c, pad: outerR + pad, sunR: sunR };
+            }
+
+            function initMoon() {
+                const r = Math.min(W, H) * 0.055;
+                const glowR = Math.ceil(r * 3.2);
+                const pad = 4;
+                const size = (glowR + pad) * 2;
+                const c = document.createElement('canvas');
+                c.width = size;
+                c.height = size;
+                const x = c.getContext('2d');
+                const cx = size / 2, cy = size / 2;
+                for (let gr = glowR; gr >= r; gr -= 2) {
+                    const a = 0.20 * (1 - (gr - r) / (glowR - r + 1));
+                    pixelCircleOffscreen(x, cx, cy, gr, rgb(PALETTE.moonGlow, Math.max(0, a)));
+                }
+                pixelCircleOffscreen(x, cx, cy, r, rgb(PALETTE.moonCore, 0.98));
+                const craters = [[-0.30, -0.15, 0.32], [0.25, 0.20, 0.26], [0.05, -0.35, 0.18], [-0.15, 0.30, 0.15]];
+                craters.forEach(cd => {
+                    pixelCircleOffscreen(x, cx + cd[0] * r, cy + cd[1] * r, Math.max(1, cd[2] * r), rgb(PALETTE.moonShad, 0.85));
+                });
+                moonImg = { canvas: c, pad: glowR + pad };
             }
 
             function createCloudCanvas(baseW, baseH, opacity) {
@@ -599,8 +551,7 @@
                 });
                 return { canvas: c, pad: pad };
             }
-            
-            // REDUZIDO: menos camadas e menos nuvens por camada
+
             const layers = [
                 { count: 1, speed: 0.03, parallax: 0.02, yRange: [0.08, 0.18], scale: [2.0, 2.8], opacity: [0.25, 0.40] },
                 { count: 1, speed: 0.10, parallax: 0.05, yRange: [0.22, 0.38], scale: [1.5, 2.0], opacity: [0.40, 0.55] },
@@ -657,24 +608,122 @@
                 }
             }
 
-            function draw() {
-                ctx.fillStyle = skyGradient;
-                ctx.fillRect(0, 0, W, H);
-                if (sunImg) {
-                    const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
-                    const sunY = H * 0.12 + (mouseY - 0.5) * H * 0.03;
-                    ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad));
+            // ===== ESTRELAS =====
+            let stars = [];
+            function initStars() {
+                stars = [];
+                for (let i = 0; i < 120; i++) {
+                    stars.push({
+                        fx: Math.random(),
+                        fy: Math.pow(Math.random(), 1.35) * 0.88,
+                        size: Math.random() < 0.12 ? 2 : 1,
+                        base: 0.35 + Math.random() * 0.6,
+                        phase: Math.random() * Math.PI * 2,
+                        speed: 0.02 + Math.random() * 0.05
+                    });
                 }
-                clouds.forEach(c => {
-                    const l = layers[c.layer];
-                    const px = c.x + (mouseX - 0.5) * W * l.parallax;
-                    const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
-                    ctx.drawImage(c.img.canvas, Math.floor(px - c.w / 2 - c.img.pad), Math.floor(py - c.h / 2 - c.img.pad));
-                });
-                birds.forEach(b => drawBird(b));
+            }
+
+            // 3 estrelas sociais (X, Telegram, Discord) — maiores e clicáveis
+            const SOCIAL_STARS = [
+                { fx: 0.20, fy: 0.30, name: 'X', text: '\u2B50 Link do X (Twitter) vir\u00e1 aqui. Em breve!' },
+                { fx: 0.50, fy: 0.13, name: 'TELEGRAM', text: '\u2708\uFE0F Link do Telegram vir\u00e1 aqui. Em breve!' },
+                { fx: 0.80, fy: 0.28, name: 'DISCORD', text: '\uD83C\uDFAE Link do Discord vir\u00e1 aqui. Em breve!' }
+            ];
+
+            let meteors = [];
+            function maybeSpawnMeteor() {
+                if (nightProgress > 0.85 && Math.random() < 0.006 && meteors.length < 2) {
+                    meteors.push({
+                        x: W * (0.25 + Math.random() * 0.7),
+                        y: H * (0.04 + Math.random() * 0.22),
+                        vx: -(0.5 + Math.random() * 0.5),
+                        vy: 0.22 + Math.random() * 0.25,
+                        life: 1
+                    });
+                }
+            }
+
+            function drawStarShape(gx, gy, len, a) {
+                ctx.fillStyle = `rgba(255,255,255,${a.toFixed(3)})`;
+                ctx.fillRect(gx, gy, 1, 1);
+                for (let i = 1; i <= len; i++) {
+                    const fade = a * (1 - i / (len + 1));
+                    ctx.fillStyle = `rgba(255,255,255,${fade.toFixed(3)})`;
+                    ctx.fillRect(gx - i, gy, 1, 1);
+                    ctx.fillRect(gx + i, gy, 1, 1);
+                    ctx.fillRect(gx, gy - i, 1, 1);
+                    ctx.fillRect(gx, gy + i, 1, 1);
+                }
+            }
+
+            function draw() {
+                if (W === 0 || H === 0) return; // evita desenhar se ainda não redimensionado
+                ctx.fillStyle = buildSky(nightProgress);
+                ctx.fillRect(0, 0, W, H);
+
+                // estrelas + estrelas sociais + meteoros
+                if (nightProgress > 0.02) {
+                    stars.forEach(s => {
+                        const tw = 0.55 + 0.45 * Math.sin(globalTime * s.speed + s.phase);
+                        const a = s.base * tw * nightProgress;
+                        if (a < 0.05) return;
+                        ctx.fillStyle = `rgba(255,255,255,${a.toFixed(3)})`;
+                        ctx.fillRect(Math.floor(s.fx * W), Math.floor(s.fy * H), s.size, s.size);
+                    });
+                    SOCIAL_STARS.forEach((s, idx) => {
+                        const pulse = 0.75 + 0.25 * Math.sin(globalTime * 0.04 + idx * 2.1);
+                        drawStarShape(Math.floor(s.fx * W), Math.floor(s.fy * H), 3, nightProgress * pulse);
+                    });
+                    meteors.forEach(m => {
+                        for (let i = 0; i < 10; i++) {
+                            const t = i / 10;
+                            const a = (1 - t) * 0.9 * m.life * nightProgress;
+                            if (a <= 0.02) break;
+                            ctx.fillStyle = `rgba(255,255,255,${a.toFixed(3)})`;
+                            ctx.fillRect(Math.floor(m.x - m.vx * i * 2.2), Math.floor(m.y - m.vy * i * 2.2), 1, 1);
+                        }
+                    });
+                }
+
+                const dayA = 1 - nightProgress;
+
+                // sol desce e some
+                if (sunImg && dayA > 0.01) {
+                    const sunX = W * 0.82 + (mouseX - 0.5) * W * 0.03;
+                    const sunY = H * (0.12 + 1.35 * nightProgress) + (mouseY - 0.5) * H * 0.03;
+                    ctx.globalAlpha = dayA;
+                    ctx.drawImage(sunImg.canvas, Math.floor(sunX - sunImg.pad), Math.floor(sunY - sunImg.pad));
+                    ctx.globalAlpha = 1;
+                }
+
+                // lua sobe
+                if (moonImg && nightProgress > 0.01) {
+                    const moonX = W * 0.24 + (mouseX - 0.5) * W * 0.025;
+                    const moonY = H * (1.25 - 1.09 * nightProgress) + (mouseY - 0.5) * H * 0.025;
+                    ctx.globalAlpha = Math.min(1, nightProgress * 1.4);
+                    ctx.drawImage(moonImg.canvas, Math.floor(moonX - moonImg.pad), Math.floor(moonY - moonImg.pad));
+                    ctx.globalAlpha = 1;
+                }
+
+                // nuvens e pássaros (apenas de dia)
+                if (dayA > 0.01) {
+                    ctx.globalAlpha = dayA;
+                    clouds.forEach(c => {
+                        const l = layers[c.layer];
+                        const px = c.x + (mouseX - 0.5) * W * l.parallax;
+                        const py = c.y + (mouseY - 0.5) * H * l.parallax * 0.3;
+                        ctx.drawImage(c.img.canvas, Math.floor(px - c.w / 2 - c.img.pad), Math.floor(py - c.h / 2 - c.img.pad));
+                    });
+                    birds.forEach(b => drawBird(b));
+                    ctx.globalAlpha = 1;
+                }
             }
 
             function update() {
+                nightProgress += (nightTarget - nightProgress) * 0.018;
+                if (Math.abs(nightTarget - nightProgress) < 0.001) nightProgress = nightTarget;
+
                 clouds.forEach(c => {
                     c.x -= c.speed;
                     if (c.x + c.w < -20) {
@@ -686,15 +735,71 @@
                     b.x -= b.speed;
                     if (b.x < -5) { b.x = W + 5; b.y = H * (0.15 + Math.random() * 0.25); }
                 });
+
+                maybeSpawnMeteor();
+                meteors.forEach(m => { m.x += m.vx; m.y += m.vy; m.life -= 0.012; });
+                meteors = meteors.filter(m => m.life > 0 && m.x > -10);
+
                 globalTime++;
                 draw();
             }
 
-            function loop() { update(); setTimeout(loop, 16); }
+            // ===== CAIXINHA DAS ESTRELAS SOCIAIS =====
+            const starBox = document.getElementById('star-box');
+            const starBoxTitle = document.getElementById('star-box-title');
+            const starBoxText = document.getElementById('star-box-text');
+            function hideStarBox() { if (starBox) starBox.classList.remove('open'); }
+            if (starBox) document.getElementById('star-box-close').addEventListener('click', hideStarBox);
+
+            canvas.addEventListener('click', function(e) {
+                if (nightProgress < 0.5) return;
+                const rect = canvas.getBoundingClientRect();
+                const gx = (e.clientX - rect.left) / PIXEL;
+                const gy = (e.clientY - rect.top) / PIXEL;
+                for (const s of SOCIAL_STARS) {
+                    const sx = s.fx * W, sy = s.fy * H;
+                    if (Math.hypot(gx - sx, gy - sy) <= 14) {
+                        starBoxTitle.textContent = s.name;
+                        starBoxText.textContent = s.text;
+                        const leftPct = Math.min(86, Math.max(14, s.fx * 100));
+                        starBox.style.left = leftPct + '%';
+                        starBox.style.top = (s.fy * 100) + '%';
+                        starBox.style.transform = 'translate(-50%, -140%)';
+                        starBox.classList.add('open');
+                        return;
+                    }
+                }
+                hideStarBox();
+            });
+
+            function resize() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                W = Math.ceil(rect.width / PIXEL);
+                H = Math.ceil(rect.height / PIXEL);
+                canvas.width = W;
+                canvas.height = H;
+                initClouds();
+                initSun();
+                initMoon();
+                initStars();
+            }
             window.addEventListener('resize', () => { resize(); initBirds(); });
-            resize();
-            initBirds();
-            loop();
+
+            // Inicialização com verificação de layout pronto
+            function initCanvas() {
+                resize();
+                initBirds();
+                if (W === 0 || H === 0) {
+                    // Tenta novamente após um curto atraso (caso o CSS ainda não tenha aplicado)
+                    setTimeout(() => {
+                        resize();
+                        initBirds();
+                    }, 100);
+                }
+                function loop() { update(); setTimeout(loop, 16); }
+                loop();
+            }
+            initCanvas();
         })();
 
         // ===== SCAN SWEEP =====
@@ -813,7 +918,13 @@
                         servicesScreen.classList.remove('active');
                         projectsScreen.classList.remove('active');
                         emailScreen.classList.remove('active');
-                        body.classList.remove('projects-mode', 'detail-mode');
+                        body.classList.remove('projects-mode', 'detail-mode', 'night-mode');
+                        if (screen === 'socials') {
+                            body.classList.add('night-mode');
+                            if (window.__setNight) window.__setNight(true);
+                        } else {
+                            if (window.__setNight) window.__setNight(false);
+                        }
                         if (screen === 'home') homeScreen.classList.add('active');
                         else if (screen === 'about') aboutScreen.classList.add('active');
                         else if (screen === 'services') {
@@ -1302,8 +1413,7 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'socials') {
-                        // Abrir modal de socials em vez de shake
-                        document.getElementById('socials-overlay').classList.add('open');
+                        navigateTo('socials');
                     } else if (target === 'back') {
                         window.getSelection().removeAllRanges();
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
@@ -1311,34 +1421,6 @@
                     } else if (target === 'services') {
                         navigateTo('services');
                     }
-                });
-            });
-
-            // ===== MODAL SOCIALS =====
-            const socialsOverlay = document.getElementById('socials-overlay');
-            const socialsCloseBtn = document.getElementById('socials-close');
-
-            socialsCloseBtn.addEventListener('click', function() {
-                socialsOverlay.classList.remove('open');
-            });
-
-            socialsOverlay.addEventListener('click', function(e) {
-                if (e.target === socialsOverlay) {
-                    socialsOverlay.classList.remove('open');
-                }
-            });
-
-            document.querySelectorAll('.socials-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // Placeholder: links ainda não configurados
-                    // Aqui você pode adicionar URLs reais quando disponíveis
-                    const social = this.dataset.social;
-                    console.log(`Social link clicked: ${social}`);
-                    // Exemplo de placeholder: alerta informando que será adicionado
-                    // Não vamos usar alerta para manter a experiência suave
-                    // Apenas feche o modal por enquanto
-                    socialsOverlay.classList.remove('open');
                 });
             });
 
@@ -1505,6 +1587,10 @@
             dosDialog.addEventListener('click', dosCloseDialog);
 
             document.addEventListener('keydown', (e) => {
+                if (currentScreen === 'socials') {
+                    if (e.key === 'Escape') navigateTo('home');
+                    return;
+                }
                 if (currentScreen !== 'services') return;
                 if (dosDialogOpen) { dosCloseDialog(); return; }
                 if (e.key === 'ArrowDown') {
@@ -1538,11 +1624,15 @@
             dosUpdate();
 
             // ===== INICIALIZAÇÃO =====
+            const nightHintEl = document.getElementById('night-hint');
+            if (nightHintEl) nightHintEl.addEventListener('click', function() { navigateTo('home'); });
+
             function init() {
                 document.querySelectorAll('.screen-container').forEach(el => el.classList.remove('active'));
                 homeScreen.classList.add('active');
                 currentScreen = 'home';
-                body.classList.remove('projects-mode', 'detail-mode');
+                body.classList.remove('projects-mode', 'detail-mode', 'night-mode');
+                if (window.__setNight) window.__setNight(false);
                 showProjectsList();
             }
             init();
