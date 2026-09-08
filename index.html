@@ -193,6 +193,29 @@
         #screen-services .dos-dialog-title { position: absolute; top: 13px; left: 50%; transform: translate(-50%, -50%); margin: 0; padding: 0 12px; background: #FFFFFF; color: #000000; font-size: 24px; line-height: 0.8; text-align: center; white-space: nowrap; }
         #screen-services .dos-dialog-text { margin: 0; padding: 0; color: #000000; font-size: 22px; line-height: 1.45; white-space: pre-line; }
         #screen-services .dos-dialog-hint { margin: 12px 0 0; padding: 0; color: #000000; font-size: 16px; line-height: 1; opacity: 0.8; text-align: center; }
+
+        /* SOCIALS BALLOON */
+        #socials-overlay { position: absolute; inset: 0; z-index: 50; display: none; pointer-events: none; }
+        #socials-overlay.active { display: block; }
+        #balloon-canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; pointer-events: none; }
+        #social-links { position: absolute; inset: 0; pointer-events: none; }
+        #social-links a {
+            position: absolute; width: 56px; height: 56px;
+            transform: translate(-50%, -50%);
+            display: flex; align-items: center; justify-content: center;
+            background: #c0c0c0; color: #000;
+            border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 3px 3px 0 rgba(0,0,0,0.3);
+            font-family: 'Courier New', monospace; font-size: 22px; font-weight: bold;
+            text-decoration: none; cursor: pointer; pointer-events: auto; user-select: none;
+            opacity: 0; transition: opacity 0.6s ease;
+        }
+        #social-links a:hover { background: #dfdfdf; }
+        #social-links a:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
+        #socials-overlay.risen #social-links a { opacity: 1; }
+        .socials-back-area { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.6s ease 0.8s; pointer-events: none; }
+        #socials-overlay.risen .socials-back-area { opacity: 1; pointer-events: auto; }
+        .socials-back-area .icon-item { cursor: pointer; }
     </style>
     <base target="_blank">
 </head>
@@ -344,6 +367,22 @@
                     </div>
                 </div>
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
+            </div>
+
+            <!-- SOCIALS BALLOON OVERLAY -->
+            <div id="socials-overlay">
+                <canvas id="balloon-canvas"></canvas>
+                <div id="social-links">
+                    <a id="soc-x"        href="https://x.com/SEU_PERFIL"      target="_blank" rel="noopener noreferrer" title="X">𝕏</a>
+                    <a id="soc-discord"  href="https://discord.gg/SEU_SERVER" target="_blank" rel="noopener noreferrer" title="Discord">◕‿◕</a>
+                    <a id="soc-telegram" href="https://t.me/SEU_CANAL"        target="_blank" rel="noopener noreferrer" title="Telegram">✈</a>
+                </div>
+                <div class="socials-back-area">
+                    <div class="icon-item">
+                        <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
+                        <span class="icon-label label-black">BACK</span>
+                    </div>
+                </div>
             </div>
 
             <div id="screen-services" class="screen-container">
@@ -1164,7 +1203,7 @@
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
             }
 
-            // ===== ICONE CLICKS =====
+            // ===== ICONE CLICKS (com suporte ao SOCIALS) =====
             document.querySelectorAll('.icon-img').forEach(img => {
                 img.addEventListener('click', function(e) {
                     const target = this.dataset.target;
@@ -1182,11 +1221,16 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'socials') {
-                        // Não faz nada
+                        openSocials();
                     } else if (target === 'back') {
                         window.getSelection().removeAllRanges();
-                        if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
-                        else navigateTo('home');
+                        if (document.getElementById('socials-overlay').classList.contains('active')) {
+                            closeSocials();
+                        } else if (currentScreen === 'projects' && isDetailOpen) {
+                            closeProjectDetail(true);
+                        } else {
+                            navigateTo('home');
+                        }
                     } else if (target === 'services') {
                         navigateTo('services');
                     }
@@ -1387,6 +1431,159 @@
             dosTickClock();
             setInterval(dosTickClock, 1000);
             dosUpdate();
+
+            // ===== SOCIALS BALLOON =====
+            (function() {
+                const overlay = document.getElementById('socials-overlay');
+                const canvas = document.getElementById('balloon-canvas');
+                const ctx = canvas.getContext('2d');
+                const PIXEL = 8;
+                const ART_W = 44, ART_H = 50;
+                const CENTER_X = 22, CENTER_Y = 28;
+                let W = 0, H = 0;
+                let balloonArt = null;
+                let rafId = null;
+                let socialsOpen = false;
+                let riseStart = 0;
+                let t = 0;
+
+                function pixelRect(x, px, py, w, h, color) {
+                    x.fillStyle = color;
+                    x.fillRect(px, py, w, h);
+                }
+
+                function buildBalloonArt() {
+                    const c = document.createElement('canvas');
+                    c.width = ART_W; c.height = ART_H;
+                    const x = c.getContext('2d');
+                    const cx = CENTER_X, cy = 17, rx = 17, ry = 15;
+
+                    for (let y = 0; y < ART_H; y++) {
+                        for (let px = 0; px < ART_W; px++) {
+                            const dx = (px - cx) / rx, dy = (y - cy) / ry;
+                            if (dx * dx + dy * dy <= 1) {
+                                const stripe = Math.floor(px / 6) % 2;
+                                let color = stripe ? '#d94f30' : '#f2c14e';
+                                if (dx * dx + dy * dy > 0.82) color = '#8a2b1a';
+                                x.fillStyle = color;
+                                x.fillRect(px, y, 1, 1);
+                            }
+                        }
+                    }
+                    pixelRect(x, cx - 8, cy - 9, 4, 6, 'rgba(255,255,255,0.35)');
+                    x.strokeStyle = '#5a3a1a';
+                    x.lineWidth = 1;
+                    x.beginPath(); x.moveTo(cx - 9, cy + 13); x.lineTo(cx - 5, 38); x.stroke();
+                    x.beginPath(); x.moveTo(cx + 9, cy + 13); x.lineTo(cx + 5, 38); x.stroke();
+                    pixelRect(x, cx - 6, 38, 12, 8, '#5a3a1a');
+                    pixelRect(x, cx - 6, 38, 12, 1, '#8b5a2b');
+                    for (let i = 0; i < 4; i++) pixelRect(x, cx - 6, 40 + i * 2, 12, 1, '#8b5a2b');
+                    return c;
+                }
+
+                function resize() {
+                    const rect = canvas.parentElement.getBoundingClientRect();
+                    W = Math.ceil(rect.width / PIXEL);
+                    H = Math.ceil(rect.height / PIXEL);
+                    canvas.width = W;
+                    canvas.height = H;
+                }
+
+                const BTN_HALF_W = 3.5;
+                const hangButtons = [
+                    { el: document.getElementById('soc-x'),        attachX: -13, phase: 0.0 },
+                    { el: document.getElementById('soc-discord'),  attachX: 0,   phase: 2.1 },
+                    { el: document.getElementById('soc-telegram'), attachX: 13,  phase: 4.2 },
+                ];
+                const ROPE_LEN = 7;
+
+                function frame(now) {
+                    t++;
+
+                    const p = Math.min((now - riseStart) / 2600, 1);
+                    const ease = 1 - Math.pow(1 - p, 3);
+                    const targetY = H * 0.42;
+                    const startY = H + 30;
+                    let cy = startY + (targetY - startY) * ease;
+                    if (p >= 1) cy += Math.sin(t * 0.03) * 0.8;
+                    const cx = W / 2 + Math.sin(t * 0.01) * W * 0.02;
+                    const angle = Math.sin(t * 0.015) * 0.05;
+                    if (p >= 1 && !overlay.classList.contains('risen')) overlay.classList.add('risen');
+
+                    ctx.clearRect(0, 0, W, H);
+
+                    ctx.save();
+                    ctx.translate(Math.round(cx), Math.round(cy));
+                    ctx.rotate(angle);
+                    ctx.drawImage(balloonArt, -CENTER_X, -CENTER_Y);
+                    ctx.restore();
+
+                    const cos = Math.cos(angle), sin = Math.sin(angle);
+                    const basketY = 47 - CENTER_Y;
+
+                    hangButtons.forEach(b => {
+                        const sw = Math.sin(t * 0.035 + b.phase);
+                        const localX = b.attachX + sw * 1.6;
+                        const localY = basketY + ROPE_LEN + (1 - Math.cos(sw)) * 0.4;
+
+                        const topX = localX, topY = localY;
+                        const ax = b.attachX, ay = basketY;
+
+                        const rx1 = cx + (ax * cos - ay * sin);
+                        const ry1 = cy + (ax * sin + ay * cos);
+                        const rx2 = cx + (topX * cos - topY * sin);
+                        const ry2 = cy + (topX * sin + topY * cos);
+
+                        ctx.strokeStyle = '#5a3a1a';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath(); ctx.moveTo(rx1, ry1); ctx.lineTo(rx2, ry2); ctx.stroke();
+
+                        const cLocalY = localY + BTN_HALF_W;
+                        const bx = cx + (localX * cos - cLocalY * sin);
+                        const by = cy + (localX * sin + cLocalY * cos);
+                        b.el.style.left = (bx * PIXEL) + 'px';
+                        b.el.style.top = (by * PIXEL) + 'px';
+                    });
+
+                    rafId = requestAnimationFrame(frame);
+                }
+
+                function startBalloon() {
+                    resize();
+                    balloonArt = buildBalloonArt();
+                    riseStart = performance.now();
+                    overlay.classList.remove('risen');
+                    rafId = requestAnimationFrame(frame);
+                }
+
+                function stopBalloon() {
+                    if (rafId) cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+
+                window.addEventListener('resize', () => { if (socialsOpen) resize(); });
+
+                window.openSocials = function() {
+                    if (socialsOpen) return;
+                    socialsOpen = true;
+                    triggerTransition(() => {
+                        homeScreen.classList.remove('active');
+                        overlay.classList.add('active');
+                        startBalloon();
+                    });
+                };
+
+                window.closeSocials = function() {
+                    if (!socialsOpen) return;
+                    socialsOpen = false;
+                    triggerTransition(() => {
+                        overlay.classList.remove('active');
+                        stopBalloon();
+                        homeScreen.classList.add('active');
+                        currentScreen = 'home';
+                    });
+                };
+            })();
 
             // ===== INICIALIZAÇÃO =====
             function init() {
