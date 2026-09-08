@@ -19,7 +19,6 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" as="style" />
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <style>
-        /* ===== CSS ORIGINAL (DESKTOP) – NÃO ALTERADO ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { width: 100%; height: 100vh; background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
         #tv-container { position: relative; width: 100vw; height: 100vh; }
@@ -158,101 +157,6 @@
         @keyframes shake { 0% { transform: translateX(0) rotate(0deg); } 10% { transform: translateX(-6px) rotate(-3deg); } 20% { transform: translateX(6px) rotate(3deg); } 30% { transform: translateX(-4px) rotate(-2deg); } 40% { transform: translateX(4px) rotate(2deg); } 50% { transform: translateX(-2px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(1deg); } 70% { transform: translateX(-1px) rotate(0deg); } 80% { transform: translateX(1px) rotate(0deg); } 90% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(0) rotate(0deg); } }
         .icon-img.shake { animation: shake 0.4s ease-in-out; }
 
-        /* ===== MODAL SOCIALS ===== */
-        #socials-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 60;
-            background: rgba(0, 0, 0, 0.55);
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        #socials-overlay.open { display: flex; }
-        .socials-dialog {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0,0,0,0.3);
-            width: 320px;
-            max-width: 85vw;
-            font-family: 'Courier New', monospace;
-            color: #000;
-        }
-        .socials-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 4px 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            user-select: none;
-        }
-        .socials-title {
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 1px 1px 0 #000000;
-        }
-        .socials-close-btn {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 13px;
-            color: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1;
-            padding: 0;
-        }
-        .socials-close-btn:active {
-            border-color: #808080 #ffffff #ffffff #808080;
-        }
-        .socials-content {
-            padding: 16px;
-        }
-        .socials-hint {
-            font-size: 11px;
-            margin-bottom: 12px;
-            color: #555;
-            letter-spacing: 0.5px;
-        }
-        .socials-link {
-            display: block;
-            padding: 8px 12px;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            background: #ffffff;
-            color: #000080;
-            text-decoration: none;
-            margin-bottom: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.05s linear;
-        }
-        .socials-link:last-child { margin-bottom: 0; }
-        .socials-link:hover {
-            border-color: #808080 #ffffff #ffffff #808080;
-            background: #efefef;
-        }
-        .socials-link:active {
-            border-color: #808080 #ffffff #ffffff #808080;
-            background: #ddd;
-        }
-
-        /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE, SEM MUDANÇAS VISUAIS ===== */
         @media (max-width: 768px) {
             html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
             .icon-img, .retro-btn, .detail-btn, .detail-btn-secondary, .explorer-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
@@ -261,17 +165,13 @@
             .window-content { padding: 12px 10px; }
             .window-title { font-size: 13px; }
             .window-footer { font-size: 9px; padding: 8px; }
-            .socials-dialog { width: 280px; }
         }
         @media (max-width: 480px) {
             .window-content { padding: 10px 6px; }
             .window-title { font-size: 11px; }
             .window-footer { font-size: 8px; padding: 6px; }
-            .socials-dialog { width: 240px; }
-            .socials-link { font-size: 11px; padding: 6px 10px; }
         }
 
-        /* ===== CSS ORIGINAL PARA SERVICES (mantido) ===== */
         #screen-services { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 26; background: #0000AA; color: #FFFFFF; font-family: 'VT323', 'Courier New', monospace; padding: 0; margin: 0; text-align: left; text-shadow: none; user-select: none; overflow: hidden; display: none; align-items: center; justify-content: center; box-sizing: border-box; }
         #screen-services.active { display: flex; }
         #screen-services .control-panel { position: relative; width: 62%; height: 68%; margin: 0; padding: 0 28px; background: #0000AA; border: 2px solid #FFFFFF; border-radius: 6px; display: flex; flex-direction: column; box-sizing: border-box; overflow: hidden; }
@@ -483,25 +383,8 @@
         <div id="tv-frame"></div>
     </div>
 
-    <!-- Modal de Socials -->
-    <div id="socials-overlay">
-        <div class="socials-dialog">
-            <div class="socials-titlebar">
-                <span class="socials-title">SOCIALS</span>
-                <button class="socials-close-btn" id="socials-close">×</button>
-            </div>
-            <div class="socials-content">
-                <div class="socials-hint">Find me on:</div>
-                <a href="#" class="socials-link" data-social="twitter">🐦 Twitter / X</a>
-                <a href="#" class="socials-link" data-social="discord">💬 Discord</a>
-                <a href="#" class="socials-link" data-social="telegram">📱 Telegram</a>
-                <a href="#" class="socials-link" data-social="linkedin">💼 LinkedIn</a>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // ===== BACKGROUND CANVAS (AJUSTADO - MENOS NUVENS E MAIS DISTRIBUIDAS) =====
+        // ===== BACKGROUND CANVAS =====
         (function() {
             const canvas = document.getElementById('background-canvas');
             const ctx = canvas.getContext('2d');
@@ -600,7 +483,6 @@
                 return { canvas: c, pad: pad };
             }
             
-            // REDUZIDO: menos camadas e menos nuvens por camada
             const layers = [
                 { count: 1, speed: 0.03, parallax: 0.02, yRange: [0.08, 0.18], scale: [2.0, 2.8], opacity: [0.25, 0.40] },
                 { count: 1, speed: 0.10, parallax: 0.05, yRange: [0.22, 0.38], scale: [1.5, 2.0], opacity: [0.40, 0.55] },
@@ -841,7 +723,6 @@
             }
 
             const PROJECTS = [
-            // ORDEM: Coinracer, Arena Games, Xend Finance, Reaktor, depois o restante (mantendo a ordem original para os demais)
             {
                 name: 'Coinracer',
                 role: 'Head Mod',
@@ -934,7 +815,6 @@
                 ],
                 tags: ['Web3', 'Gaming', 'Distribution', 'Free-to-Play', 'Digital Ownership', 'Blockchain', 'Arcade']
             },
-            // Os demais projetos mantidos na ordem original
             {
                 name: 'CoralApp',
                 role: 'Moderator',
@@ -1284,7 +1164,7 @@
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
             }
 
-            // ===== EVENTOS DOS ÍCONES =====
+            // ===== ICONE CLICKS =====
             document.querySelectorAll('.icon-img').forEach(img => {
                 img.addEventListener('click', function(e) {
                     const target = this.dataset.target;
@@ -1302,8 +1182,7 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'socials') {
-                        // Abrir modal de socials em vez de shake
-                        document.getElementById('socials-overlay').classList.add('open');
+                        // Não faz nada
                     } else if (target === 'back') {
                         window.getSelection().removeAllRanges();
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
@@ -1314,35 +1193,7 @@
                 });
             });
 
-            // ===== MODAL SOCIALS =====
-            const socialsOverlay = document.getElementById('socials-overlay');
-            const socialsCloseBtn = document.getElementById('socials-close');
-
-            socialsCloseBtn.addEventListener('click', function() {
-                socialsOverlay.classList.remove('open');
-            });
-
-            socialsOverlay.addEventListener('click', function(e) {
-                if (e.target === socialsOverlay) {
-                    socialsOverlay.classList.remove('open');
-                }
-            });
-
-            document.querySelectorAll('.socials-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    // Placeholder: links ainda não configurados
-                    // Aqui você pode adicionar URLs reais quando disponíveis
-                    const social = this.dataset.social;
-                    console.log(`Social link clicked: ${social}`);
-                    // Exemplo de placeholder: alerta informando que será adicionado
-                    // Não vamos usar alerta para manter a experiência suave
-                    // Apenas feche o modal por enquanto
-                    socialsOverlay.classList.remove('open');
-                });
-            });
-
-            // ===== CONSTRÓI LISTA DE PROJETOS =====
+            // ===== PROJETOS =====
             if (iconsArea) {
                 PROJECTS.forEach((project) => {
                     const item = document.createElement('div');
@@ -1382,7 +1233,7 @@
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
             }
 
-            // ===== FORMULÁRIO DE CONTATO =====
+            // ===== FORMULÁRIO =====
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
             const sendBtn = document.getElementById('send-btn');
