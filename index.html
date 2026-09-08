@@ -208,17 +208,17 @@
             box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 3px 3px 0 rgba(0,0,0,0.3);
             font-family: 'Courier New', monospace; font-size: 22px; font-weight: bold;
             text-decoration: none; cursor: pointer; pointer-events: auto; user-select: none;
-            opacity: 0; transition: opacity 0.6s ease;
+            opacity: 1; transition: opacity 0.3s ease;
         }
         #social-links a:hover { background: #dfdfdf; }
         #social-links a:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
-        #socials-overlay.risen #social-links a { opacity: 1; }
-        .socials-back-area { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.6s ease 0.8s; pointer-events: none; }
+        .socials-back-area { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
         #socials-overlay.risen .socials-back-area { opacity: 1; pointer-events: auto; }
         .socials-back-area .icon-item { cursor: pointer; }
 
-        body.socials-mode .retro-window { display: none; }
+        body.socials-mode .retro-window { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         body.socials-mode #tv-screen { padding: 1.5% 10%; }
+        body:not(.socials-mode) .retro-window { opacity: 1; transition: opacity 0.4s ease; }
     </style>
     <base target="_blank">
 </head>
@@ -706,6 +706,16 @@
                     spawnTearLines(4 + Math.floor(Math.random() * 2));
                     if (callback) callback();
                 }, 500);
+            }
+
+            // Função de transição apenas com fade (para Socials)
+            function fadeTransition(callback) {
+                window.getSelection().removeAllRanges();
+                retroWindow.style.opacity = '0';
+                setTimeout(() => {
+                    if (callback) callback();
+                    retroWindow.style.opacity = '1';
+                }, 400);
             }
 
             function ensureFontsLoaded() {
@@ -1520,14 +1530,6 @@
             }
         }
 
-        // filete claro no topo da faixa decorativa
-        x.fillStyle = 'rgba(255,235,180,0.55)';
-        const bandTop = Math.round(cy + ry * 0.60);
-        for (let px = cx - rx; px <= cx + rx; px++) {
-            const dx = (px - cx) / rx;
-            if (dx * dx <= 1) x.fillRect(px, bandTop, 1, 1);
-        }
-
         // saia (cone invertido sob o envelope)
         x.fillStyle = '#7a2418';
         for (let i = 0; i <= 4; i++) {
@@ -1535,11 +1537,11 @@
             x.fillRect(cx - wHalf, 40 + i, wHalf * 2, 1);
         }
 
-        // cordas da saia até o aro do cesto — pixel a pixel
+        // cordas da saia até o aro do cesto — pixel a pixel (mais grossas e visíveis)
         x.fillStyle = '#5a3a1a';
         for (let i = 0; i <= 7; i++) {
-            x.fillRect(cx - 8 + Math.round(i / 7), 44 + i, 1, 1);
-            x.fillRect(cx + 8 - Math.round(i / 7), 44 + i, 1, 1);
+            x.fillRect(cx - 8 + Math.round(i / 7), 44 + i, 2, 1);
+            x.fillRect(cx + 8 - Math.round(i / 7), 44 + i, 2, 1);
         }
 
         // cesto: aro + trama
@@ -1557,11 +1559,15 @@
         x.fillStyle = '#5a3a1a';
         x.fillRect(cx - 8, BASKET_BOTTOM - 1, 16, 1); // base escura
 
-        // sacos de areia pendurados nas laterais
+        // sacos de areia pendurados nas laterais, conectados à cesta
         [[cx - 11, 52], [cx + 10, 52]].forEach(([sx, sy]) => {
             x.fillStyle = '#c9a227'; x.fillRect(sx, sy, 2, 4);
             x.fillStyle = '#8f7318'; x.fillRect(sx, sy + 3, 2, 1);
-            x.fillStyle = '#5a3a1a'; x.fillRect(sx, sy - 2, 1, 2); // corda do saco
+            // corda da cesta ao saco (horizontal)
+            x.fillStyle = '#5a3a1a';
+            if (sx < cx) { x.fillRect(sx, 51, cx - 8 - sx, 1); } // esquerda
+            else { x.fillRect(cx + 8, 51, sx - (cx + 8), 1); } // direita
+            x.fillRect(sx, 50, 1, 2); // pequena ligação vertical
         });
 
         return c;
@@ -1673,7 +1679,7 @@
         balloonArt = buildBalloonArt();
         riseStart = performance.now();
         descending = false;
-        overlay.classList.remove('risen');
+        overlay.classList.add('risen'); // botões sempre visíveis durante a subida
         rafId = requestAnimationFrame(frame);
     }
 
@@ -1684,7 +1690,7 @@
 
     function finishClose() {
         stopBalloon();
-        triggerTransition(() => {
+        fadeTransition(() => {
             overlay.classList.remove('active');
             body.classList.remove('socials-mode');
             homeScreen.classList.add('active');
@@ -1699,7 +1705,7 @@
     window.openSocials = function() {
         if (socialsOpen) return;
         socialsOpen = true;
-        triggerTransition(() => {
+        fadeTransition(() => {
             homeScreen.classList.remove('active');
             body.classList.add('socials-mode');
             overlay.classList.add('active');
@@ -1712,7 +1718,7 @@
         descending = true;
         descendStart = performance.now();
         descendFrom = lastCy;
-        overlay.classList.remove('risen');
+        overlay.classList.remove('risen'); // remove apenas quando começa a descer (mas botões ficam até o fim? ajustado no CSS)
     };
 })();
 
