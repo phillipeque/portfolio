@@ -1436,168 +1436,194 @@
             dosUpdate();
 
             // ===== SOCIALS BALLOON =====
-            (function() {
-                const overlay = document.getElementById('socials-overlay');
-                const canvas = document.getElementById('balloon-canvas');
-                const ctx = canvas.getContext('2d');
-                ctx.imageSmoothingEnabled = false; // correção 1
-                const PIXEL = 8;
-                const ART_W = 44, ART_H = 50;
-                const CENTER_X = 22, CENTER_Y = 28;
-                let W = 0, H = 0;
-                let balloonArt = null;
-                let rafId = null;
-                let socialsOpen = false;
-                let riseStart = 0;
-                let t = 0;
+(function() {
+    const overlay = document.getElementById('socials-overlay');
+    const canvas = document.getElementById('balloon-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    const PIXEL = 8;
+    const ART_W = 44, ART_H = 50;
+    const CENTER_X = 22, CENTER_Y = 28;
+    const RISE_MS = 5200;
+    let W = 0, H = 0;
+    let balloonArt = null;
+    let rafId = null;
+    let socialsOpen = false;
+    let riseStart = 0;
+    let t = 0;
 
-                function pixelRect(x, px, py, w, h, color) {
+    let descending = false;
+    let descendStart = 0;
+    let descendFrom = 0;
+    let lastCy = 0;
+
+    function pixelLine(x1, y1, x2, y2) {
+        const steps = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1), 1) | 0;
+        ctx.fillStyle = '#5a3a1a';
+        for (let i = 0; i <= steps; i++) {
+            const px = Math.round(x1 + (x2 - x1) * i / steps);
+            const py = Math.round(y1 + (y2 - y1) * i / steps);
+            ctx.fillRect(px, py, 1, 1);
+        }
+    }
+
+    function buildBalloonArt() {
+        const c = document.createElement('canvas');
+        c.width = ART_W; c.height = ART_H;
+        const x = c.getContext('2d');
+        x.imageSmoothingEnabled = false;
+        const cx = CENTER_X, cy = 17, rx = 17, ry = 15;
+
+        for (let y = 0; y < ART_H; y++) {
+            for (let px = 0; px < ART_W; px++) {
+                const dx = (px - cx) / rx, dy = (y - cy) / ry;
+                if (dx * dx + dy * dy <= 1) {
+                    const stripe = Math.floor(px / 6) % 2;
+                    let color = stripe ? '#d94f30' : '#f2c14e';
+                    if (dx * dx + dy * dy > 0.82) color = '#8a2b1a';
                     x.fillStyle = color;
-                    x.fillRect(px, py, w, h);
+                    x.fillRect(px, y, 1, 1);
                 }
+            }
+        }
+        x.fillStyle = 'rgba(255,255,255,0.35)';
+        x.fillRect(cx - 8, cy - 9, 4, 6);
 
-                // buildBalloonArt com cesto mais largo e cordas ajustadas (correção 2)
-                function buildBalloonArt() {
-                    const c = document.createElement('canvas');
-                    c.width = ART_W; c.height = ART_H;
-                    const x = c.getContext('2d');
-                    const cx = CENTER_X, cy = 17, rx = 17, ry = 15;
+        x.fillStyle = '#5a3a1a';
+        for (let i = 0; i <= 8; i++) {
+            x.fillRect(cx - 9 + Math.round(i * 3 / 8), 30 + i, 1, 1);
+            x.fillRect(cx + 9 - Math.round(i * 3 / 8), 30 + i, 1, 1);
+        }
 
-                    for (let y = 0; y < ART_H; y++) {
-                        for (let px = 0; px < ART_W; px++) {
-                            const dx = (px - cx) / rx, dy = (y - cy) / ry;
-                            if (dx * dx + dy * dy <= 1) {
-                                const stripe = Math.floor(px / 6) % 2;
-                                let color = stripe ? '#d94f30' : '#f2c14e';
-                                if (dx * dx + dy * dy > 0.82) color = '#8a2b1a';
-                                x.fillStyle = color;
-                                x.fillRect(px, y, 1, 1);
-                            }
-                        }
-                    }
-                    pixelRect(x, cx - 8, cy - 9, 4, 6, 'rgba(255,255,255,0.35)');
-                    // cordas do envelope para o cesto (corrigido)
-                    x.strokeStyle = '#5a3a1a';
-                    x.lineWidth = 1;
-                    x.beginPath(); x.moveTo(cx - 9, cy + 13); x.lineTo(cx - 6, 38); x.stroke();
-                    x.beginPath(); x.moveTo(cx + 9, cy + 13); x.lineTo(cx + 6, 38); x.stroke();
-                    // cesto mais largo (14 unidades)
-                    pixelRect(x, cx - 7, 38, 14, 8, '#5a3a1a');
-                    pixelRect(x, cx - 7, 38, 14, 1, '#8b5a2b');
-                    for (let i = 0; i < 4; i++) pixelRect(x, cx - 7, 40 + i * 2, 14, 1, '#8b5a2b');
-                    return c;
-                }
+        x.fillStyle = '#5a3a1a';
+        x.fillRect(cx - 7, 38, 14, 8);
+        x.fillStyle = '#8b5a2b';
+        x.fillRect(cx - 7, 38, 14, 1);
+        for (let i = 0; i < 4; i++) x.fillRect(cx - 7, 40 + i * 2, 14, 1);
 
-                function resize() {
-                    const rect = canvas.parentElement.getBoundingClientRect();
-                    W = Math.ceil(rect.width / PIXEL);
-                    H = Math.ceil(rect.height / PIXEL);
-                    canvas.width = W;
-                    canvas.height = H;
-                }
+        return c;
+    }
 
-                const BTN_HALF_W = 3.5;
-                // attachX = ponto no cesto, hangX = posição do botão (correção 3)
-                const hangButtons = [
-                    { el: document.getElementById('soc-x'),        attachX: -6, hangX: -13, phase: 0.0 },
-                    { el: document.getElementById('soc-discord'),  attachX: 0,  hangX: 0,   phase: 2.1 },
-                    { el: document.getElementById('soc-telegram'), attachX: 6,  hangX: 13,  phase: 4.2 },
-                ];
-                const ROPE_LEN = 7;
+    function resize() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        W = Math.ceil(rect.width / PIXEL);
+        H = Math.ceil(rect.height / PIXEL);
+        canvas.width = W;
+        canvas.height = H;
+    }
 
-                // frame() com shear por fatias e uso correto de attachX/hangX (correção 4)
-                function frame(now) {
-                    t++;
+    const BTN_HALF_W = 3.5;
+    const hangButtons = [
+        { el: document.getElementById('soc-x'),        attachX: -6, hangX: -13, phase: 0.0 },
+        { el: document.getElementById('soc-discord'),  attachX: 0,  hangX: 0,   phase: 2.1 },
+        { el: document.getElementById('soc-telegram'), attachX: 6,  hangX: 13,  phase: 4.2 },
+    ];
+    const ROPE_LEN = 7;
 
-                    const p = Math.min((now - riseStart) / 2600, 1);
-                    const ease = 1 - Math.pow(1 - p, 3);
-                    const targetY = H * 0.42;
-                    const startY = H + 30;
-                    let cy = startY + (targetY - startY) * ease;
-                    if (p >= 1) cy += Math.sin(t * 0.03) * 0.8;
-                    const cx = W / 2 + Math.sin(t * 0.01) * W * 0.02;
-                    const angle = Math.sin(t * 0.015) * 0.05;
-                    if (p >= 1 && !overlay.classList.contains('risen')) overlay.classList.add('risen');
+    function frame(now) {
+        t++;
+        let cy, angle;
 
-                    ctx.clearRect(0, 0, W, H);
+        if (descending) {
+            const dp = Math.min((now - descendStart) / 2600, 1);
+            cy = descendFrom + (H + 40 - descendFrom) * (dp * dp);
+            angle = Math.sin(t * 0.015) * 0.05 * (1 - dp);
+            if (dp >= 1) { finishClose(); return; }
+        } else {
+            const p = Math.min((now - riseStart) / RISE_MS, 1);
+            const ease = 1 - Math.pow(1 - p, 3);
+            const targetY = H * 0.42;
+            const startY = H + 30;
+            cy = startY + (targetY - startY) * ease;
+            if (p >= 1) cy += Math.sin(t * 0.03) * 0.8;
+            if (p >= 0.35 && !overlay.classList.contains('risen')) overlay.classList.add('risen');
+        }
 
-                    // balão com shear em fatias (nitidez)
-                    const baseX = Math.round(cx);
-                    const baseY = Math.round(cy);
-                    for (let i = 0; i < ART_W; i++) {
-                        const shear = Math.round((i - CENTER_X) * angle);
-                        ctx.drawImage(balloonArt, i, 0, 1, ART_H, baseX - CENTER_X + i, baseY - CENTER_Y + shear, 1, ART_H);
-                    }
+        lastCy = cy;
+        const cx = W / 2 + Math.sin(t * 0.01) * W * 0.02;
 
-                    // cordas + botões
-                    const cos = Math.cos(angle), sin = Math.sin(angle);
-                    const basketY = 47 - CENTER_Y;
+        ctx.clearRect(0, 0, W, H);
 
-                    hangButtons.forEach(b => {
-                        const sw = Math.sin(t * 0.035 + b.phase);
-                        const localX = b.hangX + sw * 1.6; // posição do botão (hangX)
-                        const localY = basketY + ROPE_LEN + (1 - Math.cos(sw)) * 0.4;
+        const baseX = Math.round(cx);
+        const baseY = Math.round(cy);
+        for (let i = 0; i < ART_W; i++) {
+            const shear = Math.round((i - CENTER_X) * angle);
+            ctx.drawImage(balloonArt, i, 0, 1, ART_H, baseX - CENTER_X + i, baseY - CENTER_Y + shear, 1, ART_H);
+        }
 
-                        // ponto de fixação no cesto (attachX)
-                        const rx1 = cx + (b.attachX * cos - basketY * sin);
-                        const ry1 = cy + (b.attachX * sin + basketY * cos);
-                        // ponto onde a corda prende no botão
-                        const rx2 = cx + (localX * cos - localY * sin);
-                        const ry2 = cy + (localX * sin + localY * cos);
+        const cos = Math.cos(angle), sin = Math.sin(angle);
+        const basketY = 47 - CENTER_Y;
 
-                        ctx.strokeStyle = '#5a3a1a';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath(); ctx.moveTo(rx1, ry1); ctx.lineTo(rx2, ry2); ctx.stroke();
+        hangButtons.forEach(b => {
+            const sw = Math.sin(t * 0.035 + b.phase);
+            const localX = b.hangX + sw * 1.6;
+            const localY = basketY + ROPE_LEN + (1 - Math.cos(sw)) * 0.4;
 
-                        const cLocalY = localY + BTN_HALF_W;
-                        const bx = cx + (localX * cos - cLocalY * sin);
-                        const by = cy + (localX * sin + cLocalY * cos);
-                        b.el.style.left = (bx * PIXEL) + 'px';
-                        b.el.style.top = (by * PIXEL) + 'px';
-                    });
+            const rx1 = cx + (b.attachX * cos - basketY * sin);
+            const ry1 = cy + (b.attachX * sin + basketY * cos);
+            const rx2 = cx + (localX * cos - localY * sin);
+            const ry2 = cy + (localX * sin + localY * cos);
 
-                    rafId = requestAnimationFrame(frame);
-                }
+            pixelLine(rx1, ry1, rx2, ry2);
 
-                function startBalloon() {
-                    resize();
-                    balloonArt = buildBalloonArt();
-                    riseStart = performance.now();
-                    overlay.classList.remove('risen');
-                    rafId = requestAnimationFrame(frame);
-                }
+            const cLocalY = localY + BTN_HALF_W;
+            const bx = cx + (localX * cos - cLocalY * sin);
+            const by = cy + (localX * sin + cLocalY * cos);
+            b.el.style.left = (bx * PIXEL) + 'px';
+            b.el.style.top = (by * PIXEL) + 'px';
+        });
 
-                function stopBalloon() {
-                    if (rafId) cancelAnimationFrame(rafId);
-                    rafId = null;
-                }
+        rafId = requestAnimationFrame(frame);
+    }
 
-                window.addEventListener('resize', () => { if (socialsOpen) resize(); });
+    function startBalloon() {
+        resize();
+        balloonArt = buildBalloonArt();
+        riseStart = performance.now();
+        descending = false;
+        overlay.classList.remove('risen');
+        rafId = requestAnimationFrame(frame);
+    }
 
-                // openSocials / closeSocials com toggle da classe socials-mode (correção 5)
-                window.openSocials = function() {
-                    if (socialsOpen) return;
-                    socialsOpen = true;
-                    triggerTransition(() => {
-                        homeScreen.classList.remove('active');
-                        body.classList.add('socials-mode');
-                        overlay.classList.add('active');
-                        startBalloon();
-                    });
-                };
+    function stopBalloon() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+    }
 
-                window.closeSocials = function() {
-                    if (!socialsOpen) return;
-                    socialsOpen = false;
-                    triggerTransition(() => {
-                        overlay.classList.remove('active');
-                        stopBalloon();
-                        body.classList.remove('socials-mode');
-                        homeScreen.classList.add('active');
-                        currentScreen = 'home';
-                    });
-                };
-            })();
+    // finishClose com triggerTransition (corrigido)
+    function finishClose() {
+        stopBalloon();
+        triggerTransition(() => {
+            overlay.classList.remove('active');
+            body.classList.remove('socials-mode');
+            homeScreen.classList.add('active');
+            currentScreen = 'home';
+            socialsOpen = false;
+            descending = false;
+        });
+    }
+
+    window.addEventListener('resize', () => { if (socialsOpen) resize(); });
+
+    window.openSocials = function() {
+        if (socialsOpen) return;
+        socialsOpen = true;
+        triggerTransition(() => {
+            homeScreen.classList.remove('active');
+            body.classList.add('socials-mode');
+            overlay.classList.add('active');
+            startBalloon();
+        });
+    };
+
+    window.closeSocials = function() {
+        if (!socialsOpen || descending) return;
+        descending = true;
+        descendStart = performance.now();
+        descendFrom = lastCy;
+        overlay.classList.remove('risen');
+    };
+})();
 
             // ===== INICIALIZAÇÃO =====
             function init() {
