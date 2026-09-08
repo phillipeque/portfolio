@@ -158,6 +158,100 @@
         @keyframes shake { 0% { transform: translateX(0) rotate(0deg); } 10% { transform: translateX(-6px) rotate(-3deg); } 20% { transform: translateX(6px) rotate(3deg); } 30% { transform: translateX(-4px) rotate(-2deg); } 40% { transform: translateX(4px) rotate(2deg); } 50% { transform: translateX(-2px) rotate(-1deg); } 60% { transform: translateX(2px) rotate(1deg); } 70% { transform: translateX(-1px) rotate(0deg); } 80% { transform: translateX(1px) rotate(0deg); } 90% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(0) rotate(0deg); } }
         .icon-img.shake { animation: shake 0.4s ease-in-out; }
 
+        /* ===== MODAL SOCIALS ===== */
+        #socials-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 60;
+            background: rgba(0, 0, 0, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        #socials-overlay.open { display: flex; }
+        .socials-dialog {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            box-shadow: inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #000000, 4px 4px 0 rgba(0,0,0,0.3);
+            width: 320px;
+            max-width: 85vw;
+            font-family: 'Courier New', monospace;
+            color: #000;
+        }
+        .socials-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+        .socials-title {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-shadow: 1px 1px 0 #000000;
+        }
+        .socials-close-btn {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 13px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            padding: 0;
+        }
+        .socials-close-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+        .socials-content {
+            padding: 16px;
+        }
+        .socials-hint {
+            font-size: 11px;
+            margin-bottom: 12px;
+            color: #555;
+            letter-spacing: 0.5px;
+        }
+        .socials-link {
+            display: block;
+            padding: 8px 12px;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            background: #ffffff;
+            color: #000080;
+            text-decoration: none;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.05s linear;
+        }
+        .socials-link:last-child { margin-bottom: 0; }
+        .socials-link:hover {
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #efefef;
+        }
+        .socials-link:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #ddd;
+        }
+
         /* ===== CORREÇÕES MOBILE – APENAS USABILIDADE, SEM MUDANÇAS VISUAIS ===== */
         @media (max-width: 768px) {
             html, body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
@@ -167,11 +261,14 @@
             .window-content { padding: 12px 10px; }
             .window-title { font-size: 13px; }
             .window-footer { font-size: 9px; padding: 8px; }
+            .socials-dialog { width: 280px; }
         }
         @media (max-width: 480px) {
             .window-content { padding: 10px 6px; }
             .window-title { font-size: 11px; }
             .window-footer { font-size: 8px; padding: 6px; }
+            .socials-dialog { width: 240px; }
+            .socials-link { font-size: 11px; padding: 6px 10px; }
         }
 
         /* ===== CSS ORIGINAL PARA SERVICES (mantido) ===== */
@@ -384,6 +481,23 @@
         <div id="scanlines"></div>
         <div id="scan-sweep"></div>
         <div id="tv-frame"></div>
+    </div>
+
+    <!-- Modal de Socials -->
+    <div id="socials-overlay">
+        <div class="socials-dialog">
+            <div class="socials-titlebar">
+                <span class="socials-title">SOCIALS</span>
+                <button class="socials-close-btn" id="socials-close">×</button>
+            </div>
+            <div class="socials-content">
+                <div class="socials-hint">Find me on:</div>
+                <a href="#" class="socials-link" data-social="twitter">🐦 Twitter / X</a>
+                <a href="#" class="socials-link" data-social="discord">💬 Discord</a>
+                <a href="#" class="socials-link" data-social="telegram">📱 Telegram</a>
+                <a href="#" class="socials-link" data-social="linkedin">💼 LinkedIn</a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -785,16 +899,16 @@
                 url: '',
                 gif: 'xend.gif',
                 papel: [
-                    'Moderated the community with a focus on financial education',
-                    'Supported credit unions and general users',
-                    'Translated technical and educational materials',
-                    'Participated in educational webinars to explain DeFi concepts'
+                    'Moderated community chats and support channels',
+                    'Helped members with questions about DeFi and savings products',
+                    'Translated announcements and basic guides for Portuguese-speaking users',
+                    'Kept channels clean from spam and off-topic content'
                 ],
                 fiz: [
-                    'Helped educate hundreds of users about DeFi',
-                    'Collaborated with credit unions to facilitate product understanding',
-                    'Contributed to translating articles and guides',
-                    'Assisted in organizing online educational events'
+                    'Reduced response time for common user questions',
+                    'Created simplified explanations for frequently asked questions',
+                    'Helped new members navigate the platform more easily',
+                    'Maintained a more organized and welcoming environment'
                 ],
                 tags: ['DeFi', 'Credit Unions', 'Cooperatives', 'Savings', 'Stablecoins', 'Esusu', 'Blockchain', 'Financial Inclusion']
             },
@@ -807,16 +921,16 @@
                 url: '',
                 gif: 'reaktor.gif',
                 papel: [
-                    'Built the community from scratch, attracting the first members',
-                    'Created technical content and tutorials for new users',
-                    'Organized workshops and networking events',
-                    'Maintained direct contact with founders to align expectations'
+                    'Moderated community channels and kept them organized',
+                    'Helped users with platform-related questions',
+                    'Created simple guides for common tasks',
+                    'Reported bugs and user issues to the development team'
                 ],
                 fiz: [
-                    'Launched the community with hundreds of members in the first month',
-                    'Produced dozens of guides and educational materials',
-                    'Conducted technical workshops with good participation',
-                    'Established a direct feedback channel with leadership'
+                    'Reduced repetitive questions with clearer documentation',
+                    'Improved the onboarding experience for new users',
+                    'Helped maintain a positive and supportive community atmosphere',
+                    'Facilitated communication between users and the team'
                 ],
                 tags: ['Web3', 'Gaming', 'Distribution', 'Free-to-Play', 'Digital Ownership', 'Blockchain', 'Arcade']
             },
@@ -878,15 +992,15 @@
                 gif: 'bionic.gif',
                 papel: [
                     'Moderated technical forums and support channels',
-                    'Helped users with integrations and configurations',
-                    'Reported bugs and suggestions to the development team',
-                    'Created community documentation for frequently asked questions'
+                    'Helped users with platform configuration and integrations',
+                    'Created and maintained community documentation',
+                    'Reported bugs and user feedback to the development team'
                 ],
                 fiz: [
-                    'Helped reduce repetitive tickets with a clear FAQ',
-                    'Identified and reported several critical bugs',
-                    'Collaborated on beta testing with dozens of users',
-                    'Improved overall user experience on the platform'
+                    'Reduced repetitive support tickets with clearer FAQs',
+                    'Improved the quality of community documentation',
+                    'Helped new users get started more quickly',
+                    'Facilitated better communication between users and developers'
                 ],
                 tags: ['Crypto', 'Investment', 'Copy Trading', 'AI', 'Bots', 'Algorithmic Trading', 'Hedge Funds', 'Diversified']
             },
@@ -899,16 +1013,16 @@
                 url: '',
                 gif: 'fortblockgames.gif',
                 papel: [
-                    'Moderated the community in multiple languages',
-                    'Supported official tournaments and competitive events',
-                    'Managed partner content creators',
-                    'Collected and analyzed gameplay feedback'
+                    'Moderated community chats across multiple languages',
+                    'Helped players with game-related questions and issues',
+                    'Supported tournament organizers with chat moderation',
+                    'Collected player feedback and forwarded it to the team'
                 ],
                 fiz: [
-                    'Supported several official tournaments',
-                    'Collaborated with dozens of partner creators',
-                    'Gathered hundreds of player feedback entries',
-                    'Maintained a good community satisfaction score (NPS)'
+                    'Improved response time in community channels',
+                    'Reduced conflict and spam through consistent moderation',
+                    'Helped players find information more quickly',
+                    'Created a more welcoming space for new members'
                 ],
                 tags: ['Gaming', 'FPS', 'Multiplayer', 'Competitive', 'Blockchain', 'Community-Driven', 'Creators', 'Progression']
             },
@@ -945,16 +1059,16 @@
                 url: '',
                 gif: 'streamr.gif',
                 papel: [
-                    'Led the developer community',
-                    'Created educational content about the data network',
-                    'Organized hackathons and innovation events',
-                    'Mentored new open-source contributors'
+                    'Moderated developer forums and community channels',
+                    'Helped users with technical questions about the data network',
+                    'Simplified complex documentation for easier understanding',
+                    'Reported issues and feedback to the project team'
                 ],
                 fiz: [
-                    'Participated in organizing hackathons with hundreds of participants',
-                    'Developed an introductory course accessed by many developers',
-                    'Increased GitHub contributions to the project',
-                    'Supported the creation of a grants program'
+                    'Made technical concepts more accessible to newcomers',
+                    'Reduced the learning curve for new developers',
+                    'Improved overall community organization and clarity',
+                    'Helped maintain an active and helpful developer community'
                 ],
                 tags: ['Decentralized', 'Data Streaming', 'Real-time', 'P2P', 'Monetization', 'Infrastructure', 'Web3']
             },
@@ -967,16 +1081,16 @@
                 url: '',
                 gif: 'wicrypt.gif',
                 papel: [
-                    'Managed the host and user community',
-                    'Provided technical and operational support',
-                    'Created acquisition and retention campaigns',
-                    'Collaborated on launches in new countries'
+                    'Moderated host and user community channels',
+                    'Helped hosts with technical and operational questions',
+                    'Created simple guides for common setup tasks',
+                    'Reported issues and user feedback to the team'
                 ],
                 fiz: [
-                    'Increased the active host base',
-                    'Reduced host churn with retention programs',
-                    'Created a referral program that brought in new hosts',
-                    'Supported expansion into new markets'
+                    'Reduced support tickets through better documentation',
+                    'Improved the onboarding process for new hosts',
+                    'Maintained a more organized and helpful community',
+                    'Facilitated better communication between hosts and the project'
                 ],
                 tags: ['Decentralized', 'Wi-Fi', 'Sharing', 'Monetization', 'Hotspots', 'Rewards', 'Network']
             },
@@ -1033,16 +1147,16 @@
                 url: '',
                 gif: 'sheertopia.gif',
                 papel: [
-                    'Strategically led the community',
-                    'Managed creators and builders in the metaverse',
-                    'Oversaw the virtual economy and tokens',
-                    'Organized immersive events and virtual experiences'
+                    'Moderated community channels and kept them safe',
+                    'Helped members with questions about the platform and ecosystem',
+                    'Translated content and announcements for Portuguese-speaking users',
+                    'Reported issues and community feedback to the team'
                 ],
                 fiz: [
-                    'Helped the community grow to tens of thousands of members',
-                    'Managed dozens of official creators',
-                    'Organized multiple events within the metaverse',
-                    'Contributed to increased economic activity on the platform'
+                    'Maintained a safer and more organized community environment',
+                    'Reduced confusion around platform features through clearer communication',
+                    'Helped new members integrate more easily',
+                    'Improved the overall community experience through consistent moderation'
                 ],
                 tags: ['GameFi', 'Gaming', 'Blockchain', 'In-Game Economy', 'Web3', 'Digital Assets']
             },
@@ -1188,12 +1302,8 @@
                             this.classList.remove('shake');
                         }, 400);
                     } else if (target === 'socials') {
-                        this.classList.remove('shake');
-                        void this.offsetWidth;
-                        this.classList.add('shake');
-                        setTimeout(() => {
-                            this.classList.remove('shake');
-                        }, 400);
+                        // Abrir modal de socials em vez de shake
+                        document.getElementById('socials-overlay').classList.add('open');
                     } else if (target === 'back') {
                         window.getSelection().removeAllRanges();
                         if (currentScreen === 'projects' && isDetailOpen) closeProjectDetail(true);
@@ -1201,6 +1311,34 @@
                     } else if (target === 'services') {
                         navigateTo('services');
                     }
+                });
+            });
+
+            // ===== MODAL SOCIALS =====
+            const socialsOverlay = document.getElementById('socials-overlay');
+            const socialsCloseBtn = document.getElementById('socials-close');
+
+            socialsCloseBtn.addEventListener('click', function() {
+                socialsOverlay.classList.remove('open');
+            });
+
+            socialsOverlay.addEventListener('click', function(e) {
+                if (e.target === socialsOverlay) {
+                    socialsOverlay.classList.remove('open');
+                }
+            });
+
+            document.querySelectorAll('.socials-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Placeholder: links ainda não configurados
+                    // Aqui você pode adicionar URLs reais quando disponíveis
+                    const social = this.dataset.social;
+                    console.log(`Social link clicked: ${social}`);
+                    // Exemplo de placeholder: alerta informando que será adicionado
+                    // Não vamos usar alerta para manter a experiência suave
+                    // Apenas feche o modal por enquanto
+                    socialsOverlay.classList.remove('open');
                 });
             });
 
