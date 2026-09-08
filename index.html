@@ -1481,9 +1481,9 @@
         return `rgb(${Math.min(255, Math.round(arr[0] * f))},${Math.min(255, Math.round(arr[1] * f))},${Math.min(255, Math.round(arr[2] * f))})`;
     }
 
-    function lerp(a, b, k) { return a + (b - a) * k; }
+    function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
-    // ---------- NOVA ARTE DO BALÃO ----------
+    // ---------- ARTE DO BALÃO (corrigida) ----------
     function buildBalloonArt() {
         const c = document.createElement('canvas');
         c.width = ART_W; c.height = ART_H;
@@ -1492,7 +1492,7 @@
 
         const cx = CENTER_X, cy = 21, rx = 21, ry = 19;
 
-        // bandeirinhas no topo (mini bunting, tema festa junina)
+        // bandeirinhas no topo (bunting)
         x.fillStyle = '#7a7a7a';
         x.fillRect(cx, 0, 1, 3);
         const flagColors = ['#c73e2c', '#f5d364', '#2f8f5b'];
@@ -1504,13 +1504,16 @@
             x.fillRect(fx, 2, 1, 1);
         }
 
-        // paleta: 3 cores de gomo alternadas (creme, vermelho, dourado)
+        // paleta dos gomos (creme, vermelho, dourado)
         const PALETTE = [
-            [247, 220, 150], // creme
-            [201, 61, 46],   // vermelho
-            [237, 168, 60],  // dourado
+            [247, 220, 150],
+            [201, 61, 46],
+            [237, 168, 60],
         ];
-        const GAP = 6.5; // largura angular aproximada de cada gomo em px na base
+        const NUM_GORES = 9; // ímpar -> gomo central alinhado no meio, sem sobra assimétrica
+
+        // luz vindo de cima-esquerda-frente, vetor normalizado
+        const L = { x: -0.5, y: -0.58, z: 0.64 };
 
         for (let y = 0; y < ART_H; y++) {
             for (let px = 0; px < ART_W; px++) {
@@ -1518,59 +1521,62 @@
                 const d2 = dx * dx + dy * dy;
                 if (d2 > 1) continue;
 
-                // curvatura da esfera pra achar a "largura" real do gomo nesta linha
-                const halfWidthAtY = rx * Math.sqrt(Math.max(0, 1 - dy * dy));
-                if (halfWidthAtY < 0.001) continue;
+                // normal real da esfera (visível = hemisfério frontal)
+                const z = Math.sqrt(Math.max(0, 1 - dx * dx - dy * dy));
 
-                const gomoIdx = Math.floor((px - (cx - halfWidthAtY)) / GAP);
-                const localPos = ((px - (cx - halfWidthAtY)) % GAP) / GAP; // 0..1 dentro do gomo
+                // longitude real (ângulo), não posição em pixel -> gomos retos e simétricos
+                const angle = Math.atan2(dx, z); // varia de -PI/2 a PI/2
+                const gorePos = (angle + Math.PI / 2) / Math.PI; // 0..1
+                const goreFloat = gorePos * NUM_GORES;
+                const gomoIdx = Math.floor(goreFloat);
+                const localPos = goreFloat - gomoIdx; // 0..1 dentro do gomo
+
                 const color = PALETTE[((gomoIdx % 3) + 3) % 3];
 
-                // sombreado cilíndrico: cada gomo tem seu próprio "pico" de luz
-                let f = 1;
-                const distFromCenterOfGomo = Math.abs(localPos - 0.5) * 2; // 0 no centro, 1 nas bordas
-                f *= lerp(1.15, 0.62, distFromCenterOfGomo); // luz no meio do gomo, sombra nas costuras
-                f *= (1 - dy * 0.22);                        // mais escuro embaixo
-                if (dx < -0.15) f *= 1.06;                   // leve reforço de luz vindo da esquerda geral
-                if (d2 > 0.86) f *= 0.6;                     // silhueta mais escura na borda
+                // sombreado tipo esfera real (Lambert) usando a normal (dx, dy, z)
+                const diffuse = clamp01(dx * L.x + dy * L.y + z * L.z);
+                let f = 0.5 + diffuse * 0.95;
+
+                // costura entre gomos (baseada no ângulo, então some certinho em todas as linhas)
+                if (localPos < 0.05 || localPos > 0.95) f *= 0.55;
+
+                // escurece silhueta na borda
+                if (d2 > 0.9) f *= 0.68;
 
                 x.fillStyle = shade(color, f);
                 x.fillRect(px, y, 1, 1);
 
-                // costura entre gomos
-                if (localPos < 0.06 || localPos > 0.94) {
-                    x.fillStyle = 'rgba(0,0,0,0.18)';
-                    x.fillRect(px, y, 1, 1);
-                }
-
-                // brilho especular superior-esquerdo
-                if (dy < -0.4 && dx < 0 && d2 < 0.55) {
-                    x.fillStyle = 'rgba(255,255,255,0.22)';
+                // brilho especular pequeno e concentrado
+                if (diffuse > 0.9 && d2 < 0.5) {
+                    x.fillStyle = 'rgba(255,255,255,0.25)';
                     x.fillRect(px, y, 1, 1);
                 }
             }
         }
 
-        // faixa decorativa no equador com losangos
+        // faixa decorativa no equador com pontilhado
         const eqY = cy + 1;
         for (let px = 0; px < ART_W; px++) {
             const dx = (px - cx) / rx;
             if (Math.abs(dx) > 0.97) continue;
-            const inDiamond = ((px + eqY) % 4 === 0);
-            x.fillStyle = inDiamond ? '#f5f0d8' : '#3a5c3f';
+            const dot = ((px + eqY) % 4 === 0);
+            x.fillStyle = dot ? '#f5f0d8' : '#2f5c3f';
             x.fillRect(px, eqY, 1, 1);
         }
 
-        // saia com pontas (estilo pétala) em vez de cone liso
+        // saia com franja arredondada (scalloped), suave em vez de "dentes"
         const skirtY = 40;
-        const petalW = 4;
-        for (let px = cx - 9; px <= cx + 9; px++) {
-            const petalPhase = Math.abs(((px - (cx - 9)) % petalW) - petalW / 2) / (petalW / 2);
-            const depth = Math.round(petalPhase * 3);
-            for (let i = 0; i <= depth; i++) {
-                const distFromCenter = Math.abs(px - cx) / 9;
-                x.fillStyle = shade([120, 40, 30], 1 - distFromCenter * 0.35);
-                x.fillRect(px, skirtY + i, 1, 1);
+        const SCALLOPS = 6;
+        const skirtHalf = 9;
+        const skirtW = skirtHalf * 2 + 1;
+        for (let i = 0; i < skirtW; i++) {
+            const px = cx - skirtHalf + i;
+            const lp = (i % (skirtW / SCALLOPS)) / (skirtW / SCALLOPS); // 0..1 dentro do "dente"
+            const bump = Math.round(Math.sin(lp * Math.PI) * 3); // curva suave (seno), não triangular
+            const distFromCenter = Math.abs(px - cx) / skirtHalf;
+            for (let d = 0; d <= bump; d++) {
+                x.fillStyle = shade([130, 42, 30], 1 - distFromCenter * 0.3 - d * 0.03);
+                x.fillRect(px, skirtY + d, 1, 1);
             }
         }
 
@@ -1581,20 +1587,21 @@
             x.fillRect(cx + 8 - Math.round(i / 13), 38 + i, 1, 1);
         }
 
-        // cesto: aro + trama em xadrez (mais definida que antes)
+        // cesto: aro + trama de vime (pranchas horizontais + pontos de tecelagem)
         x.fillStyle = '#b98244';
         x.fillRect(cx - 9, 48, 18, 2); // aro superior
         x.fillStyle = 'rgba(0,0,0,0.15)';
-        x.fillRect(cx - 9, 49, 18, 1); // sombra sob o aro
+        x.fillRect(cx - 9, 49, 18, 1);
 
-        for (let row = 0; row < 8; row++) {
-            const ry2 = 50 + row;
-            for (let col = 0; col < 16; col++) {
-                const cx2 = cx - 8 + col;
-                const weave = (row + col) % 2 === 0;
-                x.fillStyle = weave ? '#9c6a34' : '#7a4f24';
-                x.fillRect(cx2, ry2, 1, 1);
-            }
+        x.fillStyle = '#8a5a2b';
+        x.fillRect(cx - 8, 50, 16, 8); // corpo base
+        x.fillStyle = '#6b4423';
+        for (let i = 0; i < 4; i++) x.fillRect(cx - 8, 51 + i * 2, 16, 1); // pranchas horizontais
+        for (let i = 0; i < 8; i++) { // pontos de tecelagem alternados
+            const vx = cx - 8 + i * 2 + ((i % 2 === 0) ? 0 : 1);
+            x.fillStyle = '#a8743c';
+            x.fillRect(vx, 51, 1, 1); x.fillRect(vx, 53, 1, 1);
+            x.fillRect(vx, 55, 1, 1); x.fillRect(vx, 57, 1, 1);
         }
         x.fillStyle = '#5a3a1a';
         x.fillRect(cx - 8, BASKET_BOTTOM - 1, 16, 1); // base escura
@@ -1605,7 +1612,7 @@
         [[cx - 11, 52], [cx + 10, 52]].forEach(([sx, sy]) => {
             x.fillStyle = '#c9a227'; x.fillRect(sx, sy, 2, 4);
             x.fillStyle = '#8f7318'; x.fillRect(sx, sy + 3, 2, 1);
-            x.fillStyle = 'rgba(255,255,255,0.25)'; x.fillRect(sx, sy, 1, 1); // brilho
+            x.fillStyle = 'rgba(255,255,255,0.25)'; x.fillRect(sx, sy, 1, 1);
             x.fillStyle = '#5a3a1a';
             if (sx < cx) { x.fillRect(sx, 51, cx - 8 - sx, 1); }
             else { x.fillRect(cx + 8, 51, sx - (cx + 8), 1); }
@@ -1614,7 +1621,7 @@
 
         return c;
     }
-    // ---------- FIM DA NOVA ARTE ----------
+    // ---------- FIM DA ARTE ----------
 
     function resize() {
         const rect = canvas.parentElement.getBoundingClientRect();
