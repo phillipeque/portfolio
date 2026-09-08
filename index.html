@@ -216,6 +216,9 @@
         .socials-back-area { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.6s ease 0.8s; pointer-events: none; }
         #socials-overlay.risen .socials-back-area { opacity: 1; pointer-events: auto; }
         .socials-back-area .icon-item { cursor: pointer; }
+
+        body.socials-mode .retro-window { display: none; }
+        body.socials-mode #tv-screen { padding: 1.5% 10%; }
     </style>
     <base target="_blank">
 </head>
@@ -1437,6 +1440,7 @@
                 const overlay = document.getElementById('socials-overlay');
                 const canvas = document.getElementById('balloon-canvas');
                 const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = false; // correção 1
                 const PIXEL = 8;
                 const ART_W = 44, ART_H = 50;
                 const CENTER_X = 22, CENTER_Y = 28;
@@ -1452,6 +1456,7 @@
                     x.fillRect(px, py, w, h);
                 }
 
+                // buildBalloonArt com cesto mais largo e cordas ajustadas (correção 2)
                 function buildBalloonArt() {
                     const c = document.createElement('canvas');
                     c.width = ART_W; c.height = ART_H;
@@ -1471,13 +1476,15 @@
                         }
                     }
                     pixelRect(x, cx - 8, cy - 9, 4, 6, 'rgba(255,255,255,0.35)');
+                    // cordas do envelope para o cesto (corrigido)
                     x.strokeStyle = '#5a3a1a';
                     x.lineWidth = 1;
-                    x.beginPath(); x.moveTo(cx - 9, cy + 13); x.lineTo(cx - 5, 38); x.stroke();
-                    x.beginPath(); x.moveTo(cx + 9, cy + 13); x.lineTo(cx + 5, 38); x.stroke();
-                    pixelRect(x, cx - 6, 38, 12, 8, '#5a3a1a');
-                    pixelRect(x, cx - 6, 38, 12, 1, '#8b5a2b');
-                    for (let i = 0; i < 4; i++) pixelRect(x, cx - 6, 40 + i * 2, 12, 1, '#8b5a2b');
+                    x.beginPath(); x.moveTo(cx - 9, cy + 13); x.lineTo(cx - 6, 38); x.stroke();
+                    x.beginPath(); x.moveTo(cx + 9, cy + 13); x.lineTo(cx + 6, 38); x.stroke();
+                    // cesto mais largo (14 unidades)
+                    pixelRect(x, cx - 7, 38, 14, 8, '#5a3a1a');
+                    pixelRect(x, cx - 7, 38, 14, 1, '#8b5a2b');
+                    for (let i = 0; i < 4; i++) pixelRect(x, cx - 7, 40 + i * 2, 14, 1, '#8b5a2b');
                     return c;
                 }
 
@@ -1490,13 +1497,15 @@
                 }
 
                 const BTN_HALF_W = 3.5;
+                // attachX = ponto no cesto, hangX = posição do botão (correção 3)
                 const hangButtons = [
-                    { el: document.getElementById('soc-x'),        attachX: -13, phase: 0.0 },
-                    { el: document.getElementById('soc-discord'),  attachX: 0,   phase: 2.1 },
-                    { el: document.getElementById('soc-telegram'), attachX: 13,  phase: 4.2 },
+                    { el: document.getElementById('soc-x'),        attachX: -6, hangX: -13, phase: 0.0 },
+                    { el: document.getElementById('soc-discord'),  attachX: 0,  hangX: 0,   phase: 2.1 },
+                    { el: document.getElementById('soc-telegram'), attachX: 6,  hangX: 13,  phase: 4.2 },
                 ];
                 const ROPE_LEN = 7;
 
+                // frame() com shear por fatias e uso correto de attachX/hangX (correção 4)
                 function frame(now) {
                     t++;
 
@@ -1512,27 +1521,29 @@
 
                     ctx.clearRect(0, 0, W, H);
 
-                    ctx.save();
-                    ctx.translate(Math.round(cx), Math.round(cy));
-                    ctx.rotate(angle);
-                    ctx.drawImage(balloonArt, -CENTER_X, -CENTER_Y);
-                    ctx.restore();
+                    // balão com shear em fatias (nitidez)
+                    const baseX = Math.round(cx);
+                    const baseY = Math.round(cy);
+                    for (let i = 0; i < ART_W; i++) {
+                        const shear = Math.round((i - CENTER_X) * angle);
+                        ctx.drawImage(balloonArt, i, 0, 1, ART_H, baseX - CENTER_X + i, baseY - CENTER_Y + shear, 1, ART_H);
+                    }
 
+                    // cordas + botões
                     const cos = Math.cos(angle), sin = Math.sin(angle);
                     const basketY = 47 - CENTER_Y;
 
                     hangButtons.forEach(b => {
                         const sw = Math.sin(t * 0.035 + b.phase);
-                        const localX = b.attachX + sw * 1.6;
+                        const localX = b.hangX + sw * 1.6; // posição do botão (hangX)
                         const localY = basketY + ROPE_LEN + (1 - Math.cos(sw)) * 0.4;
 
-                        const topX = localX, topY = localY;
-                        const ax = b.attachX, ay = basketY;
-
-                        const rx1 = cx + (ax * cos - ay * sin);
-                        const ry1 = cy + (ax * sin + ay * cos);
-                        const rx2 = cx + (topX * cos - topY * sin);
-                        const ry2 = cy + (topX * sin + topY * cos);
+                        // ponto de fixação no cesto (attachX)
+                        const rx1 = cx + (b.attachX * cos - basketY * sin);
+                        const ry1 = cy + (b.attachX * sin + basketY * cos);
+                        // ponto onde a corda prende no botão
+                        const rx2 = cx + (localX * cos - localY * sin);
+                        const ry2 = cy + (localX * sin + localY * cos);
 
                         ctx.strokeStyle = '#5a3a1a';
                         ctx.lineWidth = 1;
@@ -1563,11 +1574,13 @@
 
                 window.addEventListener('resize', () => { if (socialsOpen) resize(); });
 
+                // openSocials / closeSocials com toggle da classe socials-mode (correção 5)
                 window.openSocials = function() {
                     if (socialsOpen) return;
                     socialsOpen = true;
                     triggerTransition(() => {
                         homeScreen.classList.remove('active');
+                        body.classList.add('socials-mode');
                         overlay.classList.add('active');
                         startBalloon();
                     });
@@ -1579,6 +1592,7 @@
                     triggerTransition(() => {
                         overlay.classList.remove('active');
                         stopBalloon();
+                        body.classList.remove('socials-mode');
                         homeScreen.classList.add('active');
                         currentScreen = 'home';
                     });
