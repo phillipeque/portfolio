@@ -25,7 +25,7 @@
         #background-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; image-rendering: pixelated; }
         #tv-static { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px); background-size: 100% 4px, 4px 100%; animation: staticMove 0.1s steps(2) infinite; z-index: 1; pointer-events: none; }
         @keyframes staticMove { 0% { background-position: 0 0; } 50% { background-position: 0 2px, 2px 0; } 100% { background-position: 0 4px, 4px 0; } }
-        #tv-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; padding: 1.5% 22%; text-align: center; transition: padding 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        #tv-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; padding: 1.5% 22%; text-align: center; transition: none; } /* Removido transition de padding */
         body.projects-mode #tv-screen { padding: 0.5% 8%; }
         body.projects-mode .retro-window { max-width: 68%; }
         body.projects-mode .window-content { max-height: none; overflow-y: hidden; padding: 10px 4px 8px; }
@@ -212,40 +212,25 @@
             image-rendering: pixelated;
             display: block;
         }
-
+        #social-links a:hover { background: #dfdfdf; }
+        #social-links a:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
+        
         .socials-back-area { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.2s ease; pointer-events: none; }
         #socials-overlay.at-top .socials-back-area { opacity: 1; pointer-events: auto; }
         .socials-back-area .icon-item { cursor: pointer; }
 
-        /* Seta pixel art para o botão voltar */
-        .icon-img.socials-back-arrow {
-            width: 64px; height: 64px;
-            image-rendering: pixelated;
-            background-color: transparent;
-            border: none;
-            box-shadow: none;
-            /* Cria a forma de seta apenas com CSS para não precisar de imagem */
-            background-image: linear-gradient(to bottom, 
-                transparent 0%, transparent 20%, 
-                #ffffff 20%, #ffffff 25%, 
-                transparent 25%, transparent 30%, 
-                #ffffff 30%, #ffffff 35%, 
-                transparent 35%, transparent 40%, 
-                #ffffff 40%, #ffffff 45%, 
-                transparent 45%, transparent 50%, 
-                #ffffff 50%, #ffffff 75%, 
-                transparent 75%, transparent 100%);
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            /* Recorta em forma de seta usando clip-path */
-            clip-path: polygon(50% 0%, 15% 50%, 35% 50%, 35% 100%, 65% 100%, 65% 50%, 85% 50%);
-            cursor: pointer;
-            opacity: 0.8;
+        /* Animação do botão de voltar (swipe down) */
+        .socials-back-area .icon-item .icon-img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 0;
+            animation: bounceDown 1s infinite;
         }
-        .icon-img.socials-back-arrow:hover { opacity: 1; }
-        .socials-back-area .icon-item { display: inline-block; }
+        @keyframes bounceDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(8px); }
+        }
 
-        /* Fade in/out do menu */
         body.socials-mode .retro-window { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         body:not(.socials-mode) .retro-window { opacity: 1; transition: opacity 0.4s ease; }
     </style>
@@ -405,19 +390,19 @@
             <div id="socials-overlay">
                 <canvas id="balloon-canvas"></canvas>
                 <div id="social-links">
-                    <a id="soc-x" href="https://x.com/SEU_PERFIL" target="_blank" rel="noopener noreferrer" title="X">
+                    <a id="soc-x" href="https://x.com/0xPhillipe" target="_blank" rel="noopener noreferrer" title="X">
                         <img src="logos/x.png" alt="X" />
                     </a>
-                    <a id="soc-discord" href="https://discord.gg/SEU_SERVER" target="_blank" rel="noopener noreferrer" title="Discord">
+                    <a id="soc-discord" href="https://discord.com/users/905998191206465568" target="_blank" rel="noopener noreferrer" title="Discord">
                         <img src="logos/discord.png" alt="Discord" />
                     </a>
-                    <a id="soc-telegram" href="https://t.me/SEU_CANAL" target="_blank" rel="noopener noreferrer" title="Telegram">
+                    <a id="soc-telegram" href="https://t.me/phillipeque" target="_blank" rel="noopener noreferrer" title="Telegram">
                         <img src="logos/telegram.png" alt="Telegram" />
                     </a>
                 </div>
                 <div class="socials-back-area">
                     <div class="icon-item">
-                        <img class="icon-img socials-back-arrow" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23ffffff'/%3E%3C/svg%3E" alt="BACK" />
+                        <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' shape-rendering='crispEdges'%3E%3Crect x='4' y='4' width='8' height='4' fill='%23555'/%3E%3Crect x='12' y='8' width='8' height='4' fill='%23555'/%3E%3Crect x='20' y='4' width='8' height='4' fill='%23555'/%3E%3Crect x='8' y='8' width='16' height='4' fill='%23555'/%3E%3Crect x='12' y='12' width='8' height='4' fill='%23555'/%3E%3Crect x='16' y='16' width='4' height='4' fill='%23555'/%3E%3C/svg%3E" alt="VOLTAR" />
                     </div>
                 </div>
             </div>
@@ -1508,11 +1493,13 @@
 
     function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
+    // ---------- ARTE DO BALÃO ----------
     function buildBalloonArt() {
         const c = document.createElement('canvas');
         c.width = ART_W; c.height = ART_H;
         const x = c.getContext('2d');
         x.imageSmoothingEnabled = false;
+
         const cx = CENTER_X, cy = 21, rx = 21, ry = 19;
 
         // bandeirinhas no topo (bunting)
@@ -1527,7 +1514,7 @@
             x.fillRect(fx, 2, 1, 1);
         }
 
-        // paleta dos gomos (creme, vermelho, dourado)
+        // paleta dos gomos
         const PALETTE = [
             [247, 220, 150],
             [201, 61, 46],
@@ -1535,6 +1522,7 @@
         ];
         const NUM_GORES = 9;
 
+        // luz vindo de cima-esquerda-frente
         const L = { x: -0.5, y: -0.58, z: 0.64 };
 
         for (let y = 0; y < ART_H; y++) {
@@ -1543,7 +1531,10 @@
                 const d2 = dx * dx + dy * dy;
                 if (d2 > 1) continue;
 
+                // normal real da esfera
                 const z = Math.sqrt(Math.max(0, 1 - dx * dx - dy * dy));
+
+                // longitude real
                 const angle = Math.atan2(dx, z);
                 const gorePos = (angle + Math.PI / 2) / Math.PI;
                 const goreFloat = gorePos * NUM_GORES;
@@ -1552,17 +1543,22 @@
 
                 const color = PALETTE[((gomoIdx % 3) + 3) % 3];
 
+                // sombreado tipo esfera real, quantizado
                 const diffuse = clamp01(dx * L.x + dy * L.y + z * L.z);
                 const SHADE_LEVELS = [0.55, 0.75, 0.95, 1.15, 1.35];
                 const band = Math.min(SHADE_LEVELS.length - 1, Math.floor(diffuse * SHADE_LEVELS.length));
                 let f = SHADE_LEVELS[band];
 
+                // costura entre gomos
                 if (localPos < 0.06 || localPos > 0.94) f = SHADE_LEVELS[0] * 0.85;
+
+                // escurece silhueta na borda
                 if (d2 > 0.9) f = Math.min(f, SHADE_LEVELS[0]);
 
                 x.fillStyle = shade(color, f);
                 x.fillRect(px, y, 1, 1);
 
+                // brilho especular chapado
                 if (band === SHADE_LEVELS.length - 1 && d2 < 0.45) {
                     x.fillStyle = 'rgba(255,255,255,0.28)';
                     x.fillRect(px, y, 1, 1);
@@ -1570,7 +1566,7 @@
             }
         }
 
-        // saia com franja arredondada
+        // saia com franja arredondada (scalloped)
         const skirtY = 40;
         const SCALLOPS = 6;
         const skirtHalf = 9;
@@ -1614,10 +1610,11 @@
         x.fillStyle = '#c99a52';
         x.fillRect(cx - 9, BASKET_BOTTOM, 18, 1);
 
-        // Sacos de areia REMOVIDOS e linhas conectores REMOVIDAS
+        // REMOVIDO: blocos dos sacos de areia e suas linhas de conexão
 
         return c;
     }
+    // ---------- FIM DA ARTE ----------
 
     function resize() {
         const rect = canvas.parentElement.getBoundingClientRect();
@@ -1635,6 +1632,7 @@
     ];
     const ROPE_LEN = 7;
 
+    // fogo do queimador (animado, entre envelope e cesto)
     function drawFlame(cx, cy, cos, sin) {
         const flick = Math.sin(t * 0.25) * 1.4 + Math.sin(t * 0.11 + 1.3) * 1.0;
         const fh = Math.max(2, Math.round(4 + flick));
