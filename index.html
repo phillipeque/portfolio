@@ -1580,36 +1580,52 @@
             x.fillRect(cx + 8 - Math.round(i / 13), 38 + i, 1, 1);
         }
 
-        // cesto: aro + trama de vime (pranchas horizontais + pontos de tecelagem)
-        x.fillStyle = '#b98244';
-        x.fillRect(cx - 9, 48, 18, 2); // aro superior
+        // cesto: colar dourado + janela escura + trama em X + rebites (estilo referência)
+        x.fillStyle = '#c9a227';
+        x.fillRect(cx - 9, 48, 18, 2); // colar que liga as cordas ao cesto
         x.fillStyle = 'rgba(0,0,0,0.15)';
-        x.fillRect(cx - 9, 49, 18, 1);
+        x.fillRect(cx - 9, 50, 18, 1);
+
+        const basketTop = 51, basketBottom = BASKET_BOTTOM - 1; // 51..57
+        const basketLeft = cx - 8, basketRight = cx + 8;
+        const bw = basketRight - basketLeft; // 16
+        const bh = basketBottom - basketTop;  // 6
 
         x.fillStyle = '#8a5a2b';
-        x.fillRect(cx - 8, 50, 16, 8); // corpo base
-        x.fillStyle = '#6b4423';
-        for (let i = 0; i < 4; i++) x.fillRect(cx - 8, 51 + i * 2, 16, 1); // pranchas horizontais
-        for (let i = 0; i < 8; i++) { // pontos de tecelagem alternados
-            const vx = cx - 8 + i * 2 + ((i % 2 === 0) ? 0 : 1);
-            x.fillStyle = '#a8743c';
-            x.fillRect(vx, 51, 1, 1); x.fillRect(vx, 53, 1, 1);
-            x.fillRect(vx, 55, 1, 1); x.fillRect(vx, 57, 1, 1);
-        }
-        x.fillStyle = '#5a3a1a';
-        x.fillRect(cx - 8, BASKET_BOTTOM - 1, 16, 1); // base escura
-        x.fillStyle = '#c99a52';
-        x.fillRect(cx - 9, BASKET_BOTTOM, 18, 1); // realce inferior
+        x.fillRect(basketLeft, basketTop, bw + 1, bh + 1); // preenchimento base
 
-        // sacos de areia pendurados nas laterais, conectados à cesta
-        [[cx - 11, 52], [cx + 10, 52]].forEach(([sx, sy]) => {
-            x.fillStyle = '#c9a227'; x.fillRect(sx, sy, 2, 4);
-            x.fillStyle = '#8f7318'; x.fillRect(sx, sy + 3, 2, 1);
-            x.fillStyle = 'rgba(255,255,255,0.25)'; x.fillRect(sx, sy, 1, 1);
-            x.fillStyle = '#5a3a1a';
-            if (sx < cx) { x.fillRect(sx, 51, cx - 8 - sx, 1); }
-            else { x.fillRect(cx + 8, 51, sx - (cx + 8), 1); }
-            x.fillRect(sx, 50, 1, 2);
+        // janela escura (vão de observação) na parte de cima do cesto
+        x.fillStyle = '#6b4423';
+        x.fillRect(cx - 6, basketTop, 13, 1); // moldura clara
+        x.fillStyle = '#3a2410';
+        x.fillRect(cx - 6, basketTop + 1, 13, 2); // janela escura
+
+        // trama em X cobrindo a parte de baixo
+        const xTop = basketTop + 3, xh = basketBottom - xTop;
+        x.fillStyle = '#5f3d1c';
+        for (let i = 0; i <= bw; i++) {
+            const r1 = Math.round(i * xh / bw);
+            const r2 = Math.round((bw - i) * xh / bw);
+            x.fillRect(basketLeft + i, xTop + r1, 1, 1);
+            x.fillRect(basketLeft + i, xTop + r2, 1, 1);
+        }
+        // rebite/botão central onde o X se cruza
+        x.fillStyle = '#e0a83c';
+        x.fillRect(cx - 1, xTop + Math.round(xh / 2) - 1, 2, 2);
+
+        // contorno do cesto
+        x.fillStyle = '#4a2f16';
+        x.fillRect(basketLeft, basketTop, bw + 1, 1);
+        x.fillRect(basketLeft, basketBottom, bw + 1, 1);
+        x.fillRect(basketLeft, basketTop, 1, bh + 1);
+        x.fillRect(basketRight, basketTop, 1, bh + 1);
+
+        // rebites dourados nas laterais, saltando pra fora do cesto
+        [[basketLeft - 1, basketTop + 2], [basketRight, basketTop + 2]].forEach(([sx, sy]) => {
+            x.fillStyle = '#e0a83c';
+            x.fillRect(sx, sy, 2, 3);
+            x.fillStyle = '#a8743c';
+            x.fillRect(sx, sy + 2, 2, 1);
         });
 
         return c;
