@@ -212,15 +212,41 @@
             image-rendering: pixelated;
             display: block;
         }
-        #social-links a:hover { background: #dfdfdf; }
-        #social-links a:active { border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; }
-        
+
         .socials-back-area { position: absolute; bottom: 6%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.2s ease; pointer-events: none; }
         #socials-overlay.at-top .socials-back-area { opacity: 1; pointer-events: auto; }
         .socials-back-area .icon-item { cursor: pointer; }
 
+        /* Seta pixel art para o botão voltar */
+        .icon-img.socials-back-arrow {
+            width: 64px; height: 64px;
+            image-rendering: pixelated;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            /* Cria a forma de seta apenas com CSS para não precisar de imagem */
+            background-image: linear-gradient(to bottom, 
+                transparent 0%, transparent 20%, 
+                #ffffff 20%, #ffffff 25%, 
+                transparent 25%, transparent 30%, 
+                #ffffff 30%, #ffffff 35%, 
+                transparent 35%, transparent 40%, 
+                #ffffff 40%, #ffffff 45%, 
+                transparent 45%, transparent 50%, 
+                #ffffff 50%, #ffffff 75%, 
+                transparent 75%, transparent 100%);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            /* Recorta em forma de seta usando clip-path */
+            clip-path: polygon(50% 0%, 15% 50%, 35% 50%, 35% 100%, 65% 100%, 65% 50%, 85% 50%);
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        .icon-img.socials-back-arrow:hover { opacity: 1; }
+        .socials-back-area .icon-item { display: inline-block; }
+
+        /* Fade in/out do menu */
         body.socials-mode .retro-window { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
-        body.socials-mode #tv-screen { padding: 1.5% 10%; }
         body:not(.socials-mode) .retro-window { opacity: 1; transition: opacity 0.4s ease; }
     </style>
     <base target="_blank">
@@ -391,8 +417,7 @@
                 </div>
                 <div class="socials-back-area">
                     <div class="icon-item">
-                        <img class="icon-img" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='32' fill='%23000'%3E←%3C/text%3E%3C/svg%3E" alt="BACK" />
-                        <span class="icon-label label-black">BACK</span>
+                        <img class="icon-img socials-back-arrow" data-target="back" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23ffffff'/%3E%3C/svg%3E" alt="BACK" />
                     </div>
                 </div>
             </div>
@@ -1483,13 +1508,11 @@
 
     function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
-    // ---------- ARTE DO BALÃO (corrigida) ----------
     function buildBalloonArt() {
         const c = document.createElement('canvas');
         c.width = ART_W; c.height = ART_H;
         const x = c.getContext('2d');
         x.imageSmoothingEnabled = false;
-
         const cx = CENTER_X, cy = 21, rx = 21, ry = 19;
 
         // bandeirinhas no topo (bunting)
@@ -1510,9 +1533,8 @@
             [201, 61, 46],
             [237, 168, 60],
         ];
-        const NUM_GORES = 9; // ímpar -> gomo central alinhado no meio, sem sobra assimétrica
+        const NUM_GORES = 9;
 
-        // luz vindo de cima-esquerda-frente, vetor normalizado
         const L = { x: -0.5, y: -0.58, z: 0.64 };
 
         for (let y = 0; y < ART_H; y++) {
@@ -1521,35 +1543,26 @@
                 const d2 = dx * dx + dy * dy;
                 if (d2 > 1) continue;
 
-                // normal real da esfera (visível = hemisfério frontal)
                 const z = Math.sqrt(Math.max(0, 1 - dx * dx - dy * dy));
-
-                // longitude real (ângulo), não posição em pixel -> gomos retos e simétricos
-                const angle = Math.atan2(dx, z); // varia de -PI/2 a PI/2
-                const gorePos = (angle + Math.PI / 2) / Math.PI; // 0..1
+                const angle = Math.atan2(dx, z);
+                const gorePos = (angle + Math.PI / 2) / Math.PI;
                 const goreFloat = gorePos * NUM_GORES;
                 const gomoIdx = Math.floor(goreFloat);
-                const localPos = goreFloat - gomoIdx; // 0..1 dentro do gomo
+                const localPos = goreFloat - gomoIdx;
 
                 const color = PALETTE[((gomoIdx % 3) + 3) % 3];
 
-                // sombreado tipo esfera real (Lambert), mas QUANTIZADO em degraus
-                // (poucos tons chapados = cel-shading de pixel art; gradiente contínuo = "borrado")
                 const diffuse = clamp01(dx * L.x + dy * L.y + z * L.z);
                 const SHADE_LEVELS = [0.55, 0.75, 0.95, 1.15, 1.35];
                 const band = Math.min(SHADE_LEVELS.length - 1, Math.floor(diffuse * SHADE_LEVELS.length));
                 let f = SHADE_LEVELS[band];
 
-                // costura entre gomos (baseada no ângulo, então some certinho em todas as linhas)
                 if (localPos < 0.06 || localPos > 0.94) f = SHADE_LEVELS[0] * 0.85;
-
-                // escurece silhueta na borda (também em degrau, não gradiente)
                 if (d2 > 0.9) f = Math.min(f, SHADE_LEVELS[0]);
 
                 x.fillStyle = shade(color, f);
                 x.fillRect(px, y, 1, 1);
 
-                // brilho especular chapado, só no topo do gomo mais iluminado
                 if (band === SHADE_LEVELS.length - 1 && d2 < 0.45) {
                     x.fillStyle = 'rgba(255,255,255,0.28)';
                     x.fillRect(px, y, 1, 1);
@@ -1557,15 +1570,15 @@
             }
         }
 
-        // saia com franja arredondada (scalloped), suave em vez de "dentes"
+        // saia com franja arredondada
         const skirtY = 40;
         const SCALLOPS = 6;
         const skirtHalf = 9;
         const skirtW = skirtHalf * 2 + 1;
         for (let i = 0; i < skirtW; i++) {
             const px = cx - skirtHalf + i;
-            const lp = (i % (skirtW / SCALLOPS)) / (skirtW / SCALLOPS); // 0..1 dentro do "dente"
-            const bump = Math.round(Math.sin(lp * Math.PI) * 3); // curva suave (seno), não triangular
+            const lp = (i % (skirtW / SCALLOPS)) / (skirtW / SCALLOPS);
+            const bump = Math.round(Math.sin(lp * Math.PI) * 3);
             const distFromCenter = Math.abs(px - cx) / skirtHalf;
             for (let d = 0; d <= bump; d++) {
                 x.fillStyle = shade([130, 42, 30], 1 - distFromCenter * 0.3 - d * 0.03);
@@ -1580,41 +1593,31 @@
             x.fillRect(cx + 8 - Math.round(i / 13), 38 + i, 1, 1);
         }
 
-        // cesto: aro + trama de vime (pranchas horizontais + pontos de tecelagem)
+        // cesto: aro + trama de vime
         x.fillStyle = '#b98244';
-        x.fillRect(cx - 9, 48, 18, 2); // aro superior
+        x.fillRect(cx - 9, 48, 18, 2);
         x.fillStyle = 'rgba(0,0,0,0.15)';
         x.fillRect(cx - 9, 49, 18, 1);
 
         x.fillStyle = '#8a5a2b';
-        x.fillRect(cx - 8, 50, 16, 8); // corpo base
+        x.fillRect(cx - 8, 50, 16, 8);
         x.fillStyle = '#6b4423';
-        for (let i = 0; i < 4; i++) x.fillRect(cx - 8, 51 + i * 2, 16, 1); // pranchas horizontais
-        for (let i = 0; i < 8; i++) { // pontos de tecelagem alternados
+        for (let i = 0; i < 4; i++) x.fillRect(cx - 8, 51 + i * 2, 16, 1);
+        for (let i = 0; i < 8; i++) {
             const vx = cx - 8 + i * 2 + ((i % 2 === 0) ? 0 : 1);
             x.fillStyle = '#a8743c';
             x.fillRect(vx, 51, 1, 1); x.fillRect(vx, 53, 1, 1);
             x.fillRect(vx, 55, 1, 1); x.fillRect(vx, 57, 1, 1);
         }
         x.fillStyle = '#5a3a1a';
-        x.fillRect(cx - 8, BASKET_BOTTOM - 1, 16, 1); // base escura
+        x.fillRect(cx - 8, BASKET_BOTTOM - 1, 16, 1);
         x.fillStyle = '#c99a52';
-        x.fillRect(cx - 9, BASKET_BOTTOM, 18, 1); // realce inferior
+        x.fillRect(cx - 9, BASKET_BOTTOM, 18, 1);
 
-        // sacos de areia pendurados nas laterais, conectados à cesta
-        [[cx - 11, 52], [cx + 10, 52]].forEach(([sx, sy]) => {
-            x.fillStyle = '#c9a227'; x.fillRect(sx, sy, 2, 4);
-            x.fillStyle = '#8f7318'; x.fillRect(sx, sy + 3, 2, 1);
-            x.fillStyle = 'rgba(255,255,255,0.25)'; x.fillRect(sx, sy, 1, 1);
-            x.fillStyle = '#5a3a1a';
-            if (sx < cx) { x.fillRect(sx, 51, cx - 8 - sx, 1); }
-            else { x.fillRect(cx + 8, 51, sx - (cx + 8), 1); }
-            x.fillRect(sx, 50, 1, 2);
-        });
+        // Sacos de areia REMOVIDOS e linhas conectores REMOVIDAS
 
         return c;
     }
-    // ---------- FIM DA ARTE ----------
 
     function resize() {
         const rect = canvas.parentElement.getBoundingClientRect();
@@ -1632,7 +1635,6 @@
     ];
     const ROPE_LEN = 7;
 
-    // fogo do queimador (animado, entre envelope e cesto)
     function drawFlame(cx, cy, cos, sin) {
         const flick = Math.sin(t * 0.25) * 1.4 + Math.sin(t * 0.11 + 1.3) * 1.0;
         const fh = Math.max(2, Math.round(4 + flick));
