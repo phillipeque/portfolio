@@ -1444,7 +1444,7 @@
             setInterval(dosTickClock, 1000);
             dosUpdate();
 
-         // ===== SOCIALS BALLOON =====
+        // ===== SOCIALS BALLOON =====
 (function() {
     const overlay = document.getElementById('socials-overlay');
     const canvas = document.getElementById('balloon-canvas');
@@ -1533,35 +1533,28 @@
 
                 const color = PALETTE[((gomoIdx % 3) + 3) % 3];
 
-                // sombreado tipo esfera real (Lambert) usando a normal (dx, dy, z)
+                // sombreado tipo esfera real (Lambert), mas QUANTIZADO em degraus
+                // (poucos tons chapados = cel-shading de pixel art; gradiente contínuo = "borrado")
                 const diffuse = clamp01(dx * L.x + dy * L.y + z * L.z);
-                let f = 0.5 + diffuse * 0.95;
+                const SHADE_LEVELS = [0.55, 0.75, 0.95, 1.15, 1.35];
+                const band = Math.min(SHADE_LEVELS.length - 1, Math.floor(diffuse * SHADE_LEVELS.length));
+                let f = SHADE_LEVELS[band];
 
                 // costura entre gomos (baseada no ângulo, então some certinho em todas as linhas)
-                if (localPos < 0.05 || localPos > 0.95) f *= 0.55;
+                if (localPos < 0.06 || localPos > 0.94) f = SHADE_LEVELS[0] * 0.85;
 
-                // escurece silhueta na borda
-                if (d2 > 0.9) f *= 0.68;
+                // escurece silhueta na borda (também em degrau, não gradiente)
+                if (d2 > 0.9) f = Math.min(f, SHADE_LEVELS[0]);
 
                 x.fillStyle = shade(color, f);
                 x.fillRect(px, y, 1, 1);
 
-                // brilho especular pequeno e concentrado
-                if (diffuse > 0.9 && d2 < 0.5) {
-                    x.fillStyle = 'rgba(255,255,255,0.25)';
+                // brilho especular chapado, só no topo do gomo mais iluminado
+                if (band === SHADE_LEVELS.length - 1 && d2 < 0.45) {
+                    x.fillStyle = 'rgba(255,255,255,0.28)';
                     x.fillRect(px, y, 1, 1);
                 }
             }
-        }
-
-        // faixa decorativa no equador com pontilhado
-        const eqY = cy + 1;
-        for (let px = 0; px < ART_W; px++) {
-            const dx = (px - cx) / rx;
-            if (Math.abs(dx) > 0.97) continue;
-            const dot = ((px + eqY) % 4 === 0);
-            x.fillStyle = dot ? '#f5f0d8' : '#2f5c3f';
-            x.fillRect(px, eqY, 1, 1);
         }
 
         // saia com franja arredondada (scalloped), suave em vez de "dentes"
