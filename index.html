@@ -234,7 +234,6 @@
         body.socials-mode .retro-window { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         body:not(.socials-mode) .retro-window { opacity: 1; transition: opacity 0.4s ease; }
     </style>
-    <base target="_blank">
 </head>
 <body>
     <div id="tv-container">
@@ -633,11 +632,11 @@
                 draw();
             }
 
-            function loop() { update(); setTimeout(loop, 16); }
+            function loop() { update(); requestAnimationFrame(loop); }
             window.addEventListener('resize', () => { resize(); initBirds(); });
             resize();
             initBirds();
-            loop();
+            requestAnimationFrame(loop);
         })();
 
         // ===== SCAN SWEEP =====
@@ -1303,6 +1302,7 @@
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
             const sendBtn = document.getElementById('send-btn');
+            const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -1315,7 +1315,7 @@
                     feedback.style.color = '#c41e3a';
                     return;
                 }
-                if (!email.includes('@') || !email.includes('.')) {
+                if (!EMAIL_REGEX.test(email)) {
                     feedback.textContent = 'Please enter a valid email address.';
                     feedback.style.color = '#c41e3a';
                     return;
@@ -1346,12 +1346,6 @@
                 sendBtn.disabled = false;
                 sendBtn.textContent = 'SEND';
             });
-
-            if (FORMSPREE_ID === 'SEU_FORM_ID_AQUI') {
-                console.warn('⚠️ Replace FORMSPREE_ID with your actual Formspree ID.');
-                feedback.textContent = '⚠️ Configure Formspree (see console).';
-                feedback.style.color = '#c41e3a';
-            }
 
             // ===== SERVICOS (DOS) =====
             const DOS_SERVICES = [
