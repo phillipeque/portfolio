@@ -35,8 +35,8 @@
 
             /* Janela — modo detalhe */
             --pad-y-detail: 3%;
-            --pad-x-detail: 20%;
-            --win-max-detail: min(45%, 820px);
+            --pad-x-detail: 12%;
+            --win-max-detail: min(72%, 1080px);
 
             /* Conteúdo da janela */
             --content-max-h: 62vh;
@@ -56,7 +56,7 @@
             --dos-k: 1;
             --dos-panel-w: 62%;
             --dos-panel-h: 68%;
-            --dos-dialog-w: min(36%, 400px);
+            --dos-dialog-w: min(42%, 460px);
 
             /* Balão dos socials */
             --soc-btn: 56px;
@@ -132,9 +132,14 @@
         .explorer-icons-area::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; }
         .explorer-icons-area::-webkit-scrollbar-button { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; height: 12px; }
 
+        /* ===== DETALHE: janela 100% expandida, SEM scroll ===== */
         body.detail-mode #tv-screen { padding: var(--pad-y-detail) var(--pad-x-detail); }
-        body.detail-mode .retro-window { max-width: var(--win-max-detail); }
-        body.detail-mode .window-content { max-height: var(--content-max-h); overflow-y: auto; padding: var(--content-pad); }
+        body.detail-mode .retro-window { max-width: var(--win-max-detail); max-height: 100%; }
+        body.detail-mode .window-content {
+            max-height: none;
+            overflow: hidden;
+            padding: var(--content-pad);
+        }
         body.detail-mode .explorer-detail { display: block !important; padding: 0; max-width: 100%; margin: 0 auto; }
         body.detail-mode .explorer-icons-area { display: none !important; }
         body.detail-mode .explorer-toolbar { display: none !important; }
@@ -245,10 +250,6 @@
 
         /* ========== DETALHE DO PROJETO ========== */
         .explorer-detail { background: #c0c0c0; border: 2px solid; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; padding: 12px; text-align: left; max-width: 100%; margin: 0 auto; transition: all 0.3s ease; }
-        .explorer-detail::-webkit-scrollbar { width: 12px; background: #dfdfdf; }
-        .explorer-detail::-webkit-scrollbar-track { background: #dfdfdf; border-left: 1px solid #808080; }
-        .explorer-detail::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; }
-        .explorer-detail::-webkit-scrollbar-button { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; height: 12px; }
         .win95-titlebar { background: linear-gradient(90deg, #000080, #1084d0); padding: 3px 6px; display: flex; align-items: center; margin-bottom: 0; }
         .win95-title { font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #ffffff; text-shadow: 1px 1px 0 #000000; user-select: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .detail-header-card { display: flex; align-items: center; gap: 14px; background: #c0c0c0; border: 2px solid; border-top: none; border-color: #808080 #ffffff #ffffff #808080; box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf; padding: 10px 12px; margin-bottom: 10px; }
@@ -304,12 +305,12 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: var(--dos-dialog-w);
-            min-height: calc(300px * var(--dos-k));
-            max-height: 72vh;
+            min-height: calc(340px * var(--dos-k));
+            max-height: 78vh;
             overflow-y: auto;
             background: #FFFFFF;
             box-shadow: 8px 22px 0 #000000;
-            padding: calc(26px * var(--dos-k)) calc(18px * var(--dos-k)) calc(14px * var(--dos-k));
+            padding: calc(30px * var(--dos-k)) calc(20px * var(--dos-k)) calc(16px * var(--dos-k));
             display: none;
             z-index: 5;
             color: #000000;
@@ -340,7 +341,7 @@
             padding: 0 calc(10px * var(--dos-k));
             background: #FFFFFF;
             color: #000000;
-            font-size: calc(20px * var(--dos-k));
+            font-size: calc(22px * var(--dos-k));
             line-height: 0.8;
             text-align: center;
             white-space: nowrap;
@@ -349,15 +350,15 @@
             margin: 0;
             padding: 0;
             color: #000000;
-            font-size: calc(17px * var(--dos-k));
-            line-height: 1.35;
+            font-size: calc(20px * var(--dos-k));
+            line-height: 1.4;
             white-space: pre-line;
         }
         #screen-services .dos-dialog-hint {
             margin: calc(10px * var(--dos-k)) 0 0;
             padding: 0;
             color: #000000;
-            font-size: calc(12px * var(--dos-k));
+            font-size: calc(13px * var(--dos-k));
             line-height: 1;
             opacity: 0.7;
             text-align: center;
@@ -397,7 +398,7 @@
             :root {
                 --win-max: min(70%, 1100px);
                 --win-max-projects: min(68%, 1080px);
-                --win-max-detail: min(45%, 850px);
+                --win-max-detail: min(72%, 1150px);
             }
         }
 
@@ -405,10 +406,10 @@
             :root {
                 --tv-pad-x: 18%;
                 --pad-x-projects: 10%;
-                --pad-x-detail: 16%;
+                --pad-x-detail: 8%;
                 --win-max: 82%;
                 --win-max-projects: min(80%, 1000px);
-                --win-max-detail: min(55%, 800px);
+                --win-max-detail: min(80%, 1050px);
                 --content-max-h: 66vh;
             }
         }
@@ -417,7 +418,7 @@
             :root {
                 --tv-pad-x: 14%;
                 --pad-x-projects: 7%;
-                --pad-x-detail: 12%;
+                --pad-x-detail: 5%;
                 --win-max: 100%;
                 --win-max-projects: 100%;
                 --win-max-detail: 100%;
@@ -432,7 +433,7 @@
                 --tv-pad-x: 10%;
                 --tv-pad-y: 2.5%;
                 --pad-x-projects: 4%;
-                --pad-x-detail: 8%;
+                --pad-x-detail: 4%;
                 --pad-y-projects: 2.5%;
                 --pad-y-detail: 2.5%;
                 --content-max-h: 72vh;
@@ -443,12 +444,17 @@
                 --dos-k: 0.78;
                 --dos-panel-w: 78%;
                 --dos-panel-h: 80%;
-                --dos-dialog-w: min(60%, 400px);
+                --dos-dialog-w: min(60%, 460px);
             }
             .about-layout { gap: 12px; }
             .avatar-frame { width: 96px; height: 96px; }
             .bio-content { max-height: 240px; }
             .detail-header-icon { width: 40px; height: 40px; }
+            /* fallback: em ecrãs pequenos, mantém scroll no detalhe */
+            body.detail-mode .window-content {
+                max-height: var(--content-max-h);
+                overflow-y: auto;
+            }
         }
 
         @media (max-width: 560px) {
@@ -456,7 +462,7 @@
                 --tv-pad-x: 7%;
                 --tv-pad-y: 3%;
                 --pad-x-projects: 3%;
-                --pad-x-detail: 4%;
+                --pad-x-detail: 3.5%;
                 --pad-y-projects: 2.5%;
                 --pad-y-detail: 2.5%;
                 --content-max-h: 74vh;
@@ -470,7 +476,7 @@
                 --dos-k: 0.62;
                 --dos-panel-w: 86%;
                 --dos-panel-h: 84%;
-                --dos-dialog-w: min(85%, 360px);
+                --dos-dialog-w: min(85%, 420px);
                 --soc-btn: 48px;
             }
             .window-title { font-size: 13px; letter-spacing: 1px; }
