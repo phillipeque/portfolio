@@ -19,57 +19,69 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" as="style" />
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
     <style>
-        /* ========== VARIÁVEIS DE LAYOUT RESPONSIVO ========== */
+        /* ========== VARIÁVEIS DE LAYOUT ==========
+           Design base: 1920 x 1080. Tudo aqui é em px/%
+           e o container inteiro é escalado via transform. */
         :root {
-            /* Moldura da TV (padding interior do "ecrã") */
             --tv-pad-y: 3%;
             --tv-pad-x: 22%;
 
-            /* Janela — modo normal */
             --win-max: 70%;
 
-            /* Janela — modo lista de projetos */
             --pad-y-projects: 3%;
             --pad-x-projects: 14%;
             --win-max-projects: min(68%, 980px);
 
-            /* Janela — modo detalhe */
             --pad-y-detail: 3%;
             --pad-x-detail: 12%;
             --win-max-detail: min(72%, 1080px);
 
-            /* Conteúdo da janela */
-            --content-max-h: 62vh;
+            --content-max-h: 670px; /* 62% de 1080 */
             --content-pad: 16px;
 
-            /* Grelha de ícones (home / about / contact) */
             --icon-cols: 3;
             --icon-size: 64px;
 
-            /* Explorador de projetos */
             --explorer-cols: 3;
             --explorer-cols-projects: 4;
             --explorer-icon: 64px;
             --explorer-icon-projects: 68px;
 
-            /* Painel DOS (serviços) — escala global */
             --dos-k: 1;
             --dos-panel-w: 62%;
             --dos-panel-h: 68%;
             --dos-dialog-w: min(42%, 460px);
 
-            /* Balão dos socials */
             --soc-btn: 56px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; height: 100vh; background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
-        #tv-container { position: relative; width: 100vw; height: 100vh; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ========== CONTAINER ESCALÁVEL ==========
+           Sempre 1920x1080 na "escala de design".
+           JS aplica translate+scale para caber em qualquer viewport. */
+        #tv-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 1920px;
+            height: 1080px;
+            transform-origin: top left;
+            will-change: transform;
+        }
+
         #background-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; image-rendering: pixelated; }
         #tv-static { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px); background-size: 100% 4px, 4px 100%; animation: staticMove 0.1s steps(2) infinite; z-index: 1; pointer-events: none; }
         @keyframes staticMove { 0% { background-position: 0 0; } 50% { background-position: 0 2px, 2px 0; } 100% { background-position: 0 4px, 4px 0; } }
 
-        /* ========== ECRÃ PRINCIPAL ========== */
         #tv-screen {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -100,7 +112,6 @@
         body.projects-mode .explorer-toolbar { padding: 2px 6px; }
         body.projects-mode .explorer-statusbar { font-size: 11px; padding: 2px 8px; }
 
-        /* ===== Scroll APENAS na grelha de ícones (projetos) ===== */
         body.projects-mode #screen-projects {
             display: flex;
             flex-direction: column;
@@ -132,14 +143,9 @@
         .explorer-icons-area::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; }
         .explorer-icons-area::-webkit-scrollbar-button { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; height: 12px; }
 
-        /* ===== DETALHE: janela 100% expandida, SEM scroll ===== */
         body.detail-mode #tv-screen { padding: var(--pad-y-detail) var(--pad-x-detail); }
         body.detail-mode .retro-window { max-width: var(--win-max-detail); max-height: 100%; }
-        body.detail-mode .window-content {
-            max-height: none;
-            overflow: hidden;
-            padding: var(--content-pad);
-        }
+        body.detail-mode .window-content { max-height: none; overflow: hidden; padding: var(--content-pad); }
         body.detail-mode .explorer-detail { display: block !important; padding: 0; max-width: 100%; margin: 0 auto; }
         body.detail-mode .explorer-icons-area { display: none !important; }
         body.detail-mode .explorer-toolbar { display: none !important; }
@@ -298,7 +304,6 @@
         #screen-services .panel-footer span { display: block; margin: 0; padding: 0; white-space: nowrap; }
         #screen-services .panel-footer span:last-child { text-align: right; }
 
-        /* ===== DIALOG DOS — versão compacta ===== */
         #screen-services .dos-dialog {
             position: absolute;
             top: 50%;
@@ -306,7 +311,7 @@
             transform: translate(-50%, -50%);
             width: var(--dos-dialog-w);
             min-height: calc(340px * var(--dos-k));
-            max-height: 78vh;
+            max-height: 842px; /* 78% de 1080 */
             overflow-y: auto;
             background: #FFFFFF;
             box-shadow: 8px 22px 0 #000000;
@@ -320,50 +325,11 @@
         }
         #screen-services .dos-dialog::-webkit-scrollbar { width: 10px; background: #FFFFFF; }
         #screen-services .dos-dialog::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; }
-
-        #screen-services .dos-dialog::before {
-            content: '';
-            position: absolute;
-            top: calc(12px * var(--dos-k));
-            left: calc(6px * var(--dos-k));
-            right: calc(6px * var(--dos-k));
-            bottom: calc(6px * var(--dos-k));
-            border: 2px solid #000000;
-            pointer-events: none;
-        }
+        #screen-services .dos-dialog::before { content: ''; position: absolute; top: calc(12px * var(--dos-k)); left: calc(6px * var(--dos-k)); right: calc(6px * var(--dos-k)); bottom: calc(6px * var(--dos-k)); border: 2px solid #000000; pointer-events: none; }
         #screen-services .dos-dialog.open { display: block; }
-        #screen-services .dos-dialog-title {
-            position: absolute;
-            top: calc(13px * var(--dos-k));
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin: 0;
-            padding: 0 calc(10px * var(--dos-k));
-            background: #FFFFFF;
-            color: #000000;
-            font-size: calc(22px * var(--dos-k));
-            line-height: 0.8;
-            text-align: center;
-            white-space: nowrap;
-        }
-        #screen-services .dos-dialog-text {
-            margin: 0;
-            padding: 0;
-            color: #000000;
-            font-size: calc(20px * var(--dos-k));
-            line-height: 1.4;
-            white-space: pre-line;
-        }
-        #screen-services .dos-dialog-hint {
-            margin: calc(10px * var(--dos-k)) 0 0;
-            padding: 0;
-            color: #000000;
-            font-size: calc(13px * var(--dos-k));
-            line-height: 1;
-            opacity: 0.7;
-            text-align: center;
-        }
-        /* ===== FIM DIALOG DOS ===== */
+        #screen-services .dos-dialog-title { position: absolute; top: calc(13px * var(--dos-k)); left: 50%; transform: translate(-50%, -50%); margin: 0; padding: 0 calc(10px * var(--dos-k)); background: #FFFFFF; color: #000000; font-size: calc(22px * var(--dos-k)); line-height: 0.8; text-align: center; white-space: nowrap; }
+        #screen-services .dos-dialog-text { margin: 0; padding: 0; color: #000000; font-size: calc(20px * var(--dos-k)); line-height: 1.4; white-space: pre-line; }
+        #screen-services .dos-dialog-hint { margin: calc(10px * var(--dos-k)) 0 0; padding: 0; color: #000000; font-size: calc(13px * var(--dos-k)); line-height: 1; opacity: 0.7; text-align: center; }
 
         /* ========== SOCIALS BALLOON ========== */
         #socials-overlay { position: absolute; inset: 0; z-index: 50; display: none; pointer-events: none; }
@@ -389,158 +355,6 @@
 
         body.socials-mode .retro-window { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         body:not(.socials-mode) .retro-window { opacity: 1; transition: opacity 0.4s ease; }
-
-        /* ===================================================== */
-        /* ============ RESPONSIVIDADE / BREAKPOINTS ============ */
-        /* ===================================================== */
-
-        @media (min-width: 1700px) {
-            :root {
-                --win-max: min(70%, 1100px);
-                --win-max-projects: min(68%, 1080px);
-                --win-max-detail: min(72%, 1150px);
-            }
-        }
-
-        @media (max-width: 1400px) {
-            :root {
-                --tv-pad-x: 18%;
-                --pad-x-projects: 10%;
-                --pad-x-detail: 8%;
-                --win-max: 82%;
-                --win-max-projects: min(80%, 1000px);
-                --win-max-detail: min(80%, 1050px);
-                --content-max-h: 66vh;
-            }
-        }
-
-        @media (max-width: 1100px) {
-            :root {
-                --tv-pad-x: 14%;
-                --pad-x-projects: 7%;
-                --pad-x-detail: 5%;
-                --win-max: 100%;
-                --win-max-projects: 100%;
-                --win-max-detail: 100%;
-                --explorer-cols-projects: 3;
-                --explorer-icon-projects: 64px;
-                --content-max-h: 70vh;
-            }
-        }
-
-        @media (max-width: 820px) {
-            :root {
-                --tv-pad-x: 10%;
-                --tv-pad-y: 2.5%;
-                --pad-x-projects: 4%;
-                --pad-x-detail: 4%;
-                --pad-y-projects: 2.5%;
-                --pad-y-detail: 2.5%;
-                --content-max-h: 72vh;
-                --content-pad: 12px;
-                --icon-size: 56px;
-                --explorer-icon: 56px;
-                --explorer-icon-projects: 58px;
-                --dos-k: 0.78;
-                --dos-panel-w: 78%;
-                --dos-panel-h: 80%;
-                --dos-dialog-w: min(60%, 460px);
-            }
-            .about-layout { gap: 12px; }
-            .avatar-frame { width: 96px; height: 96px; }
-            .bio-content { max-height: 240px; }
-            .detail-header-icon { width: 40px; height: 40px; }
-            /* fallback: em ecrãs pequenos, mantém scroll no detalhe */
-            body.detail-mode .window-content {
-                max-height: var(--content-max-h);
-                overflow-y: auto;
-            }
-        }
-
-        @media (max-width: 560px) {
-            :root {
-                --tv-pad-x: 7%;
-                --tv-pad-y: 3%;
-                --pad-x-projects: 3%;
-                --pad-x-detail: 3.5%;
-                --pad-y-projects: 2.5%;
-                --pad-y-detail: 2.5%;
-                --content-max-h: 74vh;
-                --content-pad: 10px;
-                --icon-cols: 3;
-                --icon-size: 48px;
-                --explorer-cols: 3;
-                --explorer-cols-projects: 3;
-                --explorer-icon: 50px;
-                --explorer-icon-projects: 50px;
-                --dos-k: 0.62;
-                --dos-panel-w: 86%;
-                --dos-panel-h: 84%;
-                --dos-dialog-w: min(85%, 420px);
-                --soc-btn: 48px;
-            }
-            .window-title { font-size: 13px; letter-spacing: 1px; }
-            .window-footer { font-size: 9px; padding: 8px; letter-spacing: 1px; }
-            .icon-label { font-size: 11px; }
-            .icon-grid { gap: 12px; }
-            .about-layout { flex-direction: column; align-items: center; text-align: center; }
-            .about-bio-box { width: 100%; }
-            .bio-content { font-size: 12px; max-height: 260px; padding: 10px; }
-            .explorer-item-name { font-size: 10px; }
-            .explorer-item-role, .explorer-item-duration { font-size: 9px; }
-            .explorer-statusbar { font-size: 9px; gap: 6px; }
-            .explorer-statusbar span { padding: 1px 5px; }
-            .detail-header-card { gap: 10px; padding: 8px 10px; }
-            .detail-header-icon { width: 34px; height: 34px; }
-            .detail-header-name { font-size: 13px; }
-            .detail-header-meta { font-size: 10px; }
-            .detail-about-text, .detail-list li { font-size: 11px; }
-            .win95-groupbox { padding: 12px 10px 8px; }
-            .detail-tag { font-size: 9px; padding: 2px 6px; }
-            .bio-titlebar, .form-titlebar, .win95-titlebar { padding: 3px 6px; }
-        }
-
-        @media (max-width: 400px) {
-            :root {
-                --tv-pad-x: 5%;
-                --tv-pad-y: 3%;
-                --pad-x-projects: 2.5%;
-                --pad-x-detail: 3%;
-                --pad-y-projects: 2.5%;
-                --pad-y-detail: 2.5%;
-                --icon-cols: 2;
-                --icon-size: 50px;
-                --explorer-cols: 2;
-                --explorer-cols-projects: 2;
-                --explorer-icon: 52px;
-                --explorer-icon-projects: 52px;
-                --content-max-h: 76vh;
-                --content-pad: 8px;
-                --dos-k: 0.52;
-                --dos-panel-w: 92%;
-                --dos-panel-h: 88%;
-                --dos-dialog-w: 88%;
-                --soc-btn: 42px;
-            }
-            .window-footer { font-size: 8px; padding: 6px; }
-            .explorer-icons-area { padding: 12px 6px 10px; }
-            .avatar-frame { width: 80px; height: 80px; }
-        }
-
-        @media (max-height: 560px) and (orientation: landscape) {
-            :root {
-                --content-max-h: 55vh;
-                --tv-pad-y: 2%;
-                --pad-y-projects: 2%;
-                --pad-y-detail: 2%;
-                --dos-panel-h: 92%;
-            }
-            .window-titlebar { padding: 2px 6px; }
-            .window-footer { padding: 4px; font-size: 8px; }
-            .about-layout { flex-direction: row; }
-            .avatar-frame { width: 80px; height: 80px; }
-            .bio-content { max-height: 150px; }
-        }
     </style>
     <base target="_blank">
 </head>
@@ -694,7 +508,6 @@
                 <div class="window-footer"><span>© 2026 PHILLIPE QUEIROZ</span></div>
             </div>
 
-            <!-- SOCIALS BALLOON OVERLAY -->
             <div id="socials-overlay">
                 <canvas id="balloon-canvas"></canvas>
                 <div id="social-links">
@@ -753,6 +566,28 @@
     </div>
 
     <script>
+        // ===== ESCALA RESPONSIVA (1920x1080 design) =====
+        (function() {
+            const container = document.getElementById('tv-container');
+            const DESIGN_W = 1920;
+            const DESIGN_H = 1080;
+
+            function fitToViewport() {
+                const vw = window.innerWidth;
+                const vh = window.innerHeight;
+                const scale = Math.min(vw / DESIGN_W, vh / DESIGN_H);
+                const offsetX = (vw - DESIGN_W * scale) / 2;
+                const offsetY = (vh - DESIGN_H * scale) / 2;
+                container.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+            }
+
+            window.addEventListener('resize', fitToViewport);
+            window.addEventListener('orientationchange', fitToViewport);
+            fitToViewport();
+            // Expor para uso dos outros blocos
+            window.__fitToViewport = fitToViewport;
+        })();
+
         // ===== BACKGROUND CANVAS =====
         (function() {
             const canvas = document.getElementById('background-canvas');
@@ -764,9 +599,10 @@
             let sunImg = null;
 
             function resize() {
-                const rect = canvas.parentElement.getBoundingClientRect();
-                W = Math.ceil(rect.width / PIXEL);
-                H = Math.ceil(rect.height / PIXEL);
+                // Usa offsetWidth/offsetHeight (sem transform) => sempre 1920x1080
+                const parent = canvas.parentElement;
+                W = Math.ceil(parent.offsetWidth / PIXEL);
+                H = Math.ceil(parent.offsetHeight / PIXEL);
                 canvas.width = W;
                 canvas.height = H;
                 skyGradient = ctx.createLinearGradient(0, 0, 0, H);
@@ -942,7 +778,6 @@
             }
 
             function loop() { update(); setTimeout(loop, 16); }
-            window.addEventListener('resize', () => { resize(); initBirds(); });
             resize();
             initBirds();
             loop();
@@ -1533,7 +1368,6 @@
                 if (addressText) addressText.textContent = '📁 C:\\PORTFOLIO\\PROJECTS\\';
             }
 
-            // ===== ICONE CLICKS =====
             document.querySelectorAll('.icon-img').forEach(img => {
                 img.addEventListener('click', function(e) {
                     const target = this.dataset.target;
@@ -1568,7 +1402,6 @@
                 });
             });
 
-            // ===== PROJETOS =====
             if (iconsArea) {
                 PROJECTS.forEach((project) => {
                     const item = document.createElement('div');
@@ -1608,7 +1441,6 @@
                 if (projectsCount) projectsCount.textContent = PROJECTS.length + ' object(s)';
             }
 
-            // ===== FORMULÁRIO =====
             const form = document.getElementById('email-form');
             const feedback = document.getElementById('form-feedback');
             const sendBtn = document.getElementById('send-btn');
@@ -1655,23 +1487,6 @@
                 sendBtn.disabled = false;
                 sendBtn.textContent = 'SEND';
             });
-
-            if (FORMSPREE_ID === 'SEU_FORM_ID_AQUI') {
-                console.warn('⚠️ Replace FORMSPREE_ID with your actual Formspree ID.');
-                feedback.textContent = '⚠️ Configure Formspree (see console).';
-                feedback.style.color = '#c41e3a';
-            }
-
-            // ===== SERVICOS (DOS) =====
-            const DOS_SERVICES = [
-                { name: 'Community Management', text: 'Strategies for building and engaging communities.' },
-                { name: 'Growth', text: 'Scaling communities and increasing active members.' },
-                { name: 'Moderation', text: 'Maintaining healthy and safe environments.' },
-                { name: 'Automation & Tools', text: 'Building bots and tools to streamline operations.' },
-                { name: 'Support', text: 'Providing assistance and resolving user issues.' },
-                { name: 'Content', text: 'Creating and curating content for engagement.' },
-                { name: 'Events & Partnerships', text: 'Organizing events and managing collaborations.' }
-            ];
 
             const menuItems = document.querySelectorAll('#screen-services .menu-item');
             const dosDialog = document.getElementById('dos-dialog');
@@ -1802,7 +1617,6 @@
 
                 function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
-                // ---------- ARTE DO BALÃO ----------
                 function buildBalloonArt() {
                     const c = document.createElement('canvas');
                     c.width = ART_W; c.height = ART_H;
@@ -1908,9 +1722,9 @@
                 }
 
                 function resize() {
-                    const rect = canvas.parentElement.getBoundingClientRect();
-                    W = Math.ceil(rect.width / PIXEL);
-                    H = Math.ceil(rect.height / PIXEL);
+                    const parent = canvas.parentElement;
+                    W = Math.ceil(parent.offsetWidth / PIXEL);
+                    H = Math.ceil(parent.offsetHeight / PIXEL);
                     canvas.width = W;
                     canvas.height = H;
                 }
@@ -2033,8 +1847,6 @@
                     descending = false;
                 }
 
-                window.addEventListener('resize', () => { if (socialsOpen) resize(); });
-
                 window.openSocials = function() {
                     if (socialsOpen) return;
                     socialsOpen = true;
@@ -2055,7 +1867,6 @@
                 };
             })();
 
-            // ===== INICIALIZAÇÃO =====
             function init() {
                 document.querySelectorAll('.screen-container').forEach(el => el.classList.remove('active'));
                 homeScreen.classList.add('active');
