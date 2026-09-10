@@ -22,24 +22,24 @@
         /* ========== VARIÁVEIS DE LAYOUT RESPONSIVO ========== */
         :root {
             /* Moldura da TV (padding interior do "ecrã") */
-            --tv-pad-y: 1.5%;
+            --tv-pad-y: 3%;
             --tv-pad-x: 22%;
 
             /* Janela — modo normal */
             --win-max: 70%;
 
             /* Janela — modo lista de projetos */
-            --pad-y-projects: 0.5%;
-            --pad-x-projects: 8%;
-            --win-max-projects: 68%;
+            --pad-y-projects: 3%;
+            --pad-x-projects: 14%;
+            --win-max-projects: min(68%, 980px);
 
             /* Janela — modo detalhe */
-            --pad-y-detail: 1.5%;
-            --pad-x-detail: 18%;
-            --win-max-detail: 45%;
+            --pad-y-detail: 3%;
+            --pad-x-detail: 20%;
+            --win-max-detail: min(45%, 820px);
 
             /* Conteúdo da janela */
-            --content-max-h: 70vh;
+            --content-max-h: 62vh;
             --content-pad: 16px;
 
             /* Grelha de ícones (home / about / contact) */
@@ -83,7 +83,6 @@
         body.projects-mode #tv-screen { padding: var(--pad-y-projects) var(--pad-x-projects); }
         body.projects-mode .retro-window { max-width: var(--win-max-projects); }
 
-        /* O conteúdo da janela em projects-mode NÃO rola — o scroll é interno (só nos ícones) */
         body.projects-mode .window-content {
             max-height: var(--content-max-h);
             overflow: hidden;
@@ -128,7 +127,6 @@
             gap: 16px 2px;
             padding: 12px 2px 10px;
         }
-        /* Scrollbar estilo Win95 só na área de ícones */
         .explorer-icons-area::-webkit-scrollbar { width: 12px; background: #dfdfdf; }
         .explorer-icons-area::-webkit-scrollbar-track { background: #dfdfdf; border-left: 1px solid #808080; }
         .explorer-icons-area::-webkit-scrollbar-thumb { background: #c0c0c0; border: 2px solid; border-color: #ffffff #808080 #808080 #ffffff; }
@@ -336,44 +334,47 @@
 
         @media (min-width: 1700px) {
             :root {
-                --win-max: min(70%, 1150px);
-                --win-max-projects: min(68%, 1150px);
-                --win-max-detail: min(45%, 900px);
+                --win-max: min(70%, 1100px);
+                --win-max-projects: min(68%, 1080px);
+                --win-max-detail: min(45%, 850px);
             }
         }
 
         @media (max-width: 1400px) {
             :root {
                 --tv-pad-x: 18%;
-                --pad-x-projects: 7%;
-                --pad-x-detail: 15%;
+                --pad-x-projects: 10%;
+                --pad-x-detail: 16%;
                 --win-max: 82%;
-                --win-max-projects: 80%;
-                --win-max-detail: 55%;
+                --win-max-projects: min(80%, 1000px);
+                --win-max-detail: min(55%, 800px);
+                --content-max-h: 66vh;
             }
         }
 
         @media (max-width: 1100px) {
             :root {
                 --tv-pad-x: 14%;
-                --pad-x-projects: 5%;
-                --pad-x-detail: 11%;
+                --pad-x-projects: 7%;
+                --pad-x-detail: 12%;
                 --win-max: 100%;
                 --win-max-projects: 100%;
                 --win-max-detail: 100%;
                 --explorer-cols-projects: 3;
                 --explorer-icon-projects: 64px;
-                --content-max-h: 72vh;
+                --content-max-h: 70vh;
             }
         }
 
         @media (max-width: 820px) {
             :root {
                 --tv-pad-x: 10%;
-                --tv-pad-y: 2%;
-                --pad-x-projects: 3%;
-                --pad-x-detail: 6%;
-                --content-max-h: 74vh;
+                --tv-pad-y: 2.5%;
+                --pad-x-projects: 4%;
+                --pad-x-detail: 8%;
+                --pad-y-projects: 2.5%;
+                --pad-y-detail: 2.5%;
+                --content-max-h: 72vh;
                 --content-pad: 12px;
                 --icon-size: 56px;
                 --explorer-icon: 56px;
@@ -392,10 +393,12 @@
         @media (max-width: 560px) {
             :root {
                 --tv-pad-x: 7%;
-                --tv-pad-y: 2.5%;
-                --pad-x-projects: 2%;
-                --pad-x-detail: 3.5%;
-                --content-max-h: 76vh;
+                --tv-pad-y: 3%;
+                --pad-x-projects: 3%;
+                --pad-x-detail: 4%;
+                --pad-y-projects: 2.5%;
+                --pad-y-detail: 2.5%;
+                --content-max-h: 74vh;
                 --content-pad: 10px;
                 --icon-cols: 3;
                 --icon-size: 48px;
@@ -433,13 +436,18 @@
         @media (max-width: 400px) {
             :root {
                 --tv-pad-x: 5%;
+                --tv-pad-y: 3%;
+                --pad-x-projects: 2.5%;
+                --pad-x-detail: 3%;
+                --pad-y-projects: 2.5%;
+                --pad-y-detail: 2.5%;
                 --icon-cols: 2;
                 --icon-size: 50px;
                 --explorer-cols: 2;
                 --explorer-cols-projects: 2;
                 --explorer-icon: 52px;
                 --explorer-icon-projects: 52px;
-                --content-max-h: 78vh;
+                --content-max-h: 76vh;
                 --content-pad: 8px;
                 --dos-k: 0.52;
                 --dos-panel-w: 92%;
@@ -454,8 +462,10 @@
 
         @media (max-height: 560px) and (orientation: landscape) {
             :root {
-                --content-max-h: 58vh;
-                --tv-pad-y: 1%;
+                --content-max-h: 55vh;
+                --tv-pad-y: 2%;
+                --pad-y-projects: 2%;
+                --pad-y-detail: 2%;
                 --dos-panel-h: 92%;
             }
             .window-titlebar { padding: 2px 6px; }
@@ -1900,7 +1910,7 @@
                         const startY = H + 30;
                         cy = startY + (targetY - startY) * ease;
                         if (p >= 1) cy += Math.sin(t * 0.03) * 0.8;
-                        const arrowAppearP = 1 - 2000 / RISE_MS; // ≈ 0.615
+                        const arrowAppearP = 1 - 2000 / RISE_MS;
                     if (p >= arrowAppearP) {
                         if (!overlay.classList.contains('at-top')) overlay.classList.add('at-top');
                     } else {
