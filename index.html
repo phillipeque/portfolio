@@ -26,9 +26,11 @@
         #tv-static { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px); background-size: 100% 4px, 4px 100%; animation: staticMove 0.1s steps(2) infinite; z-index: 1; pointer-events: none; }
         @keyframes staticMove { 0% { background-position: 0 0; } 50% { background-position: 0 2px, 2px 0; } 100% { background-position: 0 4px, 4px 0; } }
         #tv-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 2; padding: 1.5% 22%; text-align: center; transition: padding 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-        body.projects-mode #tv-screen { padding: 0.5% 8%; }
-        body.projects-mode .retro-window { max-width: 68%; }
-        body.projects-mode .window-content { max-height: none; overflow-y: hidden; padding: 10px 4px 8px; }
+        
+        /* ===== AJUSTES MODO PROJETOS (LISTA) ===== */
+        body.projects-mode #tv-screen { padding: 1% 5%; }
+        body.projects-mode .retro-window { max-width: 90%; }
+        body.projects-mode .window-content { max-height: 68vh; overflow-y: hidden; padding: 10px 4px 8px; }
         body.projects-mode .explorer-icons-area { grid-template-columns: repeat(4, 1fr); gap: 16px 2px; padding: 12px 2px 10px; }
         body.projects-mode .explorer-item-icon { width: 68px; height: 68px; }
         body.projects-mode .explorer-item-name { font-size: 13px; }
@@ -37,13 +39,21 @@
         body.projects-mode .explorer-item { padding: 6px 4px 8px; }
         body.projects-mode .explorer-toolbar { padding: 2px 6px; }
         body.projects-mode .explorer-statusbar { font-size: 11px; padding: 2px 8px; }
-        body.detail-mode #tv-screen { padding: 1.5% 18%; }
-        body.detail-mode .retro-window { max-width: 45%; }
-        body.detail-mode .window-content { max-height: none; overflow-y: hidden; padding: 12px 16px; }
-        body.detail-mode .explorer-detail { padding: 0; max-width: 100%; margin: 0 auto; }
+        
+        /* ===== AJUSTES MODO DETALHE (PROJETO ABERTO) ===== */
+        body.detail-mode #tv-screen { padding: 1% 5%; }
+        body.detail-mode .retro-window { max-width: 90%; }
+        body.detail-mode .window-content { max-height: 68vh; overflow-y: hidden; padding: 10px 16px; }
+        body.detail-mode .explorer-detail { padding: 8px; max-width: 100%; margin: 0 auto; display: block !important; max-height: none !important; overflow-y: hidden !important; }
         body.detail-mode .explorer-icons-area { display: none !important; }
-        body.detail-mode .explorer-detail { display: block !important; max-height: none !important; overflow-y: hidden !important; }
         body.detail-mode .explorer-toolbar { display: none !important; }
+        
+        /* Ajustes finos para o conteúdo do detalhe caber perfeitamente sem scroll */
+        body.detail-mode .win95-groupbox { padding: 10px 12px 8px; margin-bottom: 8px; }
+        body.detail-mode .detail-list li { font-size: 11px; padding: 2px 0 2px 16px; line-height: 1.4; }
+        body.detail-mode .detail-about-text { font-size: 11px; line-height: 1.5; }
+        body.detail-mode .detail-header-card { padding: 8px 12px; margin-bottom: 8px; }
+
         #flash-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 30; pointer-events: none; opacity: 0; background-color: #000; }
         #flash-overlay.snap { opacity: 1; transition: opacity 0.04s linear; }
         #flash-overlay.snowing { opacity: 1; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0px, rgba(255,255,255,0.22) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(90deg, rgba(255,255,255,0.16) 0px, rgba(255,255,255,0.16) 1px, transparent 1px, transparent 2px), repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 4px); background-size: 3px 3px, 3px 3px, 6px 6px; }
