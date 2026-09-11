@@ -161,20 +161,24 @@
         }
 
         /* ===== EFEITO CRT DE TRANSIÇÃO (AWGE-style) ===== */
+        /* Turn-off: 650ms — colapso vertical → linha → ponto (com brilho crescente) */
         @keyframes crt-turn-off {
-            0%   { transform: scale(1, 1);        filter: brightness(1);  opacity: 1; }
-            25%  { transform: scale(1, 0.04);     filter: brightness(5);  opacity: 1; }
-            45%  { transform: scale(1, 0.008);    filter: brightness(12); opacity: 1; }
-            55%  { transform: scale(1, 0.008);    filter: brightness(25); opacity: 1; }
-            75%  { transform: scale(0.01, 0.008); filter: brightness(30); opacity: 1; }
-            100% { transform: scale(0.005, 0.005);filter: brightness(30); opacity: 0; }
+            0%   { transform: scale(1, 1);          filter: brightness(1);  opacity: 1; }
+            40%  { transform: scale(1, 0.04);       filter: brightness(4);  opacity: 1; }
+            55%  { transform: scale(1, 0.008);      filter: brightness(10); opacity: 1; }
+            70%  { transform: scale(1, 0.008);      filter: brightness(20); opacity: 1; }
+            88%  { transform: scale(0.02, 0.008);   filter: brightness(30); opacity: 1; }
+            100% { transform: scale(0.005, 0.005);  filter: brightness(35); opacity: 0; }
         }
+        /* Turn-on: 1400ms — ponto → linha → abre verticalmente com brilho a baixar */
         @keyframes crt-turn-on {
-            0%   { transform: scale(0.005, 0.005);filter: brightness(30); opacity: 0; }
-            15%  { transform: scale(0.01, 0.008); filter: brightness(30); opacity: 1; }
-            30%  { transform: scale(1, 0.008);    filter: brightness(20); opacity: 1; }
-            55%  { transform: scale(1, 0.04);     filter: brightness(5);  opacity: 1; }
-            100% { transform: scale(1, 1);        filter: brightness(1);  opacity: 1; }
+            0%   { transform: scale(0.005, 0.005);  filter: brightness(35); opacity: 0; }
+            8%   { transform: scale(0.02, 0.008);   filter: brightness(35); opacity: 1; }
+            25%  { transform: scale(1, 0.008);      filter: brightness(25); opacity: 1; }
+            40%  { transform: scale(1, 0.008);      filter: brightness(18); opacity: 1; }
+            65%  { transform: scale(1, 0.05);       filter: brightness(6);  opacity: 1; }
+            85%  { transform: scale(1, 0.85);       filter: brightness(2.5);opacity: 1; }
+            100% { transform: scale(1, 1);          filter: brightness(1);  opacity: 1; }
         }
         .retro-window.crt-transitioning {
             will-change: transform, filter, opacity;
@@ -927,11 +931,11 @@
             const FORMSPREE_URL = `https://formspree.io/f/${FORMSPREE_ID}`;
 
             // ===== TRANSIÇÃO CRT (AWGE-style) =====
-            // turn-off 0.35s → troca conteúdo → turn-on 0.7s
-            // Total ≈ 1.05s. Lock liberado depois de 1.2s.
-            const TURN_OFF_MS = 350;
-            const TURN_ON_MS = 700;
-            const TOTAL_MS = TURN_OFF_MS + 60 + TURN_ON_MS; // 1110ms
+            // Turn-off 650ms → troca conteúdo + estática → turn-on 1400ms
+            // Total ≈ 2.1s. Lock liberado no fim.
+            const TURN_OFF_MS = 650;
+            const TURN_ON_MS = 1400;
+            const TOTAL_MS = TURN_OFF_MS + 60 + TURN_ON_MS; // ≈ 2110ms
 
             function triggerTransition(callback) {
                 window.getSelection().removeAllRanges();
@@ -944,7 +948,7 @@
                 setTimeout(() => {
                     if (callback) callback();
 
-                    // Estática (cobre o "pop" da TV)
+                    // Estática (cobre o "pop" da TV durante o power on)
                     flash.classList.add('snowing');
 
                     // 3) Inicia o turn-on
@@ -955,7 +959,7 @@
                     // 4) Remove a estática quando o ecrã já está formado
                     setTimeout(() => {
                         flash.classList.remove('snowing');
-                    }, 200);
+                    }, 380);
 
                     // 5) Limpa estilos inline
                     setTimeout(() => {
