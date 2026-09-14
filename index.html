@@ -161,6 +161,13 @@
         .icon-grid .ghost { visibility: hidden; pointer-events: none; }
         .icon-item { display: flex; flex-direction: column; align-items: center; padding: 10px 5px; }
         .icon-img { width: var(--icon-size); height: var(--icon-size); image-rendering: pixelated; image-rendering: crisp-edges; margin-bottom: 8px; object-fit: contain; cursor: pointer; user-select: none; }
+        /* Moldura preta + fundo cinza para ícones PNG que não têm stroke embutido */
+        .icon-img.icon-img--framed {
+            background: #c0c0c0;
+            border: 2px solid #000;
+            box-sizing: border-box;
+            padding: 3px;
+        }
         .icon-label { font-size: 12px; font-weight: bold; letter-spacing: 1px; text-align: center; line-height: 1.3; user-select: none; }
         .label-orange { color: #c45c26; }
         .label-black { color: #000; }
@@ -473,7 +480,7 @@
                                 <span class="icon-label label-black">PROJECTS</span>
                             </div>
                             <div class="icon-item">
-                                <img class="icon-img" data-target="services" src="pngs/services.png" alt="SERVICES" />
+                                <img class="icon-img icon-img--framed" data-target="services" src="pngs/services.png" alt="SERVICES" />
                                 <span class="icon-label label-green">SERVICES</span>
                             </div>
                             <div class="icon-item">
@@ -485,7 +492,7 @@
                                 <span class="icon-label label-blue">SOCIALS</span>
                             </div>
                             <div class="icon-item">
-                                <img class="icon-img" data-target="email" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%23c0c0c0' stroke='%23000' stroke-width='2'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-size='28' fill='%23000'%3E✉%3C/text%3E%3C/svg%3E" alt="CONTACT" />
+                                <img class="icon-img icon-img--framed" data-target="email" src="pngs/contact.png" alt="CONTACT" />
                                 <span class="icon-label label-purple">CONTACT</span>
                             </div>
                         </div>
