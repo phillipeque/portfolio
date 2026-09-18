@@ -57,6 +57,7 @@
         html, body { width: 100%; height: 100vh; background: #000; overflow: hidden; font-family: 'Courier New', monospace; overscroll-behavior: none; }
         #tv-container { position: relative; width: 100vw; height: 100vh; }
         #background-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; image-rendering: pixelated; }
+        #background-canvas-water { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: none; image-rendering: pixelated; }
         #tv-static { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px), repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px); background-size: 100% 4px, 4px 100%; animation: staticMove 0.1s steps(2) infinite; z-index: 1; pointer-events: none; }
         @keyframes staticMove { 0% { background-position: 0 0; } 50% { background-position: 0 2px, 2px 0; } 100% { background-position: 0 4px, 4px 0; } }
 
@@ -458,10 +459,12 @@
         }
     </style>
     <base target="_blank">
+<base target="_blank">
 </head>
 <body>
     <div id="tv-container">
         <canvas id="background-canvas"></canvas>
+        <canvas id="background-canvas-water"></canvas>
         <div id="tv-static"></div>
         <div id="tv-screen">
             <div class="retro-window">
@@ -855,7 +858,7 @@
                 draw();
             }
 
-            function loop() { update(); setTimeout(loop, 16); }
+            function loop() { if (!window.__bgSkyPaused) update(); setTimeout(loop, 16); }
             window.addEventListener('resize', () => { resize(); initBirds(); });
             resize();
             initBirds();
@@ -877,6 +880,389 @@
                 setTimeout(function() { triggerSweep(); scheduleSweep(); }, delay);
             }
             scheduleSweep();
+        })();
+
+
+        // ===== WATER BACKGROUND (CONTACT) =====
+        (function() {
+            const canvas = document.getElementById('background-canvas-water');
+            const ctx = canvas.getContext('2d');
+            const PIXEL = 8;
+            let W = 0, H = 0;
+            let mouseX = 0.5, mouseY = 0.5;
+            let running = false, rafId = null, t = 0;
+            let waterGrad = null, vignette = null, lightCanvas = null;
+            let fishes = [], pads = [], motes = [], glints = [], ripples = [];
+
+            const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+            const lerp = (a, b, k) => a + (b - a) * k;
+
+            function hash2(x, y) {
+                const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+                return s - Math.floor(s);
+            }
+            function noise2(x, y) {
+                const xi = Math.floor(x), yi = Math.floor(y);
+                const xf = x - xi, yf = y - yi;
+                const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+                const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1);
+                return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+            }
+            function shade(arr, f) {
+                return 'rgb(' + Math.min(255, Math.round(arr[0] * f)) + ',' + Math.min(255, Math.round(arr[1] * f)) + ',' + Math.min(255, Math.round(arr[2] * f)) + ')';
+            }
+
+            // ---- sprite da carpa (renderizado uma vez; o nado é feito por shear de linhas) ----
+            function makeKoi(len, tint, seed) {
+                const Wd = Math.max(3, Math.round(len * 0.155));
+                const tailRows = Math.max(4, Math.round(len * 0.24));
+                const h = len + tailRows;
+                const w = Wd * 2 + 8;
+                const cx = w / 2;
+                const c = document.createElement('canvas');
+                c.width = w; c.height = h;
+                const x = c.getContext('2d');
+                const img = x.createImageData(w, h);
+                const d = img.data;
+                const sc = 20 / len;
+                const orange = [214, 100, 44], red = [186, 62, 34], cream = [236, 231, 218], edge = [96, 62, 44];
+                const headEnd = Math.round(len * 0.10);
+                for (let py = 0; py < h; py++) {
+                    const body = py < len;
+                    const s = Math.min(1, py / len);
+                    let hw;
+                    if (body) {
+                        hw = Wd * Math.pow(Math.sin(Math.PI * clamp(0.09 + 0.91 * s, 0, 1)), 0.75);
+                    } else {
+                        const tt = (py - len) / tailRows;
+                        hw = Wd * (0.30 + 0.45 * Math.sin(Math.PI * tt));
+                    }
+                    const tt2 = body ? 0 : (py - len) / tailRows;
+                    const gap = body ? 0 : Wd * 0.14 * tt2;
+                    for (let px = 0; px < w; px++) {
+                        const dx = px - cx;
+                        const adx = Math.abs(dx);
+                        if (adx > hw) continue;
+                        if (gap > 0 && adx < gap && tt2 > 0.1) continue; // entalhe da cauda bifurcada
+                        const n = noise2(px * sc + seed, py * sc * 1.15 + seed * 0.7) * 0.72 + noise2(px * sc * 2.3 + seed, py * sc * 2.6) * 0.28;
+                        let col;
+                        if (py < headEnd) col = cream;
+                        else if (n > 0.60) col = red;
+                        else if (n > 0.50) col = orange;
+                        else col = cream;
+                        if (adx > hw - 1.15 || (gap > 0 && adx < gap + 1.15)) col = edge; // contorno
+                        if (py >= Math.round(len * 0.05) && py <= Math.round(len * 0.10) && Math.abs(adx - hw * 0.62) < 1.05) col = [30, 24, 22]; // olhos
+                        const sh = clamp(1 - dx / (Wd * 2.4), 0.82, 1.06);
+                        const i = (py * w + px) * 4;
+                        d[i] = Math.min(255, col[0] * sh);
+                        d[i + 1] = Math.min(255, col[1] * sh);
+                        d[i + 2] = Math.min(255, col[2] * sh);
+                        d[i + 3] = 255;
+                    }
+                }
+                x.putImageData(img, 0, 0);
+                // barbilhões
+                x.fillStyle = 'rgb(70,48,36)';
+                const by = Math.round(len * 0.035);
+                const bw = Math.round(Wd * 0.45);
+                x.fillRect(Math.round(cx - bw) - 2, by + 1, 2, 1);
+                x.fillRect(Math.round(cx + bw) + 1, by + 1, 2, 1);
+                if (tint > 0) {
+                    x.globalCompositeOperation = 'source-atop';
+                    x.fillStyle = 'rgba(24,74,92,' + tint + ')';
+                    x.fillRect(0, 0, w, h);
+                    x.globalCompositeOperation = 'source-over';
+                }
+                // silhueta escura para a sombra d'água
+                const sil = document.createElement('canvas');
+                sil.width = w; sil.height = h;
+                const sx = sil.getContext('2d');
+                sx.drawImage(c, 0, 0);
+                sx.globalCompositeOperation = 'source-in';
+                sx.fillStyle = 'rgb(4,26,34)';
+                sx.fillRect(0, 0, w, h);
+                return { canvas: c, sil: sil, w: w, h: h, len: len, Wd: Wd };
+            }
+
+            // ---- vitória-régia ----
+            function makePad(R, flower) {
+                const m = Math.ceil(R * 1.2);
+                const size = m * 2;
+                const c = document.createElement('canvas');
+                c.width = size; c.height = size;
+                const x = c.getContext('2d');
+                const cx = m, cy = m;
+                const notchA = -Math.PI / 2 + (Math.random() - 0.5) * 1.4;
+                const dark = [24, 70, 42], mid = [36, 100, 56], light = [70, 142, 76], rimC = [96, 168, 92];
+                for (let py = 0; py < size; py++) {
+                    for (let px = 0; px < size; px++) {
+                        const dx = px - cx, dy = py - cy;
+                        const dd = Math.sqrt(dx * dx + dy * dy);
+                        if (dd > R) continue;
+                        if (dd > R - 1 && hash2(px * 3.1, py * 7.7) < 0.45) continue; // borda irregular sutil
+                        let a = Math.atan2(dy, dx) - notchA;
+                        a = ((a % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+                        const da = Math.min(a, Math.PI * 2 - a);
+                        if (da < 0.30 * (0.35 + 0.65 * (dd / R))) continue; // entalhe
+                        const vein = Math.abs(Math.sin((a + notchA) * 8)) < 0.09 && dd > 2.5;
+                        const n = noise2(px * 0.35, py * 0.35);
+                        let col;
+                        if (dd > R - 1.6) col = rimC;
+                        else if (vein) col = dark;
+                        else if (n > 0.60) col = light;
+                        else if (n < 0.40) col = dark;
+                        else col = mid;
+                        const sh = clamp(1.06 - (dx + dy) / (R * 3.2), 0.72, 1.05);
+                        x.fillStyle = shade(col, sh);
+                        x.fillRect(px, py, 1, 1);
+                    }
+                }
+                if (flower) {
+                    const fx0 = cx, fy0 = cy - Math.round(R * 0.18);
+                    for (let i = 0; i < 10; i++) {
+                        const a = i / 10 * Math.PI * 2;
+                        for (let k = 1; k <= 4; k++) {
+                            const rr = k * 1.35;
+                            x.fillStyle = k > 2 ? '#f7e3e8' : '#e9b9c8';
+                            x.fillRect(Math.round(fx0 + Math.cos(a) * rr), Math.round(fy0 + Math.sin(a) * rr * 0.75), 1, 1);
+                        }
+                    }
+                    x.fillStyle = '#f2c14e';
+                    x.fillRect(fx0, fy0, 1, 1);
+                }
+                return { canvas: c, size: size, R: R, m: m };
+            }
+
+            const LAYER_PAR = [0.045, 0.095, 0.17];
+
+            function makeFish(layer) {
+                const scaleFix = clamp(H / 135, 0.75, 1.3);
+                const baseLen = layer === 2 ? 96 + Math.random() * 34 : layer === 1 ? 58 + Math.random() * 20 : 38 + Math.random() * 14;
+                const len = Math.round(baseLen * scaleFix);
+                const sprite = makeKoi(len, layer === 0 ? 0.42 : layer === 1 ? 0.16 : 0, Math.random() * 90);
+                return {
+                    layer: layer, sprite: sprite,
+                    xf: Math.random() * 1.16 - 0.08,
+                    y: Math.random() * (H + 240) - 120,
+                    speed: (layer === 2 ? 0.42 + Math.random() * 0.2 : layer === 1 ? 0.22 + Math.random() * 0.1 : 0.10 + Math.random() * 0.06),
+                    amp: len * 0.085,
+                    waves: 1.5 + Math.random() * 0.5,
+                    phase: Math.random() * Math.PI * 2,
+                    phaseSpeed: 0.16 + Math.random() * 0.07,
+                    driftA: 3 + Math.random() * 6, driftF: 0.004 + Math.random() * 0.004, driftP: Math.random() * Math.PI * 2,
+                    finPhase: Math.random() * Math.PI * 2,
+                    alpha: layer === 2 ? 1 : layer === 1 ? 0.85 : 0.58,
+                    jt: Math.random() * Math.PI * 2
+                };
+            }
+
+            function makePadEntity(layer) {
+                const R = layer === 2 ? 18 + Math.random() * 9 : layer === 1 ? 11 + Math.random() * 5 : 7 + Math.random() * 3;
+                return {
+                    layer: layer,
+                    sprite: makePad(R, layer > 0 && Math.random() < 0.3),
+                    xf: Math.random() * 1.1 - 0.05,
+                    yf: Math.random() * 1.1 - 0.05,
+                    rot: Math.random() * Math.PI * 2,
+                    rotV: (Math.random() - 0.5) * 0.0012,
+                    bobP: Math.random() * Math.PI * 2,
+                    alpha: layer === 2 ? 0.95 : layer === 1 ? 0.8 : 0.55
+                };
+            }
+
+            function drawCols(img, baseX, y0, f, tanA, w) {
+                const h = img.height;
+                for (let r = 0; r < h; r++) {
+                    const sv = r / h;
+                    const off = f.amp * Math.pow(sv, 1.5) * Math.sin(sv * Math.PI * 2 * f.waves - f.phase) + r * tanA;
+                    ctx.drawImage(img, 0, r, w, 1, Math.round(baseX - w / 2 + off), Math.round(y0 + r), w, 1);
+                }
+            }
+
+            function drawFish(f) {
+                const s = f.sprite;
+                const par = LAYER_PAR[f.layer];
+                const drift = Math.sin(t * f.driftF + f.driftP);
+                const baseX = f.xf * W + (mouseX - 0.5) * W * par + drift * f.driftA;
+                const fy = f.y + (mouseY - 0.5) * H * par * 0.55;
+                const tanA = clamp(Math.cos(t * f.driftF + f.driftP) * f.driftA * f.driftF * 2.2, -0.22, 0.22);
+                const breathe = 0.9 + 0.1 * Math.sin(t * 0.012 + f.jt);
+                // sombra d'água (projeta para baixo/direita)
+                ctx.globalAlpha = 0.15 * f.alpha * breathe;
+                drawCols(s.sil, baseX + 2, fy + 4, f, tanA, s.w);
+                // corpo
+                ctx.globalAlpha = f.alpha * breathe;
+                drawCols(s.canvas, baseX, fy, f, tanA, s.w);
+                // nadadeiras peitorais batendo
+                const ra = Math.round(s.len * 0.17);
+                const sva = ra / s.h;
+                const offA = f.amp * Math.pow(sva, 1.5) * Math.sin(sva * Math.PI * 2 * f.waves - f.phase) + ra * tanA;
+                const hwa = s.Wd * Math.pow(Math.sin(Math.PI * clamp(0.09 + 0.91 * (ra / s.len), 0, 1)), 0.75);
+                const flap = Math.sin(t * 0.3 + f.finPhase);
+                const finLen = Math.max(3, Math.round(s.len * 0.07));
+                ctx.fillStyle = 'rgba(238,232,216,0.85)';
+                for (let side = -1; side <= 1; side += 2) {
+                    const bx = baseX + offA + side * (hwa + 1);
+                    const by = fy + ra;
+                    const ex = bx + side * finLen;
+                    const ey = by + 2 + flap * side * 1.5 + finLen * 0.5;
+                    const steps = finLen * 2;
+                    for (let i = 0; i <= steps; i++) {
+                        const k = i / steps;
+                        const pxr = lerp(bx, ex, k);
+                        const pyr = lerp(by, ey, k);
+                        const wgt = Math.sin(k * Math.PI) * 1.3 + 0.4;
+                        ctx.fillRect(Math.round(pxr - wgt / 2), Math.round(pyr - wgt / 2), Math.max(1, Math.round(wgt)), 1);
+                    }
+                }
+                ctx.globalAlpha = 1;
+                // ondulação ocasional na superfície
+                if (f.layer === 2 && Math.random() < 0.006) {
+                    ripples.push({ x: baseX, y: fy + 3, r: 2, a: 0.30 });
+                }
+            }
+
+            function drawPad(e) {
+                const par = LAYER_PAR[e.layer] * 0.8;
+                const x = e.xf * W + (mouseX - 0.5) * W * par + Math.sin(t * 0.008 + e.bobP) * 1.2;
+                const y = e.yf * H + (mouseY - 0.5) * H * par * 0.5 + Math.cos(t * 0.006 + e.bobP) * 1.0;
+                const r = e.sprite.R;
+                ctx.globalAlpha = 0.16 * e.alpha;
+                ctx.fillStyle = 'rgb(3,22,30)';
+                ctx.beginPath();
+                ctx.ellipse(Math.round(x) + 2, Math.round(y) + 3, r, Math.max(1, r * 0.8), 0, 0, Math.PI * 2);
+                ctx.fill();
+                e.rot += e.rotV;
+                ctx.save();
+                ctx.translate(Math.round(x), Math.round(y));
+                ctx.rotate(e.rot);
+                ctx.globalAlpha = e.alpha;
+                ctx.drawImage(e.sprite.canvas, -e.sprite.m, -e.sprite.m);
+                ctx.restore();
+                ctx.globalAlpha = 1;
+                if (e.layer === 2 && Math.random() < 0.0012) {
+                    ripples.push({ x: x, y: y, r: r * 0.6, a: 0.14 });
+                }
+            }
+
+            function drawRipples() {
+                for (let i = ripples.length - 1; i >= 0; i--) {
+                    const rp = ripples[i];
+                    rp.r += 0.4;
+                    rp.a *= 0.955;
+                    if (rp.a < 0.01) { ripples.splice(i, 1); continue; }
+                    ctx.strokeStyle = 'rgba(215,240,240,' + rp.a.toFixed(3) + ')';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.ellipse(Math.round(rp.x), Math.round(rp.y), rp.r, rp.r * 0.7, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+            }
+
+            function buildScenery() {
+                waterGrad = ctx.createLinearGradient(0, 0, 0, H);
+                waterGrad.addColorStop(0, 'rgb(26,80,90)');
+                waterGrad.addColorStop(0.5, 'rgb(18,64,78)');
+                waterGrad.addColorStop(1, 'rgb(9,40,54)');
+                vignette = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75);
+                vignette.addColorStop(0, 'rgba(2,16,24,0)');
+                vignette.addColorStop(1, 'rgba(2,16,24,0.55)');
+                const ls = Math.round(Math.max(W, H) * 1.1);
+                lightCanvas = document.createElement('canvas');
+                lightCanvas.width = ls; lightCanvas.height = ls;
+                const lx = lightCanvas.getContext('2d');
+                const g = lx.createRadialGradient(ls * 0.3, ls * 0.15, 10, ls * 0.3, ls * 0.15, ls * 0.7);
+                g.addColorStop(0, 'rgba(190,235,228,0.14)');
+                g.addColorStop(1, 'rgba(190,235,228,0)');
+                lx.fillStyle = g;
+                lx.fillRect(0, 0, ls, ls);
+            }
+
+            function resize() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                W = Math.ceil(rect.width / PIXEL);
+                H = Math.ceil(rect.height / PIXEL);
+                canvas.width = W;
+                canvas.height = H;
+                buildScenery();
+                fishes = [];
+                for (let layer = 0; layer < 3; layer++) {
+                    for (let i = 0; i < 3; i++) fishes.push(makeFish(layer));
+                }
+                pads = [];
+                for (let layer = 0; layer < 3; layer++) {
+                    const n = layer === 2 ? 3 : layer === 1 ? 4 : 5;
+                    for (let i = 0; i < n; i++) pads.push(makePadEntity(layer));
+                }
+                motes = [];
+                for (let i = 0; i < 42; i++) motes.push({ x: Math.random() * W, y: Math.random() * H, a: (0.04 + Math.random() * 0.08).toFixed(3) });
+                glints = [];
+                for (let i = 0; i < 120; i++) glints.push({ x: Math.random() * W, y: Math.random() * H, p: Math.random() * Math.PI * 2, s: 0.6 + Math.random() * 0.9, w: Math.random() < 0.3 ? 2 : 1 });
+                ripples = [];
+            }
+
+            function frame() {
+                if (!running) return;
+                t++;
+                ctx.fillStyle = waterGrad;
+                ctx.fillRect(0, 0, W, H);
+                ctx.drawImage(lightCanvas, Math.round((mouseX - 0.5) * -W * 0.03) - Math.round(lightCanvas.width * 0.3), Math.round((mouseY - 0.5) * -H * 0.03) - Math.round(lightCanvas.height * 0.15));
+                // cintilação de cáusticas
+                for (const g of glints) {
+                    const a = 0.02 + 0.06 * Math.pow(Math.max(0, Math.sin(t * 0.014 * g.s + g.p)), 2);
+                    if (a < 0.03) continue;
+                    ctx.fillStyle = 'rgba(200,238,232,' + a.toFixed(3) + ')';
+                    const gx = g.x + Math.sin(t * 0.004 + g.p) * 3;
+                    const gy = g.y + Math.cos(t * 0.003 + g.p * 1.7) * 2;
+                    ctx.fillRect(Math.round(gx), Math.round(gy), g.w, 1);
+                }
+                // partículas em suspensão
+                for (const m of motes) {
+                    m.x -= 0.015; m.y -= 0.04;
+                    if (m.x < 0) m.x += W;
+                    if (m.y < 0) m.y += H;
+                    ctx.fillStyle = 'rgba(210,235,230,' + m.a + ')';
+                    ctx.fillRect(Math.round(m.x), Math.round(m.y), 1, 1);
+                }
+                // camadas de profundidade: folhas e peixes se alternam (parallax em tudo)
+                for (let layer = 0; layer < 3; layer++) {
+                    for (const e of pads) if (e.layer === layer) drawPad(e);
+                    for (const f of fishes) if (f.layer === layer) {
+                        f.y += f.speed;
+                        f.phase += f.phaseSpeed;
+                        if (f.y - f.sprite.h > H + 24) {
+                            f.y = -f.sprite.h - 30 - Math.random() * 100;
+                            f.xf = Math.random() * 1.16 - 0.08;
+                            if (Math.random() < 0.35) f.sprite = makeKoi(f.sprite.len, f.layer === 0 ? 0.42 : f.layer === 1 ? 0.16 : 0, Math.random() * 90);
+                        }
+                        drawFish(f);
+                    }
+                }
+                drawRipples();
+                ctx.fillStyle = vignette;
+                ctx.fillRect(0, 0, W, H);
+                rafId = requestAnimationFrame(frame);
+            }
+
+            window.addEventListener('mousemove', e => { mouseX = e.clientX / window.innerWidth; mouseY = e.clientY / window.innerHeight; });
+            window.addEventListener('resize', () => { if (running) resize(); });
+
+            window.__waterStart = function() {
+                if (running) return;
+                running = true;
+                resize();
+                canvas.style.display = 'block';
+                document.getElementById('background-canvas').style.display = 'none';
+                window.__bgSkyPaused = true;
+                rafId = requestAnimationFrame(frame);
+            };
+            window.__waterStop = function() {
+                running = false;
+                if (rafId) cancelAnimationFrame(rafId);
+                canvas.style.display = 'none';
+                document.getElementById('background-canvas').style.display = 'block';
+                window.__bgSkyPaused = false;
+            };
         })();
 
         // ===== MAIN APP =====
@@ -943,6 +1329,8 @@
                             if (fb) { fb.textContent = ''; fb.style.color = ''; }
                             emailScreen.classList.add('active');
                         }
+                        if (screen === 'email') { if (window.__waterStart) window.__waterStart(); }
+                        else { if (window.__waterStop) window.__waterStop(); }
                         currentScreen = screen;
                     });
                 };
@@ -1617,6 +2005,7 @@
                 homeScreen.classList.add('active');
                 currentScreen = 'home';
                 body.classList.remove('projects-mode', 'detail-mode');
+                if (window.__waterStop) window.__waterStop();
                 showProjectsList();
                 // Limpa feedback residual do formulário ao iniciar
                 const fb = document.getElementById('form-feedback');
