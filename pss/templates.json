@@ -15,14 +15,14 @@
   "m": "Issue: Player reported frustration with bots and cheaters affecting gameplay.\nResolution: Acknowledged concerns, confirmed daily bans and system improvements, and thanked player for their fair play and reports."
  },
  {
-  "t": "memo FALSE POSITIVE",
-  "c": "",
-  "m": "Issue: False positive restriction triggered by anti-bot system\nResolution: Clarified that the restriction was an anti-bot error. Also informed the user our team is focused on reducing false positives."
- },
- {
   "t": "memo CAN'T UPGRADE ITEM",
   "c": "",
   "m": "Issue: The user cannot upgrade a specific item.\nResolution: Provided the user with workarounds."
+ },
+ {
+  "t": "memo FALSE POSITIVE",
+  "c": "",
+  "m": "Issue: False positive restriction triggered by anti-bot system\nResolution: Clarified that the restriction was an anti-bot error. Also informed the user our team is focused on reducing false positives."
  },
  {
   "t": "memo FEEDBACK SUGGESTION",
