@@ -18,5 +18,10 @@
   "t": "memo FALSE POSITIVE",
   "c": "",
   "m": "Issue: False positive restriction triggered by anti-bot system\nResolution: Clarified that the restriction was an anti-bot error. Also I informed the user our team is focused on reducing false positives."
+ },
+ {
+  "t": "memo FEEDBACK SUGGESTION",
+  "c": "",
+  "m": "Issue: Player submitted feedback regarding game features or experience.\nResolution: Acknowledged feedback and recommended posting in Discord #game-suggestions for direct CM review."
  }
 ]
