@@ -7,14 +7,19 @@
 <title>PSS</title>
 <link rel="icon" href="data:,">
 <style>
-:root{--bg:#fff;--fg:#111;--mut:#666;--bd:#ccc;--ac:#2a6;--rd:#c33}
-@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#ddd;--mut:#999;--bd:#333;--ac:#4c8;--rd:#e66}}
-body{margin:0;padding:12px;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,sans-serif}
+:root{--bg:#fff;--fg:#111;--mut:#666;--bd:#ccc;--ac:#2a6;--rd:#c33;--hv:#f2f2f2}
+@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#ddd;--mut:#999;--bd:#333;--ac:#4c8;--rd:#e66;--hv:#1f1f1f}}
+body{margin:0 auto;max-width:900px;padding:12px;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,sans-serif}
 .top{display:flex;gap:6px;margin-bottom:8px}
 #q{flex:1;min-width:0;padding:8px;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
 .i{border:1px solid var(--bd);margin-bottom:6px;padding:6px 8px}
 .h{display:flex;gap:6px;align-items:center}
-.h b{flex:1;font-weight:600}
+.i:hover{background:var(--hv)}
+.h b{font-weight:600;margin-right:4px}
+.sp{flex:1}
+.pv{font-size:12px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.fl{display:flex;gap:6px;margin-bottom:8px}
+.fl .on{border-color:var(--ac);color:var(--ac);font-weight:600}
 button{font:inherit;padding:4px 10px;cursor:pointer;background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
 button:active,button.ok{background:var(--ac);color:#fff}
 .x{color:var(--rd)}
@@ -35,6 +40,7 @@ dialog label{font-size:12px;color:var(--mut)}
 <button id="n" style="display:none">+ New</button>
 <button id="k" title="Token">🔑</button>
 </div>
+<div class="fl"><button data-f="" class="on">All</button><button data-f="memo">Memo</button><button data-f="reply">Reply</button><button data-f="template">Template</button></div>
 <div id="s"></div>
 <div id="l"></div>
 <dialog id="d">
@@ -49,7 +55,7 @@ const OWNER='phillipeque', REPO='portfolio', PATH='pss/templates.json';
 // ===========================================================================
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
 const $=id=>document.getElementById(id);
-let T=[],sha=null,tok=localStorage.getItem('pss_tk')||'',ei=-1;
+let f='',lastL=0,T=[],sha=null,tok=localStorage.getItem('pss_tk')||'',ei=-1;
 try{T=JSON.parse(localStorage.getItem('pss_c')||'[]')}catch(e){}
 
 const enc=s=>btoa(unescape(encodeURIComponent(s)));
@@ -58,6 +64,7 @@ const msg=(t,err)=>{$('s').textContent=t;$('s').style.color=err?'var(--rd)':''};
 const hd=()=>{const h={Accept:'application/vnd.github+json'};if(tok)h.Authorization='Bearer '+tok;return h};
 
 async function load(){
+  lastL=Date.now();
   try{
     const r=await fetch(API+'?t='+Date.now(),{headers:hd(),cache:'no-store'});
     if(r.status===404){sha=null;msg('No templates file yet. Add one to create it.');return}
@@ -88,12 +95,13 @@ function btn(t,f,c){const b=document.createElement('button');b.textContent=t;if(
 function render(){
   const l=$('l');l.textContent='';
   T.forEach((x,i)=>{
-    const d=document.createElement('div');d.className='i';d.dataset.s=(x.t+' '+x.c+' '+x.m).toLowerCase();
+    const d=document.createElement('div');d.className='i';d.dataset.s=(x.t+' '+x.c+' '+x.m).toLowerCase();d.dataset.t=x.t.toLowerCase();
     const h=document.createElement('div');h.className='h';
     const b=document.createElement('b');b.textContent=x.t;
     h.append(b);
     if(x.c)h.append(btn('Template',b=>cp(x.c,b)));
     if(x.m)h.append(btn('Memo',b=>cp(x.m,b)));
+    const sp=document.createElement('span');sp.className='sp';h.append(sp);
     if(tok){
       h.append(btn('▲',()=>mv(i,-1)),btn('▼',()=>mv(i,1)),btn('Edit',()=>openD(i)),btn('Del',async()=>{
         if(!confirm('Delete "'+x.t+'"?'))return;
@@ -103,11 +111,13 @@ function render(){
     }
     const e=document.createElement('details'),s=document.createElement('summary'),p=document.createElement('pre');
     s.textContent='preview';p.textContent=(x.c&&x.m)?x.c+'\n\n— MEMO —\n'+x.m:(x.c||x.m);e.append(s,p);
-    d.append(h,e);l.appendChild(d)
+    const pv=document.createElement('div');pv.className='pv';pv.textContent=((x.c||x.m||'').split('\n').find(r=>r.trim())||'').trim();
+    d.append(h,pv,e);l.appendChild(d)
   });
   $('n').style.display=tok?'':'none';filt()
 }
-function filt(){const v=$('q').value.toLowerCase();for(const d of $('l').children)d.style.display=d.dataset.s.includes(v)?'':'none'}
+function filt(){const v=$('q').value.toLowerCase();for(const d of $('l').children)d.style.display=(d.dataset.s.includes(v)&&(!f||d.dataset.t.startsWith(f)))?'':'none'}
+document.querySelectorAll('.fl button').forEach(b=>b.onclick=()=>{f=b.dataset.f;document.querySelectorAll('.fl button').forEach(o=>o.classList.toggle('on',o===b));filt()});
 
 let busy=false;
 async function mv(i,d){
@@ -139,6 +149,8 @@ addEventListener('keydown',e=>{
   if(e.key==='/'&&document.activeElement!==$('q')){e.preventDefault();$('q').focus()}
   else if(e.key==='Escape'){$('q').value='';filt();$('q').blur()}
 });
+function rf(){if(!document.hidden&&!busy&&!$('d').open&&Date.now()-lastL>20000)load()}
+document.addEventListener('visibilitychange',rf);addEventListener('focus',rf);
 render();load();
 </script>
 </body>
