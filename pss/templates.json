@@ -40,13 +40,13 @@
   "m": "Issue: User claimed to have lost items from Server Storage.\nResolution: User forgot to retrieve items from Server Storage before transferring to another server, and they were left behind."
  },
  {
-  "t": "memo LOST GENUS INSIGHT",
-  "c": "",
-  "m": "Issue: User lost Genus Insight.\nResolution: The user had the option to choose which Genus Insight to import to the new server, but selected the wrong one."
- },
- {
   "t": "memo CAN'T UPGRADE ITEM",
   "c": "",
   "m": "Issue: The user cannot upgrade a specific item.\nResolution: Provided the user with workarounds."
+ },
+ {
+  "t": "memo LOST GENUS INSIGHT",
+  "c": "",
+  "m": "Issue: User lost Genus Insight.\nResolution: The user had the option to choose which Genus Insight to import to the new server, but selected the wrong one."
  }
 ]
