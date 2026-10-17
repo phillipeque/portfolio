@@ -91,28 +91,37 @@ function render(){
     const d=document.createElement('div');d.className='i';d.dataset.s=(x.t+' '+x.c+' '+x.m).toLowerCase();
     const h=document.createElement('div');h.className='h';
     const b=document.createElement('b');b.textContent=x.t;
-    h.append(b,btn('Template',b=>cp(x.c,b)),btn('Memo',b=>cp(x.m,b)));
+    h.append(b);
+    if(x.c)h.append(btn('Template',b=>cp(x.c,b)));
+    if(x.m)h.append(btn('Memo',b=>cp(x.m,b)));
     if(tok){
-      h.append(btn('Edit',()=>openD(i)),btn('Del',async()=>{
+      h.append(btn('▲',()=>mv(i,-1)),btn('▼',()=>mv(i,1)),btn('Edit',()=>openD(i)),btn('Del',async()=>{
         if(!confirm('Delete "'+x.t+'"?'))return;
         const bk=T.slice();T.splice(i,1);
         if(await save('Delete: '+x.t))render();else{T=bk;render()}
       },'x'));
     }
     const e=document.createElement('details'),s=document.createElement('summary'),p=document.createElement('pre');
-    s.textContent='preview';p.textContent=x.c+'\n\n— MEMO —\n'+x.m;e.append(s,p);
+    s.textContent='preview';p.textContent=(x.c&&x.m)?x.c+'\n\n— MEMO —\n'+x.m:(x.c||x.m);e.append(s,p);
     d.append(h,e);l.appendChild(d)
   });
   $('n').style.display=tok?'':'none';filt()
 }
 function filt(){const v=$('q').value.toLowerCase();for(const d of $('l').children)d.style.display=d.dataset.s.includes(v)?'':'none'}
 
+let busy=false;
+async function mv(i,d){
+  const j=i+d;if(busy||j<0||j>=T.length)return;
+  busy=true;const bk=T.slice();[T[i],T[j]]=[T[j],T[i]];render();
+  if(!(await save('Reorder')))T=bk;
+  busy=false;render()
+}
 function openD(i){ei=i;const x=i>=0?T[i]:{t:'',c:'',m:''};$('dt').value=x.t;$('dc').value=x.c;$('dm').value=x.m;$('d').showModal();$('dt').focus()}
 $('n').onclick=()=>openD(-1);
 $('dx').onclick=()=>$('d').close();
 $('ds').onclick=async()=>{
   const x={t:$('dt').value.trim(),c:$('dc').value,m:$('dm').value};
-  if(!x.t||!x.c){alert('Title and template are required.');return}
+  if(!x.t||(!x.c.trim()&&!x.m.trim())){alert('Title and at least one of Template or Memo are required.');return}
   const bk=T.slice();ei>=0?T[ei]=x:T.push(x);
   $('d').close();
   if(!(await save((ei>=0?'Edit: ':'Add: ')+x.t)))T=bk;
