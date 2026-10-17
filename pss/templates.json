@@ -30,14 +30,14 @@
   "m": "Issue: Player reported another user for suspected policy violations.\nResolution: Directed the player to use the in-game \"Report\" button for immediate processing."
  },
  {
-  "t": "memo BUG REPORT",
-  "c": "",
-  "m": "Issue: Player submitted feedback regarding game features or experience.\nResolution: Acknowledged feedback and recommended posting in Discord #bugs-report for direct CM review."
- },
- {
   "t": "memo CAN'T UPGRADE ITEM",
   "c": "",
   "m": "Issue: The user cannot upgrade a specific item.\nResolution: Provided the user with workarounds."
+ },
+ {
+  "t": "memo BUG REPORT",
+  "c": "",
+  "m": "Issue: Player submitted feedback regarding game features or experience.\nResolution: Acknowledged feedback and recommended posting in Discord #bugs-report for direct CM review."
  },
  {
   "t": "memo LOST ITEMS SERVER STORAGE",
