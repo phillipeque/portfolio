@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>PSS</title>
+<link rel="icon" href="data:,">
+<style>
+:root{--bg:#fff;--fg:#111;--mut:#666;--bd:#ccc;--ac:#2a6;--rd:#c33}
+@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#ddd;--mut:#999;--bd:#333;--ac:#4c8;--rd:#e66}}
+body{margin:0;padding:12px;background:var(--bg);color:var(--fg);font:14px/1.4 system-ui,sans-serif}
+.top{display:flex;gap:6px;margin-bottom:8px}
+#q{flex:1;min-width:0;padding:8px;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
+.i{border:1px solid var(--bd);margin-bottom:6px;padding:6px 8px}
+.h{display:flex;gap:6px;align-items:center}
+.h b{flex:1;font-weight:600}
+button{font:inherit;padding:4px 10px;cursor:pointer;background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
+button:active,button.ok{background:var(--ac);color:#fff}
+.x{color:var(--rd)}
+details{margin-top:4px;color:var(--mut)}
+summary{cursor:pointer;font-size:12px}
+pre{white-space:pre-wrap;margin:4px 0 0;font:inherit;font-size:13px}
+#s{font-size:12px;color:var(--mut);min-height:16px;margin-bottom:6px}
+dialog{width:min(560px,92vw);background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog input,dialog textarea{display:block;width:100%;box-sizing:border-box;margin:2px 0 8px;padding:6px;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
+dialog textarea{height:150px}
+dialog label{font-size:12px;color:var(--mut)}
+</style>
+</head>
+<body>
+<div class="top">
+<input id="q" placeholder="Search ( / )" autocomplete="off">
+<button id="n" style="display:none">+ New</button>
+<button id="k" title="Token">🔑</button>
+</div>
+<div id="s"></div>
+<div id="l"></div>
+<dialog id="d">
+<label>Title</label><input id="dt">
+<label>Template</label><textarea id="dc"></textarea>
+<label>Memo</label><textarea id="dm" style="height:80px"></textarea>
+<div style="text-align:right"><button id="dx">Cancel</button> <button id="ds">Save</button></div>
+</dialog>
+<script>
+// ===== CONFIG: preencha com seu usuário e o nome do repositório do site =====
+const OWNER='phillipeque', REPO='portfolio', PATH='pss/templates.json';
+// ===========================================================================
+const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
+const $=id=>document.getElementById(id);
+let T=[],sha=null,tok=localStorage.getItem('pss_tk')||'',ei=-1;
+try{T=JSON.parse(localStorage.getItem('pss_c')||'[]')}catch(e){}
+
+const enc=s=>btoa(unescape(encodeURIComponent(s)));
+const dec=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,''))));
+const msg=(t,err)=>{$('s').textContent=t;$('s').style.color=err?'var(--rd)':''};
+const hd=()=>{const h={Accept:'application/vnd.github+json'};if(tok)h.Authorization='Bearer '+tok;return h};
+
+async function load(){
+  try{
+    const r=await fetch(API+'?t='+Date.now(),{headers:hd(),cache:'no-store'});
+    if(r.status===404){sha=null;msg('No templates file yet. Add one to create it.');return}
+    if(!r.ok)throw new Error(r.status);
+    const j=await r.json();sha=j.sha;T=JSON.parse(dec(j.content));
+    localStorage.setItem('pss_c',JSON.stringify(T));render();msg('');
+  }catch(e){msg('Offline or API error. Showing local copy.',1)}
+}
+async function save(note){
+  if(!tok){msg('Set your token first (🔑).',1);return false}
+  msg('Saving...');
+  try{
+    const b={message:note,content:enc(JSON.stringify(T,null,1))};if(sha)b.sha=sha;
+    const r=await fetch(API,{method:'PUT',headers:hd(),body:JSON.stringify(b)});
+    if(r.status===409||r.status===422){msg('Conflict: changed elsewhere. Reloading, redo your edit.',1);await load();return false}
+    if(!r.ok)throw new Error(r.status);
+    sha=(await r.json()).content.sha;localStorage.setItem('pss_c',JSON.stringify(T));msg('Saved.');return true
+  }catch(e){msg('Save failed ('+e.message+'). Check token.',1);await load();return false}
+}
+
+function cp(s,b){
+  const done=()=>{const o=b.textContent;b.textContent='Copied!';b.className='ok';setTimeout(()=>{b.textContent=o;b.className=''},900)};
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(done,()=>fb(s,done));else fb(s,done)
+}
+function fb(s,d){const a=document.createElement('textarea');a.value=s;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();d()}
+function btn(t,f,c){const b=document.createElement('button');b.textContent=t;if(c)b.className=c;b.onclick=()=>f(b);return b}
+
+function render(){
+  const l=$('l');l.textContent='';
+  T.forEach((x,i)=>{
+    const d=document.createElement('div');d.className='i';d.dataset.s=(x.t+' '+x.c+' '+x.m).toLowerCase();
+    const h=document.createElement('div');h.className='h';
+    const b=document.createElement('b');b.textContent=x.t;
+    h.append(b,btn('Template',b=>cp(x.c,b)),btn('Memo',b=>cp(x.m,b)));
+    if(tok){
+      h.append(btn('Edit',()=>openD(i)),btn('Del',async()=>{
+        if(!confirm('Delete "'+x.t+'"?'))return;
+        const bk=T.slice();T.splice(i,1);
+        if(await save('Delete: '+x.t))render();else{T=bk;render()}
+      },'x'));
+    }
+    const e=document.createElement('details'),s=document.createElement('summary'),p=document.createElement('pre');
+    s.textContent='preview';p.textContent=x.c+'\n\n— MEMO —\n'+x.m;e.append(s,p);
+    d.append(h,e);l.appendChild(d)
+  });
+  $('n').style.display=tok?'':'none';filt()
+}
+function filt(){const v=$('q').value.toLowerCase();for(const d of $('l').children)d.style.display=d.dataset.s.includes(v)?'':'none'}
+
+function openD(i){ei=i;const x=i>=0?T[i]:{t:'',c:'',m:''};$('dt').value=x.t;$('dc').value=x.c;$('dm').value=x.m;$('d').showModal();$('dt').focus()}
+$('n').onclick=()=>openD(-1);
+$('dx').onclick=()=>$('d').close();
+$('ds').onclick=async()=>{
+  const x={t:$('dt').value.trim(),c:$('dc').value,m:$('dm').value};
+  if(!x.t||!x.c){alert('Title and template are required.');return}
+  const bk=T.slice();ei>=0?T[ei]=x:T.push(x);
+  $('d').close();
+  if(!(await save((ei>=0?'Edit: ':'Add: ')+x.t)))T=bk;
+  render()
+};
+$('k').onclick=()=>{
+  const v=prompt('GitHub token (empty = log out):',tok?'(saved)':'');
+  if(v===null||v==='(saved)')return;
+  tok=v.trim();tok?localStorage.setItem('pss_tk',tok):localStorage.removeItem('pss_tk');
+  render();load()
+};
+$('q').oninput=filt;
+addEventListener('keydown',e=>{
+  if($('d').open)return;
+  if(e.key==='/'&&document.activeElement!==$('q')){e.preventDefault();$('q').focus()}
+  else if(e.key==='Escape'){$('q').value='';filt();$('q').blur()}
+});
+render();load();
+</script>
+</body>
+</html>
