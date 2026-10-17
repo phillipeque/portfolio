@@ -10,14 +10,14 @@
   "m": "Issue: User wants to transfer another character to a different server.\nResolution: Explained that the voucher is limited to one per account, but that it will be possible to purchase additional vouchers soon."
  },
  {
-  "t": "memo BOTS REPORT",
-  "c": "",
-  "m": "Issue: Player reported frustration with bots and cheaters affecting gameplay.\nResolution: Acknowledged concerns, confirmed daily bans and system improvements, and thanked player for their fair play and reports."
- },
- {
   "t": "memo CAN'T UPGRADE ITEM",
   "c": "",
   "m": "Issue: The user cannot upgrade a specific item.\nResolution: Provided the user with workarounds."
+ },
+ {
+  "t": "memo BOTS REPORT",
+  "c": "",
+  "m": "Issue: Player reported frustration with bots and cheaters affecting gameplay.\nResolution: Acknowledged concerns, confirmed daily bans and system improvements, and thanked player for their fair play and reports."
  },
  {
   "t": "memo FALSE POSITIVE",
