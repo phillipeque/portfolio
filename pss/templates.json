@@ -23,5 +23,10 @@
   "t": "memo FEEDBACK SUGGESTION",
   "c": "",
   "m": "Issue: Player submitted feedback regarding game features or experience.\nResolution: Acknowledged feedback and recommended posting in Discord #game-suggestions for direct CM review."
+ },
+ {
+  "t": "memo BUG REPORT",
+  "c": "",
+  "m": "Issue: Player submitted feedback regarding game features or experience.\nResolution: Acknowledged feedback and recommended posting in Discord #bugs-report for direct CM review."
  }
 ]
