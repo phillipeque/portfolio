@@ -33,5 +33,10 @@
   "t": "memo REPORTED USER",
   "c": "",
   "m": "Issue: Player reported another user for suspected policy violations.\nResolution: Directed the player to use the in-game \"Report\" button for immediate processing."
+ },
+ {
+  "t": "memo LOST ITEMS SERVER STORAGE",
+  "c": "",
+  "m": "Issue: User claimed to have lost items from Server Storage.\nResolution: User forgot to retrieve items from Server Storage before transferring to another server, and they were left behind."
  }
 ]
