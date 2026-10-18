@@ -61,7 +61,7 @@
  },
  {
   "t": "reply EARLY ACCESS SERVER TO LAUNCH SERVER",
-  "c": "Hey there,\n\nThank you for contacting AION 2 Support.\n\nIf the server transfer option appears in red, it may be due to one of the following reasons:\n\n- **Server type restrictions:** Transfers between Early Access and Launch servers are not available during the current transfer period. Transfers between Launch servers are scheduled to become available on October 21.\n- **Transfer capacity:** The destination server may have reached its transfer limit. New slots open hourly during the designated transfer windows.\n- **Character requirements:** Your character may not meet the transfer requirements. Please make sure your character is in a village, is not part of a Legion, and has no pending items or currency to claim.\n\nPlease check these conditions and try again. If the issue persists, let us know so we can look into it further.\n\nBest regards,\nAION 2 Support",
+  "c": "Hey there,\n\nThank you for contacting AION 2 Support.\n\nIf the server transfer option appears in red, it may be due to server type restrictions, transfer capacity limits, or unmet character transfer requirements.\n\nPlease make sure your character meets all transfer requirements and try again. If the issue persists, please let us know so we can assist you further.\n\nBest regards,\nAION 2 Support",
   "m": "Issue: Unable to transfer from Ereshkigal to BABA.\nInvestigation: Server type restrictions, transfer limits, or unmet requirements."
  }
 ]
