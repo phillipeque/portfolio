@@ -60,13 +60,13 @@
   "m": ""
  },
  {
-  "t": "reply EARLY ACCESS SERVER TO LAUNCH SERVER",
-  "c": "If the server transfer option appears in red, it may be due to one of the following reasons:\n\nServer type restrictions: Transfers between Early Access and Launch servers are not available during the current transfer period. Transfers between Launch servers are scheduled to become available on October 21.\n\nTransfer capacity: The destination server may have reached its transfer limit. New slots open hourly during the designated transfer windows.\n\nCharacter requirements: Your character may not meet the transfer requirements. Please make sure your character is in a village, is not part of a Legion, and has no pending items or currency to claim.\n\nPlease check these conditions and try again. If the issue persists, let us know so we can look into it further.",
-  "m": "Issue: Unable to transfer from Ereshkigal to BABA.\nInvestigation: Server type restrictions, transfer limits, or unmet requirements."
- },
- {
   "t": "template BLOB FALSE POSITIVE",
   "c": "This transformation may occur after failing the CAPTCHA one or more times at specific points following repetitive in-game activities.\n\nAlthough this system is designed to help detect and prevent bot activity, false positives can still occur, and legitimate players may occasionally be affected. We sincerely apologize for the inconvenience this may have caused.\n\nOur team is working hard to improve the efficiency of the anti-bot system while reducing the occurrence of false positives. Significant improvements have already been made, and we remain committed to making the system more accurate and reliable for legitimate players.\n\nWe appreciate your patience and understanding as we continue working to improve your gameplay experience.",
   "m": "Issue: Player reported being affected by the anti-bot system.\nResolution: Explained CAPTCHA triggers, acknowledged possible false positives, and confirmed ongoing improvements to system accuracy and false positive reduction."
+ },
+ {
+  "t": "reply EARLY ACCESS SERVER TO LAUNCH SERVER",
+  "c": "If the server transfer option appears in red, it may be due to one of the following reasons:\n\nServer type restrictions: Transfers between Early Access and Launch servers are not available during the current transfer period. Transfers between Launch servers are scheduled to become available on October 21.\n\nTransfer capacity: The destination server may have reached its transfer limit. New slots open hourly during the designated transfer windows.\n\nCharacter requirements: Your character may not meet the transfer requirements. Please make sure your character is in a village, is not part of a Legion, and has no pending items or currency to claim.\n\nPlease check these conditions and try again. If the issue persists, let us know so we can look into it further.",
+  "m": "Issue: Unable to transfer from Ereshkigal to BABA.\nInvestigation: Server type restrictions, transfer limits, or unmet requirements."
  }
 ]
