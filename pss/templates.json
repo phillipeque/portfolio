@@ -40,7 +40,7 @@
   "m": "Issue: Player submitted feedback regarding game features or experience.\nResolution: Acknowledged feedback and recommended posting in Discord #bugs-report for direct CM review."
  },
  {
-  "t": "memo LOST ITEMS SERVER STORAGE",
+  "t": "Lost Items Server Transfer",
   "c": "",
   "m": "Issue: User claimed to have lost items from Server Storage.\nResolution: User forgot to retrieve items from Server Storage before transferring to another server, and they were left behind."
  },
