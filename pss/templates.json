@@ -50,7 +50,7 @@
   "m": "Issue: Player reported being affected by the anti-bot system.\nResolution: Explained CAPTCHA triggers, acknowledged possible false positives, and confirmed ongoing improvements to system accuracy and false positive reduction."
  },
  {
-  "t": "memo LOST GENUS INSIGHT",
+  "t": "Lost Genus Insight",
   "c": "",
   "m": "Issue: User lost Genus Insight.\nResolution: The user had the option to choose which Genus Insight to import to the new server, but selected the wrong one."
  },
