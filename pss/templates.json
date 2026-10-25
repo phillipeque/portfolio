@@ -35,7 +35,7 @@
   "m": "Issue: User reported restrictions on Market or Exchange access due to their account's trust status.\nResolution: Explained the Trust Status System, potential factors affecting trust status, and that accounts may be reviewed for reinstatement."
  },
  {
-  "t": "memo BUG REPORT",
+  "t": "BUG REPORT",
   "c": "",
   "m": "Issue: Player submitted feedback regarding game features or experience.\nResolution: Acknowledged feedback and recommended posting in Discord #bugs-report for direct CM review."
  },
