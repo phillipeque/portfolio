@@ -30,6 +30,10 @@ button:active,button.ok{background:var(--ac);color:#fff}
 .c:hover .eb{opacity:1}
 .eb button{padding:1px 7px;font-size:12px}
 .x{color:var(--rd)}
+[hidden]{display:none!important}
+#g{max-width:280px;margin:20vh auto 0;display:flex;flex-direction:column;gap:8px}
+#g input{padding:8px;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
+#gm{font-size:12px;color:var(--rd);word-break:break-all;min-height:16px}
 dialog{width:min(560px,92vw);background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
 dialog::backdrop{background:rgba(0,0,0,.5)}
 dialog input,dialog textarea{display:block;width:100%;box-sizing:border-box;margin:2px 0 8px;padding:6px;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--bd)}
@@ -38,6 +42,8 @@ dialog label{font-size:12px;color:var(--mut)}
 </style>
 </head>
 <body>
+<div id="g"><input id="gp" type="password" placeholder="Password" autocomplete="off"><button id="gb">OK</button><div id="gm"></div></div>
+<div id="app" hidden>
 <div class="top">
 <input id="q" placeholder="Search ( / )" autocomplete="off">
 <button id="n" style="display:none">+ New</button>
@@ -51,9 +57,12 @@ dialog label{font-size:12px;color:var(--mut)}
 <label>Memo</label><textarea id="dm" style="height:80px"></textarea>
 <div style="text-align:right"><button id="dx">Cancel</button> <button id="ds">Save</button></div>
 </dialog>
+</div>
 <script>
 // ===== CONFIG =====
 const OWNER='phillipeque', REPO='portfolio', PATH='pss/templates.json';
+// Cole aqui o hash gerado pela tela de senha (deixe vazio na primeira vez)
+const HASH='1201';
 // ==================
 const API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
 const $=id=>document.getElementById(id);
@@ -168,13 +177,23 @@ $('k').onclick=()=>{
 };
 $('q').oninput=filt;
 addEventListener('keydown',e=>{
-  if($('d').open)return;
+  if($('app').hidden||$('d').open)return;
   if(e.key==='/'&&document.activeElement!==$('q')){e.preventDefault();$('q').focus()}
   else if(e.key==='Escape'){$('q').value='';filt();$('q').blur()}
 });
-function rf(){if(!document.hidden&&!busy&&!$('d').open&&Date.now()-lastL>20000)load()}
+function rf(){if(!$('app').hidden&&!document.hidden&&!busy&&!$('d').open&&Date.now()-lastL>20000)load()}
 document.addEventListener('visibilitychange',rf);addEventListener('focus',rf);
-render();load();
+const h256=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+function start(){$('g').hidden=true;$('app').hidden=false;render();load()}
+async function unlock(){
+  const h=await h256($('gp').value);
+  if(!HASH){$('gm').style.color='var(--fg)';$('gm').textContent='Cole isto em HASH no código: '+h;return}
+  if(h===HASH){sessionStorage.setItem('pss_ok',HASH);start()}
+  else{$('gm').style.color='var(--rd)';$('gm').textContent='Wrong password.';$('gp').select()}
+}
+$('gb').onclick=unlock;
+$('gp').onkeydown=e=>{if(e.key==='Enter')unlock()};
+if(HASH&&sessionStorage.getItem('pss_ok')===HASH)start();else $('gp').focus();
 </script>
 </body>
 </html>
