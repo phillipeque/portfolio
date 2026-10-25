@@ -5,7 +5,7 @@
   "m": "Issue: User wants to transfer another character to a different server.\nResolution: Explained that the voucher is limited to one per account, but that it will be possible to purchase additional vouchers soon."
  },
  {
-  "t": "CAN'T UPGRADE ITEM",
+  "t": "Can't Upgrade Item",
   "c": "",
   "m": "Issue: The user cannot upgrade a specific item.\nResolution: Provided the user with workarounds."
  },
