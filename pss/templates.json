@@ -68,5 +68,10 @@
   "t": "User Wants Items Tranfer",
   "c": "I completely understand your frustration regarding this situation. Unfortunately, it is impossible to transfer items between servers right now. This is not for a lack of wanting to help, but rather due to technical limitations. \n\nHowever, please know that your items are not lost. You will be able to retrieve them soon, once NCSOFT makes additional server transfer vouchers available (yes, there are official plans in progress for this). \n\nWhen that happens, you will be able to create a character on the old server, take the items out of the server storage, and transfer that character along with the items to your new server.\n",
   "m": ""
+ },
+ {
+  "t": "Essence Extraction Quest Bug",
+  "c": "Please try the following steps to locate your missing Splendent Ruby:\n\nOpen your character's storage and check the Miscellaneous category. The Splendent Ruby may have been moved there instead of remaining in your inventory.\n\nIf you find it, move it back to your inventory and try speaking to the quest NPC again.\n\nIf you still can't find it, try sorting your storage and checking the other categories as well.\n\nSome players experiencing the same issue have reported finding the missing item in their storage.",
+  "m": ""
  }
 ]
