@@ -73,5 +73,10 @@
   "t": "Essence Extraction Quest Bug",
   "c": "Please try the following steps to locate your missing Splendent Ruby:\n\nOpen your character's storage and check the Miscellaneous category. The Splendent Ruby may have been moved there instead of remaining in your inventory.\n\nIf you find it, move it back to your inventory and try speaking to the quest NPC again.\n\nIf you still can't find it, try sorting your storage and checking the other categories as well.\n\nSome players experiencing the same issue have reported finding the missing item in their storage.",
   "m": ""
+ },
+ {
+  "t": "Unobtained Cube",
+  "c": "Thanks for the detailed explanation!\n\nThe Remaining Unobtained Cube Count is shared across Conquest and Transcendence dungeons on the same server. Opening a reward cube does not consume this allowance. However, completing a dungeon and leaving without claiming its cube rewards can reduce the count, even if you opened other cubes during the same run.\n\nSince Fire Temple can provide multiple reward cubes per run, could you clarify whether you left any cubes unopened in both runs, or only in one of them?\n\nIf you left a cube unopened in each run, the decrease from 2 to 0 would be consistent with this mechanic. If you left rewards unclaimed in only one run, we would need to investigate further to understand why the count decreased twice.",
+  "m": ""
  }
 ]
