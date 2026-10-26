@@ -63,5 +63,10 @@
   "t": "Undo Server Transfer",
   "c": "Unfortunately, Player Support is unable to grant extra server transfers, nor can we reverse a server transfer once it has been completed. Additionally, we cannot manually move characters or items between servers. We understand this is likely disappointing news, but these actions are outside what our team can assist with.\n\nHowever, NCSoft plans to make server transfer vouchers available for purchase in the in-game Shop soon. While we do not have an exact release date to share just yet, this will offer an alternative option if you decide to transfer your character to another server in the future. \n\nThank you for your understanding and patience.\n",
   "m": "Issue: User wants to undo server transfer.\nResolution: Explained this is not possible, but that it will be possible to purchase additional vouchers soon."
+ },
+ {
+  "t": "User Wants Items Tranfer",
+  "c": "I completely understand your frustration regarding this situation. Unfortunately, it is impossible to transfer items between servers right now. This is not for a lack of wanting to help, but rather due to technical limitations. \n\nHowever, please know that your items are not lost. You will be able to retrieve them soon, once NCSOFT makes additional server transfer vouchers available (yes, there are official plans in progress for this). \n\nWhen that happens, you will be able to create a character on the old server, take the items out of the server storage, and transfer that character along with the items to your new server.\n",
+  "m": ""
  }
 ]
