@@ -78,5 +78,10 @@
   "t": "Unobtained Cube",
   "c": "Thanks for the detailed explanation!\n\nThe Remaining Unobtained Cube Count is shared across Conquest and Transcendence dungeons on the same server. Opening a reward cube does not consume this allowance. However, completing a dungeon and leaving without claiming its cube rewards can reduce the count, even if you opened other cubes during the same run.\n\nSince Fire Temple can provide multiple reward cubes per run, could you clarify whether you left any cubes unopened in both runs, or only in one of them?\n\nIf you left a cube unopened in each run, the decrease from 2 to 0 would be consistent with this mechanic. If you left rewards unclaimed in only one run, we would need to investigate further to understand why the count decreased twice.",
   "m": ""
+ },
+ {
+  "t": "45 Level Minimum Transfer",
+  "c": "Thank you for reaching out, and we understand how frustrating this can be, especially if you were planning to transfer soon.\n\nThe minimum character level required for a server transfer was recently updated and is now level 45. Characters below this level can't be transferred. Once your character reaches level 45, you'll be able to transfer, as long as you meet the other transfer requirements, such as the destination server not being full.\n\nHowever, I've noted your feedback and passed it along to the team, so they know there's demand to return to the previous requirement. We can't confirm whether this will change, but your feedback helps show how players feel about it.\n\nThank you for your patience and understanding.",
+  "m": "Issue: Player was unable to transfer servers because their character was below the new minimum level requirement.\nResolution: Informed the player that the minimum level for server transfers is now 45. Player's feedback was noted and forwarded to the team, along with the demand to return to the previous requirement.\n"
  }
 ]
