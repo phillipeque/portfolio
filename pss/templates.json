@@ -83,5 +83,10 @@
   "t": "45 Level Minimum Transfer",
   "c": "Thank you for reaching out, and we understand how frustrating this can be, especially if you were planning to transfer soon.\n\nThe minimum character level required for a server transfer was recently updated and is now level 45. Characters below this level can't be transferred. Once your character reaches level 45, you'll be able to transfer, as long as you meet the other transfer requirements, such as the destination server not being full.\n\nHowever, I've noted your feedback and passed it along to the team, so they know there's demand to return to the previous requirement. We can't confirm whether this will change, but your feedback helps show how players feel about it.\n\nThank you for your patience and understanding.",
   "m": "Issue: Player was unable to transfer servers because their character was below the new minimum level requirement.\nResolution: Informed the player that the minimum level for server transfers is now 45. Player's feedback was noted and forwarded to the team, along with the demand to return to the previous requirement.\n"
+ },
+ {
+  "t": "45 but spanish",
+  "c": "¡Hola! Gracias por ponerte en contacto con nosotros. Entendemos perfectamente lo frustrante que puede ser esta situación, sobre todo si tenías planeado cambiar de servidor pronto. \n\nHace poco se actualizó el nivel mínimo requerido para la transferencia de servidor y ahora es el nivel 45. Lamentablemente, los personajes con un nivel inferior no se pueden transferir. En cuanto tu personaje alcance el nivel 45, podrás realizar el cambio sin problemas, siempre y cuando cumplas con el resto de los requisitos (como que el servidor de destino no esté lleno). \n\nDe todos modos, ya tomé nota de tus comentarios y se los pasé al equipo para que sepan que hay interés en volver al límite anterior. No te puedo confirmar si esto cambiará en el futuro, pero tu opinión nos ayuda muchísimo a entender cómo se siente la comunidad. \n\nMuchas gracias por tu paciencia y comprensión.",
+  "m": ""
  }
 ]
