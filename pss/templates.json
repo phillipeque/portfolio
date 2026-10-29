@@ -88,5 +88,10 @@
   "t": "45 but spanish",
   "c": "¡Hola! Gracias por ponerte en contacto con nosotros. Entendemos perfectamente lo frustrante que puede ser esta situación, sobre todo si tenías planeado cambiar de servidor pronto. \n\nHace poco se actualizó el nivel mínimo requerido para la transferencia de servidor y ahora es el nivel 45. Lamentablemente, los personajes con un nivel inferior no se pueden transferir. En cuanto tu personaje alcance el nivel 45, podrás realizar el cambio sin problemas, siempre y cuando cumplas con el resto de los requisitos (como que el servidor de destino no esté lleno). \n\nDe todos modos, ya tomé nota de tus comentarios y se los pasé al equipo para que sepan que hay interés en volver al límite anterior. No te puedo confirmar si esto cambiará en el futuro, pero tu opinión nos ayuda muchísimo a entender cómo se siente la comunidad. \n\nMuchas gracias por tu paciencia y comprensión.",
   "m": ""
+ },
+ {
+  "t": "Intended Mechanics",
+  "c": "",
+  "m": "Issue: Player accidentally morphed or crafted the wrong item and requested restoration.\nResolution: Explained to the player that this falls under the Intended Mechanics policy and cannot be resolved by Player Support."
  }
 ]
