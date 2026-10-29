@@ -93,5 +93,10 @@
   "t": "Intended Mechanics",
   "c": "",
   "m": "Issue: Player accidentally morphed or crafted the wrong item and requested restoration.\nResolution: Explained to the player that this falls under the Intended Mechanics policy and cannot be resolved by Player Support."
+ },
+ {
+  "t": "Ban Appeal",
+  "c": "",
+  "m": "Issue: Player appealed an account suspension.\nResolution: Confirmed that the suspension remains in place following a thorough review. Explained that further details cannot be disclosed for security reasons."
  }
 ]
