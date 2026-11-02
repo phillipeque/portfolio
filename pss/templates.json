@@ -98,5 +98,10 @@
   "t": "Ban Appeal",
   "c": "After a thorough review, we can confirm that the account suspension will remain in place and cannot be overturned.\n\nPlease understand that we take these matters seriously, and this case has been reviewed at the highest level available to ensure the decision was carefully evaluated.\n\nFor security reasons, we are unable to disclose further details regarding the investigation, the tools used, or the methods involved.\n\nAs the review is complete and the decision remains unchanged, any further inquiries regarding this specific matter will receive the same response.\n\nThank you for your understanding.",
   "m": "Issue: Player appealed an account suspension.\nResolution: Confirmed that the suspension remains in place following a thorough review. Explained that further details cannot be disclosed for security reasons."
+ },
+ {
+  "t": "Daeva Chest",
+  "c": "Thank you for providing the screenshot and explaining the situation.\n\nPlease note that the Special Quai Membership and Daeva's Campaign Supply Chest are one-time Founder's Pack rewards and cannot be claimed again through an additional chest.\n\nWe understand the inconvenience of having a duplicate chest that you cannot use. The AION 2 team has acknowledged that duplicate Founder's Pack items may remain in players' inventories and has announced plans to introduce a feature allowing them to be discarded in a future update.\n\nAlthough no release date has been announced yet, this functionality is planned by the development team.\n\nWe appreciate your patience and understanding!",
+  "m": "Issue: Player is unable to open a duplicate Daeva's Chest of Vows received after upgrading their Founder's Pack.\n\nResolution: Explained the one-time reward restrictions and informed the player that the development team plans to introduce a feature to discard duplicate Founder's Pack items in a future update."
  }
 ]
