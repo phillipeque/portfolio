@@ -113,5 +113,10 @@
   "t": "Dungeon LvL 99 Bug",
   "c": "Thank you for reaching out.\n\nWe are aware of an issue where the level requirement for Tier 3 Hard Mode dungeons is incorrectly displayed as Level 99.\n\nPlease note that Tier 3 Hard Mode dungeons are not yet available and are scheduled to officially open next week. They are not intended to be accessible at this time.\n\nThe development team is aware of the issue, and we appreciate your patience while awaiting the official release.",
   "m": "Issue: Player reported that Tier 3 Hard Mode dungeons require Level 99 to enter.\nResolution: Confirmed that this is a known issue. Clarified that Tier 3 Hard Mode dungeons are scheduled to officially open next week and are not currently intended to be accessible."
+ },
+ {
+  "t": "Chest Den",
+  "c": "Thank you for providing the details of this issue.\n\nWe acknowledge that some players who had already completed the guaranteed reward requirements in Ferocious Horn Den (Exploration) chose to leave their reward chests unclaimed before the November 4 update, intending to collect them later. Following the update, their progress was reset according to the new requirements, leaving those previously earned rewards inaccessible.\n\nWe understand the concern this has caused, especially for players who had already met the requirements before the changes were introduced.\n\nThis issue has been forwarded to the appropriate team for review. Please keep an eye on our official Discord server for a forthcoming announcement regarding this matter.\n\nPlease note that we will not be providing further updates through this support ticket. Any relevant information will be shared through the official Discord announcement.\n\nThank you for your patience and understanding.",
+  "m": "Issue: Player reported that previously earned Ferocious Horn Den (Exploration) rewards became inaccessible after the November 4 update.\nResolution: Forwarded the issue to the appropriate team and directed the player to await an official Discord announcement. Clarified that no further ticket updates will be provided."
  }
 ]
