@@ -108,5 +108,10 @@
   "t": "Chest of Vows",
   "c": "Thank you for providing the screenshot and explaining the situation.\n\nPlease note that the Special Quai Membership and Daeva's Campaign Supply Chest are one-time Founder's Pack rewards and cannot be claimed again through an additional chest.\n\nWe understand the inconvenience of having a duplicate chest that you cannot use. The AION 2 team has acknowledged that duplicate Founder's Pack items may remain in players' inventories and has announced plans to introduce a feature allowing them to be discarded in a future update.\n\nAlthough no release date has been announced yet, this functionality is planned by the development team.\n\nWe appreciate your patience and understanding!",
   "m": "Issue: Player is unable to open a duplicate Daeva's Chest of Vows received after upgrading their Founder's Pack.\nResolution: Explained the one-time reward restrictions and informed the player that the development team plans to introduce a feature to discard duplicate Founder's Pack items in a future update."
+ },
+ {
+  "t": "Dungeon LvL 99 Bug",
+  "c": "Thank you for reaching out.\n\nWe are aware of an issue where the level requirement for Tier 3 Hard Mode dungeons is incorrectly displayed as Level 99.\n\nPlease note that Tier 3 Hard Mode dungeons are not yet available and are scheduled to officially open next week. They are not intended to be accessible at this time.\n\nThe development team is aware of the issue, and we appreciate your patience while awaiting the official release.",
+  "m": "Issue: Player reported that Tier 3 Hard Mode dungeons require Level 99 to enter.\nResolution: Confirmed that this is a known issue. Clarified that Tier 3 Hard Mode dungeons are scheduled to officially open next week and are not currently intended to be accessible."
  }
 ]
