@@ -123,5 +123,10 @@
   "t": "Account Compromising",
   "c": "",
   "m": "Issue: User reported a potentially compromised account and/or missing characters.\n\nInvestigation: Attempting to identify the missing character(s) and locate the associated account.\n\nAction Taken: Requested additional account and character details from the user to proceed with the investigation."
+ },
+ {
+  "t": "High Lag",
+  "c": "Hello, Daeva!\n\nWe understand how frustrating the current latency issues can be, especially when they also affect instance servers.\n\nPlease rest assured that we are aware of the connectivity issues currently affecting players, and the relevant team is looking into the matter.\n\nIn the meantime, you may try restarting your router, using a wired connection instead of Wi-Fi, and testing your connection with and without a VPN to see if this makes any difference.\n\nAlthough we have forwarded the reported concerns to the relevant team, we cannot guarantee that compensation will be provided or that any specific measures will be implemented. Should compensation be considered, announcements will be made through our official channels.\n\nThank you for your patience and understanding!",
+  "m": "Issue: User reported latency issues affecting gameplay, including instance servers.\n\nResolution: Confirmed awareness of the connectivity issues and clarified that compensation or specific measures cannot be guaranteed. Any compensation announcements will be shared through official channels."
  }
 ]
