@@ -7,7 +7,7 @@
  {
   "t": "Can't Upgrade Item",
   "c": "",
-  "m": "Issue: The user cannot upgrade a specific item.\nResolution: Provided the user with workarounds."
+  "m": "Issue: User is unable to upgrade an item through Substance Morph.\nResolution: Provided troubleshooting steps to remove the item from all equipment presets, ensure it is in the inventory, and retry the upgrade through the Substance Morph menu."
  },
  {
   "t": "Bots Report",
