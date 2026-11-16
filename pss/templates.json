@@ -128,5 +128,10 @@
   "t": "High Lag",
   "c": "We understand how frustrating the current latency issues can be, especially when they also affect instance servers.\n\nPlease rest assured that we are aware of the connectivity issues currently affecting players, and the relevant team is looking into the matter.\n\nIn the meantime, you may try restarting your router, using a wired connection instead of Wi-Fi, and testing your connection with and without a VPN to see if this makes any difference.\n\nAlthough we have forwarded the reported concerns to the relevant team, we cannot guarantee that compensation will be provided or that any specific measures will be implemented. Should compensation be considered, announcements will be made through our official channels.\n\nThank you for your patience and understanding!",
   "m": "Issue: User reported latency issues affecting gameplay, including instance servers.\n\nResolution: Confirmed awareness of the connectivity issues and clarified that compensation or specific measures cannot be guaranteed. Any compensation announcements will be shared through official channels."
+ },
+ {
+  "t": "Memo Account Stolen",
+  "c": "",
+  "m": "Issue: User claims to have had their account stolen and unlinked from Steam.\n\nInvestigation:\n\nThe account was indeed compromised. Logs show IP addresses from China and Hong Kong, and login methods were subsequently disconnected.\n\nUser provided data to prove ownership, as requested, and the data matches the actual data of the account they claim ownership of.\n\nAccount GUID: DDE84DFE-1B02-4033-97A2-3901E4339828\n\nTransaction ID: 165103406808457481\n\nOther information, such as character names, dates, and levels, also match.\n\nTools used:\n- A2W Admin - EU\n- Account Manager\n- PG V2\n\nResolution: User proved to be the owner of the account.\n"
  }
 ]
