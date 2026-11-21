@@ -6,7 +6,7 @@
  },
  {
   "t": "Can't Upgrade Item",
-  "c": "",
+  "c": "We understand that you're having trouble upgrading your item through Substance Morph.\n\nPlease follow these steps to resolve the issue:\n\n1. Check all your equipment presets and remove the item from any preset where it is currently equipped, not just the active one.\n2. Make sure the item is in your inventory.\n3. Reopen the Substance Morph menu (Alt + H) and try upgrading it again.\n\nIf the issue persists, please double-check that the item has been removed from all equipment presets.\n\nThank you for your cooperation!",
   "m": "Issue: User is unable to upgrade an item through Substance Morph.\nResolution: Provided troubleshooting steps to remove the item from all equipment presets, ensure it is in the inventory, and retry the upgrade through the Substance Morph menu."
  },
  {
