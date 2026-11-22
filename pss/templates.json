@@ -142,6 +142,6 @@
  {
   "t": "Final Memo Account Secured",
   "c": "",
-  "m": "Issue: User reported unauthorized access to their NC Account and requested account recovery.\n\nInvestigation: Account compromise was confirmed, and the user successfully verified account ownership through the provided information.\n\nResolution: Successfully updated the registered email address to the one requested by the user. Removed all unauthorized login methods, disconnected the intruder's linked accounts, and reset the necessary security credentials. Restored account access to the rightful owner and provided instructions for securing the account."
+  "m": "Investigation: Account compromise was confirmed, and the user successfully verified account ownership through the provided information.\n\nResolution: Successfully updated the registered email address to the one requested by the user. Removed all unauthorized login methods, disconnected the intruder's linked accounts, and reset the necessary security credentials. Restored account access to the rightful owner and provided instructions for securing the account."
  }
 ]
