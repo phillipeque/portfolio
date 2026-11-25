@@ -132,7 +132,7 @@
  {
   "t": "Memo Account Stolen",
   "c": "",
-  "m": "Issue: User claims to have had their account stolen and unlinked from Steam.\n\nInvestigation:\n\nThe account was indeed compromised. Logs show IP addresses from China and Hong Kong, and login methods were subsequently disconnected.\n\nUser provided data to prove ownership, as requested, and the data matches the actual data of the account they claim ownership of.\n\nAccount GUID: DDE84DFE-1B02-4033-97A2-3901E4339828\n\nTransaction ID: 165103406808457481\n\nOther information, such as character names, dates, and levels, also match.\n\nTools used:\n- A2W Admin - EU\n- Account Manager\n- PG V2\n\nResolution: User proved to be the owner of the account.\n"
+  "m": "Issue: User claims to have had their account stolen and unlinked from Steam.\n\nInvestigation:\n\nThe account was indeed compromised. Logs show IP addresses from China and Hong Kong, and login methods were subsequently disconnected.\n\nUser provided data to prove ownership, as requested, and the data matches the actual data of the account they claim ownership of.\n\nAccount GUID: \n\nTransaction ID: \n\nSteamID64:\n\nOther information, such as character names, dates, and levels, also match.\n\nTools used:\n- A2W Admin - EU\n- Account Manager\n- PG V2\n\nResolution: User proved to be the owner of the account.\n"
  },
  {
   "t": "Lag We Are Aware",
